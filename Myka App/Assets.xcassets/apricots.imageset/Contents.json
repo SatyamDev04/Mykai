@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "apricots.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "top-view-apricots-bowl-half-cut-one-sackcloth-white-background-with-copy-space 1@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "top-view-apricots-bowl-half-cut-one-sackcloth-white-background-with-copy-space 1@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

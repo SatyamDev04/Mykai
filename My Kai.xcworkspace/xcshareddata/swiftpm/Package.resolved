@@ -1,0 +1,24 @@
+{
+  "originHash" : "f5093869c2902eca6ce5c0994039a8daef8fbb3d8c0416109b627b042de59e35",
+  "pins" : [
+    {
+      "identity" : "backgroundremoval",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Ezaldeen99/BackgroundRemoval.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "3f3da746509cdfeefb837d35ba5ba620cd53bcfe"
+      }
+    },
+    {
+      "identity" : "customblureffectview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/perfectdim/CustomBlurEffectView.git",
+      "state" : {
+        "revision" : "a25e92fc90c0df9bdf79177974ba8581ea470905",
+        "version" : "0.0.3"
+      }
+    }
+  ],
+  "version" : 3
+}

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Poppins-Medium.otf">
+            <string>Poppins-Medium</string>
+        </array>
+        <array key="Poppins-Regular.otf">
+            <string>Poppins-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="94" id="KGk-i7-Jjw" customClass="CreateRecipeTblVCell" customModule="My_Kai" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="94"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="94"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ro1-K8-pEn">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="77"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ixt-DM-dqy">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="25"/>
+                                <subviews>
+                                    <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Step- 1" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fPR-yN-97x">
+                                        <rect key="frame" x="1" y="5" width="280" height="18"/>
+                                        <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.23529411759999999" green="0.27058823529999998" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="placeholderLabel.textColor">
+                                                <color key="value" red="0.23529411759999999" green="0.27058823529999998" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="6c1-Fq-DR4"/>
+                                    <constraint firstItem="fPR-yN-97x" firstAttribute="top" secondItem="Ixt-DM-dqy" secondAttribute="top" constant="5" id="Ep5-GD-MNY"/>
+                                    <constraint firstAttribute="bottom" secondItem="fPR-yN-97x" secondAttribute="bottom" constant="2" id="Est-cG-Qby"/>
+                                    <constraint firstItem="fPR-yN-97x" firstAttribute="leading" secondItem="Ixt-DM-dqy" secondAttribute="leading" constant="1" id="LDo-sQ-21w"/>
+                                    <constraint firstAttribute="bottom" secondItem="fPR-yN-97x" secondAttribute="bottom" constant="2" id="jat-6S-aBi"/>
+                                    <constraint firstAttribute="trailing" secondItem="fPR-yN-97x" secondAttribute="trailing" constant="39" id="mfK-mj-aTK"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q6v-Gs-QPv">
+                                <rect key="frame" x="1" y="26" width="318" height="51"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add ingredients" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yOs-oL-iBq">
+                                        <rect key="frame" x="20" y="5" width="278" height="41"/>
+                                        <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.23529411759999999" green="0.27058823529999998" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="15"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="placeholderLabel.textColor">
+                                                <color key="value" red="0.23529411759999999" green="0.27058823529999998" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="51" id="0zA-rt-vdp"/>
+                                    <constraint firstItem="yOs-oL-iBq" firstAttribute="leading" secondItem="Q6v-Gs-QPv" secondAttribute="leading" constant="20" id="C4s-dc-YMT"/>
+                                    <constraint firstItem="yOs-oL-iBq" firstAttribute="top" secondItem="Q6v-Gs-QPv" secondAttribute="top" constant="5" id="XM7-GX-CQN"/>
+                                    <constraint firstAttribute="trailing" secondItem="yOs-oL-iBq" secondAttribute="trailing" constant="20" id="f5v-Xf-OSp"/>
+                                    <constraint firstAttribute="bottom" secondItem="yOs-oL-iBq" secondAttribute="bottom" constant="5" id="ifk-v2-CgF"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.88235294119999996" green="0.88235294119999996" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Q6v-Gs-QPv" firstAttribute="leading" secondItem="ro1-K8-pEn" secondAttribute="leading" constant="1" id="Dmd-w3-g9h"/>
+                            <constraint firstItem="Q6v-Gs-QPv" firstAttribute="top" secondItem="Ixt-DM-dqy" secondAttribute="bottom" constant="1" id="Rfg-G6-Cjl"/>
+                            <constraint firstAttribute="trailing" secondItem="Q6v-Gs-QPv" secondAttribute="trailing" constant="1" id="kW1-hj-rDz"/>
+                        </constraints>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="ro1-K8-pEn" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="7pX-ax-zsT"/>
+                    <constraint firstItem="ro1-K8-pEn" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Fe9-fm-hP1"/>
+                    <constraint firstAttribute="bottom" secondItem="ro1-K8-pEn" secondAttribute="bottom" constant="10" id="Tm2-YE-BoB"/>
+                    <constraint firstAttribute="trailing" secondItem="ro1-K8-pEn" secondAttribute="trailing" id="sqA-Kx-DZE"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="BgV" destination="Q6v-Gs-QPv" id="0lh-Ss-pk4"/>
+                <outlet property="TitleBgV" destination="Ixt-DM-dqy" id="8qT-vQ-wDY"/>
+                <outlet property="TitleTxt" destination="fPR-yN-97x" id="QfC-d4-jOS"/>
+                <outlet property="TxtField" destination="yOs-oL-iBq" id="i7e-xP-7hY"/>
+            </connections>
+            <point key="canvasLocation" x="10.687022900763358" y="4.9295774647887329"/>
+        </tableViewCell>
+    </objects>
+</document>

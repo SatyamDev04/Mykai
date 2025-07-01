@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="PhotoCollVCell" customModule="My_Kai" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="3" translatesAutoresizingMaskIntoConstraints="NO" id="cPD-ce-LFC">
+                        <rect key="frame" x="5" y="10" width="35" height="35"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="cPD-ce-LFC" secondAttribute="height" multiplier="1:1" id="p7N-De-4fu"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Htu-dh-xOl">
+                        <rect key="frame" x="28" y="3" width="20" height="20"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="J36-UG-ul7"/>
+                            <constraint firstAttribute="height" constant="20" id="Lss-3X-jAx"/>
+                        </constraints>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" image="remove"/>
+                    </button>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="Htu-dh-xOl" firstAttribute="top" secondItem="cPD-ce-LFC" secondAttribute="top" constant="-7" id="HEc-mn-NMD"/>
+                <constraint firstAttribute="trailing" secondItem="cPD-ce-LFC" secondAttribute="trailing" constant="10" id="M1c-vC-NXM"/>
+                <constraint firstItem="cPD-ce-LFC" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="S1C-z4-7ir"/>
+                <constraint firstAttribute="trailing" secondItem="Htu-dh-xOl" secondAttribute="trailing" constant="2" id="kfT-H5-sVr"/>
+                <constraint firstItem="cPD-ce-LFC" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="5" id="uEW-TE-qHb"/>
+                <constraint firstAttribute="bottom" secondItem="cPD-ce-LFC" secondAttribute="bottom" constant="5" id="ziI-a5-fi2"/>
+            </constraints>
+            <connections>
+                <outlet property="ImgV" destination="cPD-ce-LFC" id="dUb-Be-C3x"/>
+                <outlet property="RemoveBtn" destination="Htu-dh-xOl" id="1fm-67-86R"/>
+            </connections>
+            <point key="canvasLocation" x="1.5267175572519083" y="-11.267605633802818"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="3" width="58" height="58.333332061767578"/>
+        <image name="remove" width="21.333333969116211" height="21.333333969116211"/>
+    </resources>
+</document>

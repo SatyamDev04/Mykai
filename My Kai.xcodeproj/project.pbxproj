@@ -1,0 +1,912 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		52F30D514CDAF1BBB65F716E /* Pods_My_KaiTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDF201A0FF7DAFEFA805D2AA /* Pods_My_KaiTests.framework */; };
+		95114FE22D0E5CA000EB7A48 /* CustomBlurEffectView in Frameworks */ = {isa = PBXBuildFile; productRef = 95114FE12D0E5CA000EB7A48 /* CustomBlurEffectView */; };
+		A78D072761D04BE0F9E91967 /* Pods_My_Kai.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33FB989C8B855323132CBA24 /* Pods_My_Kai.framework */; };
+		BCE73CED89471943D9E84FA9 /* Pods_My_Kai_My_KaiUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0F165B1EDD5EBC0B768C729 /* Pods_My_Kai_My_KaiUITests.framework */; };
+		E908822C2D5F74D100B46E9E /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E908822B2D5F74D100B46E9E /* StoreKit.framework */; };
+		E916A78E2DD7180800CD5E83 /* BackgroundRemoval in Frameworks */ = {isa = PBXBuildFile; productRef = E916A78D2DD7180800CD5E83 /* BackgroundRemoval */; };
+		E916A7902DD7181C00CD5E83 /* BackgroundRemoval in Frameworks */ = {isa = PBXBuildFile; productRef = E916A78F2DD7181C00CD5E83 /* BackgroundRemoval */; };
+		E916A7922DD7193700CD5E83 /* BackgroundRemoval in Frameworks */ = {isa = PBXBuildFile; productRef = E916A7912DD7193700CD5E83 /* BackgroundRemoval */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E99AA0622CF5B0D1000A5D6D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E99AA0432CF5B0D0000A5D6D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E99AA04A2CF5B0D0000A5D6D;
+			remoteInfo = "Myka App";
+		};
+		E99AA06C2CF5B0D1000A5D6D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E99AA0432CF5B0D0000A5D6D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E99AA04A2CF5B0D0000A5D6D;
+			remoteInfo = "Myka App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0174FCC7377EB2D033BC3059 /* Pods-My KaiTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-My KaiTests.release.xcconfig"; path = "Target Support Files/Pods-My KaiTests/Pods-My KaiTests.release.xcconfig"; sourceTree = "<group>"; };
+		032A0C38858F0926B57ED849 /* Pods-My-Kai.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-My-Kai.debug.xcconfig"; path = "Target Support Files/Pods-My-Kai/Pods-My-Kai.debug.xcconfig"; sourceTree = "<group>"; };
+		2550B503E996C9692B11652C /* Pods-My-Kai-My-KaiUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-My-Kai-My-KaiUITests.release.xcconfig"; path = "Target Support Files/Pods-My-Kai-My-KaiUITests/Pods-My-Kai-My-KaiUITests.release.xcconfig"; sourceTree = "<group>"; };
+		3106DC54021F8A19640A3B21 /* Pods-My Kai-My KaiUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-My Kai-My KaiUITests.release.xcconfig"; path = "Target Support Files/Pods-My Kai-My KaiUITests/Pods-My Kai-My KaiUITests.release.xcconfig"; sourceTree = "<group>"; };
+		33FB989C8B855323132CBA24 /* Pods_My_Kai.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_My_Kai.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F904282CB95579BB7A324B8 /* Pods-Myka App-Myka AppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Myka App-Myka AppUITests.release.xcconfig"; path = "Target Support Files/Pods-Myka App-Myka AppUITests/Pods-Myka App-Myka AppUITests.release.xcconfig"; sourceTree = "<group>"; };
+		407AAFC29FBDCC8CDD8B0899 /* Pods-Myka AppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Myka AppTests.debug.xcconfig"; path = "Target Support Files/Pods-Myka AppTests/Pods-Myka AppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5A523D1E42B0D20776C574CE /* Pods-My-KaiTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-My-KaiTests.release.xcconfig"; path = "Target Support Files/Pods-My-KaiTests/Pods-My-KaiTests.release.xcconfig"; sourceTree = "<group>"; };
+		6AC7B5F30C6B8F786407B4F6 /* Pods-Myka AppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Myka AppTests.release.xcconfig"; path = "Target Support Files/Pods-Myka AppTests/Pods-Myka AppTests.release.xcconfig"; sourceTree = "<group>"; };
+		6FBCCDBC04A95AF12F6F4ED6 /* Pods-My-KaiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-My-KaiTests.debug.xcconfig"; path = "Target Support Files/Pods-My-KaiTests/Pods-My-KaiTests.debug.xcconfig"; sourceTree = "<group>"; };
+		891F822E34B537F3B70E0007 /* Pods-Myka App-Myka AppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Myka App-Myka AppUITests.debug.xcconfig"; path = "Target Support Files/Pods-Myka App-Myka AppUITests/Pods-Myka App-Myka AppUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		A91C447F2C1CCC776A8FFFBC /* Pods-Myka App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Myka App.debug.xcconfig"; path = "Target Support Files/Pods-Myka App/Pods-Myka App.debug.xcconfig"; sourceTree = "<group>"; };
+		A9EF32ED57E5BC647A5FB87F /* Pods-My Kai-My KaiUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-My Kai-My KaiUITests.debug.xcconfig"; path = "Target Support Files/Pods-My Kai-My KaiUITests/Pods-My Kai-My KaiUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		AA6D13D11A76F3BAF962601E /* Pods-My-Kai-My-KaiUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-My-Kai-My-KaiUITests.debug.xcconfig"; path = "Target Support Files/Pods-My-Kai-My-KaiUITests/Pods-My-Kai-My-KaiUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		BCEA366E3648D0C731FB0DCE /* Pods-My-Kai.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-My-Kai.release.xcconfig"; path = "Target Support Files/Pods-My-Kai/Pods-My-Kai.release.xcconfig"; sourceTree = "<group>"; };
+		BD6519E39D4B765E49E6C09E /* Pods-My KaiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-My KaiTests.debug.xcconfig"; path = "Target Support Files/Pods-My KaiTests/Pods-My KaiTests.debug.xcconfig"; sourceTree = "<group>"; };
+		CDF201A0FF7DAFEFA805D2AA /* Pods_My_KaiTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_My_KaiTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0F165B1EDD5EBC0B768C729 /* Pods_My_Kai_My_KaiUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_My_Kai_My_KaiUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DE49828F391FB7C60A53A46B /* Pods-My Kai.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-My Kai.debug.xcconfig"; path = "Target Support Files/Pods-My Kai/Pods-My Kai.debug.xcconfig"; sourceTree = "<group>"; };
+		E908822B2D5F74D100B46E9E /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		E99AA04B2CF5B0D0000A5D6D /* My Kai.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "My Kai.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E99AA0612CF5B0D1000A5D6D /* My KaiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "My KaiTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E99AA06B2CF5B0D1000A5D6D /* My KaiUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "My KaiUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8FAE26FC176C31EBF681A60 /* Pods-My Kai.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-My Kai.release.xcconfig"; path = "Target Support Files/Pods-My Kai/Pods-My Kai.release.xcconfig"; sourceTree = "<group>"; };
+		FE465191E1EBFCCB7F7F4C1C /* Pods-Myka App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Myka App.release.xcconfig"; path = "Target Support Files/Pods-Myka App/Pods-Myka App.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		E99AA0732CF5B0D1000A5D6D /* Exceptions for "Myka App" folder in "My Kai" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = E99AA04A2CF5B0D0000A5D6D /* My Kai */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		E99AA04D2CF5B0D0000A5D6D /* Myka App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E99AA0732CF5B0D1000A5D6D /* Exceptions for "Myka App" folder in "My Kai" target */,
+			);
+			path = "Myka App";
+			sourceTree = "<group>";
+		};
+		E99AA0642CF5B0D1000A5D6D /* Myka AppTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Myka AppTests";
+			sourceTree = "<group>";
+		};
+		E99AA06E2CF5B0D1000A5D6D /* Myka AppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Myka AppUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E99AA0482CF5B0D0000A5D6D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E908822C2D5F74D100B46E9E /* StoreKit.framework in Frameworks */,
+				95114FE22D0E5CA000EB7A48 /* CustomBlurEffectView in Frameworks */,
+				A78D072761D04BE0F9E91967 /* Pods_My_Kai.framework in Frameworks */,
+				E916A7902DD7181C00CD5E83 /* BackgroundRemoval in Frameworks */,
+				E916A78E2DD7180800CD5E83 /* BackgroundRemoval in Frameworks */,
+				E916A7922DD7193700CD5E83 /* BackgroundRemoval in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E99AA05E2CF5B0D1000A5D6D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				52F30D514CDAF1BBB65F716E /* Pods_My_KaiTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E99AA0682CF5B0D1000A5D6D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCE73CED89471943D9E84FA9 /* Pods_My_Kai_My_KaiUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7909D33DEE81875F0A139785 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A91C447F2C1CCC776A8FFFBC /* Pods-Myka App.debug.xcconfig */,
+				FE465191E1EBFCCB7F7F4C1C /* Pods-Myka App.release.xcconfig */,
+				891F822E34B537F3B70E0007 /* Pods-Myka App-Myka AppUITests.debug.xcconfig */,
+				3F904282CB95579BB7A324B8 /* Pods-Myka App-Myka AppUITests.release.xcconfig */,
+				407AAFC29FBDCC8CDD8B0899 /* Pods-Myka AppTests.debug.xcconfig */,
+				6AC7B5F30C6B8F786407B4F6 /* Pods-Myka AppTests.release.xcconfig */,
+				032A0C38858F0926B57ED849 /* Pods-My-Kai.debug.xcconfig */,
+				BCEA366E3648D0C731FB0DCE /* Pods-My-Kai.release.xcconfig */,
+				AA6D13D11A76F3BAF962601E /* Pods-My-Kai-My-KaiUITests.debug.xcconfig */,
+				2550B503E996C9692B11652C /* Pods-My-Kai-My-KaiUITests.release.xcconfig */,
+				6FBCCDBC04A95AF12F6F4ED6 /* Pods-My-KaiTests.debug.xcconfig */,
+				5A523D1E42B0D20776C574CE /* Pods-My-KaiTests.release.xcconfig */,
+				DE49828F391FB7C60A53A46B /* Pods-My Kai.debug.xcconfig */,
+				F8FAE26FC176C31EBF681A60 /* Pods-My Kai.release.xcconfig */,
+				A9EF32ED57E5BC647A5FB87F /* Pods-My Kai-My KaiUITests.debug.xcconfig */,
+				3106DC54021F8A19640A3B21 /* Pods-My Kai-My KaiUITests.release.xcconfig */,
+				BD6519E39D4B765E49E6C09E /* Pods-My KaiTests.debug.xcconfig */,
+				0174FCC7377EB2D033BC3059 /* Pods-My KaiTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		B98274CB53995BE155324272 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E908822B2D5F74D100B46E9E /* StoreKit.framework */,
+				33FB989C8B855323132CBA24 /* Pods_My_Kai.framework */,
+				D0F165B1EDD5EBC0B768C729 /* Pods_My_Kai_My_KaiUITests.framework */,
+				CDF201A0FF7DAFEFA805D2AA /* Pods_My_KaiTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E99AA0422CF5B0D0000A5D6D = {
+			isa = PBXGroup;
+			children = (
+				E99AA04D2CF5B0D0000A5D6D /* Myka App */,
+				E99AA0642CF5B0D1000A5D6D /* Myka AppTests */,
+				E99AA06E2CF5B0D1000A5D6D /* Myka AppUITests */,
+				E99AA04C2CF5B0D0000A5D6D /* Products */,
+				7909D33DEE81875F0A139785 /* Pods */,
+				B98274CB53995BE155324272 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		E99AA04C2CF5B0D0000A5D6D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E99AA04B2CF5B0D0000A5D6D /* My Kai.app */,
+				E99AA0612CF5B0D1000A5D6D /* My KaiTests.xctest */,
+				E99AA06B2CF5B0D1000A5D6D /* My KaiUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E99AA04A2CF5B0D0000A5D6D /* My Kai */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E99AA0742CF5B0D1000A5D6D /* Build configuration list for PBXNativeTarget "My Kai" */;
+			buildPhases = (
+				F1B9A4CF03FCB90CAFED5528 /* [CP] Check Pods Manifest.lock */,
+				E99AA0472CF5B0D0000A5D6D /* Sources */,
+				E99AA0482CF5B0D0000A5D6D /* Frameworks */,
+				E99AA0492CF5B0D0000A5D6D /* Resources */,
+				62B24F01C62021A637C6F1C7 /* [CP] Embed Pods Frameworks */,
+				51CA75FE7A7565E87132B1ED /* [CP] Copy Pods Resources */,
+				E9010D3B2D195E3A00DBFCA6 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				E99AA04D2CF5B0D0000A5D6D /* Myka App */,
+			);
+			name = "My Kai";
+			productName = "Myka App";
+			productReference = E99AA04B2CF5B0D0000A5D6D /* My Kai.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E99AA0602CF5B0D1000A5D6D /* My KaiTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E99AA0792CF5B0D1000A5D6D /* Build configuration list for PBXNativeTarget "My KaiTests" */;
+			buildPhases = (
+				82B9E1AC772256F6E8E4AE77 /* [CP] Check Pods Manifest.lock */,
+				E99AA05D2CF5B0D1000A5D6D /* Sources */,
+				E99AA05E2CF5B0D1000A5D6D /* Frameworks */,
+				E99AA05F2CF5B0D1000A5D6D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E99AA0632CF5B0D1000A5D6D /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				E99AA0642CF5B0D1000A5D6D /* Myka AppTests */,
+			);
+			name = "My KaiTests";
+			productName = "Myka AppTests";
+			productReference = E99AA0612CF5B0D1000A5D6D /* My KaiTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E99AA06A2CF5B0D1000A5D6D /* My KaiUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E99AA07C2CF5B0D1000A5D6D /* Build configuration list for PBXNativeTarget "My KaiUITests" */;
+			buildPhases = (
+				C01A1B5C0F8C411CEDA47D09 /* [CP] Check Pods Manifest.lock */,
+				E99AA0672CF5B0D1000A5D6D /* Sources */,
+				E99AA0682CF5B0D1000A5D6D /* Frameworks */,
+				E99AA0692CF5B0D1000A5D6D /* Resources */,
+				364E28C3621651123DDEE2DB /* [CP] Embed Pods Frameworks */,
+				A8F977B2A7F1F694354FC846 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E99AA06D2CF5B0D1000A5D6D /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				E99AA06E2CF5B0D1000A5D6D /* Myka AppUITests */,
+			);
+			name = "My KaiUITests";
+			productName = "Myka AppUITests";
+			productReference = E99AA06B2CF5B0D1000A5D6D /* My KaiUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E99AA0432CF5B0D0000A5D6D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1610;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					E99AA04A2CF5B0D0000A5D6D = {
+						CreatedOnToolsVersion = 16.1;
+					};
+					E99AA0602CF5B0D1000A5D6D = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = E99AA04A2CF5B0D0000A5D6D;
+					};
+					E99AA06A2CF5B0D1000A5D6D = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = E99AA04A2CF5B0D0000A5D6D;
+					};
+				};
+			};
+			buildConfigurationList = E99AA0462CF5B0D0000A5D6D /* Build configuration list for PBXProject "My Kai" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E99AA0422CF5B0D0000A5D6D;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				95114FE02D0E5CA000EB7A48 /* XCRemoteSwiftPackageReference "CustomBlurEffectView" */,
+				E943AA3F2DD7154C00E7F791 /* XCRemoteSwiftPackageReference "BackgroundRemoval" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = E99AA04C2CF5B0D0000A5D6D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E99AA04A2CF5B0D0000A5D6D /* My Kai */,
+				E99AA0602CF5B0D1000A5D6D /* My KaiTests */,
+				E99AA06A2CF5B0D1000A5D6D /* My KaiUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E99AA0492CF5B0D0000A5D6D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E99AA05F2CF5B0D1000A5D6D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E99AA0692CF5B0D1000A5D6D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		364E28C3621651123DDEE2DB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-My Kai-My KaiUITests/Pods-My Kai-My KaiUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-My Kai-My KaiUITests/Pods-My Kai-My KaiUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-My Kai-My KaiUITests/Pods-My Kai-My KaiUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		51CA75FE7A7565E87132B1ED /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-My Kai/Pods-My Kai-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-My Kai/Pods-My Kai-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-My Kai/Pods-My Kai-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		62B24F01C62021A637C6F1C7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-My Kai/Pods-My Kai-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-My Kai/Pods-My Kai-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-My Kai/Pods-My Kai-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		82B9E1AC772256F6E8E4AE77 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-My KaiTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A8F977B2A7F1F694354FC846 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-My Kai-My KaiUITests/Pods-My Kai-My KaiUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-My Kai-My KaiUITests/Pods-My Kai-My KaiUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-My Kai-My KaiUITests/Pods-My Kai-My KaiUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C01A1B5C0F8C411CEDA47D09 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-My Kai-My KaiUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E9010D3B2D195E3A00DBFCA6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+				"$(SRCROOT)/${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
+		};
+		F1B9A4CF03FCB90CAFED5528 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-My Kai-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E99AA0472CF5B0D0000A5D6D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E99AA05D2CF5B0D1000A5D6D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E99AA0672CF5B0D1000A5D6D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E99AA0632CF5B0D1000A5D6D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E99AA04A2CF5B0D0000A5D6D /* My Kai */;
+			targetProxy = E99AA0622CF5B0D1000A5D6D /* PBXContainerItemProxy */;
+		};
+		E99AA06D2CF5B0D1000A5D6D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E99AA04A2CF5B0D0000A5D6D /* My Kai */;
+			targetProxy = E99AA06C2CF5B0D1000A5D6D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		E99AA0752CF5B0D1000A5D6D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DE49828F391FB7C60A53A46B /* Pods-My Kai.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = "Myka App/Myka App.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = F2DWFCBRVC;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Myka App/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "My Kai";
+				INFOPLIST_KEY_NSCameraUsageDescription = "My Kai need to access device camera to capture images by which you can upload Photo on your profile & Services .";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "My Kai App wants to access your location to show services according to your location";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "My Kai App wants to access your location to show services according to your location";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "My Kai wants to access your location to show services according to your location";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "My Kai use your data to personalize your experience and improve our services.";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.MykaiApp.com;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		E99AA0762CF5B0D1000A5D6D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F8FAE26FC176C31EBF681A60 /* Pods-My Kai.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = "Myka App/Myka App.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F2DWFCBRVC;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Myka App/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "My Kai";
+				INFOPLIST_KEY_NSCameraUsageDescription = "My Kai need to access device camera to capture images by which you can upload Photo on your profile & Services .";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "My Kai App wants to access your location to show services according to your location";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "My Kai App wants to access your location to show services according to your location";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "My Kai wants to access your location to show services according to your location";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "My Kai use your data to personalize your experience and improve our services.";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.MykaiApp.com;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		E99AA0772CF5B0D1000A5D6D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		E99AA0782CF5B0D1000A5D6D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E99AA07A2CF5B0D1000A5D6D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD6519E39D4B765E49E6C09E /* Pods-My KaiTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 52853JTM76;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yesitlabs.MykaApp.Myka-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/My Kai.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/My Kai";
+			};
+			name = Debug;
+		};
+		E99AA07B2CF5B0D1000A5D6D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0174FCC7377EB2D033BC3059 /* Pods-My KaiTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 52853JTM76;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yesitlabs.MykaApp.Myka-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/My Kai.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/My Kai";
+			};
+			name = Release;
+		};
+		E99AA07D2CF5B0D1000A5D6D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A9EF32ED57E5BC647A5FB87F /* Pods-My Kai-My KaiUITests.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 52853JTM76;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yesitlabs.MykaApp.Myka-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Myka App";
+			};
+			name = Debug;
+		};
+		E99AA07E2CF5B0D1000A5D6D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3106DC54021F8A19640A3B21 /* Pods-My Kai-My KaiUITests.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 52853JTM76;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yesitlabs.MykaApp.Myka-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Myka App";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E99AA0462CF5B0D0000A5D6D /* Build configuration list for PBXProject "My Kai" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E99AA0772CF5B0D1000A5D6D /* Debug */,
+				E99AA0782CF5B0D1000A5D6D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E99AA0742CF5B0D1000A5D6D /* Build configuration list for PBXNativeTarget "My Kai" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E99AA0752CF5B0D1000A5D6D /* Debug */,
+				E99AA0762CF5B0D1000A5D6D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E99AA0792CF5B0D1000A5D6D /* Build configuration list for PBXNativeTarget "My KaiTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E99AA07A2CF5B0D1000A5D6D /* Debug */,
+				E99AA07B2CF5B0D1000A5D6D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E99AA07C2CF5B0D1000A5D6D /* Build configuration list for PBXNativeTarget "My KaiUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E99AA07D2CF5B0D1000A5D6D /* Debug */,
+				E99AA07E2CF5B0D1000A5D6D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		95114FE02D0E5CA000EB7A48 /* XCRemoteSwiftPackageReference "CustomBlurEffectView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/perfectdim/CustomBlurEffectView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.3;
+			};
+		};
+		E943AA3F2DD7154C00E7F791 /* XCRemoteSwiftPackageReference "BackgroundRemoval" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Ezaldeen99/BackgroundRemoval.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		95114FE12D0E5CA000EB7A48 /* CustomBlurEffectView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 95114FE02D0E5CA000EB7A48 /* XCRemoteSwiftPackageReference "CustomBlurEffectView" */;
+			productName = CustomBlurEffectView;
+		};
+		E916A78D2DD7180800CD5E83 /* BackgroundRemoval */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E943AA3F2DD7154C00E7F791 /* XCRemoteSwiftPackageReference "BackgroundRemoval" */;
+			productName = BackgroundRemoval;
+		};
+		E916A78F2DD7181C00CD5E83 /* BackgroundRemoval */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E943AA3F2DD7154C00E7F791 /* XCRemoteSwiftPackageReference "BackgroundRemoval" */;
+			productName = BackgroundRemoval;
+		};
+		E916A7912DD7193700CD5E83 /* BackgroundRemoval */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E943AA3F2DD7154C00E7F791 /* XCRemoteSwiftPackageReference "BackgroundRemoval" */;
+			productName = BackgroundRemoval;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = E99AA0432CF5B0D0000A5D6D /* Project object */;
+}

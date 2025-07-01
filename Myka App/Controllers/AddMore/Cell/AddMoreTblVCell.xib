@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Poppins-Medium.otf">
+            <string>Poppins-Medium</string>
+        </array>
+        <array key="Poppins-Regular.otf">
+            <string>Poppins-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="32" id="KGk-i7-Jjw" customClass="AddMoreTblVCell" customModule="Myka_App" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="271" height="32"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="271" height="32"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pizza" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ygS-e0-LVa">
+                        <rect key="frame" x="15" y="4" width="34" height="23"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="23" id="9M1-9J-tBf"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="14"/>
+                        <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BmE-Vr-ciB">
+                        <rect key="frame" x="187" y="8.6666666666666661" width="45" height="13.999999999999998"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7FY-S4-FGr">
+                                <rect key="frame" x="19" y="0.0" width="7" height="14"/>
+                                <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="12"/>
+                                <color key="textColor" red="0.23529411759999999" green="0.27058823529999998" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K2a-Qj-wgA">
+                                <rect key="frame" x="0.0" y="0.0" width="14" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="14" id="Bdc-5W-24y"/>
+                                    <constraint firstAttribute="height" constant="14" id="cLf-Y3-Nx5"/>
+                                </constraints>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="MinusIcon"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HGA-v4-Ukn">
+                                <rect key="frame" x="31" y="0.0" width="14" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="14" id="whA-zq-L59"/>
+                                    <constraint firstAttribute="height" constant="14" id="xzs-00-ySw"/>
+                                </constraints>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="PlusIcon"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="7FY-S4-FGr" firstAttribute="leading" secondItem="K2a-Qj-wgA" secondAttribute="trailing" constant="5" id="3FP-10-475"/>
+                            <constraint firstItem="K2a-Qj-wgA" firstAttribute="top" secondItem="BmE-Vr-ciB" secondAttribute="top" id="4Aa-hf-Qjz"/>
+                            <constraint firstItem="HGA-v4-Ukn" firstAttribute="bottom" secondItem="7FY-S4-FGr" secondAttribute="bottom" id="6IU-2M-hCG"/>
+                            <constraint firstAttribute="bottom" secondItem="K2a-Qj-wgA" secondAttribute="bottom" id="FnU-xg-Bq1"/>
+                            <constraint firstAttribute="bottom" secondItem="HGA-v4-Ukn" secondAttribute="bottom" id="HWg-Ys-CUU"/>
+                            <constraint firstItem="7FY-S4-FGr" firstAttribute="top" secondItem="BmE-Vr-ciB" secondAttribute="top" id="Ifg-kY-DPe"/>
+                            <constraint firstItem="K2a-Qj-wgA" firstAttribute="leading" secondItem="BmE-Vr-ciB" secondAttribute="leading" id="WtC-Oa-2bi"/>
+                            <constraint firstItem="HGA-v4-Ukn" firstAttribute="top" secondItem="BmE-Vr-ciB" secondAttribute="top" id="Ynv-2d-AtL"/>
+                            <constraint firstAttribute="bottom" secondItem="7FY-S4-FGr" secondAttribute="bottom" id="ax3-Pf-kTr"/>
+                            <constraint firstItem="HGA-v4-Ukn" firstAttribute="top" secondItem="7FY-S4-FGr" secondAttribute="top" id="bDK-L6-Jmf"/>
+                            <constraint firstItem="HGA-v4-Ukn" firstAttribute="leading" secondItem="7FY-S4-FGr" secondAttribute="trailing" constant="5" id="oSe-xi-HyS"/>
+                            <constraint firstAttribute="trailing" secondItem="HGA-v4-Ukn" secondAttribute="trailing" id="vtI-UG-lww"/>
+                        </constraints>
+                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K1W-aF-SGb">
+                        <rect key="frame" x="242" y="8.6666666666666661" width="14" height="13.999999999999998"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="14" id="2U9-6D-2ob"/>
+                            <constraint firstAttribute="height" constant="14" id="aWW-UD-Cw1"/>
+                        </constraints>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" image="deleteIconn"/>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="K1W-aF-SGb" secondAttribute="trailing" constant="15" id="0Dl-0h-XJp"/>
+                    <constraint firstItem="K1W-aF-SGb" firstAttribute="leading" secondItem="BmE-Vr-ciB" secondAttribute="trailing" constant="10" id="KQ8-1L-mRA"/>
+                    <constraint firstAttribute="bottom" secondItem="ygS-e0-LVa" secondAttribute="bottom" constant="5" id="Nrp-Hv-S9p"/>
+                    <constraint firstItem="ygS-e0-LVa" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="4" id="QHr-Gu-p7j"/>
+                    <constraint firstItem="BmE-Vr-ciB" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ygS-e0-LVa" secondAttribute="trailing" constant="20" id="Yu6-mY-Phi"/>
+                    <constraint firstItem="ygS-e0-LVa" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="aHs-dH-OCv"/>
+                    <constraint firstItem="K1W-aF-SGb" firstAttribute="centerY" secondItem="HGA-v4-Ukn" secondAttribute="centerY" id="pwR-Tn-vLv"/>
+                    <constraint firstItem="BmE-Vr-ciB" firstAttribute="centerY" secondItem="ygS-e0-LVa" secondAttribute="centerY" id="qC1-Pd-HB1"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="CountLbl" destination="7FY-S4-FGr" id="d0J-tV-P5K"/>
+                <outlet property="MinusBtn" destination="K2a-Qj-wgA" id="KQP-Fk-ejI"/>
+                <outlet property="NameLbl" destination="ygS-e0-LVa" id="1O1-of-FEp"/>
+                <outlet property="PlusBtn" destination="HGA-v4-Ukn" id="dzs-Au-Rkt"/>
+                <outlet property="RemoveBtn" destination="K1W-aF-SGb" id="o1g-d7-B3s"/>
+            </connections>
+            <point key="canvasLocation" x="-37.404580152671755" y="-16.901408450704228"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="MinusIcon" width="13" height="14"/>
+        <image name="PlusIcon" width="13" height="14"/>
+        <image name="deleteIconn" width="17.333333969116211" height="17.333333969116211"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

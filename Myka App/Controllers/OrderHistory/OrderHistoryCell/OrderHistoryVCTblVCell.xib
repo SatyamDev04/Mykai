@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Poppins-Medium.ttf">
+            <string>Poppins-Medium</string>
+        </array>
+        <array key="Poppins-SemiBold.ttf">
+            <string>Poppins-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="119" id="KGk-i7-Jjw" customClass="OrderHistoryVCTblVCell" customModule="My_Kai" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="430" height="117"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="430" height="117"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Market13" translatesAutoresizingMaskIntoConstraints="NO" id="K0f-hn-ovS">
+                        <rect key="frame" x="5" y="10" width="105" height="85"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="105" id="10z-6C-vm7"/>
+                            <constraint firstAttribute="height" constant="85" id="zBB-2r-8F9"/>
+                        </constraints>
+                    </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zh6-iQ-J0Q">
+                        <rect key="frame" x="0.0" y="115" width="430" height="1"/>
+                        <color key="backgroundColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="Kbl-He-dqJ"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bw3-ni-eHP">
+                        <rect key="frame" x="115" y="23" width="215" height="59"/>
+                        <string key="text">11 Jan • $48.47 • 6 items
+Delivered - 926 Gainsway Street, NY 12603</string>
+                        <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
+                        <color key="textColor" red="0.23529411764705882" green="0.27058823529411763" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o2H-8v-0G7">
+                        <rect key="frame" x="340" y="35" width="80" height="35"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="80" id="McY-Tc-vqz"/>
+                            <constraint firstAttribute="height" constant="35" id="lzA-yY-AXX"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Poppins-SemiBold" family="Poppins" pointSize="13"/>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" title="View order">
+                            <color key="titleColor" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="bw3-ni-eHP" firstAttribute="centerY" secondItem="K0f-hn-ovS" secondAttribute="centerY" id="13m-Ba-LgF"/>
+                    <constraint firstItem="o2H-8v-0G7" firstAttribute="centerY" secondItem="bw3-ni-eHP" secondAttribute="centerY" id="DSQ-Xy-4hb"/>
+                    <constraint firstAttribute="trailing" secondItem="Zh6-iQ-J0Q" secondAttribute="trailing" id="Iai-4h-BvW"/>
+                    <constraint firstItem="K0f-hn-ovS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="K3C-Uv-GeT"/>
+                    <constraint firstItem="Zh6-iQ-J0Q" firstAttribute="top" secondItem="K0f-hn-ovS" secondAttribute="bottom" constant="20" id="PuF-C3-qAq"/>
+                    <constraint firstItem="bw3-ni-eHP" firstAttribute="leading" secondItem="K0f-hn-ovS" secondAttribute="trailing" constant="5" id="Xw4-EE-Jj0"/>
+                    <constraint firstAttribute="trailing" secondItem="o2H-8v-0G7" secondAttribute="trailing" constant="10" id="Zhu-KO-57q"/>
+                    <constraint firstAttribute="trailing" secondItem="bw3-ni-eHP" secondAttribute="trailing" constant="100" id="lhA-wu-Z2m"/>
+                    <constraint firstAttribute="bottom" secondItem="Zh6-iQ-J0Q" secondAttribute="bottom" id="sqN-IQ-ONx"/>
+                    <constraint firstItem="Zh6-iQ-J0Q" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="xEo-gX-o2Z"/>
+                    <constraint firstItem="K0f-hn-ovS" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="zYz-7S-aHH"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="ImgV" destination="K0f-hn-ovS" id="jym-No-aFG"/>
+                <outlet property="TxtLbl" destination="bw3-ni-eHP" id="ilJ-sM-hhg"/>
+                <outlet property="ViewOrdrBtn" destination="o2H-8v-0G7" id="y07-t1-aWW"/>
+            </connections>
+            <point key="canvasLocation" x="114.50381679389312" y="15.140845070422536"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="Market13" width="114" height="94"/>
+    </resources>
+</document>

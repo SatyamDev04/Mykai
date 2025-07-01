@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Poppins-Medium.otf">
+            <string>Poppins-Medium</string>
+        </array>
+        <array key="Poppins-SemiBold.otf">
+            <string>Poppins-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="50" id="KGk-i7-Jjw" customClass="OrderHistoryDetailTblVCell" customModule="My_Kai" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X8g-bw-cpv">
+                        <rect key="frame" x="0.0" y="1" width="20" height="20"/>
+                        <color key="backgroundColor" red="0.90588235294117647" green="1" blue="0.95686274509803915" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="gGo-b3-HiA"/>
+                            <constraint firstAttribute="height" constant="20" id="pm6-cW-wuq"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
+                        <color key="textColor" red="0.23529411764705882" green="0.27058823529411763" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="3"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fresh Boneless Chicken Breast, 2.75-3.8 lb" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ks2-3C-GUE">
+                        <rect key="frame" x="28" y="0.0" width="222" height="39.333333333333336"/>
+                        <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
+                        <color key="textColor" red="0.066666666669999999" green="0.066666666669999999" blue="0.066666666669999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$13.80" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="azP-0Q-iij">
+                        <rect key="frame" x="275.66666666666669" y="1" width="44.333333333333314" height="19.666666666666668"/>
+                        <fontDescription key="fontDescription" name="Poppins-SemiBold" family="Poppins" pointSize="14"/>
+                        <color key="textColor" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="X8g-bw-cpv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="1" id="A3U-4N-tgK"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Ks2-3C-GUE" secondAttribute="bottom" constant="10" id="DKR-4D-15U"/>
+                    <constraint firstAttribute="trailing" secondItem="azP-0Q-iij" secondAttribute="trailing" id="LJw-u1-fbo"/>
+                    <constraint firstItem="Ks2-3C-GUE" firstAttribute="leading" secondItem="X8g-bw-cpv" secondAttribute="trailing" constant="8" symbolic="YES" id="XLO-Dd-7Wo"/>
+                    <constraint firstAttribute="trailing" secondItem="Ks2-3C-GUE" secondAttribute="trailing" constant="70" id="lK4-02-iiS"/>
+                    <constraint firstItem="azP-0Q-iij" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="1" id="nVS-Se-564"/>
+                    <constraint firstItem="X8g-bw-cpv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="ru2-Jw-mGw"/>
+                    <constraint firstItem="Ks2-3C-GUE" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="tta-o5-sW6"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="ItemCountLbl" destination="X8g-bw-cpv" id="huJ-u1-cjS"/>
+                <outlet property="ItemNameLbl" destination="Ks2-3C-GUE" id="OMa-L3-4mC"/>
+                <outlet property="PriceLbl" destination="azP-0Q-iij" id="VVL-81-AjZ"/>
+            </connections>
+            <point key="canvasLocation" x="-44.274809160305338" y="-9.1549295774647899"/>
+        </tableViewCell>
+    </objects>
+</document>

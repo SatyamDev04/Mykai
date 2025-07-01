@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="PopUpCollVCell" customModule="Myka_App" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="207" height="137"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="207" height="137"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ssdf" translatesAutoresizingMaskIntoConstraints="NO" id="r62-F3-Wri">
+                        <rect key="frame" x="2" y="2" width="203" height="133"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EOl-uA-xGC">
+                        <rect key="frame" x="167" y="10" width="30" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="taX-uS-DTj"/>
+                            <constraint firstAttribute="width" constant="30" id="zRu-EC-Yol"/>
+                        </constraints>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" image="FavN"/>
+                    </button>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="r62-F3-Wri" secondAttribute="bottom" constant="2" id="1qj-Sy-eRc"/>
+                <constraint firstItem="EOl-uA-xGC" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="HeY-nU-63T"/>
+                <constraint firstItem="r62-F3-Wri" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="2" id="KLf-m0-So1"/>
+                <constraint firstItem="r62-F3-Wri" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="2" id="aWx-Lg-aqE"/>
+                <constraint firstAttribute="trailing" secondItem="r62-F3-Wri" secondAttribute="trailing" constant="2" id="ahe-w6-czO"/>
+                <constraint firstAttribute="trailing" secondItem="EOl-uA-xGC" secondAttribute="trailing" constant="10" id="lKc-wZ-GHK"/>
+            </constraints>
+            <size key="customSize" width="207" height="137"/>
+            <connections>
+                <outlet property="FavBtn" destination="EOl-uA-xGC" id="zzd-lv-X14"/>
+                <outlet property="Img" destination="r62-F3-Wri" id="XMP-nO-YWz"/>
+            </connections>
+            <point key="canvasLocation" x="98.473282442748086" y="17.95774647887324"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="FavN" width="33" height="33.333332061767578"/>
+        <image name="ssdf" width="328.66665649414062" height="199.33332824707031"/>
+    </resources>
+</document>

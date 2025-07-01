@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Poppins-Regular.otf">
+            <string>Poppins-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="44" id="KGk-i7-Jjw" customClass="PopupTblVCell" customModule="My_Kai" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="web" translatesAutoresizingMaskIntoConstraints="NO" id="aQ3-o1-haH">
+                        <rect key="frame" x="15" y="9.6666666666666643" width="25" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="25" id="Yzv-w2-gDI"/>
+                            <constraint firstAttribute="height" constant="25" id="r7a-es-R7X"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xua-QP-lcc">
+                        <rect key="frame" x="55" y="5" width="255" height="34"/>
+                        <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="20"/>
+                        <color key="textColor" red="0.050980392156862744" green="0.050980392156862744" blue="0.050980392156862744" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="xua-QP-lcc" secondAttribute="bottom" constant="5" id="86g-Nz-vs5"/>
+                    <constraint firstItem="xua-QP-lcc" firstAttribute="leading" secondItem="aQ3-o1-haH" secondAttribute="trailing" constant="15" id="9Bc-zd-5hB"/>
+                    <constraint firstItem="aQ3-o1-haH" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="Io5-U2-jGE"/>
+                    <constraint firstItem="aQ3-o1-haH" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="QKf-Jp-JeR"/>
+                    <constraint firstAttribute="trailing" secondItem="xua-QP-lcc" secondAttribute="trailing" constant="10" id="T5C-ye-H0d"/>
+                    <constraint firstItem="xua-QP-lcc" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="zEJ-Ge-3Ro"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="Img" destination="aQ3-o1-haH" id="DRd-TU-hye"/>
+                <outlet property="NameLbl" destination="xua-QP-lcc" id="8KD-yF-WST"/>
+            </connections>
+            <point key="canvasLocation" x="39.694656488549619" y="-12.67605633802817"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="web" width="14.666666984558105" height="14.666666984558105"/>
+    </resources>
+</document>

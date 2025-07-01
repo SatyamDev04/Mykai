@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Poppins-Bold.otf">
+            <string>Poppins-Bold</string>
+        </array>
+        <array key="Poppins-SemiBold.otf">
+            <string>Poppins-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="102" id="KGk-i7-Jjw" customClass="MissingIngredientsTblVCell" customModule="Myka_App" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="385" height="102"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="385" height="102"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xxq-GG-IO6">
+                        <rect key="frame" x="3" y="3" width="379" height="85"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pbt-yy-DH4">
+                                <rect key="frame" x="349" y="32.666666666666664" width="20" height="20"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="BXs-kp-S5r"/>
+                                    <constraint firstAttribute="height" constant="20" id="WZ8-B3-qGC"/>
+                                </constraints>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="YelloUncheck">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <state key="selected" image="YellowCheck"/>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KU4-JY-aF8">
+                                <rect key="frame" x="15" y="10" width="75" height="75"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Oilimage" translatesAutoresizingMaskIntoConstraints="NO" id="Wdq-nU-P7y">
+                                        <rect key="frame" x="0.0" y="-5" width="75" height="75"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="75" id="eYN-Bq-JCu"/>
+                                            <constraint firstAttribute="width" constant="75" id="zBQ-r2-Myo"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="Wdq-nU-P7y" secondAttribute="trailing" id="3xm-R5-pzB"/>
+                                    <constraint firstItem="Wdq-nU-P7y" firstAttribute="leading" secondItem="KU4-JY-aF8" secondAttribute="leading" id="7cC-Td-Hgs"/>
+                                    <constraint firstItem="Wdq-nU-P7y" firstAttribute="top" secondItem="KU4-JY-aF8" secondAttribute="top" constant="-5" id="X0Q-Af-PdF"/>
+                                    <constraint firstAttribute="width" constant="75" id="pAW-CK-Vw9"/>
+                                    <constraint firstAttribute="height" constant="75" id="tb0-fc-Enu"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Olive Oil" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5tY-8c-Poa">
+                                <rect key="frame" x="105" y="21" width="198" height="22.666666666666671"/>
+                                <fontDescription key="fontDescription" name="Poppins-Bold" family="Poppins" pointSize="16"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 Tbsp" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MFW-gv-gyx">
+                                <rect key="frame" x="105" y="46.666666666666664" width="208" height="22.666666666666664"/>
+                                <fontDescription key="fontDescription" name="Poppins-SemiBold" family="Poppins" pointSize="16"/>
+                                <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="KU4-JY-aF8" firstAttribute="top" secondItem="xxq-GG-IO6" secondAttribute="top" constant="10" id="4Ir-mP-Qw8"/>
+                            <constraint firstItem="Pbt-yy-DH4" firstAttribute="leading" secondItem="MFW-gv-gyx" secondAttribute="trailing" constant="36" id="8jD-nW-iLr"/>
+                            <constraint firstAttribute="trailing" secondItem="Pbt-yy-DH4" secondAttribute="trailing" constant="10" id="AMa-Vp-jxu"/>
+                            <constraint firstItem="MFW-gv-gyx" firstAttribute="top" secondItem="5tY-8c-Poa" secondAttribute="bottom" constant="2.9999999999999858" id="G7t-RE-vm2"/>
+                            <constraint firstItem="5tY-8c-Poa" firstAttribute="leading" secondItem="KU4-JY-aF8" secondAttribute="trailing" constant="15" id="KpK-Po-aYx"/>
+                            <constraint firstItem="Pbt-yy-DH4" firstAttribute="centerY" secondItem="Wdq-nU-P7y" secondAttribute="centerY" id="QgB-z8-Bma"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="KU4-JY-aF8" secondAttribute="bottom" id="W5C-Vi-6U9"/>
+                            <constraint firstAttribute="trailing" secondItem="5tY-8c-Poa" secondAttribute="trailing" constant="76" id="YuK-bH-8sf"/>
+                            <constraint firstItem="5tY-8c-Poa" firstAttribute="top" secondItem="xxq-GG-IO6" secondAttribute="top" constant="21" id="aIS-eZ-Bsr"/>
+                            <constraint firstItem="MFW-gv-gyx" firstAttribute="leading" secondItem="KU4-JY-aF8" secondAttribute="trailing" constant="15" id="b2Y-hL-kca"/>
+                            <constraint firstItem="KU4-JY-aF8" firstAttribute="leading" secondItem="xxq-GG-IO6" secondAttribute="leading" constant="15" id="e5u-hx-SkY"/>
+                            <constraint firstAttribute="bottom" secondItem="MFW-gv-gyx" secondAttribute="bottom" constant="15.666666666666686" id="xQ0-ub-NNB"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
+                                <color key="value" white="0.0" alpha="0.25" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
+                                <real key="value" value="1"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="size" keyPath="shadowOffset">
+                                <size key="value" width="0.0" height="0.0"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                                <real key="value" value="4"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="xxq-GG-IO6" secondAttribute="trailing" constant="3" id="Feh-Kf-Vih"/>
+                    <constraint firstAttribute="bottom" secondItem="xxq-GG-IO6" secondAttribute="bottom" constant="15" id="Nht-HA-31r"/>
+                    <constraint firstItem="xxq-GG-IO6" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="3" id="WN9-ik-wWK"/>
+                    <constraint firstItem="xxq-GG-IO6" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="3" id="xCp-0h-d6u"/>
+                    <constraint firstAttribute="trailing" secondItem="xxq-GG-IO6" secondAttribute="trailing" constant="3" id="zhc-H6-Foh"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="CheckBtn" destination="Pbt-yy-DH4" id="KnO-Re-Jz9"/>
+                <outlet property="Img" destination="Wdq-nU-P7y" id="mVx-FN-EzU"/>
+                <outlet property="NameLbl" destination="5tY-8c-Poa" id="NHV-8v-lTo"/>
+                <outlet property="QuentityLbl" destination="MFW-gv-gyx" id="C0h-FO-Bhw"/>
+            </connections>
+            <point key="canvasLocation" x="89.312977099236633" y="12.67605633802817"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="Oilimage" width="58.333332061767578" height="58.333332061767578"/>
+        <image name="YelloUncheck" width="25" height="24"/>
+        <image name="YellowCheck" width="25" height="24"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

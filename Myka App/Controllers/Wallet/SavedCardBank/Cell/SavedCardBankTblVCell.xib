@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Poppins-Medium.otf">
+            <string>Poppins-Medium</string>
+        </array>
+        <array key="Poppins-Regular.otf">
+            <string>Poppins-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="85" id="KGk-i7-Jjw" customClass="SavedCardBankTblVCell" customModule="Myka_App" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="85"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="85"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="83j-Ph-yBQ">
+                        <rect key="frame" x="5" y="5" width="310" height="70"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ocf-tb-KIR">
+                                <rect key="frame" x="0.0" y="0.0" width="310" height="70"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BankImg" translatesAutoresizingMaskIntoConstraints="NO" id="hmt-ym-Yyh">
+                                <rect key="frame" x="10" y="17" width="35" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="NCv-Af-jzI"/>
+                                    <constraint firstAttribute="width" constant="35" id="j2D-IF-IXY"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bank Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Ll-0g-fgz">
+                                <rect key="frame" x="55" y="15.33333333333333" width="205" height="19.666666666666671"/>
+                                <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bill gilbert, Checking .....4898(USD)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nzd-vU-y8y">
+                                <rect key="frame" x="55" y="35" width="217" height="17"/>
+                                <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="12"/>
+                                <color key="textColor" red="0.60392156862745094" green="0.60392156862745094" blue="0.60392156862745094" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ty2-A4-p38">
+                                <rect key="frame" x="285" y="10" width="20" height="15"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="15" id="1X8-Vc-B2q"/>
+                                    <constraint firstAttribute="width" constant="20" id="RO3-Sa-wvo"/>
+                                </constraints>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="Group 1171276066"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="nzd-vU-y8y" firstAttribute="leading" secondItem="hmt-ym-Yyh" secondAttribute="trailing" constant="10" id="16t-wk-CZx"/>
+                            <constraint firstItem="hmt-ym-Yyh" firstAttribute="leading" secondItem="83j-Ph-yBQ" secondAttribute="leading" constant="10" id="AI9-DT-R3l"/>
+                            <constraint firstItem="hmt-ym-Yyh" firstAttribute="top" secondItem="83j-Ph-yBQ" secondAttribute="top" constant="17" id="Apj-Mk-fSL"/>
+                            <constraint firstAttribute="trailing" secondItem="nzd-vU-y8y" secondAttribute="trailing" constant="38" id="DbU-Vc-2bj"/>
+                            <constraint firstItem="nzd-vU-y8y" firstAttribute="top" secondItem="7Ll-0g-fgz" secondAttribute="bottom" id="FrL-Vq-8rB"/>
+                            <constraint firstItem="7Ll-0g-fgz" firstAttribute="top" secondItem="83j-Ph-yBQ" secondAttribute="top" constant="15.33" id="HXe-J5-YaW"/>
+                            <constraint firstAttribute="trailing" secondItem="ty2-A4-p38" secondAttribute="trailing" constant="5" id="Tzl-ef-1dP"/>
+                            <constraint firstAttribute="height" constant="70" id="UnV-Eh-agd"/>
+                            <constraint firstItem="7Ll-0g-fgz" firstAttribute="leading" secondItem="hmt-ym-Yyh" secondAttribute="trailing" constant="10" id="VVp-D6-tQq"/>
+                            <constraint firstAttribute="bottom" secondItem="hmt-ym-Yyh" secondAttribute="bottom" constant="18" id="W5u-Hc-NWN"/>
+                            <constraint firstAttribute="bottom" secondItem="ocf-tb-KIR" secondAttribute="bottom" id="dtq-g2-eWY"/>
+                            <constraint firstItem="ty2-A4-p38" firstAttribute="top" secondItem="83j-Ph-yBQ" secondAttribute="top" constant="10" id="fcq-Cr-lWP"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="nzd-vU-y8y" secondAttribute="bottom" constant="18" id="kvY-uZ-vWu"/>
+                            <constraint firstAttribute="trailing" secondItem="ocf-tb-KIR" secondAttribute="trailing" id="lIa-wF-w2K"/>
+                            <constraint firstItem="ocf-tb-KIR" firstAttribute="leading" secondItem="83j-Ph-yBQ" secondAttribute="leading" id="lwv-Hd-4TC"/>
+                            <constraint firstAttribute="trailing" secondItem="7Ll-0g-fgz" secondAttribute="trailing" constant="50" id="p2m-rD-fUn"/>
+                            <constraint firstItem="ocf-tb-KIR" firstAttribute="top" secondItem="83j-Ph-yBQ" secondAttribute="top" id="scj-zy-DZs"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="83j-Ph-yBQ" secondAttribute="trailing" constant="5" id="NaY-ZE-tba"/>
+                    <constraint firstItem="83j-Ph-yBQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="Xjn-tN-mv7"/>
+                    <constraint firstItem="83j-Ph-yBQ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="gNv-CV-thA"/>
+                    <constraint firstAttribute="bottom" secondItem="83j-Ph-yBQ" secondAttribute="bottom" constant="10" id="xH8-YM-Fr5"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="BankNamelbl" destination="7Ll-0g-fgz" id="Ucm-DE-175"/>
+                <outlet property="BankNumLbl" destination="nzd-vU-y8y" id="4jp-cF-zcn"/>
+                <outlet property="Img" destination="hmt-ym-Yyh" id="CLe-5a-f5g"/>
+                <outlet property="OptionBtn" destination="ty2-A4-p38" id="We8-54-GUi"/>
+                <outlet property="SelectedImg" destination="ocf-tb-KIR" id="fsQ-CX-n1T"/>
+            </connections>
+            <point key="canvasLocation" x="-58.015267175572518" y="3.1690140845070425"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="BankImg" width="36" height="36"/>
+        <image name="Group 1171276066" width="3.3333332538604736" height="12.333333015441895"/>
+    </resources>
+</document>
