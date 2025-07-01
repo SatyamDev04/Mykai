@@ -481,7 +481,7 @@
                                                         <rect key="frame" x="30" y="5" width="315" height="198.33333333333334"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gc0-VI-P26">
-                                                                <rect key="frame" x="80" y="20" width="155" height="25.333333333333329"/>
+                                                                <rect key="frame" x="91" y="20" width="133" height="25.333333333333329"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="25.329999999999998" id="psy-SG-cJr"/>
                                                                 </constraints>
@@ -489,14 +489,14 @@
                                                                     <fragment content="Daily macro ">
                                                                         <attributes>
                                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                            <font key="NSFont" size="16" name="Poppins-Bold"/>
+                                                                            <font key="NSFont" metaFont="system" size="16"/>
                                                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                         </attributes>
                                                                     </fragment>
                                                                     <fragment content="target">
                                                                         <attributes>
                                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                            <font key="NSFont" size="16" name="Poppins-Bold"/>
+                                                                            <font key="NSFont" metaFont="system" size="16"/>
                                                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                         </attributes>
                                                                     </fragment>
@@ -1675,7 +1675,7 @@
                                 <rect key="frame" x="0.0" y="150" width="375" height="594"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="etc-Hi-zCL">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="257.33333333333331"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="257"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Privacy" translatesAutoresizingMaskIntoConstraints="NO" id="xqc-bi-73u">
                                                 <rect key="frame" x="97.666666666666686" y="40" width="180" height="160"/>
@@ -1690,12 +1690,12 @@
                                                 </userDefinedRuntimeAttributes>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8rX-Vs-q7m">
-                                                <rect key="frame" x="20" y="240" width="335" height="17.333333333333314"/>
+                                                <rect key="frame" x="20" y="240" width="335" height="17"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="NA">
                                                         <attributes>
                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="14" name="Montserrat-SemiBold"/>
+                                                            <font key="NSFont" metaFont="system" size="14"/>
                                                             <real key="NSKern" value="0.0"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="leftToRight" defaultTabInterval="36" tighteningFactorForTruncation="0.0">
                                                                 <tabStops/>
@@ -1762,12 +1762,12 @@
                                 <rect key="frame" x="0.0" y="100" width="375" height="50"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ik9-l2-mKr">
-                                        <rect key="frame" x="60" y="14" width="254" height="22"/>
+                                        <rect key="frame" x="60" y="14.33333333333333" width="254" height="21.666666666666671"/>
                                         <attributedString key="attributedText">
                                             <fragment content="Feedback and Support">
                                                 <attributes>
                                                     <color key="NSColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <font key="NSFont" size="18" name="Montserrat-SemiBold"/>
+                                                    <font key="NSFont" metaFont="system" size="18"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                 </attributes>
                                             </fragment>
@@ -6470,14 +6470,14 @@ to discard changes.</string>
                                                                     <fragment content="Order completed ">
                                                                         <attributes>
                                                                             <color key="NSColor" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
-                                                                            <font key="NSFont" size="13" name="Poppins-Regular"/>
+                                                                            <font key="NSFont" metaFont="system"/>
                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                         </attributes>
                                                                     </fragment>
                                                                     <fragment content="• 11 January 2025 at 11:16 am">
                                                                         <attributes>
                                                                             <color key="NSColor" red="0.58823529411764708" green="0.66666666666666663" blue="0.63137254901960782" alpha="1" colorSpace="calibratedRGB"/>
-                                                                            <font key="NSFont" size="13" name="Poppins-Regular"/>
+                                                                            <font key="NSFont" metaFont="system"/>
                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                         </attributes>
                                                                     </fragment>
@@ -8847,7 +8847,7 @@ Use 0.5lb/ week to estimate the users estimated time to reach target weight</str
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -81,7 +81,7 @@ class HomeVC: UIViewController, CLLocationManagerDelegate {
         self.view.addSubview(SelectSuperMarketPopupV)
         self.SelectSuperMarketPopupV.isHidden = true
    #if DEBUG
-    startSubscriptionTimer()
+   // startSubscriptionTimer()
     #endif
       //  self.Api_To_get_SavedAddress()
         

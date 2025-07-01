@@ -914,7 +914,7 @@ extension HealthDataVC {
                 self.showToast(responseMessage)
             }
         })
-     }
+    }
     
     
     func Api_To_Get_NutritionGoalSuggestionData(old:Bool? = false){
