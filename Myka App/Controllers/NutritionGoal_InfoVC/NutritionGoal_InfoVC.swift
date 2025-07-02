@@ -10,7 +10,7 @@ import Charts
 
 class NutritionGoal_InfoVC: UIViewController {
     
-    @IBOutlet weak var Viewpopup: UIView!
+    //@IBOutlet weak var Viewpopup: UIView!
     @IBOutlet weak var DragDownView: UIView!
     
     @IBOutlet weak var macroTitleLbl: UILabel!
@@ -23,8 +23,8 @@ class NutritionGoal_InfoVC: UIViewController {
     @IBOutlet weak var disclamerDescLbl: UILabel!
     
     @IBOutlet weak var pieChartView: PieChartView!
-    
-    @IBOutlet weak var scrollVTopConst: NSLayoutConstraint!
+    @IBOutlet weak var pieChartImg: UIImageView!
+  
     
     var macroOptions = ""
     var disclaimer = ""
@@ -38,66 +38,45 @@ class NutritionGoal_InfoVC: UIViewController {
         self.macrosTypeLbl.text = self.SelectedMacroType
         self.chartTitleLbl.text = "\(self.SelectedMacroType) Macro Distribution"
         
-        if UIDevice.current.hasNotch {
-            //... consider notch
-            let modelName = UIDevice.modelName
+//        if UIDevice.current.hasNotch {
+//            //... consider notch
+//            let modelName = UIDevice.modelName
             
-            if modelName.contains(find: "mini"){//"iPhone 12 mini"{
-                self.scrollVTopConst.constant = 80
-            }else if modelName.contains(find: "Max"){// == "iPhone 12 mini"{
-                self.scrollVTopConst.constant = 180
-            }else if modelName.contains(find: "Pro"){
-                self.scrollVTopConst.constant = 180
-            }else{
-                self.scrollVTopConst.constant = 130
-            }
-        }else{
-            self.scrollVTopConst.constant = 80
-        }
+//            if modelName.contains(find: "mini"){//"iPhone 12 mini"{
+//                self.scrollVTopConst.constant = 80
+//            }else if modelName.contains(find: "Max"){// == "iPhone 12 mini"{
+//                self.scrollVTopConst.constant = 180
+//            }else if modelName.contains(find: "Pro"){
+//                self.scrollVTopConst.constant = 180
+//            }else{
+//                self.scrollVTopConst.constant = 130
+//            }
+//        }else{
+//            self.scrollVTopConst.constant = 80
+//        }
         
         
         setupPieChart()
         
-        let gestureRecognizer = UIPanGestureRecognizer(target: self,
-                                                       action: #selector(panGestureRecognizerHandler(_:)))
-        DragDownView.addGestureRecognizer(gestureRecognizer)
-    }
     
-    @objc func panGestureRecognizerHandler(_ sender: UIPanGestureRecognizer) {
-        guard let rootView = Viewpopup, let rootWindow = rootView.window else { return }
-        let rootWindowHeight: CGFloat = rootWindow.frame.size.height
-        
-        let touchPoint = sender.location(in: Viewpopup?.window)
-        var initialTouchPoint = CGPoint.zero
-        let blankViewHeight =  (rootWindowHeight - Viewpopup.frame.size.height)
-        let dismissDragSize: CGFloat = 200.00
-        
-        switch sender.state {
-        case .began:
-            initialTouchPoint = touchPoint
-        case .changed:
-            // dynamic alpha
-            if touchPoint.y > (initialTouchPoint.y + blankViewHeight)  { // change dim background (alpha)
-                Viewpopup.frame.origin.y = (touchPoint.y - blankViewHeight) - initialTouchPoint.y
-            }
+    
+        switch self.SelectedMacroType.removeSpaces.lowercased() {
+        case "balanced" :
+            self.pieChartImg.image = UIImage(named: "Balanced")
+        case "lowcarb" :
+            self.pieChartImg.image = UIImage(named: "LowCarb")
+        case "highprotein" :
+            self.pieChartImg.image = UIImage(named: "HighProtein")
+        case "keto" :
+            self.pieChartImg.image = UIImage(named: "Keto")
+        case "lowfat" :
+            self.pieChartImg.image = UIImage(named: "LowFat")
             
-        case .ended, .cancelled:
-            if touchPoint.y - initialTouchPoint.y > (dismissDragSize + blankViewHeight) {
-                self.view.backgroundColor = UIColor.clear
-                dismiss(animated: true, completion: nil)
-            } else {
-                UIView.animate(withDuration: 0.2, animations: {
-                    self.Viewpopup.frame = CGRect(x: 0,
-                                                  y: 0,
-                                                  width: self.Viewpopup.frame.size.width,
-                                                  height: self.Viewpopup.frame.size.height)
-                })
-                // alpha = 1
-            }
-        case .failed, .possible:
-            break
+        default: break
         }
     }
+    
+    
     
     func setupPieChart() {
         let entries = [

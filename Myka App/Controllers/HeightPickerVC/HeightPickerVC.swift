@@ -20,9 +20,8 @@ class HeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     var ftInData: [String] = []
     var cmData: [String] = []
     var isFeetSelected = true
-    
     var selectedHeight:String = ""
-    
+    var runTimeSelctedHeight:String = ""
     var backAction:(String)->() = {_ in}
     
     override func viewDidLoad() {
@@ -46,11 +45,10 @@ class HeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             
                 let heightWithFeet = self.selectedHeight.replacingOccurrences(of: "'", with: " ft")
-
-                // Replace double quote (") with "in"
-                let formattedHeight = heightWithFeet.replacingOccurrences(of: "\"", with: " in")
+        let formattedHeight = heightWithFeet.replacingOccurrences(of: "\"", with: " in")
                 
                 if let index = self.ftInData.firstIndex(where: { $0 == formattedHeight}) {
+                    self.runTimeSelctedHeight = formattedHeight
                     self.pickerView.selectRow(index, inComponent: 0, animated: true)
                 }
             }
@@ -66,6 +64,7 @@ class HeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 if let index = self.cmData.firstIndex(where: { $0 == self.selectedHeight}) {
+                    self.runTimeSelctedHeight = self.selectedHeight
                     self.pickerView.selectRow(index, inComponent: 0, animated: true)
                 }
             }
@@ -136,9 +135,9 @@ class HeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                                                    y: 0,
                                                    width: self.Viewpopup.frame.size.width,
                                                    height: self.Viewpopup.frame.size.height)
-                         // self.view.backgroundColor = #colorLiteral(red: 0.3333333333, green: 0.3333333333, blue: 0.3333333333, alpha: 0.5)
+                        
                       })
-                      // alpha = 1
+                    
                   }
               case .failed, .possible:
                   break
@@ -156,6 +155,16 @@ class HeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         cmBtnO.setBackgroundImage(UIImage(named: ""), for: .normal)
         ftBtnO.setTitleColor(UIColor.white, for: .normal)
         cmBtnO.setTitleColor(#colorLiteral(red: 0, green: 0.786260426, blue: 0.4870494008, alpha: 1), for: .normal)
+        print( self.runTimeSelctedHeight," self.runTimeSelctedHeight")
+        if  let runft = convertCMStringToFeetInch(self.runTimeSelctedHeight.removeSpaces.replace(string: "cm", withString: "")) {
+            print(runft,"runft")
+             
+            if let index = self.ftInData.firstIndex(where: { $0 == runft}) {
+                
+                self.pickerView.selectRow(index, inComponent: 0, animated: true)
+                self.runTimeSelctedHeight = runft
+            }
+        }
     }
     
     @IBAction func cmbtn(_ sender: UIButton) {
@@ -168,6 +177,14 @@ class HeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         cmBtnO.setBackgroundImage(UIImage(named: "Rectangle 47"), for: .normal)
         ftBtnO.setTitleColor(#colorLiteral(red: 0, green: 0.786260426, blue: 0.4870494008, alpha: 1), for: .normal)
         cmBtnO.setTitleColor(UIColor.white, for: .normal)
+        print( self.runTimeSelctedHeight," self.runTimeSelctedHeight")
+        if let runcm =  self.convertToCentimeterString(from: self.runTimeSelctedHeight) {
+            print(runcm,"runcm")
+            self.runTimeSelctedHeight = runcm
+            if let index = self.cmData.firstIndex(where: { $0.removeSpaces == runcm.removeSpaces}) {
+                self.pickerView.selectRow(index, inComponent: 0, animated: true)
+            }
+        }
     }
  
  
@@ -177,26 +194,26 @@ class HeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     
     @IBAction func saveButtonTapped(_ sender: UIButton) {
-        // Handle saving the selected height
+       
         if isFeetSelected {
             let selectedRow = pickerView.selectedRow(inComponent: 0)
             let selectedHeight = ftInData[selectedRow]
             print("Saved Height: \(selectedHeight)")
             self.dismiss(animated: true, completion: {
-//                self.backAction("\(selectedHeight)")
+
                 let components = selectedHeight.components(separatedBy: " ")
 
                 if components.count == 2, let feet = components.first {
-                    // Case: Only feet are provided (e.g., "5 ft")
+                 
                     let formattedHeight = "\(feet)'"
-                    print(formattedHeight) // Output: 5'
+                    print(formattedHeight)
                     self.backAction("\(formattedHeight)")
                 } else if components.count == 4,
                           let feet = components.first{
                     let inches = components[2]
-                    // Case: Feet and inches are provided (e.g., "5 ft 6 in")
+                  
                     let formattedHeight = "\(feet)' \(inches)\""
-                    print(formattedHeight) // Output: 5'6"
+                    print(formattedHeight)
                     self.backAction("\(formattedHeight)")
                 } else {
                     print("Invalid format")
@@ -230,9 +247,47 @@ class HeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             if isFeetSelected {
                 let selectedHeight = ftInData[row]
                 print("Selected Height: \(selectedHeight)")
+                self.runTimeSelctedHeight = selectedHeight
             } else {
                 let selectedHeight = cmData[row]
                 print("Selected Height: \(selectedHeight)")
+                self.runTimeSelctedHeight = selectedHeight
             }
         }
+    
+    func convertToCentimeterString(from input: String) -> String? {
+        // Regular expression to match "2 ft 2 in"
+        let pattern = #"(\d+)\s*ft\s*(\d+)\s*in"#
+        let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive)
+        
+        guard let match = regex?.firstMatch(in: input, range: NSRange(input.startIndex..., in: input)) else {
+            return nil
+        }
+
+        let ftRange = Range(match.range(at: 1), in: input)
+        let inRange = Range(match.range(at: 2), in: input)
+
+        let feet = ftRange.flatMap { Int(input[$0]) } ?? 0
+        let inches = inRange.flatMap { Int(input[$0]) } ?? 0
+
+        let totalInches = (feet * 12) + inches
+        let cm = Double(totalInches) * 2.54
+        return "\(Int(cm.rounded())) cm"
+    }
+    
+    func convertCMStringToFeetInch(_ cmString: String) -> String? {
+        guard let cmValue = Double(cmString.trimmingCharacters(in: .whitespacesAndNewlines)) else {
+            return nil
+        }
+
+        let totalInches = cmValue / 2.54
+        let feet = Int(totalInches / 12)
+        let inches = Int(round(totalInches)) % 12
+
+        if inches == 0 {
+            return "\(feet) ft"
+        } else {
+            return "\(feet) ft \(inches) in"
+        }
+    }
 }

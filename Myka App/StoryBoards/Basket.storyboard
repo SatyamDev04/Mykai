@@ -1169,21 +1169,21 @@
                                     <fragment content="You may need to log in to your account at">
                                         <attributes>
                                             <color key="NSColor" red="0.066666666666666666" green="0.066666666666666666" blue="0.066666666666666666" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" size="12" name="Poppins-Regular"/>
+                                            <font key="NSFont" metaFont="cellTitle"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
                                     <fragment content=" ">
                                         <attributes>
                                             <color key="NSColor" red="0.066666666666666666" green="0.066666666666666666" blue="0.066666666666666666" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" size="13" name="Poppins-Bold"/>
+                                            <font key="NSFont" metaFont="system"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
                                     <fragment content="Tesco.com">
                                         <attributes>
                                             <color key="NSColor" red="0.066666666666666666" green="0.066666666666666666" blue="0.066666666666666666" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" size="12" name="Poppins-Bold"/>
+                                            <font key="NSFont" metaFont="cellTitle"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
@@ -3463,20 +3463,20 @@
                                             <fragment content="Select the ingredients that are  missing at">
                                                 <attributes>
                                                     <color key="NSColor" red="0.23529411764705882" green="0.27058823529411763" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <font key="NSFont" size="14" name="Poppins-Regular"/>
+                                                    <font key="NSFont" metaFont="system" size="14"/>
                                                 </attributes>
                                             </fragment>
                                             <fragment content=" ">
                                                 <attributes>
                                                     <color key="NSColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <font key="NSFont" size="14" name="Poppins-Regular"/>
+                                                    <font key="NSFont" metaFont="system" size="14"/>
                                                 </attributes>
                                             </fragment>
                                             <fragment content="Tesco">
                                                 <attributes>
                                                     <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <font key="NSFont" size="16" name="Poppins-Medium"/>
-                                                    <font key="NSOriginalFont" size="16" name="Poppins-Medium"/>
+                                                    <font key="NSFont" metaFont="system" size="16"/>
+                                                    <font key="NSOriginalFont" metaFont="system" size="16"/>
                                                 </attributes>
                                             </fragment>
                                         </attributedString>
@@ -6239,13 +6239,13 @@
                                                                     <fragment content="Please check your ">
                                                                         <attributes>
                                                                             <color key="NSColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                            <font key="NSFont" size="18" name="Montserrat-SemiBold"/>
+                                                                            <font key="NSFont" metaFont="system" size="18"/>
                                                                         </attributes>
                                                                     </fragment>
                                                                     <fragment content="Phone">
                                                                         <attributes>
                                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="calibratedRGB"/>
-                                                                            <font key="NSFont" size="18" name="Montserrat-SemiBold"/>
+                                                                            <font key="NSFont" metaFont="system" size="18"/>
                                                                         </attributes>
                                                                     </fragment>
                                                                 </attributedString>
@@ -7210,14 +7210,14 @@ now</string>
                                                                                     <fragment content="10% ">
                                                                                         <attributes>
                                                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                            <font key="NSFont" size="14" name="Poppins-Medium"/>
+                                                                                            <font key="NSFont" metaFont="system" size="14"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                         </attributes>
                                                                                     </fragment>
                                                                                     <fragment content="$7">
                                                                                         <attributes>
                                                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                            <font key="NSFont" size="14" name="Poppins-Medium"/>
+                                                                                            <font key="NSFont" metaFont="system" size="14"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                         </attributes>
                                                                                     </fragment>
@@ -7266,21 +7266,21 @@ now</string>
                                                                                     <fragment content="15%">
                                                                                         <attributes>
                                                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                            <font key="NSFont" size="14" name="Poppins-Medium"/>
+                                                                                            <font key="NSFont" metaFont="system" size="14"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                         </attributes>
                                                                                     </fragment>
                                                                                     <fragment content=" ">
                                                                                         <attributes>
                                                                                             <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <font key="NSFont" size="14" name="Poppins-Medium"/>
+                                                                                            <font key="NSFont" metaFont="system" size="14"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                         </attributes>
                                                                                     </fragment>
                                                                                     <fragment content="$9">
                                                                                         <attributes>
                                                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                            <font key="NSFont" size="14" name="Poppins-Medium"/>
+                                                                                            <font key="NSFont" metaFont="system" size="14"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                         </attributes>
                                                                                     </fragment>
@@ -7329,14 +7329,14 @@ now</string>
                                                                                     <fragment content="20% ">
                                                                                         <attributes>
                                                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                            <font key="NSFont" size="14" name="Poppins-Medium"/>
+                                                                                            <font key="NSFont" metaFont="system" size="14"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                         </attributes>
                                                                                     </fragment>
                                                                                     <fragment content="$12">
                                                                                         <attributes>
                                                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                            <font key="NSFont" size="14" name="Poppins-Medium"/>
+                                                                                            <font key="NSFont" metaFont="system" size="14"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                         </attributes>
                                                                                     </fragment>
@@ -7385,14 +7385,14 @@ now</string>
                                                                                     <fragment content="25% ">
                                                                                         <attributes>
                                                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                            <font key="NSFont" size="14" name="Poppins-Medium"/>
+                                                                                            <font key="NSFont" metaFont="system" size="14"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                         </attributes>
                                                                                     </fragment>
                                                                                     <fragment content="$15">
                                                                                         <attributes>
                                                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                            <font key="NSFont" size="14" name="Poppins-Medium"/>
+                                                                                            <font key="NSFont" metaFont="system" size="14"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                         </attributes>
                                                                                     </fragment>

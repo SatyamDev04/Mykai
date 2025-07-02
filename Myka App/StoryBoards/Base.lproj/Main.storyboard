@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xO2-nL-b1B">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xO2-nL-b1B">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -35,10 +35,10 @@
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Group 1171276471" translatesAutoresizingMaskIntoConstraints="NO" id="ESJ-70-tnI">
-                                <rect key="frame" x="70" y="135" width="253" height="404"/>
+                                <rect key="frame" x="70" y="194" width="253" height="311"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="anH-mZ-wkj">
-                                <rect key="frame" x="0.0" y="554" width="393" height="34.333333333333371"/>
+                                <rect key="frame" x="0.0" y="520" width="393" height="34.333333333333371"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34.329999999999998" id="Msw-Mv-5a5"/>
                                 </constraints>
@@ -46,21 +46,21 @@
                                     <fragment content="My Kitchen's">
                                         <attributes>
                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" size="28" name="Montserrat-SemiBold"/>
+                                            <font key="NSFont" metaFont="system" size="28"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
                                     <fragment content=" ">
                                         <attributes>
                                             <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                            <font key="NSFont" size="28" name="Montserrat-SemiBold"/>
+                                            <font key="NSFont" metaFont="system" size="28"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
                                     <fragment content="AI">
                                         <attributes>
                                             <color key="NSColor" red="0.99607843137254903" green="0.62352941176470589" blue="0.27058823529411763" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" size="28" name="Montserrat-SemiBold"/>
+                                            <font key="NSFont" metaFont="system" size="28"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
@@ -68,7 +68,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PrI-AH-sUg">
-                                <rect key="frame" x="30" y="618.33333333333337" width="333" height="50"/>
+                                <rect key="frame" x="30" y="584.33333333333337" width="333" height="50"/>
                                 <color key="backgroundColor" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="VGc-x3-17b"/>
@@ -88,7 +88,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Simplify cooking, meal planning and grocery shopping all in one place" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l6p-mL-yYb">
-                                <rect key="frame" x="30" y="700" width="333" height="42"/>
+                                <rect key="frame" x="30" y="666" width="333" height="42"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="42" id="JSH-3U-CKI"/>
                                 </constraints>
@@ -134,7 +134,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="msd-rQ-fUM">
-                                <rect key="frame" x="0.0" y="88.999999999999972" width="393" height="436.33333333333326"/>
+                                <rect key="frame" x="0.0" y="147.99999999999997" width="393" height="343.33333333333326"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="q84-kW-qIQ">
                                     <size key="itemSize" width="128" height="128"/>
@@ -145,7 +145,7 @@
                                 <cells/>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kt1-hM-GxZ" customClass="AdvancedPageControlView" customModule="AdvancedPageControl">
-                                <rect key="frame" x="136.66666666666666" y="540.33333333333337" width="119.99999999999997" height="20"/>
+                                <rect key="frame" x="136.66666666666666" y="506.33333333333326" width="119.99999999999997" height="20"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="120" id="Xue-GS-iIv"/>
@@ -153,7 +153,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Plan a Meal" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cqu-z6-FA5">
-                                <rect key="frame" x="0.0" y="575.33333333333337" width="393" height="24.666666666666629"/>
+                                <rect key="frame" x="0.0" y="541.33333333333337" width="393" height="24.666666666666629"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24.670000000000002" id="jv0-L6-zpf"/>
                                 </constraints>
@@ -162,7 +162,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get meal plans tailored to your  preferences and goals " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bku-NL-bqJ">
-                                <rect key="frame" x="0.0" y="615" width="393" height="63"/>
+                                <rect key="frame" x="0.0" y="581" width="393" height="63"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="63" id="WZx-44-hZ8"/>
                                 </constraints>
@@ -171,7 +171,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="FFl-xC-3aK">
-                                <rect key="frame" x="20" y="698" width="353" height="100"/>
+                                <rect key="frame" x="20" y="664" width="353" height="100"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gk2-dP-lFp">
                                         <rect key="frame" x="0.0" y="0.0" width="353" height="50"/>
@@ -280,10 +280,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Enter Name" translatesAutoresizingMaskIntoConstraints="NO" id="UhJ-FQ-z4l">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="666"/>
                             </imageView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wl2-uP-Qa9">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="666"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iu7-aM-o00">
                                         <rect key="frame" x="0.0" y="20" width="393" height="264"/>
@@ -305,34 +305,34 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cBG-1O-PQy">
-                                                <rect key="frame" x="42" y="237" width="300.33333333333326" height="22"/>
+                                                <rect key="frame" x="58.666666666666657" y="237" width="267" height="22"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="22" id="fLq-oU-UGH"/>
                                                 </constraints>
                                                 <attributedString key="attributedText">
                                                     <fragment content=" ">
                                                         <attributes>
-                                                            <font key="NSFont" size="18" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="18"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content="I’ll need to know a bit">
                                                         <attributes>
                                                             <color key="NSColor" red="0.23529411764705882" green="0.27058823529411763" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <font key="NSFont" size="18" name="Poppins-Regular"/>
+                                                            <font key="NSFont" metaFont="system" size="18"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content=" ">
                                                         <attributes>
-                                                            <font key="NSFont" size="18" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="18"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content="about you?">
                                                         <attributes>
                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <font key="NSFont" size="18" name="Poppins-Medium"/>
+                                                            <font key="NSFont" metaFont="system" size="18"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
@@ -365,14 +365,14 @@
                                                         <attributedString key="attributedText">
                                                             <fragment content="What’s your ">
                                                                 <attributes>
-                                                                    <font key="NSFont" size="18" name="Poppins-Medium"/>
+                                                                    <font key="NSFont" metaFont="system" size="18"/>
                                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                 </attributes>
                                                             </fragment>
                                                             <fragment content="Name">
                                                                 <attributes>
                                                                     <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <font key="NSFont" size="18" name="Poppins-Medium"/>
+                                                                    <font key="NSFont" metaFont="system" size="18"/>
                                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                 </attributes>
                                                             </fragment>
@@ -436,21 +436,21 @@
                                                 <rect key="frame" x="0.0" y="81" width="393" height="264"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ls-1R-Czv">
-                                                        <rect key="frame" x="20" y="30" width="186.33333333333334" height="22"/>
+                                                        <rect key="frame" x="20" y="30" width="165.66666666666666" height="22"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="22" id="6OE-PZ-mwg"/>
                                                         </constraints>
                                                         <attributedString key="attributedText">
                                                             <fragment content="Choose your ">
                                                                 <attributes>
-                                                                    <font key="NSFont" size="18" name="Poppins-Medium"/>
+                                                                    <font key="NSFont" metaFont="system" size="18"/>
                                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                 </attributes>
                                                             </fragment>
                                                             <fragment content="Gender">
                                                                 <attributes>
                                                                     <color key="NSColor" red="0.023529999999999999" green="0.75685999999999998" blue="0.41176000000000001" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                                                    <font key="NSFont" size="18" name="Poppins-Medium"/>
+                                                                    <font key="NSFont" metaFont="system" size="18"/>
                                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                 </attributes>
                                                             </fragment>
@@ -749,7 +749,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ePl-Xd-rzy">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="666"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vq5-OY-NXq">
                                         <rect key="frame" x="0.0" y="30" width="393" height="312"/>
@@ -769,21 +769,21 @@
                                                     <fragment content="Who will be you">
                                                         <attributes>
                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="18" name="Montserrat-SemiBold"/>
+                                                            <font key="NSFont" metaFont="system" size="18"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content=" ">
                                                         <attributes>
                                                             <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                            <font key="NSFont" size="18" name="Montserrat-SemiBold"/>
+                                                            <font key="NSFont" metaFont="system" size="18"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content="cooking for?">
                                                         <attributes>
                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="18" name="Montserrat-SemiBold"/>
+                                                            <font key="NSFont" metaFont="system" size="18"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>

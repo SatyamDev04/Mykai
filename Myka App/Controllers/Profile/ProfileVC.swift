@@ -152,7 +152,7 @@ class ProfileVC: UIViewController, CLLocationManagerDelegate {
                 let carbs = response?["carbs"] as? Int ?? Int()
                 self.CarbsTxtF.text = "\(carbs)"
                 
-                let protien = response?["protien"] as? Int ?? Int()
+                let protien = response?["protein"] as? Int ?? Int()
                 self.ProtienTxtF.text = "\(protien)"
                 
                 let dob = response?["dob"] as? String ?? String()
@@ -483,7 +483,7 @@ extension ProfileVC {
                         let carbs = response?["carbs"] as? Int ?? Int()
                         self.CarbsTxtF.text = "\(carbs)"
                         
-                        let protien = response?["protien"] as? Int ?? Int()
+                        let protien = response?["protein"] as? Int ?? Int()
                         self.ProtienTxtF.text = "\(protien)"
                         
                         let dob = response?["dob"] as? String ?? String()

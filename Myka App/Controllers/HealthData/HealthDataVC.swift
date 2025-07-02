@@ -185,7 +185,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
         self.MaleBtnO.isSelected = true
         self.FeMaleImg.image = UIImage(named: "Ellipse 96")
         self.FeMaleBtnO.isSelected = false
-        
+        Api_To_Get_NutritionGoalSuggestionData()
         view.endEditing(true)
     }
     
@@ -195,7 +195,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
         self.FeMaleBtnO.isSelected = true
         self.MaleImg.image = UIImage(named: "Ellipse 96")
         self.MaleBtnO.isSelected = false
-        
+        Api_To_Get_NutritionGoalSuggestionData()
         view.endEditing(true)
     }
     
@@ -204,7 +204,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "HeightPickerVC") as! HeightPickerVC
         
-        vc.selectedHeight = self.HeightTxtF.text!
+        vc.selectedHeight = self.HeightTxtF.text ?? ""
         
         if self.HeightTxtF.text!.contains(s: "cm"){
             vc.isFeetSelected = false
@@ -217,6 +217,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
             if self.DOBTxtF.text != "" && self.HeightTxtF.text! != "" && self.WeightTxtF.text! != "" && self.targetWeightTxtF.text! != "" && self.LevelTxtF.text! != ""{
                 self.calculateGoalsBtnO.isUserInteractionEnabled = true
                 self.calculateGoalsBtnO.backgroundColor = #colorLiteral(red: 0, green: 0.786260426, blue: 0.4870494008, alpha: 1)
+                
                 self.Api_To_Get_NutritionGoalSuggestionData()
             }
         }
@@ -237,6 +238,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
         
         vc.backAction = { str in
             self.WeightTxtF.text = str
+            self.SuggestedData.weight = str
             if self.DOBTxtF.text != "" && self.HeightTxtF.text! != "" && self.WeightTxtF.text! != "" && self.targetWeightTxtF.text! != "" && self.LevelTxtF.text! != ""{
                 self.calculateGoalsBtnO.isUserInteractionEnabled = true
                 self.calculateGoalsBtnO.backgroundColor = #colorLiteral(red: 0, green: 0.786260426, blue: 0.4870494008, alpha: 1)
@@ -641,13 +643,13 @@ extension HealthDataVC {
                     let gender = self.SuggestedData.gender ?? ""
                     let SelGender = gender.uppercased()
                     
-                    if gender != ""{
-                        self.MaleBtnO.isUserInteractionEnabled = false
-                        self.FeMaleBtnO.isUserInteractionEnabled = false
-                    }else{
-                        self.MaleBtnO.isUserInteractionEnabled = true
-                        self.FeMaleBtnO.isUserInteractionEnabled = true
-                    }
+//                    if gender != ""{
+//                        self.MaleBtnO.isUserInteractionEnabled = false
+//                        self.FeMaleBtnO.isUserInteractionEnabled = false
+//                    }else{
+//                        self.MaleBtnO.isUserInteractionEnabled = true
+//                        self.FeMaleBtnO.isUserInteractionEnabled = true
+//                    }
                     
                     if SelGender == "MALE"{
                         self.MaleImg.image = UIImage(named: "Group 1171276687")

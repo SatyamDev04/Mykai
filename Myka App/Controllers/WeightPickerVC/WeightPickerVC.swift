@@ -23,18 +23,20 @@ class WeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     var lbData: [String] = []
     var kgData: [String] = []
     var isPoundsSelected = true
-    
+    var runTimeWeght = ""
     var backAction:(String)->() = {_ in}
     var selectedWeightinKg : Double?
     var selectedWeightinLb : Double?
+    var kgEnable:Bool = false
+    var lbEnable:Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
         
        
         pickerView.delegate = self
         pickerView.dataSource = self
-        kgBtnO.isEnabled = true
-        lbBtnO.isEnabled = true
+        kgEnable = true
+        lbEnable = true
         if self.isPoundsSelected == true{
             lbBtnO.isSelected = true
             kgBtnO.isSelected = false
@@ -51,7 +53,7 @@ class WeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 weightSource = self.Weight
             }else{
                 weightSource = self.targetWeight
-                kgBtnO.isEnabled = false
+                kgEnable = false
             }
            
             let cleanedWeight = weightSource.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "lb", with: "")
@@ -76,6 +78,7 @@ class WeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             generateWeightData()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 if let index = self.lbData.firstIndex(where: { $0.removeSpaces == formattedStrVal.removeSpaces }) {
+                    self.runTimeWeght = self.lbData[index]
                     self.pickerView.selectRow(index, inComponent: 0, animated: true)
                 }
             }
@@ -100,7 +103,7 @@ class WeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             if comesfromWeight == true{
                 weightSource = self.Weight
             }else{
-                lbBtnO.isEnabled = false
+                lbEnable = false
                 weightSource = self.targetWeight
             }
             
@@ -125,6 +128,7 @@ class WeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             generateWeightData()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 if let index = self.kgData.firstIndex(where: { $0.removeSpaces == formattedStrVal.removeSpaces }) {
+                    self.runTimeWeght = self.kgData[index]
                     self.pickerView.selectRow(index, inComponent: 0, animated: true)
                 }
             }
@@ -215,26 +219,52 @@ class WeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     // MARK: - Actions
         
     @IBAction func lbBtn(_ sender: UIButton) {
-        isPoundsSelected = true
-        lbBtnO.isSelected = true
-        kgBtnO.isSelected = false
-        pickerView.reloadAllComponents()
-        lbBtnO.setBackgroundImage(UIImage(named: "Rectangle 47"), for: .normal)
-        kgBtnO.setBackgroundImage(UIImage(named: ""), for: .normal)
-        lbBtnO.setTitleColor(UIColor.white, for: .normal)
-        kgBtnO.setTitleColor(#colorLiteral(red: 0, green: 0.786260426, blue: 0.4870494008, alpha: 1), for: .normal)
+        if lbEnable {
+            isPoundsSelected = true
+            lbBtnO.isSelected = true
+            kgBtnO.isSelected = false
+            pickerView.reloadAllComponents()
+            lbBtnO.setBackgroundImage(UIImage(named: "Rectangle 47"), for: .normal)
+            kgBtnO.setBackgroundImage(UIImage(named: ""), for: .normal)
+            lbBtnO.setTitleColor(UIColor.white, for: .normal)
+            kgBtnO.setTitleColor(#colorLiteral(red: 0, green: 0.786260426, blue: 0.4870494008, alpha: 1), for: .normal)
+            print(self.runTimeWeght)
+            if let lb = kgToLb(from: self.runTimeWeght){
+                print(lb, "lb")
+                if let index = self.lbData.firstIndex(where: { $0.removeSpaces == lb.removeSpaces}) {
+                    self.pickerView.selectRow(index, inComponent: 0, animated: true)
+                    self.runTimeWeght = self.lbData[index]
+                }
+            }
+        }else{
+            self.showToast("Weight is in kg, so lb can't be selected.")
+        }
     }
     
     @IBAction func kgbtn(_ sender: UIButton) {
-        isPoundsSelected = false
-        lbBtnO.isSelected = false
-        kgBtnO.isSelected = true
-        pickerView.reloadAllComponents()
-        
-        lbBtnO.setBackgroundImage(UIImage(named: ""), for: .normal)
-        kgBtnO.setBackgroundImage(UIImage(named: "Rectangle 47"), for: .normal)
-        lbBtnO.setTitleColor(#colorLiteral(red: 0, green: 0.786260426, blue: 0.4870494008, alpha: 1), for: .normal)
-        kgBtnO.setTitleColor(UIColor.white, for: .normal)
+        if kgEnable {
+            
+            
+            isPoundsSelected = false
+            lbBtnO.isSelected = false
+            kgBtnO.isSelected = true
+            pickerView.reloadAllComponents()
+            
+            lbBtnO.setBackgroundImage(UIImage(named: ""), for: .normal)
+            kgBtnO.setBackgroundImage(UIImage(named: "Rectangle 47"), for: .normal)
+            lbBtnO.setTitleColor(#colorLiteral(red: 0, green: 0.786260426, blue: 0.4870494008, alpha: 1), for: .normal)
+            kgBtnO.setTitleColor(UIColor.white, for: .normal)
+            print(self.runTimeWeght)
+            if let kg = lbToKg(from: self.runTimeWeght){
+                print(kg, "Kg")
+                if let index = self.kgData.firstIndex(where: { $0.removeSpaces == kg.removeSpaces}) {
+                    self.pickerView.selectRow(index, inComponent: 0, animated: true)
+                    self.runTimeWeght = self.kgData[index]
+                }
+            }
+        }else{
+            self.showToast("Weight is in lb, so kg can't be selected.")
+        }
     }
  
  
@@ -283,9 +313,26 @@ class WeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             if isPoundsSelected {
                 let selectedHeight = lbData[row]
                 print("Selected Height: \(selectedHeight)")
+                self.runTimeWeght = selectedHeight
             } else {
                 let selectedHeight = kgData[row]
                 print("Selected Height: \(selectedHeight)")
+                self.runTimeWeght = selectedHeight
             }
         }
+
+
+    func kgToLb(from string: String) -> String? {
+        guard let kg = Double(string.removeSpaces) else { return "0.0 lb" }
+        let lb = kg * 2.20462
+        let rounded = round(lb * 10) / 10
+        return "\(rounded)"
+    }
+
+    func lbToKg(from string: String) -> String? {
+        guard let lb = Double(string.removeSpaces) else { return "0.0 kg" }
+        let kg = lb / 2.20462
+        let rounded = round(kg * 10) / 10
+        return "\(rounded)"
+    }
 }

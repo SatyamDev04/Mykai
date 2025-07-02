@@ -974,17 +974,10 @@
                                             <constraint firstAttribute="height" constant="25.329999999999998" id="t3D-Zx-9yq"/>
                                         </constraints>
                                         <attributedString key="attributedText">
-                                            <fragment content="Hello, ">
+                                            <fragment content="Hello,">
                                                 <attributes>
                                                     <color key="NSColor" red="0.23529411764705882" green="0.27058823529411763" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <font key="NSFont" size="18" name="Montserrat-Bold"/>
-                                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                </attributes>
-                                            </fragment>
-                                            <fragment content="User">
-                                                <attributes>
-                                                    <color key="NSColor" red="0.023529999999999999" green="0.75685999999999998" blue="0.41176000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <font key="NSFont" size="18" name="Montserrat-Bold"/>
+                                                    <font key="NSFont" metaFont="system" size="18"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                 </attributes>
                                             </fragment>
@@ -2194,7 +2187,7 @@ day?</string>
                                                         <rect key="frame" x="0.0" y="260" width="393" height="260.33333333333326"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZNp-nH-VSt">
-                                                                <rect key="frame" x="20" y="40" width="256.33333333333331" height="25.333333333333329"/>
+                                                                <rect key="frame" x="20" y="40" width="234" height="25.333333333333329"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="25.329999999999998" id="qKH-xD-Hwy"/>
                                                                 </constraints>
@@ -2202,21 +2195,21 @@ day?</string>
                                                                     <fragment content="Ingredients missing in your ">
                                                                         <attributes>
                                                                             <color key="NSColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                            <font key="NSFont" size="15" name="Poppins-Regular"/>
+                                                                            <font key="NSFont" metaFont="system" size="15"/>
                                                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                         </attributes>
                                                                     </fragment>
                                                                     <fragment content="recipe">
                                                                         <attributes>
                                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="calibratedRGB"/>
-                                                                            <font key="NSFont" size="15" name="Poppins-Regular"/>
+                                                                            <font key="NSFont" metaFont="system" size="15"/>
                                                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                         </attributes>
                                                                     </fragment>
                                                                     <fragment content=" ">
                                                                         <attributes>
                                                                             <color key="NSColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                            <font key="NSFont" size="15" name="Poppins-Regular"/>
+                                                                            <font key="NSFont" metaFont="system" size="15"/>
                                                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                         </attributes>
                                                                     </fragment>
@@ -2407,19 +2400,19 @@ day?</string>
                                                                     <fragment content="Added ">
                                                                         <attributes>
                                                                             <color key="NSColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                            <font key="NSFont" size="18" name="Montserrat-SemiBold"/>
+                                                                            <font key="NSFont" metaFont="system" size="18"/>
                                                                         </attributes>
                                                                     </fragment>
                                                                     <fragment content="Ingredients">
                                                                         <attributes>
                                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="calibratedRGB"/>
-                                                                            <font key="NSFont" size="18" name="Montserrat-SemiBold"/>
+                                                                            <font key="NSFont" metaFont="system" size="18"/>
                                                                         </attributes>
                                                                     </fragment>
                                                                     <fragment content=" ">
                                                                         <attributes>
                                                                             <color key="NSColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                            <font key="NSFont" size="18" name="Montserrat-SemiBold"/>
+                                                                            <font key="NSFont" metaFont="system" size="18"/>
                                                                         </attributes>
                                                                     </fragment>
                                                                 </attributedString>
@@ -2927,21 +2920,21 @@ your favorite meal.</string>
                                                                                     <fragment content="My-Kai Basic">
                                                                                         <attributes>
                                                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                            <font key="NSFont" size="16" name="Montserrat-Bold"/>
+                                                                                            <font key="NSFont" metaFont="system" size="16"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                                                         </attributes>
                                                                                     </fragment>
                                                                                     <fragment content=" ">
                                                                                         <attributes>
                                                                                             <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <font key="NSFont" size="16" name="Montserrat-Bold"/>
+                                                                                            <font key="NSFont" metaFont="system" size="16"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                                                         </attributes>
                                                                                     </fragment>
                                                                                     <fragment content="Plan">
                                                                                         <attributes>
                                                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                            <font key="NSFont" size="16" name="Montserrat-Bold"/>
+                                                                                            <font key="NSFont" metaFont="system" size="16"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                                                         </attributes>
                                                                                     </fragment>
@@ -3023,21 +3016,21 @@ your favorite meal.</string>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eNv-1r-ami">
-                                                                                <rect key="frame" x="5" y="43" width="97.666666666666671" height="58.666666666666657"/>
+                                                                                <rect key="frame" x="5" y="43" width="97.666666666666671" height="57.333333333333343"/>
                                                                                 <attributedString key="attributedText">
                                                                                     <fragment>
                                                                                         <string key="content">My-Kai Standard 
 </string>
                                                                                         <attributes>
                                                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                            <font key="NSFont" size="16" name="Montserrat-Bold"/>
+                                                                                            <font key="NSFont" metaFont="system" size="16"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                         </attributes>
                                                                                     </fragment>
                                                                                     <fragment content="Plan">
                                                                                         <attributes>
                                                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                            <font key="NSFont" size="16" name="Montserrat-Bold"/>
+                                                                                            <font key="NSFont" metaFont="system" size="16"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                         </attributes>
                                                                                     </fragment>
@@ -3045,7 +3038,7 @@ your favorite meal.</string>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$5.99 / Monthly" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4V2-oG-IRl">
-                                                                                <rect key="frame" x="5" y="107" width="97.666666666666671" height="15"/>
+                                                                                <rect key="frame" x="5" y="105.66666666666663" width="97.666666666666671" height="15"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="15" id="8qm-JZ-qhQ"/>
                                                                                 </constraints>
@@ -3054,7 +3047,7 @@ your favorite meal.</string>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$11.99 / monthly" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nqO-Fz-xx6">
-                                                                                <rect key="frame" x="6" y="123" width="94.666666666666671" height="15"/>
+                                                                                <rect key="frame" x="6" y="121.66666666666663" width="94.666666666666671" height="15"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="15" id="RNJ-gh-i1L"/>
                                                                                 </constraints>
@@ -3063,7 +3056,7 @@ your favorite meal.</string>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r6c-hI-zPZ">
-                                                                                <rect key="frame" x="6" y="131" width="94.666666666666671" height="1"/>
+                                                                                <rect key="frame" x="6" y="129.66666666666663" width="94.666666666666671" height="1"/>
                                                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="1" id="cxR-DZ-0n2"/>
@@ -3129,21 +3122,21 @@ your favorite meal.</string>
                                                                                     <fragment content="Annual">
                                                                                         <attributes>
                                                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                            <font key="NSFont" size="16" name="Montserrat-Bold"/>
+                                                                                            <font key="NSFont" metaFont="system" size="16"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                         </attributes>
                                                                                     </fragment>
                                                                                     <fragment content=" ">
                                                                                         <attributes>
                                                                                             <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <font key="NSFont" size="16" name="Montserrat-Bold"/>
+                                                                                            <font key="NSFont" metaFont="system" size="16"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                         </attributes>
                                                                                     </fragment>
                                                                                     <fragment content="Plan">
                                                                                         <attributes>
                                                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                            <font key="NSFont" size="16" name="Montserrat-Bold"/>
+                                                                                            <font key="NSFont" metaFont="system" size="16"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                         </attributes>
                                                                                     </fragment>
@@ -3585,21 +3578,21 @@ OFF My-Kai. </string>
                                                                                     <fragment content="My-Kai Basic">
                                                                                         <attributes>
                                                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                            <font key="NSFont" size="16" name="Montserrat-Bold"/>
+                                                                                            <font key="NSFont" metaFont="system" size="16"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                         </attributes>
                                                                                     </fragment>
                                                                                     <fragment content=" ">
                                                                                         <attributes>
                                                                                             <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <font key="NSFont" size="16" name="Montserrat-Bold"/>
+                                                                                            <font key="NSFont" metaFont="system" size="16"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                         </attributes>
                                                                                     </fragment>
                                                                                     <fragment content="Plan">
                                                                                         <attributes>
                                                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                            <font key="NSFont" size="16" name="Montserrat-Bold"/>
+                                                                                            <font key="NSFont" metaFont="system" size="16"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                         </attributes>
                                                                                     </fragment>
@@ -3694,14 +3687,14 @@ OFF My-Kai. </string>
 </string>
                                                                                         <attributes>
                                                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                            <font key="NSFont" size="16" name="Montserrat-Bold"/>
+                                                                                            <font key="NSFont" metaFont="system" size="16"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                                                         </attributes>
                                                                                     </fragment>
                                                                                     <fragment content="Plan">
                                                                                         <attributes>
                                                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                            <font key="NSFont" size="16" name="Montserrat-Bold"/>
+                                                                                            <font key="NSFont" metaFont="system" size="16"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                         </attributes>
                                                                                     </fragment>
@@ -3793,21 +3786,21 @@ OFF My-Kai. </string>
                                                                                     <fragment content="Annual">
                                                                                         <attributes>
                                                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                            <font key="NSFont" size="16" name="Montserrat-Bold"/>
+                                                                                            <font key="NSFont" metaFont="system" size="16"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                         </attributes>
                                                                                     </fragment>
                                                                                     <fragment content=" ">
                                                                                         <attributes>
                                                                                             <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <font key="NSFont" size="16" name="Montserrat-Bold"/>
+                                                                                            <font key="NSFont" metaFont="system" size="16"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                         </attributes>
                                                                                     </fragment>
                                                                                     <fragment content="Plan">
                                                                                         <attributes>
                                                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                            <font key="NSFont" size="16" name="Montserrat-Bold"/>
+                                                                                            <font key="NSFont" metaFont="system" size="16"/>
                                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                         </attributes>
                                                                                     </fragment>
@@ -4110,7 +4103,7 @@ OFF My-Kai. </string>
                                                                         </constraints>
                                                                     </imageView>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ehx-VE-aqB">
-                                                                        <rect key="frame" x="59.999999999999986" y="20" width="169.66666666666663" height="25.333333333333329"/>
+                                                                        <rect key="frame" x="59.999999999999986" y="20" width="150.66666666666663" height="25.333333333333329"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="25.329999999999998" id="6ea-0P-JiC"/>
                                                                         </constraints>
@@ -4118,13 +4111,13 @@ OFF My-Kai. </string>
                                                                             <fragment content="Nutrition Per ">
                                                                                 <attributes>
                                                                                     <color key="NSColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                                    <font key="NSFont" size="16" name="Poppins-Bold"/>
+                                                                                    <font key="NSFont" metaFont="system" size="16"/>
                                                                                 </attributes>
                                                                             </fragment>
                                                                             <fragment content="Serving">
                                                                                 <attributes>
                                                                                     <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="calibratedRGB"/>
-                                                                                    <font key="NSFont" size="16" name="Poppins-Bold"/>
+                                                                                    <font key="NSFont" metaFont="system" size="16"/>
                                                                                 </attributes>
                                                                             </fragment>
                                                                         </attributedString>
@@ -5966,10 +5959,10 @@ OFF My-Kai. </string>
                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="72l-VI-SYi">
-                            <rect key="frame" x="30" y="110.33333333333334" width="307" height="324.66666666666663"/>
+                            <rect key="frame" x="30" y="112.99999999999997" width="307" height="319.33333333333326"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cooked Meals" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9a3-nO-iVx">
-                                    <rect key="frame" x="88.000000000000014" y="20.000000000000014" width="131.33333333333337" height="25.333333333333329"/>
+                                    <rect key="frame" x="88.000000000000014" y="20" width="131.33333333333337" height="25.333333333333329"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="25.329999999999998" id="zzy-ou-Mpw"/>
                                     </constraints>
@@ -5978,17 +5971,17 @@ OFF My-Kai. </string>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Iw-bb-mJR">
-                                    <rect key="frame" x="15" y="55.333333333333329" width="277" height="59.333333333333329"/>
+                                    <rect key="frame" x="15" y="55.333333333333343" width="277" height="53.666666666666657"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MUl-ds-cNO">
-                                            <rect key="frame" x="10" y="10" width="257" height="39.333333333333336"/>
+                                            <rect key="frame" x="10" y="10" width="257" height="33.666666666666664"/>
                                             <attributedString key="attributedText">
                                                 <fragment>
                                                     <string key="content">Do you want to add this dish to your
 </string>
                                                     <attributes>
                                                         <color key="NSColor" red="0.27450980390000002" green="0.27450980390000002" blue="0.27450980390000002" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <font key="NSFont" size="14" name="Poppins-Regular"/>
+                                                        <font key="NSFont" metaFont="system" size="14"/>
                                                         <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                     </attributes>
                                                 </fragment>
@@ -5996,7 +5989,7 @@ OFF My-Kai. </string>
                                                     <attributes>
                                                         <color key="NSBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <font key="NSFont" size="14" name="Poppins-Bold"/>
+                                                        <font key="NSFont" metaFont="system" size="14"/>
                                                         <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                     </attributes>
                                                 </fragment>
@@ -6030,7 +6023,7 @@ OFF My-Kai. </string>
                                     </userDefinedRuntimeAttributes>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SW6-Mm-UBb">
-                                    <rect key="frame" x="83.666666666666686" y="264.66666666666669" width="140" height="40"/>
+                                    <rect key="frame" x="83.666666666666686" y="259.33333333333331" width="140" height="40"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="DQg-kP-6Wb"/>
@@ -6056,7 +6049,7 @@ OFF My-Kai. </string>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </stackView>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="BuB-iu-RYR">
-                                    <rect key="frame" x="25" y="124.66666666666669" width="257" height="120"/>
+                                    <rect key="frame" x="25" y="119.33333333333334" width="257" height="120"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kP9-Zr-Dn7">
                                             <rect key="frame" x="0.0" y="0.0" width="257" height="50"/>
@@ -6071,7 +6064,7 @@ OFF My-Kai. </string>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RadioOff" translatesAutoresizingMaskIntoConstraints="NO" id="oMi-dl-BWS">
-                                                            <rect key="frame" x="207" y="9.6666666666666572" width="15" height="15"/>
+                                                            <rect key="frame" x="207" y="9.3333333333333144" width="15" height="15"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="15" id="UPL-jw-rZR"/>
                                                                 <constraint firstAttribute="height" constant="15" id="rhQ-iR-o8u"/>
@@ -6115,7 +6108,7 @@ OFF My-Kai. </string>
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1K5-jE-Qu7">
-                                            <rect key="frame" x="0.0" y="70" width="257" height="50"/>
+                                            <rect key="frame" x="0.0" y="69.999999999999972" width="257" height="50"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hjs-LF-Lcg">
                                                     <rect key="frame" x="10" y="8" width="237" height="34"/>
@@ -6127,7 +6120,7 @@ OFF My-Kai. </string>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RadioOff" translatesAutoresizingMaskIntoConstraints="NO" id="140-gh-5St">
-                                                            <rect key="frame" x="207" y="9.6666666666666856" width="15" height="15"/>
+                                                            <rect key="frame" x="207" y="9.3333333333333712" width="15" height="15"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="15" id="dwq-iT-2Wi"/>
                                                                 <constraint firstAttribute="width" constant="15" id="ytP-Qq-oS0"/>
@@ -6958,14 +6951,14 @@ OFF My-Kai. </string>
                                             <fragment content="Hello">
                                                 <attributes>
                                                     <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <font key="NSFont" size="18" name="Montserrat-Bold"/>
+                                                    <font key="NSFont" metaFont="system" size="18"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                 </attributes>
                                             </fragment>
                                             <fragment content=", User">
                                                 <attributes>
                                                     <color key="NSColor" red="0.23529411764705882" green="0.27058823529411763" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <font key="NSFont" size="18" name="Montserrat-Bold"/>
+                                                    <font key="NSFont" metaFont="system" size="18"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                 </attributes>
                                             </fragment>
@@ -8333,17 +8326,10 @@ OFF My-Kai. </string>
                                                                     <constraint firstAttribute="height" constant="47" id="pa9-BO-chj"/>
                                                                 </constraints>
                                                                 <attributedString key="attributedText">
-                                                                    <fragment content="Uh oh">
+                                                                    <fragment content="Uh oh, the fridge is empty!  Let’s fill it up with some delicious dishes!">
                                                                         <attributes>
                                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                            <font key="NSFont" size="15" name="Poppins-SemiBold"/>
-                                                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                                        </attributes>
-                                                                    </fragment>
-                                                                    <fragment content=", the fridge is empty!  Let’s fill it up with some delicious dishes!">
-                                                                        <attributes>
-                                                                            <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                            <font key="NSFont" size="15" name="Poppins-Regular"/>
+                                                                            <font key="NSFont" metaFont="system" size="15"/>
                                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                         </attributes>
                                                                     </fragment>
@@ -8862,18 +8848,18 @@ OFF My-Kai. </string>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SfK-Nk-PsW">
-                                        <rect key="frame" x="78.000000000000014" y="14" width="190.33333333333337" height="22"/>
+                                        <rect key="frame" x="78.000000000000014" y="14.333333333333345" width="163.33333333333337" height="21.666666666666671"/>
                                         <attributedString key="attributedText">
                                             <fragment content="Let’s plan ">
                                                 <attributes>
                                                     <color key="NSColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <font key="NSFont" size="18" name="Montserrat-SemiBold"/>
+                                                    <font key="NSFont" metaFont="system" size="18"/>
                                                 </attributes>
                                             </fragment>
                                             <fragment content="your week">
                                                 <attributes>
                                                     <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <font key="NSFont" size="18" name="Montserrat-SemiBold"/>
+                                                    <font key="NSFont" metaFont="system" size="18"/>
                                                 </attributes>
                                             </fragment>
                                         </attributedString>
@@ -9129,7 +9115,7 @@ OFF My-Kai. </string>
                                                                         </constraints>
                                                                     </imageView>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ppa-hT-90p">
-                                                                        <rect key="frame" x="60" y="20" width="192" height="25.333333333333329"/>
+                                                                        <rect key="frame" x="60.000000000000014" y="20" width="163.33333333333337" height="25.333333333333329"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="25.329999999999998" id="jYT-pL-bs1"/>
                                                                         </constraints>
@@ -9137,14 +9123,14 @@ OFF My-Kai. </string>
                                                                             <fragment content="Calculate daily ">
                                                                                 <attributes>
                                                                                     <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                    <font key="NSFont" size="16" name="Poppins-Bold"/>
+                                                                                    <font key="NSFont" metaFont="system" size="16"/>
                                                                                     <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                 </attributes>
                                                                             </fragment>
                                                                             <fragment content="macros">
                                                                                 <attributes>
                                                                                     <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                                    <font key="NSFont" size="16" name="Poppins-Bold"/>
+                                                                                    <font key="NSFont" metaFont="system" size="16"/>
                                                                                     <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                                 </attributes>
                                                                             </fragment>
@@ -10765,22 +10751,15 @@ OFF My-Kai. </string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z9N-GC-Zgw">
-                                        <rect key="frame" x="227" y="135.66666666666666" width="91" height="23"/>
+                                        <rect key="frame" x="233" y="135.66666666666666" width="85" height="23"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="22.670000000000002" id="93H-OV-KnN"/>
                                         </constraints>
                                         <attributedString key="attributedText">
-                                            <fragment content="$350*">
+                                            <fragment content="$350* per /s ">
                                                 <attributes>
                                                     <color key="NSColor" red="0.23529411759999999" green="0.27058823529999998" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <font key="NSFont" size="14" name="Poppins-Medium"/>
-                                                    <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                </attributes>
-                                            </fragment>
-                                            <fragment content=" per /s ">
-                                                <attributes>
-                                                    <color key="NSColor" red="0.23529411759999999" green="0.27058823529999998" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <font key="NSFont" size="14" name="Poppins-Regular"/>
+                                                    <font key="NSFont" metaFont="system" size="14"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                 </attributes>
                                             </fragment>
@@ -11482,14 +11461,14 @@ OFF My-Kai. </string>
                                             <fragment content="Hello">
                                                 <attributes>
                                                     <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <font key="NSFont" size="18" name="Montserrat-Bold"/>
+                                                    <font key="NSFont" metaFont="system" size="18"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                 </attributes>
                                             </fragment>
                                             <fragment content=", User">
                                                 <attributes>
                                                     <color key="NSColor" red="0.23529411764705882" green="0.27058823529411763" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <font key="NSFont" size="18" name="Montserrat-Bold"/>
+                                                    <font key="NSFont" metaFont="system" size="18"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                 </attributes>
                                             </fragment>
