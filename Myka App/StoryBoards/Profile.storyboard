@@ -7188,6 +7188,7 @@ to discard changes.</string>
                     <connections>
                         <outlet property="DragDownView" destination="nGt-kZ-C1o" id="Z4q-8Z-7Yo"/>
                         <outlet property="Viewpopup" destination="8Sc-4v-fs7" id="Y33-yG-Afw"/>
+                        <outlet property="headingLbl" destination="gfn-Iv-eJV" id="PMP-su-In9"/>
                         <outlet property="kgBtnO" destination="EpY-bE-qVr" id="Bdj-tW-kuz"/>
                         <outlet property="lbBtnO" destination="fua-lB-xqp" id="shL-XW-yvR"/>
                         <outlet property="pickerView" destination="Jin-Q6-ofX" id="mja-fF-2f7"/>

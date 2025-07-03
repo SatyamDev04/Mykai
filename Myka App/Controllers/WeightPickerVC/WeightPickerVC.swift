@@ -12,14 +12,13 @@ class WeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @IBOutlet weak var pickerView: UIPickerView!
     @IBOutlet weak var Viewpopup: UIView!
     @IBOutlet weak var DragDownView: UIView!
-    
+    @IBOutlet weak var headingLbl: UILabel!
     @IBOutlet weak var lbBtnO: UIButton!
     @IBOutlet weak var kgBtnO: UIButton!
     
     var Weight = ""
     var targetWeight = ""
     var comesfromWeight = false
-     
     var lbData: [String] = []
     var kgData: [String] = []
     var isPoundsSelected = true
@@ -51,9 +50,11 @@ class WeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
        
             if comesfromWeight == true{
                 weightSource = self.Weight
+                self.headingLbl.text = "Weight"
             }else{
                 weightSource = self.targetWeight
                 kgEnable = false
+                self.headingLbl.text = "Target Weight"
             }
            
             let cleanedWeight = weightSource.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "lb", with: "")
@@ -102,9 +103,11 @@ class WeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             
             if comesfromWeight == true{
                 weightSource = self.Weight
+                self.headingLbl.text = "Weight"
             }else{
                 lbEnable = false
                 weightSource = self.targetWeight
+                self.headingLbl.text = "Target Weight"
             }
             
             let cleanedWeight = weightSource.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "kg", with: "")

@@ -214,7 +214,11 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
         
         vc.backAction = { str in
             print(str, "<< Str")
-            self.HeightTxtF.text = self.formatHeight(heightString: str)
+            if !str.contains(s: "cm"){
+                self.HeightTxtF.text = self.formatHeight(heightString: str)
+            }else{
+                self.HeightTxtF.text = str
+            }
             if self.DOBTxtF.text != "" && self.HeightTxtF.text! != "" && self.WeightTxtF.text! != "" && self.targetWeightTxtF.text! != "" && self.LevelTxtF.text! != ""{
                 self.calculateGoalsBtnO.isUserInteractionEnabled = true
                 self.calculateGoalsBtnO.backgroundColor = #colorLiteral(red: 0, green: 0.786260426, blue: 0.4870494008, alpha: 1)
@@ -368,7 +372,6 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
 //                if months > 0 { estimatedText += " and " }
 //                estimatedText += "\(days) \(days == 1 ? "day" : "days")"
 //            }
-            
 //            cell.EstimateLbl.text = estimatedText
             
             if estimatedDays.months == 0 && estimatedDays.days == 0 {
@@ -398,6 +401,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
             
             let lbPerWeek = self.targetDateArray[index].value ?? 0.5
             let output = lbPerWeek.truncatingRemainder(dividingBy: 1) == 0 ? "\(Int(lbPerWeek))" : "\(lbPerWeek)"
+            
             var weightUnit = ""
             
             if let text = self.WeightTxtF.text?.lowercased(), text.contains("kg") {

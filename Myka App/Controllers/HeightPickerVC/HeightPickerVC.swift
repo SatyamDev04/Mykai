@@ -157,7 +157,7 @@ class HeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         cmBtnO.setTitleColor(#colorLiteral(red: 0, green: 0.786260426, blue: 0.4870494008, alpha: 1), for: .normal)
         print( self.runTimeSelctedHeight," self.runTimeSelctedHeight")
         if  let runft = convertCMStringToFeetInch(self.runTimeSelctedHeight.removeSpaces.replace(string: "cm", withString: "")) {
-            print(runft,"runft")
+            print(runft,"runft", self.runTimeSelctedHeight.removeSpaces.replace(string: "cm", withString: ""))
              
             if let index = self.ftInData.firstIndex(where: { $0 == runft}) {
                 
@@ -256,23 +256,25 @@ class HeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         }
     
     func convertToCentimeterString(from input: String) -> String? {
-        // Regular expression to match "2 ft 2 in"
-        let pattern = #"(\d+)\s*ft\s*(\d+)\s*in"#
-        let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive)
-        
-        guard let match = regex?.firstMatch(in: input, range: NSRange(input.startIndex..., in: input)) else {
-            return nil
-        }
+        // Match "5 ft 7 in" or "5 ft"
+           let pattern = #"(?:(\d+)\s*ft)?(?:\s*(\d+)\s*in)?"#
+           let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive)
 
-        let ftRange = Range(match.range(at: 1), in: input)
-        let inRange = Range(match.range(at: 2), in: input)
+           guard let match = regex?.firstMatch(in: input, range: NSRange(input.startIndex..., in: input)) else {
+               return nil
+           }
 
-        let feet = ftRange.flatMap { Int(input[$0]) } ?? 0
-        let inches = inRange.flatMap { Int(input[$0]) } ?? 0
+           // Extract matched ranges
+           let ftRange = Range(match.range(at: 1), in: input)
+           let inRange = Range(match.range(at: 2), in: input)
 
-        let totalInches = (feet * 12) + inches
-        let cm = Double(totalInches) * 2.54
-        return "\(Int(cm.rounded())) cm"
+           // Parse values safely
+           let feet = ftRange.flatMap { Int(input[$0]) } ?? 0
+           let inches = inRange.flatMap { Int(input[$0]) } ?? 0
+
+           let totalInches = (feet * 12) + inches
+           let cm = Double(totalInches) * 2.54
+           return "\(Int(cm.rounded())) cm"
     }
     
     func convertCMStringToFeetInch(_ cmString: String) -> String? {
@@ -281,8 +283,14 @@ class HeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         }
 
         let totalInches = cmValue / 2.54
-        let feet = Int(totalInches / 12)
-        let inches = Int(round(totalInches)) % 12
+        var feet = Int(totalInches / 12)
+        var inches = Int(round(totalInches.truncatingRemainder(dividingBy: 12)))
+
+        // Handle case where inches round up to 12
+        if inches == 12 {
+            feet += 1
+            inches = 0
+        }
 
         if inches == 0 {
             return "\(feet) ft"
@@ -290,4 +298,6 @@ class HeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             return "\(feet) ft \(inches) in"
         }
     }
+
+
 }
