@@ -160,6 +160,7 @@ class NutritionGoalVC: UIViewController {
         self.infoLbl.text = "Create your own customization"
         self.CaloriesSliderLbl.text = "\(Int(currentValue))"
         self.UpdateallSliderData(calories: Int(currentValue))
+        self.currentSlider = "calorie"
     }
     
     @objc func CaloriessliderDidEndSliding(_ sender: UISlider) {
@@ -437,8 +438,9 @@ class NutritionGoalVC: UIViewController {
         case "carfatpro":
             SuggestedData.iscarbFatProtienMoves = false
             self.resetProtien(list: uNchangedSuggestedData)
-//            self.resetFat(list: uNchangedSuggestedData)
-//            self.resetCarb(list: uNchangedSuggestedData)
+        case "calorie":
+            self.SuggestedData.isCaloriesSliderMoves = false
+            self.resetCalorie(list: uNchangedSuggestedData)
         default:
             self.SuggestedData.isCaloriesSliderMoves = false
             self.setData(list: uNchangedSuggestedData)
@@ -472,6 +474,9 @@ class NutritionGoalVC: UIViewController {
             SuggestedData.isProtienliderMoves = true
         case "carfatpro":
             SuggestedData.iscarbFatProtienMoves = true
+            
+        case "calorie":
+            self.SuggestedData.isCaloriesSliderMoves = true
         default:
             self.SuggestedData.isCaloriesSliderMoves = true
         }
@@ -573,6 +578,13 @@ extension NutritionGoalVC {
 
         self.TotalPercentLbl.text = "\(Int(totalPerc))%"
     }
+    
+    func resetCalorie(list:HealthSuggestedData){
+        self.CaloriesSlider.value = Float(list.calories ?? 0)
+        self.CaloriesSliderLbl.text = "\(Int(list.calories ?? 0))"
+        self.SuggestedData.calories = list.calories
+    }
+    
     
     func resetCarb(list:HealthSuggestedData){
         self.CarbsSlider.value = Float(list.macroPer?.carbs ?? 0)
