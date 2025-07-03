@@ -204,7 +204,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "HeightPickerVC") as! HeightPickerVC
         
-        vc.selectedHeight = self.HeightTxtF.text ?? ""
+        vc.selectedHeight = simplifyHeight(self.HeightTxtF.text ?? "") 
         
         if self.HeightTxtF.text!.contains(s: "cm"){
             vc.isFeetSelected = false
@@ -213,7 +213,8 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
         }
         
         vc.backAction = { str in
-            self.HeightTxtF.text = str
+            print(str, "<< Str")
+            self.HeightTxtF.text = self.formatHeight(heightString: str)
             if self.DOBTxtF.text != "" && self.HeightTxtF.text! != "" && self.WeightTxtF.text! != "" && self.targetWeightTxtF.text! != "" && self.LevelTxtF.text! != ""{
                 self.calculateGoalsBtnO.isUserInteractionEnabled = true
                 self.calculateGoalsBtnO.backgroundColor = #colorLiteral(red: 0, green: 0.786260426, blue: 0.4870494008, alpha: 1)
@@ -336,8 +337,6 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
         dropDown.topOffset = CGPoint(x: -trailingSpace, y: -(dropDown.anchorView?.plainView.bounds.height ?? 0))
         dropDown.width = (dropDown.anchorView?.plainView.bounds.width ?? 0) + 15
         dropDown.setupCornerRadius(10)
-        
-     
         dropDown.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
         dropDown.layer.shadowOpacity = 0
         dropDown.layer.shadowRadius = 4
@@ -374,7 +373,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
             
             if estimatedDays.months == 0 && estimatedDays.days == 0 {
                 cell.EstimateLbl.isHidden = false
-                cell.EstimateLbl.text = "Estimated time: " // or something like "No estimated time"
+                cell.EstimateLbl.text = "Estimated time : " // or something like "No estimated time"
                 } else {
                     let monthText = estimatedDays.months > 0 ? "\(estimatedDays.months) \(estimatedDays.months == 1 ? "month" : "months")" : ""
                     let dayText = estimatedDays.days > 0 ? "\(estimatedDays.days) \(estimatedDays.days == 1 ? "day" : "days")" : ""
@@ -428,13 +427,6 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
             }
         }
         dropDown.show()
-    }
-    
-    func convertDaysToMonthsAndDays(totalDays: Int) -> (months: Int, days: Int) {
-        let daysInMonth = 30  // Approximate month length
-        let months = totalDays / daysInMonth
-        let days = totalDays % daysInMonth
-        return (months, days)
     }
     
     @IBAction func CalculateGoalBtn(_ sender: UIButton) {
@@ -599,6 +591,46 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
             return false
         }
         return true
+    }
+    
+    func formatHeight(heightString: String) -> String {
+        // Check if inches (") are already included
+        if heightString.contains("\"") {
+            return heightString.trimmingCharacters(in: .whitespaces)
+        } else {
+            return heightString.trimmingCharacters(in: .whitespaces) + " 0\""
+        }
+    }
+    
+    func convertDaysToMonthsAndDays(totalDays: Int) -> (months: Int, days: Int) {
+        let daysInMonth = 30  // Approximate month length
+        let months = totalDays / daysInMonth
+        let days = totalDays % daysInMonth
+        return (months, days)
+    }
+    
+    func simplifyHeight(_ heightString: String) -> String {
+        let trimmed = heightString.trimmingCharacters(in: .whitespaces)
+        
+        // Match pattern: e.g. "4' 11\""
+        let pattern = #"(\d+)' ?(\d+)""#
+        let regex = try? NSRegularExpression(pattern: pattern)
+        
+        if let match = regex?.firstMatch(in: trimmed, range: NSRange(trimmed.startIndex..., in: trimmed)),
+           let feetRange = Range(match.range(at: 1), in: trimmed),
+           let inchRange = Range(match.range(at: 2), in: trimmed) {
+            
+            let feet = trimmed[feetRange]
+            let inches = trimmed[inchRange]
+            
+            if inches == "0" {
+                return "\(feet)'"  // Simplify to feet only
+            } else {
+                return "\(feet)' \(inches)\""
+            }
+        }
+        
+        return trimmed // Return as-is if not matching expected format
     }
     
 }
