@@ -352,29 +352,60 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
             guard let cell = cell as? targetDateDropDownTblVCell else { return }
             guard let self = self else { return }
             _ = self.targetDateArray[index].days ?? 0
+            let newEstimatedDays = self.SuggestedData.dataPerWeek?[index].days ?? 0.0
+            let estimatedDays = convertDaysToMonthsAndDays(totalDays: Int(newEstimatedDays))
             
-            let estimatedDays = self.SuggestedData.time ?? 0
-            let months = estimatedDays/30
-            let days = estimatedDays % 30
+//            let estimatedDays = self.SuggestedData.time ?? 0
+//            let months = estimatedDays/30
+//            let days = estimatedDays % 30
+//            
+//            var estimatedText = "Estimated time: "
+//            
+//            if months > 0 {
+//                estimatedText += "\(months) \(months == 1 ? "month" : "months")"
+//            }
+//            
+//            if days > 0 {
+//                if months > 0 { estimatedText += " and " }
+//                estimatedText += "\(days) \(days == 1 ? "day" : "days")"
+//            }
             
-            var estimatedText = "Estimated time: "
+//            cell.EstimateLbl.text = estimatedText
             
-            if months > 0 {
-                estimatedText += "\(months) \(months == 1 ? "month" : "months")"
-            }
-            
-            if days > 0 {
-                if months > 0 { estimatedText += " and " }
-                estimatedText += "\(days) \(days == 1 ? "day" : "days")"
-            }
-            
-            cell.EstimateLbl.text = estimatedText
-            
+            if estimatedDays.months == 0 && estimatedDays.days == 0 {
+                cell.EstimateLbl.isHidden = false
+                cell.EstimateLbl.text = "Estimated time: " // or something like "No estimated time"
+                } else {
+                    let monthText = estimatedDays.months > 0 ? "\(estimatedDays.months) \(estimatedDays.months == 1 ? "month" : "months")" : ""
+                    let dayText = estimatedDays.days > 0 ? "\(estimatedDays.days) \(estimatedDays.days == 1 ? "day" : "days")" : ""
+
+                    var estimatedText = "Estimated time : "
+                    if !monthText.isEmpty {
+                        estimatedText += monthText
+                    }
+                    if !monthText.isEmpty && !dayText.isEmpty {
+                        estimatedText += " and "
+                    }
+                    if !dayText.isEmpty {
+                        estimatedText += dayText
+                    }
+
+                    cell.EstimateLbl.isHidden = false
+                    cell.EstimateLbl.text = estimatedText
+                    
+//                    textTimeLabel.isHidden = false
+//                    textTimeLabel.text = estimatedText
+                }
             
             let lbPerWeek = self.targetDateArray[index].value ?? 0.5
             let output = lbPerWeek.truncatingRemainder(dividingBy: 1) == 0 ? "\(Int(lbPerWeek))" : "\(lbPerWeek)"
+//            let gain_loseStatus = ""
+            if self.SuggestedData.dataPerWeek?[index].tar == "Lose"{
+                cell.lbPerWeekLbl.text = "You'll lose \(output)lb per week"
+            }else{
+                cell.lbPerWeekLbl.text = "You'll gain \(output)lb per week"
+            }
             
-            cell.lbPerWeekLbl.text = "You'll lose \(output)lb per week"
             
             if self.targetDateArray[index].isSelected == 1{
                 cell.BgV.backgroundColor = #colorLiteral(red: 0.9058823529, green: 1, blue: 0.9568627451, alpha: 1)
@@ -397,6 +428,13 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
             }
         }
         dropDown.show()
+    }
+    
+    func convertDaysToMonthsAndDays(totalDays: Int) -> (months: Int, days: Int) {
+        let daysInMonth = 30  // Approximate month length
+        let months = totalDays / daysInMonth
+        let days = totalDays % daysInMonth
+        return (months, days)
     }
     
     @IBAction func CalculateGoalBtn(_ sender: UIButton) {

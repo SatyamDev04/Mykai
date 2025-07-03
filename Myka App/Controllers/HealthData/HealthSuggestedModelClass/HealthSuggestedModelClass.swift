@@ -64,12 +64,12 @@ struct HealthSuggestedData: Codable {
 
 struct DataPerWeek: Codable {
     var days: Double?
-    var description, name: String?
+    var description, name, tar: String?
     var value: Double?
     var isSelected: Int?
 
     enum CodingKeys: String, CodingKey {
-        case days, description, name, value
+        case days, description, name, value, tar
         case isSelected = "is_selected"
     }
 }

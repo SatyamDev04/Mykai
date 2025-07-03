@@ -26,51 +26,56 @@
                 <rect key="frame" x="0.0" y="0.0" width="287" height="66"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0SZ-Nb-a1T">
-                        <rect key="frame" x="0.0" y="0.0" width="287" height="66"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E7V-cH-7g2">
+                        <rect key="frame" x="5" y="5" width="277" height="61"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Estimated time: " textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="BFg-Yg-WB9">
+                                <rect key="frame" x="78" y="8.0000000000000018" width="191" height="16.666666666666671"/>
+                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                                <color key="textColor" red="0.23529411764705882" green="0.27058823529411763" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gental" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9eO-lJ-WCo">
+                                <rect key="frame" x="8" y="21.666666666666668" width="60" height="18.000000000000004"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="18" id="Fax-bN-NnS"/>
+                                    <constraint firstAttribute="width" constant="60" id="UHN-Tv-Tz1"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="16"/>
+                                <color key="textColor" red="0.23529411764705882" green="0.27058823529411763" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You'll lose 0.5lb per week" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mU6-Vq-iM7">
+                                <rect key="frame" x="78" y="33.333333333333336" width="191" height="19.666666666666664"/>
+                                <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
+                                <color key="textColor" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You'll lose 0.5lb per week" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mU6-Vq-iM7">
-                        <rect key="frame" x="98" y="38.333333333333336" width="179" height="19.666666666666664"/>
-                        <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
-                        <color key="textColor" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Estimated time: 0 months" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BFg-Yg-WB9">
-                        <rect key="frame" x="98" y="8.0000000000000018" width="179" height="16.666666666666671"/>
-                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
-                        <color key="textColor" red="0.23529411764705882" green="0.27058823529411763" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gental" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9eO-lJ-WCo">
-                        <rect key="frame" x="10" y="24" width="60" height="18"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="18" id="Fax-bN-NnS"/>
-                            <constraint firstAttribute="width" constant="60" id="UHN-Tv-Tz1"/>
+                            <constraint firstItem="mU6-Vq-iM7" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BFg-Yg-WB9" secondAttribute="bottom" constant="5" id="4hK-bh-nsW"/>
+                            <constraint firstItem="mU6-Vq-iM7" firstAttribute="leading" secondItem="9eO-lJ-WCo" secondAttribute="trailing" constant="10" id="E2r-jn-30x"/>
+                            <constraint firstAttribute="trailing" secondItem="BFg-Yg-WB9" secondAttribute="trailing" constant="8" id="GbN-ci-kb0"/>
+                            <constraint firstAttribute="bottom" secondItem="mU6-Vq-iM7" secondAttribute="bottom" constant="8" id="Wmh-J1-1WC"/>
+                            <constraint firstAttribute="trailing" secondItem="mU6-Vq-iM7" secondAttribute="trailing" constant="8" id="ZDF-Iy-Sq4"/>
+                            <constraint firstItem="9eO-lJ-WCo" firstAttribute="centerY" secondItem="E7V-cH-7g2" secondAttribute="centerY" id="lF6-fL-w7g"/>
+                            <constraint firstItem="9eO-lJ-WCo" firstAttribute="leading" secondItem="E7V-cH-7g2" secondAttribute="leading" constant="8" id="qdC-oC-mcv"/>
+                            <constraint firstItem="BFg-Yg-WB9" firstAttribute="leading" secondItem="9eO-lJ-WCo" secondAttribute="trailing" constant="10" id="rLB-kb-XAj"/>
+                            <constraint firstItem="BFg-Yg-WB9" firstAttribute="top" secondItem="E7V-cH-7g2" secondAttribute="top" constant="8" id="rNO-SO-pPc"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="16"/>
-                        <color key="textColor" red="0.23529411764705882" green="0.27058823529411763" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                    </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="mU6-Vq-iM7" secondAttribute="trailing" constant="10" id="3nI-ss-mRt"/>
-                    <constraint firstItem="mU6-Vq-iM7" firstAttribute="leading" secondItem="9eO-lJ-WCo" secondAttribute="trailing" constant="28" id="Bzr-EU-9WX"/>
-                    <constraint firstItem="0SZ-Nb-a1T" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="HZH-dB-nLJ"/>
-                    <constraint firstItem="9eO-lJ-WCo" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="MCP-wf-4gP"/>
-                    <constraint firstItem="BFg-Yg-WB9" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="N5X-kM-9QN"/>
-                    <constraint firstItem="9eO-lJ-WCo" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="Ruo-oN-ydY"/>
-                    <constraint firstItem="0SZ-Nb-a1T" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Udn-Co-CfV"/>
-                    <constraint firstAttribute="trailing" secondItem="0SZ-Nb-a1T" secondAttribute="trailing" id="Vsh-7c-Eu4"/>
-                    <constraint firstItem="BFg-Yg-WB9" firstAttribute="leading" secondItem="9eO-lJ-WCo" secondAttribute="trailing" constant="28" id="cRN-uT-oAd"/>
-                    <constraint firstAttribute="trailing" secondItem="BFg-Yg-WB9" secondAttribute="trailing" constant="10" id="i0h-xA-oun"/>
-                    <constraint firstAttribute="bottom" secondItem="0SZ-Nb-a1T" secondAttribute="bottom" id="k2K-DV-AOk"/>
-                    <constraint firstAttribute="bottom" secondItem="mU6-Vq-iM7" secondAttribute="bottom" constant="8" id="oED-K4-GGa"/>
+                    <constraint firstAttribute="trailing" secondItem="E7V-cH-7g2" secondAttribute="trailing" constant="5" id="S6y-EV-ehV"/>
+                    <constraint firstItem="E7V-cH-7g2" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="Tns-Qo-4FK"/>
+                    <constraint firstAttribute="bottom" secondItem="E7V-cH-7g2" secondAttribute="bottom" id="qRZ-i0-Yzd"/>
+                    <constraint firstItem="E7V-cH-7g2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="tWr-Ya-hjO"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="BgV" destination="0SZ-Nb-a1T" id="Dp5-ww-lXf"/>
+                <outlet property="BgV" destination="E7V-cH-7g2" id="vd0-Nx-qlC"/>
                 <outlet property="EstimateLbl" destination="BFg-Yg-WB9" id="S2s-W2-5iU"/>
                 <outlet property="lbPerWeekLbl" destination="mU6-Vq-iM7" id="856-Hr-U0J"/>
                 <outlet property="optionLabel" destination="9eO-lJ-WCo" id="JZo-Bc-wpj"/>
