@@ -899,15 +899,15 @@ extension HealthDataVC {
                 
                 
                 if self.isComesFromPlanTab == true{
-                    self.navigationController?.showToast(responseMessage)
+                //    self.navigationController?.showToast(responseMessage)
                     self.navigationController?.popViewController(animated: true)
                 }else{
                     if self.comesFrom == "Profile"{
-                        self.navigationController?.showToast(responseMessage)
+                        //self.navigationController?.showToast(responseMessage)
                         self.navigationController?.popViewController(animated: true)
                     }else{
                         self.navigationController?.popViewController(animated: true)
-                        self.navigationController?.showToast(responseMessage)
+                       // self.navigationController?.showToast(responseMessage)
                     }
                 }
                 

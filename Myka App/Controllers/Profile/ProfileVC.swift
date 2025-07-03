@@ -93,8 +93,8 @@ class ProfileVC: UIViewController, CLLocationManagerDelegate {
         
         self.ProgImg.image = UIImage(named: "user")
         
-        ProfileBgV.backgroundColor = colorArray[0]
-        TArgetsBgV.backgroundColor = colorArray[0]
+        //ProfileBgV.backgroundColor = colorArray[0]
+       // TArgetsBgV.backgroundColor = colorArray[0]
         
         self.TermsCondBgV.isHidden = true
         self.PrivacyPolyBgV.isHidden = true
@@ -308,7 +308,7 @@ class ProfileVC: UIViewController, CLLocationManagerDelegate {
     }
     
     @IBAction func EditTargetsBtn(_ sender: UIButton) {
-        self.TArgetsBgV.backgroundColor = colorArray[1]
+     //   self.TArgetsBgV.backgroundColor = colorArray[1]
         self.CalImg.image = imageArr[0]
         self.FatImg.image = imageArr[1]
         self.CarbsImg.image = imageArr[2]
@@ -512,8 +512,8 @@ extension ProfileVC {
                     }
                 }
                  
-                self.ProfileBgV.backgroundColor = self.colorArray[0]
-                self.TArgetsBgV.backgroundColor = self.colorArray[0]
+                //self.ProfileBgV.backgroundColor = self.colorArray[0]
+                //self.TArgetsBgV.backgroundColor = self.colorArray[0]
                 self.CalTxtF.isUserInteractionEnabled = false
                 self.FatTxtF.isUserInteractionEnabled = false
                 self.CarbsTxtF.isUserInteractionEnabled = false
