@@ -204,7 +204,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "HeightPickerVC") as! HeightPickerVC
         
-        vc.selectedHeight = simplifyHeight(self.HeightTxtF.text ?? "") 
+        vc.selectedHeight = simplifyHeight(self.HeightTxtF.text ?? "")
         
         if self.HeightTxtF.text!.contains(s: "cm"){
             vc.isFeetSelected = false
@@ -343,7 +343,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
         dropDown.layer.shadowOffset = CGSize(width: 0, height: 0)
         dropDown.backgroundColor = .white
         dropDown.cellHeight = 65
-     
+        dropDown.selectionBackgroundColor = .clear
         dropDown.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
     
         dropDown.cellNib = UINib(nibName: "targetDateDropDownTblVCell", bundle: nil)
@@ -398,11 +398,17 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
             
             let lbPerWeek = self.targetDateArray[index].value ?? 0.5
             let output = lbPerWeek.truncatingRemainder(dividingBy: 1) == 0 ? "\(Int(lbPerWeek))" : "\(lbPerWeek)"
-//            let gain_loseStatus = ""
+            var weightUnit = ""
+            
+            if let text = self.WeightTxtF.text?.lowercased(), text.contains("kg") {
+                weightUnit = "kg"
+            } else {
+                weightUnit = "lb"
+            }
             if self.SuggestedData.dataPerWeek?[index].tar == "Lose"{
-                cell.lbPerWeekLbl.text = "You'll lose \(output)lb per week"
+                cell.lbPerWeekLbl.text = "You'll lose \(output) \(weightUnit)/week"
             }else{
-                cell.lbPerWeekLbl.text = "You'll gain \(output)lb per week"
+                cell.lbPerWeekLbl.text = "You'll gain \(output) \(weightUnit)/week"
             }
             
             
