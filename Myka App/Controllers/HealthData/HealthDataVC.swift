@@ -201,6 +201,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
     
     
     @IBAction func heightBtn(_ sender: UIButton) {
+        
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "HeightPickerVC") as! HeightPickerVC
         
@@ -234,7 +235,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
         let vc = storyboard.instantiateViewController(withIdentifier: "WeightPickerVC") as! WeightPickerVC
         vc.Weight = self.WeightTxtF.text ?? ""
         vc.comesfromWeight = true
-     print(self.WeightTxtF.text?.lowercased() ?? "")
+       print(self.WeightTxtF.text?.lowercased() ?? "")
         if (self.WeightTxtF.text?.lowercased() ?? "").contains(s: "kg"){
             vc.isPoundsSelected = false
         }else{

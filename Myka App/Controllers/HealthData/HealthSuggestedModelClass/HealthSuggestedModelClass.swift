@@ -35,6 +35,7 @@ struct HealthSuggestedData: Codable {
     var targetWeightType, heightType: String?
     var calories: Int?
     var isCaloriesSliderMoves:Bool? = false
+    var isCaloriesSliderMovesForheadsUp:Bool? = false
     var isfatSliderMoves:Bool? = false
     var isCarbSliderMoves:Bool? = false
     var isProtienliderMoves:Bool? = false

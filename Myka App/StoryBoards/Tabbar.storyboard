@@ -10349,7 +10349,7 @@ OFF My-Kai. </string>
                             <rect key="frame" x="35" y="94.666666666666686" width="297" height="478.00000000000006"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add another meal type" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oeo-4l-nPj">
-                                    <rect key="frame" x="39.666666666666671" y="15" width="217.66666666666663" height="25"/>
+                                    <rect key="frame" x="57.000000000000014" y="15" width="183.33333333333337" height="25"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="25.329999999999998" id="DZH-lG-i5i"/>
                                     </constraints>

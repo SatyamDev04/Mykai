@@ -43,6 +43,8 @@ class NutritionGoalVC: UIViewController {
     
     private var isCaloriesSliderMoves: Bool = false
     var currentSlider = ""
+    var infoLableTxt = ""
+    var currentDropDownTxt = ""
     let dropDown = DropDown()
 //    if self.DropDownTxtF.text ?? "" == "Custom" {
 //        if view.viewWithTag(110)?.isHidden = true
@@ -120,11 +122,15 @@ class NutritionGoalVC: UIViewController {
 
         if self.heighProtine == ""{
             self.DropDownTxtF.text = "Balanced"
+            self.currentDropDownTxt = "Balanced"
             self.infoLbl.text = "Supports overall health"
+            self.infoLableTxt = "Supports overall health"
         }else{
             self.DropDownTxtF.text = self.heighProtine
+            self.currentDropDownTxt = self.heighProtine
             if let index = macroTypeDataArr.firstIndex(where: {$0.name == self.heighProtine}){
                 self.infoLbl.text = macroTypeDataArr[index].desc
+                self.infoLableTxt = macroTypeDataArr[index].desc
                     if self.DropDownTxtF.text ?? "" == "Custom" {
                         view.viewWithTag(110)?.isHidden = true
                     }else{
@@ -157,7 +163,7 @@ class NutritionGoalVC: UIViewController {
     @objc func CaloriessliderValueChanged(_ sender: UISlider) {
          let currentValue = sender.value
           print("Slider value changing: \(currentValue)")
-        self.infoLbl.text = "Create your own customization"
+       // self.infoLbl.text = "Create your own customization"
         self.CaloriesSliderLbl.text = "\(Int(currentValue))"
         self.UpdateallSliderData(calories: Int(currentValue))
         self.currentSlider = "calorie"
@@ -172,19 +178,19 @@ class NutritionGoalVC: UIViewController {
 
         let isSliderMoved = !(self.SuggestedData.isCaloriesSliderMoves ?? false)
 
-        // If current value is below 75% or above 115% → Show Heads Up popup
-        if currentValue < lowerThreshold || currentValue > upperThreshold {
+      
+        if (currentValue < lowerThreshold || currentValue > upperThreshold) && isSliderMoved  {
             self.headsupPopupView.isHidden = false
             self.CustomCaloriesPopupView.isHidden = true
             print("Heads Up Popup Shown")
         }
-        // If within the range and slider moved → Show Custom Calories popup
+     
         else if isSliderMoved {
             self.headsupPopupView.isHidden = true
             self.CustomCaloriesPopupView.isHidden = false
             print("Custom Calories Popup Shown")
         }
-        // In range, but slider not moved → No popup
+    
         else {
             self.headsupPopupView.isHidden = true
             self.CustomCaloriesPopupView.isHidden = true
@@ -217,15 +223,13 @@ class NutritionGoalVC: UIViewController {
           let currentValue = sender.value
           print("Slider value: \(currentValue)")
 
-        // divide by 9
+        
         let sel: Double = Double(currentValue)
         let total: Double = 100
         let percentage = Int((sel / total) * 100)
         
         self.SuggestedData.macroPer?.fat = percentage
         self.fatPercentageLbl.text = "\(percentage)%"
-        self.DropDownTxtF.text = "Custom"
-        self.infoLbl.text = "Create your own customization"
         view.viewWithTag(110)?.isHidden = true
         let val = calculateGram(calorieTarget: self.SuggestedData.calories ?? 0, percentage: percentage, divide: 9)
             self.FatSliderLbl.text = "(\(val)g)"
@@ -249,7 +253,7 @@ class NutritionGoalVC: UIViewController {
           let currentValue = sender.value
           print("Slider value: \(currentValue)")
 
-        // divide by 4
+     
         let sel: Double = Double(currentValue)
         let total: Double = 100
         let percentage = Int((sel / total) * 100)
@@ -258,8 +262,7 @@ class NutritionGoalVC: UIViewController {
        
         self.carbsPercentageLbl.text = "\(percentage)%"
         view.viewWithTag(110)?.isHidden = true
-        self.DropDownTxtF.text = "Custom"
-        self.infoLbl.text = "Create your own customization"
+
         let val = calculateGram(calorieTarget: self.SuggestedData.calories ?? 0, percentage: percentage, divide: 4)
             self.CarbsSliderLbl.text = "(\(val)g)"
         
@@ -290,8 +293,8 @@ class NutritionGoalVC: UIViewController {
 
         self.protienPercentageLbl.text = "\(percentage)%"
         view.viewWithTag(110)?.isHidden = true
-        self.DropDownTxtF.text = "Custom"
-        self.infoLbl.text = "Create your own customization"
+//        self.DropDownTxtF.text = "Custom"
+//        self.infoLbl.text = "Create your own customization"
         
         let val = calculateGram(calorieTarget: self.SuggestedData.calories ?? 0, percentage: percentage, divide: 4)
             self.ProteinSliderLbl.text = "(\(val)g)"
@@ -342,6 +345,7 @@ class NutritionGoalVC: UIViewController {
             print("Heads Up: Not triggered")
         }
     }
+    
    
     func calculateGram(calorieTarget: Int, percentage: Int, divide: Int) -> Int {
         let totalGram = (Double(calorieTarget) * Double(percentage) / 100.0) / Double(divide)
@@ -383,7 +387,9 @@ class NutritionGoalVC: UIViewController {
           guard let self = self else { return }
           print(index)
             self.DropDownTxtF.text = item
+            self.currentDropDownTxt = item
             self.infoLbl.text = macroTypeDataArr[index].desc
+            infoLableTxt = macroTypeDataArr[index].desc
             view.viewWithTag(110)?.isHidden = false
             if item != "Custom"{
                 self.SuggestedData.isCaloriesSliderMoves = false
@@ -419,6 +425,10 @@ class NutritionGoalVC: UIViewController {
     }
     
     @IBAction func UpdateBtn(_ sender: UIButton) {
+        guard CaloriesSlider.value >= 1200 else {
+            showToast("Alert: Minimum 1200 calories required.")
+            return
+        }
         print(Int(CaloriesSlider.value),"calories")
         self.backAction(self.DropDownTxtF.text!, Int(CaloriesSlider.value), Int(FatSlider.value), Int(CarbsSlider.value), Int(ProteinSlider.value), self.SuggestedData, self.SuggestedData.isCaloriesSliderMoves ?? false)
         self.navigationController?.popViewController(animated: true)
@@ -427,6 +437,7 @@ class NutritionGoalVC: UIViewController {
    
     @IBAction func calcelBtn(_ sender: UIButton) {
         self.headsupPopupView.isHidden = true
+        
         switch self.currentSlider{
         case "fat" :
             SuggestedData.isfatSliderMoves = false
@@ -445,14 +456,21 @@ class NutritionGoalVC: UIViewController {
             self.SuggestedData.isCaloriesSliderMoves = false
             self.setData(list: uNchangedSuggestedData)
         }
-       
+        self.infoLbl.text  = self.infoLableTxt
+        self.DropDownTxtF.text = self.currentDropDownTxt
+         view.viewWithTag(110)?.isHidden = false
+        
+
     }
     
    
     @IBAction func RestorePlanBtn(_ sender: UIButton) {
         self.SuggestedData.isCaloriesSliderMoves = false
-         self.setData(list: uNchangedSuggestedData)
+        self.resetCalorie(list: uNchangedSuggestedData)
         self.CustomCaloriesPopupView.isHidden = true
+        self.infoLbl.text  = self.infoLableTxt
+        self.DropDownTxtF.text = self.currentDropDownTxt
+        view.viewWithTag(110)?.isHidden = false
     }
     
     @IBAction func ProceedAnywayBtn(_ sender: UIButton) {
@@ -461,6 +479,7 @@ class NutritionGoalVC: UIViewController {
         view.viewWithTag(110)?.isHidden = true
         self.infoLbl.text = "Create your own customization"
         self.CustomCaloriesPopupView.isHidden = true
+        view.viewWithTag(110)?.isHidden = true
     }
     
     
@@ -484,6 +503,7 @@ class NutritionGoalVC: UIViewController {
         
         self.DropDownTxtF.text = "Custom"
         self.infoLbl.text = "Create your own customization"
+        view.viewWithTag(110)?.isHidden = true
         
     }
     
@@ -583,6 +603,9 @@ extension NutritionGoalVC {
         self.CaloriesSlider.value = Float(list.calories ?? 0)
         self.CaloriesSliderLbl.text = "\(Int(list.calories ?? 0))"
         self.SuggestedData.calories = list.calories
+        self.resetProtien(list: list)
+        self.resetCarb(list: list)
+        self.resetFat(list: list)
     }
     
     
