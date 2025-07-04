@@ -250,6 +250,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
             }else{
                 self.SuggestedData.weightType = "kg"
             }
+            self.targetWeightTxtF.text = ""
             if self.DOBTxtF.text != "" && self.HeightTxtF.text! != "" && self.WeightTxtF.text! != "" && self.targetWeightTxtF.text! != "" && self.LevelTxtF.text! != ""{
                 self.calculateGoalsBtnO.isUserInteractionEnabled = true
                 self.calculateGoalsBtnO.backgroundColor = #colorLiteral(red: 0, green: 0.786260426, blue: 0.4870494008, alpha: 1)
