@@ -395,27 +395,24 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
 
                     cell.EstimateLbl.isHidden = false
                     cell.EstimateLbl.text = estimatedText
-                    
-//                    textTimeLabel.isHidden = false
-//                    textTimeLabel.text = estimatedText
                 }
             
             let lbPerWeek = self.targetDateArray[index].value ?? 0.5
             let output = lbPerWeek.truncatingRemainder(dividingBy: 1) == 0 ? "\(Int(lbPerWeek))" : "\(lbPerWeek)"
             
-            var weightUnit = ""
+//            var weightUnit = ""
             
-            if let text = self.WeightTxtF.text?.lowercased(), text.contains("kg") {
-                weightUnit = "kg"
-            } else {
-                weightUnit = "lb"
-            }
-            if self.SuggestedData.dataPerWeek?[index].tar == "Lose"{
-                cell.lbPerWeekLbl.text = "You'll lose \(output) \(weightUnit)/week"
-            }else{
-                cell.lbPerWeekLbl.text = "You'll gain \(output) \(weightUnit)/week"
-            }
-            
+//            if let text = self.WeightTxtF.text?.lowercased(), text.contains("kg") {
+//                weightUnit = "kg"
+//            } else {
+//                weightUnit = "lb"
+//            }
+//            if self.SuggestedData.dataPerWeek?[index].tar == "Lose"{
+//                cell.lbPerWeekLbl.text = "You'll lose \(output) \(weightUnit)/week"
+//            }else{
+//                cell.lbPerWeekLbl.text = "You'll gain \(output) \(weightUnit)/week"
+//            }
+            cell.lbPerWeekLbl.text = "You'll lose \(output) lb/week"
             
             if self.targetDateArray[index].isSelected == 1{
                 cell.BgV.backgroundColor = #colorLiteral(red: 0.9058823529, green: 1, blue: 0.9568627451, alpha: 1)
