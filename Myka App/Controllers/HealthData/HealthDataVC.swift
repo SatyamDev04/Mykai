@@ -245,6 +245,11 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
         vc.backAction = { str in
             self.WeightTxtF.text = str
             self.SuggestedData.weight = str
+            if str.contains(s: "lb"){
+                self.SuggestedData.weightType = "lb"
+            }else{
+                self.SuggestedData.weightType = "kg"
+            }
             if self.DOBTxtF.text != "" && self.HeightTxtF.text! != "" && self.WeightTxtF.text! != "" && self.targetWeightTxtF.text! != "" && self.LevelTxtF.text! != ""{
                 self.calculateGoalsBtnO.isUserInteractionEnabled = true
                 self.calculateGoalsBtnO.backgroundColor = #colorLiteral(red: 0, green: 0.786260426, blue: 0.4870494008, alpha: 1)
@@ -273,6 +278,12 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
         vc.backAction = { str in
             self.targetWeightTxtF.text = str
             self.SuggestedData.targetWeight = str
+            if str.contains(s: "lb"){
+                self.SuggestedData.targetWeightType = "lb"
+            }else{
+                self.SuggestedData.targetWeightType = "kg"
+            }
+            
             if self.DOBTxtF.text != "" && self.HeightTxtF.text! != "" && self.WeightTxtF.text! != "" && self.targetWeightTxtF.text! != "" && self.LevelTxtF.text! != ""{
                 self.calculateGoalsBtnO.isUserInteractionEnabled = true
                 self.calculateGoalsBtnO.backgroundColor = #colorLiteral(red: 0, green: 0.786260426, blue: 0.4870494008, alpha: 1)
@@ -999,7 +1010,10 @@ extension HealthDataVC {
     
     func Api_To_Get_NutritionGoalSuggestionData(old:Bool? = false){
             var params = [String: Any]()
-             
+        guard let tf = self.targetWeightTxtF.text, !tf.isEmpty else {
+            self.showAlert(for: "Please enter your target weight")
+            return
+        }
             let val = self.HeightTxtF.text!.removeSpaces
             let components = val.split { $0 == "'" || $0 == "\"" }
             if components.count == 2,
@@ -1018,19 +1032,21 @@ extension HealthDataVC {
             }
             
         let weigthStr = self.SuggestedData.weight?.removeSpaces ?? ""
-            if weigthStr.contains(s: "lb"){
+        if (self.SuggestedData.weightType ?? "").contains(s: "lb"){
                 let fWeight = weigthStr.replace(string: "lb", withString: "")
                 params["weight"] = fWeight
                 params["weight_type"] = "lb"
+                params["target_weight_type"] = "lb"
             }else{
                 let fWeight = weigthStr.replace(string: "kg", withString: "")
                 params["weight"] = fWeight
                 params["weight_type"] = "Kilograms"
+                params["target_weight_type"] = "Kilograms"
             }
             
             
         let targetWeigthStr = self.SuggestedData.targetWeight?.removeSpaces ?? ""
-            if targetWeigthStr.contains(s: "lb"){
+            if (self.SuggestedData.targetWeightType ?? "").contains(s: "lb"){
                 let tWeight = targetWeigthStr.replace(string: "lb", withString: "")
                 params["target_weight"] = tWeight
                 params["target_weight_type"] = "lb"
@@ -1039,6 +1055,8 @@ extension HealthDataVC {
                 params["target_weight"] = tWeight
                 params["target_weight_type"] = "Kilograms"//, lb
             }
+        
+        
              params["activityLevel"] = self.LevelTxtF.text ?? ""
         
      //   MARK: - Deepak ask to send in mm/dd/yyyy but show on tf dd/mm/yyyy
@@ -1126,7 +1144,7 @@ extension HealthDataVC {
                             self.view.viewWithTag(102)?.isHidden = true
                            
                             let targetWeight = self.SuggestedData.targetWeight ?? ""
-                            let targetWeight_type = self.SuggestedData.targetWeightType ?? ""
+                            let targetWeight_type = self.SuggestedData.weightType ?? ""
                           
                             if targetWeight_type == "Kilograms"{
                                 if targetWeight != ""{
@@ -1141,6 +1159,7 @@ extension HealthDataVC {
                                     self.targetWeightTxtF.text = ""
                                 }
                             }
+                            
                             self.targetDateArray = self.SuggestedData.dataPerWeek ?? []
                             let target = self.SuggestedData.target ?? ""
                             self.targetWeightMsgLbl.text = ""
