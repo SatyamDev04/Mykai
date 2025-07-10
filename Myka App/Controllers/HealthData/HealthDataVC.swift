@@ -74,7 +74,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
     
     var isComesFromPlanTab = false
     
-    var levelDescArray = ["Little to no exercise (desk job, minimal walking).", "Light exercise or sports 1–3 days/week (casual walks, yoga).", "Moderate exercise 3–5 days/week (gym workouts, cycling).", "Hard exercise 6–7 days/week or a physically demanding job."]
+    var levelDescArray = ["Little to no exercise.\n(desk job, minimal walking)", "Light exercise or sports 1–3 days/week.\n(casual walks, yoga)", "Moderate exercise 3–5 days/week.\n(gym workouts, cycling)", "Hard exercise 6–7 days/week\na physically demanding job."]
     
     var SuggestedData = HealthSuggestedData()
     
@@ -159,7 +159,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
                if DOBTxtF.isFirstResponder {
                    dateFormatter.dateStyle = .medium
                    dateFormatter.timeStyle = .none
-                   dateFormatter.dateFormat = "dd/MM/yyyy"
+                   dateFormatter.dateFormat = "MM/dd/yyyy"
                    DOBTxtF.text = dateFormatter.string(from: datePicker.date)
                    
                    view.endEditing(true)
@@ -185,7 +185,9 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
         self.MaleBtnO.isSelected = true
         self.FeMaleImg.image = UIImage(named: "Ellipse 96")
         self.FeMaleBtnO.isSelected = false
-        Api_To_Get_NutritionGoalSuggestionData()
+        if self.DOBTxtF.text != "" && self.HeightTxtF.text! != "" && self.WeightTxtF.text! != "" && self.targetWeightTxtF.text! != "" && self.LevelTxtF.text! != ""{
+            Api_To_Get_NutritionGoalSuggestionData()
+        }
         view.endEditing(true)
     }
     
@@ -195,7 +197,9 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
         self.FeMaleBtnO.isSelected = true
         self.MaleImg.image = UIImage(named: "Ellipse 96")
         self.MaleBtnO.isSelected = false
-        Api_To_Get_NutritionGoalSuggestionData()
+        if self.DOBTxtF.text != "" && self.HeightTxtF.text! != "" && self.WeightTxtF.text! != "" && self.targetWeightTxtF.text! != "" && self.LevelTxtF.text! != ""{
+            Api_To_Get_NutritionGoalSuggestionData()
+        }
         view.endEditing(true)
     }
     
@@ -412,19 +416,16 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
             let lbPerWeek = self.targetDateArray[index].value ?? 0.5
             let output = lbPerWeek.truncatingRemainder(dividingBy: 1) == 0 ? "\(Int(lbPerWeek))" : "\(lbPerWeek)"
             
-//            var weightUnit = ""
+            var weightUnit = ""
             
-//            if let text = self.WeightTxtF.text?.lowercased(), text.contains("kg") {
-//                weightUnit = "kg"
-//            } else {
-//                weightUnit = "lb"
-//            }
-//            if self.SuggestedData.dataPerWeek?[index].tar == "Lose"{
-//                cell.lbPerWeekLbl.text = "You'll lose \(output) \(weightUnit)/week"
-//            }else{
-//                cell.lbPerWeekLbl.text = "You'll gain \(output) \(weightUnit)/week"
-//            }
-            cell.lbPerWeekLbl.text = "You'll lose \(output) lb/week"
+            if let text = self.WeightTxtF.text?.lowercased(), text.contains("kg") {
+                weightUnit = "kg"
+            } else {
+                weightUnit = "lb"
+            }
+        
+            cell.lbPerWeekLbl.text = "You'll \((self.SuggestedData.dataPerWeek?[index].tar ?? "").lowercased()) \(output) \(weightUnit)/week"
+            
             
             if self.targetDateArray[index].isSelected == 1{
                 cell.BgV.backgroundColor = #colorLiteral(red: 0.9058823529, green: 1, blue: 0.9568627451, alpha: 1)
@@ -630,27 +631,31 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
     }
     
     func simplifyHeight(_ heightString: String) -> String {
-        let trimmed = heightString.trimmingCharacters(in: .whitespaces)
-        
-        // Match pattern: e.g. "4' 11\""
+        let trimmed = heightString.trimmingCharacters(in: .whitespacesAndNewlines)
+
+       
+        guard !trimmed.isEmpty else {
+            return "5' 5\""
+        }
+
         let pattern = #"(\d+)' ?(\d+)""#
         let regex = try? NSRegularExpression(pattern: pattern)
-        
+
         if let match = regex?.firstMatch(in: trimmed, range: NSRange(trimmed.startIndex..., in: trimmed)),
            let feetRange = Range(match.range(at: 1), in: trimmed),
            let inchRange = Range(match.range(at: 2), in: trimmed) {
-            
+
             let feet = trimmed[feetRange]
             let inches = trimmed[inchRange]
-            
+
             if inches == "0" {
-                return "\(feet)'"  // Simplify to feet only
+                return "\(feet)'"
             } else {
                 return "\(feet)' \(inches)\""
             }
         }
-        
-        return trimmed // Return as-is if not matching expected format
+
+        return "5' 5\""
     }
     
 }
@@ -702,7 +707,7 @@ extension HealthDataVC {
                         inputFormatter.dateFormat = "MM/dd/yyyy"
 
                         let outputFormatter = DateFormatter()
-                        outputFormatter.dateFormat = "dd/MM/yyyy"
+                        outputFormatter.dateFormat = "MM/dd/yyyy"
 
                         if let date = inputFormatter.date(from: dob) {
                             self.DOBTxtF.text = outputFormatter.string(from: date)
@@ -865,6 +870,8 @@ extension HealthDataVC {
     }
     
     func Api_To_Upload_HealthData(){
+        
+         
         var params = [String: Any]()
          
         
@@ -910,7 +917,7 @@ extension HealthDataVC {
         }
         if let text = self.DOBTxtF.text, !text.isEmpty {
             let displayFormatter = DateFormatter()
-            displayFormatter.dateFormat = "dd/MM/yyyy"
+            displayFormatter.dateFormat = "MM/dd/yyyy"
             
             let sendFormatter = DateFormatter()
             sendFormatter.dateFormat = "MM/dd/yyyy"
@@ -941,7 +948,11 @@ extension HealthDataVC {
             params["old_macro"] = "\(self.SuggestedData.macros ?? "")"
             params["target"] = "\(self.SuggestedData.target ?? "")"
         }else{
-            targetWeigthStr = self.targetWeightTxtF.text!.removeSpaces
+            guard let tf = self.targetWeightTxtF.text, !tf.isEmpty else {
+                       self.showAlert(for: "Please enter your target weight")
+                       return
+                   }
+            targetWeigthStr = tf.removeSpaces
             params["old_macro"] = "\(self.SuggestedData.old_macro ?? "")"
             params["target"] = self.targetDateDropdownLbl.text!
         }
@@ -1011,10 +1022,8 @@ extension HealthDataVC {
     
     func Api_To_Get_NutritionGoalSuggestionData(old:Bool? = false){
             var params = [String: Any]()
-        guard let tf = self.targetWeightTxtF.text, !tf.isEmpty else {
-            self.showAlert(for: "Please enter your target weight")
-            return
-        }
+
+        
             let val = self.HeightTxtF.text!.removeSpaces
             let components = val.split { $0 == "'" || $0 == "\"" }
             if components.count == 2,
@@ -1064,7 +1073,7 @@ extension HealthDataVC {
         
             if let text = self.DOBTxtF.text, !text.isEmpty {
                 let displayFormatter = DateFormatter()
-                displayFormatter.dateFormat = "dd/MM/yyyy"
+                displayFormatter.dateFormat = "MM/dd/yyyy"
                 
                 let sendFormatter = DateFormatter()
                 sendFormatter.dateFormat = "MM/dd/yyyy"

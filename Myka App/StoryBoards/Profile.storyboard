@@ -3266,7 +3266,7 @@ to discard changes.</string>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GWK-RW-Dfy">
-                            <rect key="frame" x="30" y="230" width="316" height="207.33333333333337"/>
+                            <rect key="frame" x="30" y="177.33333333333334" width="316" height="312.33333333333326"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Heads up" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hb9-XK-Cgp">
                                     <rect key="frame" x="113.66666666666666" y="14.999999999999998" width="89" height="25.333333333333329"/>
@@ -3277,14 +3277,15 @@ to discard changes.</string>
                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Informs user the change is at their own risk." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ymd-XU-1yN">
-                                    <rect key="frame" x="15" y="55.333333333333314" width="286" height="42"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ymd-XU-1yN">
+                                    <rect key="frame" x="15" y="55.333333333333314" width="286" height="147"/>
+                                    <string key="text">The calorie goal you’ve entered is outside recommended limits and beyond what’s considered safe. Making extreme changes is at your own risk and may affect your health. If you’re unsure, please speak with a doctor or dietitian before continuing.</string>
                                     <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="15"/>
                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="anx-cK-aYh">
-                                    <rect key="frame" x="15" y="137.33333333333331" width="286" height="50"/>
+                                    <rect key="frame" x="15" y="242.33333333333337" width="286" height="50"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sY5-f4-jGb">
                                             <rect key="frame" x="0.0" y="0.0" width="138.66666666666666" height="50"/>
@@ -3367,7 +3368,7 @@ to discard changes.</string>
                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You’ev adjusted your daily calories from my recommendation. Your weight goal timeline can no longer be guaranteed." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QbW-R4-Qku">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You’ev adjusted your daily calories from my recommendation. Your weight goal timeline can no longer be guaranteed." textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QbW-R4-Qku">
                                     <rect key="frame" x="15" y="55.333333333333314" width="286" height="84"/>
                                     <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="15"/>
                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -7608,7 +7609,7 @@ dHdlYWsgaXQgbWFudWFsbHkgbGF0ZXIuA
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8IB-Ia-4h8">
                                                                 <rect key="frame" x="0.0" y="35" width="315" height="50"/>
                                                                 <subviews>
-                                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="dd/mm/yyyy" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zyQ-B7-utb">
+                                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="mm/dd/yyyy" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zyQ-B7-utb">
                                                                         <rect key="frame" x="30" y="0.0" width="270" height="50"/>
                                                                         <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="16"/>
                                                                         <textInputTraits key="textInputTraits"/>
@@ -8090,10 +8091,8 @@ dHdlYWsgaXQgbWFudWFsbHkgbGF0ZXIuA
                                                                             </userDefinedRuntimeAttribute>
                                                                         </userDefinedRuntimeAttributes>
                                                                     </view>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y82-Ls-LWf">
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y82-Ls-LWf">
                                                                         <rect key="frame" x="0.0" y="95" width="315" height="58.666666666666657"/>
-                                                                        <string key="text">A relaxed pace with plenty of flexibility.
-Use 0.5lb/ week to estimate the users estimated time to reach target weight</string>
                                                                         <fontDescription key="fontDescription" name="Sarabun-Regular" family="Sarabun" pointSize="15"/>
                                                                         <color key="textColor" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
                                                                         <nil key="highlightedColor"/>

@@ -152,12 +152,19 @@ class NutritionGoalVC: UIViewController {
        // self.Api_To_Get_NutritionGoalData()
     }
     @objc func FatsliderDidEnd(_ sender: UISlider) {
+        
+        self.DropDownTxtF.text = "Custom"
+        self.infoLbl.text = "Create your own customization"
         evaluateHeadsUpConditions(currentSilder: "fat")
     }
     @objc func carbsliderDidEnd(_ sender: UISlider) {
+        self.DropDownTxtF.text = "Custom"
+        self.infoLbl.text = "Create your own customization"
         evaluateHeadsUpConditions(currentSilder: "carb")
     }
     @objc func protiensliderDidEnd(_ sender: UISlider) {
+        self.DropDownTxtF.text = "Custom"
+        self.infoLbl.text = "Create your own customization"
         evaluateHeadsUpConditions(currentSilder: "protien")
     }
     @objc func CaloriessliderValueChanged(_ sender: UISlider) {
