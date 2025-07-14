@@ -17,39 +17,24 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var FeMaleImg: UIImageView!
     @IBOutlet weak var FeMaleBtnO: UIButton!
-    
     @IBOutlet weak var DOBTxtF: UITextField!
-    
     @IBOutlet weak var HeightTxtF: UITextField!
-  
-    
     @IBOutlet weak var WeightTxtF: UITextField!
-    
     @IBOutlet weak var targetWeightTxtF: UITextField!
     @IBOutlet weak var targetWeightBtnO: UIButton!
-    
     @IBOutlet weak var targetDateDropdownLbl: UITextField!
     @IBOutlet weak var targetDateDropdownBtnO: UIButton!
-    
-     
     @IBOutlet weak var LevelTxtF: UITextField!
-    
     @IBOutlet weak var NutritionGoalBgV: UIView!
-
     @IBOutlet weak var targetWeightMsgLbl: UILabel!
-    
-    
     @IBOutlet weak var targetDateInfoLbl: UILabel!
-    
     @IBOutlet weak var EditNutriitionBtnO: UIButton!
-    
     @IBOutlet weak var DoneBtnO: UIButton!
     @IBOutlet weak var calculateGoalsBtnO: UIButton!
     @IBOutlet weak var CalTxtF: UITextField!
     @IBOutlet weak var FatTxtF: UITextField!
     @IBOutlet weak var CarbsTxtF: UITextField!
     @IBOutlet weak var ProtienTxtF: UITextField!
-    
     @IBOutlet var disclaimerPopupView: UIView!
     @IBOutlet weak var continueBtnO: UIButton!
     @IBOutlet weak var checkboxBtnO: UIButton!
@@ -74,7 +59,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
     
     var isComesFromPlanTab = false
     
-    var levelDescArray = ["Little to no exercise.\n(desk job, minimal walking)", "Light exercise or sports 1–3 days/week.\n(casual walks, yoga)", "Moderate exercise 3–5 days/week.\n(gym workouts, cycling)", "Hard exercise 6–7 days/week\na physically demanding job."]
+    var levelDescArray = ["Little to no exercise.\n(desk job, minimal walking)", "Light exercise or sports 1–3 days/week.\n(casual walks, yoga)", "Moderate exercise 3–5 days/week.\n(gym workouts, cycling)", "Hard exercise 6–7 days/week\n(a physically demanding job)"]
     
     var SuggestedData = HealthSuggestedData()
     
@@ -86,7 +71,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
         self.disclaimerPopupView.frame = self.view.bounds
         self.view.addSubview(self.disclaimerPopupView)
         self.disclaimerPopupView.isHidden = true
-        
+        self.MaleBtnO.isSelected = true
         continueBtnO.setBackgroundImage(UIImage(named: "ButtonGray"), for: .normal)
         continueBtnO.isUserInteractionEnabled = false
         
@@ -237,111 +222,159 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
     @IBAction func weightBtn(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "WeightPickerVC") as! WeightPickerVC
-        vc.Weight = self.WeightTxtF.text ?? ""
-        vc.comesfromWeight = true
-       print(self.WeightTxtF.text?.lowercased() ?? "")
-        if (self.WeightTxtF.text?.lowercased() ?? "").contains(s: "kg"){
-            vc.isPoundsSelected = false
+     var  inputWeight = "154.3 lb"
+        if MaleBtnO.isSelected{
+            inputWeight = self.WeightTxtF.text?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() ?? "154.3 lb"
+            vc.Weight = inputWeight.isEmpty ? "154.3 lb" : inputWeight
         }else{
+            inputWeight = self.WeightTxtF.text?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() ?? "132.3 lb"
+            vc.Weight = inputWeight.isEmpty ? "132.3 lb" : inputWeight
+            
+        }
+        vc.comesfromWeight = true
+        
+        print("Selected Weight:", inputWeight)
+        
+        if inputWeight.contains("kg") {
+            vc.isPoundsSelected = false
+        } else {
             vc.isPoundsSelected = true
         }
-        
+
         vc.backAction = { str in
             self.WeightTxtF.text = str
             self.SuggestedData.weight = str
-            if str.contains(s: "lb"){
+            
+            if str.lowercased().contains("lb") {
                 self.SuggestedData.weightType = "lb"
-            }else{
+            } else {
                 self.SuggestedData.weightType = "kg"
             }
+            
             self.targetWeightTxtF.text = ""
-            if self.DOBTxtF.text != "" && self.HeightTxtF.text! != "" && self.WeightTxtF.text! != "" && self.targetWeightTxtF.text! != "" && self.LevelTxtF.text! != ""{
+            
+            if !(self.DOBTxtF.text?.isEmpty ?? true) &&
+                !(self.HeightTxtF.text?.isEmpty ?? true) &&
+                !(self.WeightTxtF.text?.isEmpty ?? true) &&
+                !(self.targetWeightTxtF.text?.isEmpty ?? true) &&
+                !(self.LevelTxtF.text?.isEmpty ?? true) {
+                
                 self.calculateGoalsBtnO.isUserInteractionEnabled = true
                 self.calculateGoalsBtnO.backgroundColor = #colorLiteral(red: 0, green: 0.786260426, blue: 0.4870494008, alpha: 1)
-                self.targetWeightTxtF.text = ""
-              //  self.Api_To_Get_NutritionGoalSuggestionData()
-                
             }
         }
+
         self.present(vc, animated: true, completion: nil)
     }
+    
     
     @IBAction func targetWeightBtn(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "WeightPickerVC") as! WeightPickerVC
         vc.comesfromWeight = false
-        vc.Weight = self.WeightTxtF.text!
-        vc.targetWeight = self.targetWeightTxtF.text ?? ""
+
+        let weightText = self.WeightTxtF.text?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() ?? "153.3 lb"
+        vc.Weight = weightText
         
-        if (self.WeightTxtF.text?.lowercased() ?? "").contains(s: "kg"){
-            vc.isPoundsSelected = false
-        }else{
-            vc.isPoundsSelected = true
+        var unit = "lb"
+        var numericPart: Double = 154.3
+
+        if let match = weightText.range(of: #"[\d.]+(?=\s*(kg|lb))"#, options: .regularExpression) {
+            let numberStr = String(weightText[match])
+            numericPart = Double(numberStr) ?? 70.0
         }
-        
-        print(self.WeightTxtF.text?.lowercased() ?? "")
+
+        if weightText.contains("kg") {
+            unit = "kg"
+            vc.isPoundsSelected = false
+            numericPart += 0.5
+        } else {
+            unit = "lb"
+            vc.isPoundsSelected = true
+            numericPart += 1.0
+        }
+
+        vc.targetWeight = String(format: "%.1f %@", numericPart, unit)
+
+        print("Current:", weightText, "→ Target:", vc.targetWeight )
+
         vc.backAction = { str in
             self.targetWeightTxtF.text = str
             self.SuggestedData.targetWeight = str
-            if str.contains(s: "lb"){
+
+            if str.lowercased().contains("lb") {
                 self.SuggestedData.targetWeightType = "lb"
-            }else{
+            } else {
                 self.SuggestedData.targetWeightType = "kg"
             }
-            
-            if self.DOBTxtF.text != "" && self.HeightTxtF.text! != "" && self.WeightTxtF.text! != "" && self.targetWeightTxtF.text! != "" && self.LevelTxtF.text! != ""{
+
+            if !(self.DOBTxtF.text?.isEmpty ?? true) &&
+               !(self.HeightTxtF.text?.isEmpty ?? true) &&
+               !(self.WeightTxtF.text?.isEmpty ?? true) &&
+               !(self.targetWeightTxtF.text?.isEmpty ?? true) &&
+               !(self.LevelTxtF.text?.isEmpty ?? true) {
                 self.calculateGoalsBtnO.isUserInteractionEnabled = true
                 self.calculateGoalsBtnO.backgroundColor = #colorLiteral(red: 0, green: 0.786260426, blue: 0.4870494008, alpha: 1)
                 self.Api_To_Get_NutritionGoalSuggestionData()
             }
         }
+
         self.present(vc, animated: true, completion: nil)
     }
     
     @IBAction func LevelDropDownBtn(_ sender: UIButton) {
         view.endEditing(true)
-         
-        LevelDropDown.dataSource = ["Sedentary","Lightly active","Moderately active", "Very active"]
-  
+
+        LevelDropDown.dataSource = ["Sedentary", "Lightly active", "Moderately active", "Very active"]
         LevelDropDown.anchorView = sender
-          
-          let trailingSpace: CGFloat = 5
+
+        let trailingSpace: CGFloat = 5
         LevelDropDown.bottomOffset = CGPoint(x: -trailingSpace, y: sender.bounds.height)
         LevelDropDown.topOffset = CGPoint(x: -trailingSpace, y: -(LevelDropDown.anchorView?.plainView.bounds.height ?? 0))
         LevelDropDown.width = sender.frame.width + 10
         LevelDropDown.setupCornerRadius(10)
-          
-  
+
         LevelDropDown.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
         LevelDropDown.layer.shadowOpacity = 0
         LevelDropDown.layer.shadowRadius = 4
         LevelDropDown.layer.shadowOffset = CGSize(width: 0, height: 0)
         LevelDropDown.backgroundColor = .white
         LevelDropDown.cellHeight = 70
-        LevelDropDown.textFont = UIFont.systemFont(ofSize: 16)
-        
-       
+        LevelDropDown.textFont = UIFont(name: "Poppins-Medium", size: 16)!
+        LevelDropDown.textColor = #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)
         LevelDropDown.cellNib = UINib(nibName: "levelDropDownTblVCell", bundle: nil)
+
+     
         LevelDropDown.customCellConfiguration = { [weak self] (index: Index, item: String, cell: DropDownCell) in
-            guard let cell = cell as? levelDropDownTblVCell else { return }
-            guard let self = self else { return }
-            let desc = levelDescArray[index]
-            cell.descLbl.text = desc
+            guard let self = self,
+                  let customCell = cell as? levelDropDownTblVCell else { return }
+
+            let desc = self.levelDescArray[index]
+            customCell.descLbl.text = desc
+            customCell.optionLabel.textColor = #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)
+            if let selectedText = self.LevelTxtF.text, selectedText == item {
+                customCell.BGV.backgroundColor = #colorLiteral(red: 0.9058823529, green: 1, blue: 0.9568627451, alpha: 1)
+            } else {
+                customCell.BGV.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+            }
         }
-        
-        
+
         LevelDropDown.selectionAction = { [weak self] (index: Int, item: String) in
-          guard let self = self else { return }
-          print(index)
+            guard let self = self else { return }
             self.LevelTxtF.text = item
-             
-            if self.DOBTxtF.text != "" && self.HeightTxtF.text! != "" && self.WeightTxtF.text! != "" && self.targetWeightTxtF.text! != "" && self.LevelTxtF.text! != ""{
+
+            if !self.DOBTxtF.text!.isEmpty,
+               !self.HeightTxtF.text!.isEmpty,
+               !self.WeightTxtF.text!.isEmpty,
+               !self.targetWeightTxtF.text!.isEmpty,
+               !self.LevelTxtF.text!.isEmpty {
+
                 self.calculateGoalsBtnO.isUserInteractionEnabled = true
                 self.calculateGoalsBtnO.backgroundColor = #colorLiteral(red: 0, green: 0.786260426, blue: 0.4870494008, alpha: 1)
                 self.Api_To_Get_NutritionGoalSuggestionData()
             }
-              
-      }
+        }
+
         LevelDropDown.show()
     }
     
@@ -365,8 +398,8 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
         dropDown.backgroundColor = .white
         dropDown.cellHeight = 65
         dropDown.selectionBackgroundColor = .clear
-        dropDown.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-    
+        dropDown.textColor = #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)
+        dropDown.textFont = UIFont(name: "Poppins-Medium", size: 16)!
         dropDown.cellNib = UINib(nibName: "targetDateDropDownTblVCell", bundle: nil)
         dropDown.customCellConfiguration = { [weak self] (index: Index, item: String, cell: DropDownCell) in
             guard let cell = cell as? targetDateDropDownTblVCell else { return }
@@ -375,22 +408,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
             let newEstimatedDays = self.SuggestedData.dataPerWeek?[index].days ?? 0.0
             let estimatedDays = convertDaysToMonthsAndDays(totalDays: Int(newEstimatedDays))
             
-//            let estimatedDays = self.SuggestedData.time ?? 0
-//            let months = estimatedDays/30
-//            let days = estimatedDays % 30
-//            
-//            var estimatedText = "Estimated time: "
-//            
-//            if months > 0 {
-//                estimatedText += "\(months) \(months == 1 ? "month" : "months")"
-//            }
-//            
-//            if days > 0 {
-//                if months > 0 { estimatedText += " and " }
-//                estimatedText += "\(days) \(days == 1 ? "day" : "days")"
-//            }
-//            cell.EstimateLbl.text = estimatedText
-            
+
             if estimatedDays.months == 0 && estimatedDays.days == 0 {
                 cell.EstimateLbl.isHidden = false
                 cell.EstimateLbl.text = "Estimated time : " // or something like "No estimated time"
@@ -500,6 +518,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func continueBtn(_ sender: UIButton) {
+                
         self.disclaimerPopupView.isHidden = true
         self.checkboxBtnO.isSelected = false
         self.continueBtnO.setBackgroundImage(UIImage(named: "ButtonGray"), for: .normal)

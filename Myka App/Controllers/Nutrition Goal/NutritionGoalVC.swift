@@ -378,16 +378,23 @@ class NutritionGoalVC: UIViewController {
           dropDown.layer.shadowRadius = 4
           dropDown.layer.shadowOffset = CGSize(width: 0, height: 0)
           dropDown.backgroundColor = .white
-          dropDown.cellHeight = 50
-          dropDown.textFont = UIFont.systemFont(ofSize: 16)
-          dropDown.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+          dropDown.cellHeight = 60
+          dropDown.textFont = UIFont(name: "Poppins-Medium", size: 16)!
+          dropDown.textColor = #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)
  
         dropDown.cellNib = UINib(nibName: "levelDropDownTblVCell", bundle: nil)
+
         dropDown.customCellConfiguration = { [weak self] (index: Index, item: String, cell: DropDownCell) in
-            guard let cell = cell as? levelDropDownTblVCell else { return }
-            guard let self = self else { return }
-            let desc = macroTypeDataArr[index].desc
-            cell.descLbl.text = desc
+            guard let self = self,
+                  let customCell = cell as? levelDropDownTblVCell else { return }
+
+            let desc = self.macroTypeDataArr[index].desc
+            customCell.descLbl.text = desc
+            if let selectedText = self.DropDownTxtF.text, selectedText == item {
+                customCell.BGV.backgroundColor = #colorLiteral(red: 0.9058823529, green: 1, blue: 0.9568627451, alpha: 1)
+            } else {
+                customCell.BGV.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+            }
         }
         
         dropDown.selectionAction = { [weak self] (index: Int, item: String) in

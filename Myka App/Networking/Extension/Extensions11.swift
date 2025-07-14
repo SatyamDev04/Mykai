@@ -11,6 +11,34 @@ import UIKit
 import QuartzCore
 import AVFoundation
 
+
+@IBDesignable
+extension UILabel {
+
+    @IBInspectable var fontName: String {
+        get { self.font.fontName }
+        set {
+            updateFont(name: newValue, size: self.font.pointSize)
+        }
+    }
+
+    @IBInspectable var fontSize: CGFloat {
+        get { self.font.pointSize }
+        set {
+            updateFont(name: self.font.fontName, size: newValue)
+        }
+    }
+
+    private func updateFont(name: String, size: CGFloat) {
+        if let newFont = UIFont(name: name, size: size) {
+            self.font = newFont
+        } else {
+            print("⚠️ UILabel: Font '\(name)' not found.")
+        }
+    }
+}
+
+
 /// Computed properties, based on the backing CALayer property, that are visible in Interface Builder.
 extension UIView {
     

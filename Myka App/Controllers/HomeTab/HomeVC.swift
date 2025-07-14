@@ -31,14 +31,12 @@ class HomeVC: UIViewController, CLLocationManagerDelegate {
     
     @IBOutlet weak var MonthlySavingBtn: UIView!
     @IBOutlet weak var MonthlyCheckSavingBgV: UIView!
-    //select super market popup view.
+  
     @IBOutlet weak var SuperMarketPopUpBGV: UIView!
     @IBOutlet var SelectSuperMarketPopupV: UIView!
     @IBOutlet weak var SelectSuperMarketCollV: UICollectionView!
     
     @IBOutlet weak var MonthlyCheckSavingDetailsLbl: UILabel!
-    //
-    
     @IBOutlet weak var FridgeBreakFastLbl: UILabel!
     @IBOutlet weak var FridgeLunchLbl: UILabel!
     @IBOutlet weak var FridgeDinnerLbl: UILabel!
@@ -56,7 +54,6 @@ class HomeVC: UIViewController, CLLocationManagerDelegate {
     
     var lat: Double? = nil
     var longi: Double? = nil
-      
     var name: String = ""
     
     var SuperMarketArr = [MarketModel]()
@@ -80,9 +77,9 @@ class HomeVC: UIViewController, CLLocationManagerDelegate {
         self.SelectSuperMarketPopupV.frame = self.view.bounds
         self.view.addSubview(SelectSuperMarketPopupV)
         self.SelectSuperMarketPopupV.isHidden = true
-   #if DEBUG
-   // startSubscriptionTimer()
-    #endif
+#if !DEBUG
+startSubscriptionTimer()
+#endif
       //  self.Api_To_get_SavedAddress()
         
         HomeService.shared.Api_To_get_SavedAddress(vc: self) { result in

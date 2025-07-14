@@ -11,7 +11,7 @@ import DropDown
 class levelDropDownTblVCell: DropDownCell {
 
     @IBOutlet weak var descLbl: UILabel!
-    
+    @IBOutlet weak var BGV:UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
