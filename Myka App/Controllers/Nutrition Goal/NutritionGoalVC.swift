@@ -36,6 +36,11 @@ class NutritionGoalVC: UIViewController {
     @IBOutlet var CustomCaloriesPopupView: UIView!
     
     
+    @IBOutlet weak var resetCaloriesBtn: UIButton!
+    @IBOutlet weak var resetProteinBtn: UIButton!
+    @IBOutlet weak var resetFatBtn: UIButton!
+    @IBOutlet weak var resetCarbsBtn: UIButton!
+    
     var SuggestedData = HealthSuggestedData()
     var uNchangedSuggestedData = HealthSuggestedData()
     var heighProtine: String = ""
@@ -44,7 +49,7 @@ class NutritionGoalVC: UIViewController {
     private var isCaloriesSliderMoves: Bool = false
     var currentSlider = ""
     var infoLableTxt = ""
-    var currentDropDownTxt = ""
+    var originalMacroName: String = ""
     let dropDown = DropDown()
 //    if self.DropDownTxtF.text ?? "" == "Custom" {
 //        if view.viewWithTag(110)?.isHidden = true
@@ -122,12 +127,12 @@ class NutritionGoalVC: UIViewController {
 
         if self.heighProtine == ""{
             self.DropDownTxtF.text = "Balanced"
-            self.currentDropDownTxt = "Balanced"
+            self.originalMacroName = "Balanced"
             self.infoLbl.text = "Supports overall health"
             self.infoLableTxt = "Supports overall health"
         }else{
             self.DropDownTxtF.text = self.heighProtine
-            self.currentDropDownTxt = self.heighProtine
+            self.originalMacroName = self.heighProtine
             if let index = macroTypeDataArr.firstIndex(where: {$0.name == self.heighProtine}){
                 self.infoLbl.text = macroTypeDataArr[index].desc
                 self.infoLableTxt = macroTypeDataArr[index].desc
@@ -153,19 +158,21 @@ class NutritionGoalVC: UIViewController {
     }
     @objc func FatsliderDidEnd(_ sender: UISlider) {
         
-        self.DropDownTxtF.text = "Custom"
-        self.infoLbl.text = "Create your own customization"
         evaluateHeadsUpConditions(currentSilder: "fat")
+        updateIndividualResetButtons()
+        evaluateMacroChange()
     }
     @objc func carbsliderDidEnd(_ sender: UISlider) {
-        self.DropDownTxtF.text = "Custom"
-        self.infoLbl.text = "Create your own customization"
+       
         evaluateHeadsUpConditions(currentSilder: "carb")
+        updateIndividualResetButtons()
+        evaluateMacroChange()
     }
     @objc func protiensliderDidEnd(_ sender: UISlider) {
-        self.DropDownTxtF.text = "Custom"
-        self.infoLbl.text = "Create your own customization"
+       
         evaluateHeadsUpConditions(currentSilder: "protien")
+        updateIndividualResetButtons()
+        evaluateMacroChange()
     }
     @objc func CaloriessliderValueChanged(_ sender: UISlider) {
          let currentValue = sender.value
@@ -180,8 +187,8 @@ class NutritionGoalVC: UIViewController {
         let originalCalories = Float(self.SuggestedData.calories ?? 0)
         let currentValue = sender.value
 
-        let lowerThreshold = originalCalories * 0.75 // 25% below
-        let upperThreshold = originalCalories * 1.15 // 15% above
+        let lowerThreshold = originalCalories * 0.75
+        let upperThreshold = originalCalories * 1.15
 
         let isSliderMoved = !(self.SuggestedData.isCaloriesSliderMoves ?? false)
 
@@ -205,6 +212,8 @@ class NutritionGoalVC: UIViewController {
         }
 
         print("Calories: \(originalCalories), Range: [\(lowerThreshold) - \(upperThreshold)], Current: \(currentValue)")
+        updateIndividualResetButtons()
+        evaluateMacroChange()
     }
 
     
@@ -330,8 +339,8 @@ class NutritionGoalVC: UIViewController {
         let isProteinMoved = !(SuggestedData.isProtienliderMoves ?? false)
         let iscarbFatProtienMoves = !(uNchangedSuggestedData.iscarbFatProtienMoves ?? false)
         
-        if (carbs == 0 && protein < 10 && iscarbFatProtienMoves) || (fat == 0 && protein < 10 && iscarbFatProtienMoves) {
-            currentSlider = "carfatpro"
+        if (carbs == 0 && protein < 10 /*&& iscarbFatProtienMoves*/) || (fat == 0 && protein < 10 /*&& iscarbFatProtienMoves*/) {
+          //currentSlider = "carfatpro"
             headsupPopupView.isHidden = false
             CustomCaloriesPopupView.isHidden = true
           
@@ -401,7 +410,7 @@ class NutritionGoalVC: UIViewController {
           guard let self = self else { return }
           print(index)
             self.DropDownTxtF.text = item
-            self.currentDropDownTxt = item
+            self.originalMacroName = item
             self.infoLbl.text = macroTypeDataArr[index].desc
             infoLableTxt = macroTypeDataArr[index].desc
             view.viewWithTag(110)?.isHidden = false
@@ -471,7 +480,7 @@ class NutritionGoalVC: UIViewController {
             self.setData(list: uNchangedSuggestedData)
         }
         self.infoLbl.text  = self.infoLableTxt
-        self.DropDownTxtF.text = self.currentDropDownTxt
+        self.DropDownTxtF.text = self.originalMacroName
          view.viewWithTag(110)?.isHidden = false
         
 
@@ -483,7 +492,7 @@ class NutritionGoalVC: UIViewController {
         self.resetCalorie(list: uNchangedSuggestedData)
         self.CustomCaloriesPopupView.isHidden = true
         self.infoLbl.text  = self.infoLableTxt
-        self.DropDownTxtF.text = self.currentDropDownTxt
+        self.DropDownTxtF.text = self.originalMacroName
         view.viewWithTag(110)?.isHidden = false
     }
     
@@ -521,8 +530,62 @@ class NutritionGoalVC: UIViewController {
         
     }
     
+    @IBAction func caloryReload(_ sender: UIButton) {
+        SuggestedData.calories = uNchangedSuggestedData.calories
+           CaloriesSlider.value = Float(SuggestedData.calories ?? 0)
+           CaloriesSliderLbl.text = "\(SuggestedData.calories ?? 0)"
+           updateIndividualResetButtons()
+    }
     
+    @IBAction func fatReload(_ sender: UIButton) {
+        SuggestedData.fat = uNchangedSuggestedData.fat
+            FatSlider.value = Float(SuggestedData.fat ?? 0)
+            FatSliderLbl.text = "\(SuggestedData.fat ?? 0)"
+            updateIndividualResetButtons()
+    }
     
+    @IBAction func carbsReload(_ sender: UIButton) {
+        SuggestedData.carbs = uNchangedSuggestedData.carbs
+           CarbsSlider.value = Float(SuggestedData.carbs ?? 0)
+           CarbsSliderLbl.text = "\(SuggestedData.carbs ?? 0)"
+           updateIndividualResetButtons()
+    }
+    
+    @IBAction func protienReload(_ sender: UIButton) {
+        SuggestedData.protein = uNchangedSuggestedData.protein
+            ProteinSlider.value = Float(SuggestedData.protein ?? 0)
+            ProteinSliderLbl.text = "\(SuggestedData.protein ?? 0)"
+            updateIndividualResetButtons()
+    }
+    
+    func updateIndividualResetButtons() {
+        resetCaloriesBtn.isHidden = SuggestedData.calories == uNchangedSuggestedData.calories
+        resetProteinBtn.isHidden = SuggestedData.protein == uNchangedSuggestedData.protein
+        resetFatBtn.isHidden = SuggestedData.fat == uNchangedSuggestedData.fat
+        resetCarbsBtn.isHidden = SuggestedData.carbs == uNchangedSuggestedData.carbs
+    }
+    
+    func evaluateMacroChange() {
+        let calChanged = SuggestedData.calories != uNchangedSuggestedData.calories
+        let proChanged = SuggestedData.protein != uNchangedSuggestedData.protein
+        let fatChanged = SuggestedData.fat != uNchangedSuggestedData.fat
+        let carbChanged = SuggestedData.carbs != uNchangedSuggestedData.carbs
+
+        if calChanged || proChanged || fatChanged || carbChanged {
+            DropDownTxtF.text = "Custom"
+            infoLbl.text = "Create your own customization"
+        } else {
+            SuggestedData.isCaloriesSliderMoves = false
+            SuggestedData.isfatSliderMoves = false
+            SuggestedData.iscarbFatProtienMoves = false
+            SuggestedData.isCarbSliderMoves = false
+            SuggestedData.isProtienliderMoves = false
+            DropDownTxtF.text = originalMacroName
+            if let selected = macroTypeDataArr.first(where: { $0.name == originalMacroName }) {
+                infoLbl.text = selected.desc
+            }
+        }
+    }
 }
 
 extension UIImage {
@@ -671,7 +734,7 @@ extension NutritionGoalVC {
     
     func setData(list:HealthSuggestedData){
         self.SuggestedData = list
-         
+        self.uNchangedSuggestedData = list
         
         self.CaloriesSlider.value = Float(self.SuggestedData.calories ?? 0)
         self.CaloriesSliderLbl.text = "\(Int(self.SuggestedData.calories ?? 0))"

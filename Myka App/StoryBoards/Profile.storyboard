@@ -2883,6 +2883,9 @@ to discard changes.</string>
                                                                 <color key="tintColor" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                                 <state key="normal" image="arrow.trianglehead.clockwise" catalog="system"/>
+                                                                <connections>
+                                                                    <action selector="caloryReload:" destination="lZE-sC-LeD" eventType="touchUpInside" id="Azo-YP-H3b"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <constraints>
@@ -3305,6 +3308,10 @@ to discard changes.</string>
                         <outlet property="headsupPopupView" destination="FOb-Zh-7kw" id="Gy7-He-J6y"/>
                         <outlet property="infoLbl" destination="5yg-Nj-TMj" id="nGQ-83-BQB"/>
                         <outlet property="protienPercentageLbl" destination="SRH-6T-DU2" id="uVA-WY-QyZ"/>
+                        <outlet property="resetCaloriesBtn" destination="jGf-Ra-KQa" id="yUS-hT-rvQ"/>
+                        <outlet property="resetCarbsBtn" destination="QR8-hy-wWB" id="jB4-b9-VSD"/>
+                        <outlet property="resetFatBtn" destination="wz8-jx-mkK" id="PdG-l8-g4y"/>
+                        <outlet property="resetProteinBtn" destination="yXE-gL-lku" id="1zI-2i-qlQ"/>
                         <outlet property="updateBtnO" destination="reT-LG-pAx" id="ZEV-7o-5v1"/>
                     </connections>
                 </viewController>
