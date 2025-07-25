@@ -222,36 +222,7 @@ class CookBooksTypeVc: UIViewController {
     }
     
     func generateInviteLink(completion: @escaping (String) -> Void) {
-//        let tempID = AppsFlyerLib().appleAppID
-//        
-//        
-//        let baseURL = "https://mykaimealplanner.onelink.me/mPqu/" //ns5ueabp      Replace with your OneLink template
-//        
-//        let add = AppsFlyerLib()
-//      
-//        let userID = UserDetail.shared.getUserId() // Replace with your dynamic user identifier
-//        let parameters: [String: String] = [
-//           // "af_sub1": "invite",
-//            "tempId": tempID,
-//            "af_user_id": userID,
-//            "CookbooksID":self.type,
-//            "ScreenName":"CookBooksType",
-//            "ItemName":self.titleTxt,
-//            "providerName": self.UserName,
-//            "providerImage": self.UserPickUrl,
-//            "Referrer":UserDetail.shared.getUserRefferalCode()
-//        ]
-//        
-//        
-//        var components = URLComponents(string: baseURL)
-//        components?.queryItems = parameters.map { URLQueryItem(name: $0.key, value: $0.value) }
-//
-//        if let fullURL = components?.url?.absoluteString {
-//            completion(fullURL)
-//        } else {
-//            print("Failed to create invite link.")
-//        }
-      
+
  
         let userID = UserDetail.shared.getUserId()
         let afUserId = userID
@@ -297,94 +268,7 @@ class CookBooksTypeVc: UIViewController {
             print("Generated OneLink URL: \(referLink)")
         }
     }
- //
-   
-    // with border image and text.
-//    func generateProductImage(title1: String, image: UIImage, desc: String) -> UIImage{
-//        // Constants for padding, colors, and image size
-//          let textToImagePadding: CGFloat = 20 // Space above and below the image
-//          let imageSize: CGSize = CGSize(width: 150, height: 150)
-//          let cornerRadius: CGFloat = 10
-//        let titleBackgroundColor = UIColor(white: 1.0, alpha: 0.0) // Light gray background
-//        let descBackgroundColor = UIColor(white: 1.0, alpha: 0.0) // Light gray background
-//
-//          // Title Attributes
-//          let title1ParagraphStyle = NSMutableParagraphStyle()
-//          title1ParagraphStyle.lineBreakMode = .byWordWrapping
-//          title1ParagraphStyle.alignment = .left
-//
-//          let title1Attributes: [NSAttributedString.Key: Any] = [
-//              .font: UIFont.systemFont(ofSize: 20, weight: .medium),
-//              .foregroundColor: UIColor.black,
-//              .paragraphStyle: title1ParagraphStyle
-//          ]
-//
-//          // Calculate Title Height
-//          let title1BoundingRect = title1.boundingRect(
-//              with: CGSize(width: 375, height: CGFloat.greatestFiniteMagnitude),
-//              options: .usesLineFragmentOrigin,
-//              attributes: title1Attributes,
-//              context: nil
-//          )
-//          let title1Height = ceil(title1BoundingRect.height)
-//
-//          // Description Attributes
-//          let descParagraphStyle = NSMutableParagraphStyle()
-//          descParagraphStyle.lineBreakMode = .byWordWrapping
-//          descParagraphStyle.alignment = .left
-//
-//          let descAttributes: [NSAttributedString.Key: Any] = [
-//              .font: UIFont.systemFont(ofSize: 20, weight: .medium),
-//              .foregroundColor: UIColor.black,
-//              .paragraphStyle: descParagraphStyle
-//          ]
-//
-//          // Calculate Description Height
-//          let descBoundingRect = desc.boundingRect(
-//              with: CGSize(width: 375, height: CGFloat.greatestFiniteMagnitude),
-//              options: .usesLineFragmentOrigin,
-//              attributes: descAttributes,
-//              context: nil
-//          )
-//          let descHeight = ceil(descBoundingRect.height)
-//
-//          // Calculate Total Canvas Height
-//          let totalHeight = title1Height + textToImagePadding + imageSize.height + textToImagePadding + descHeight
-//          let canvasSize = CGSize(width: 375, height: totalHeight)
-//
-//          // Render Image
-//          let renderer = UIGraphicsImageRenderer(size: canvasSize)
-//
-//          return renderer.image { context in
-//              // Background color
-//              UIColor.white.setFill()
-//              context.fill(CGRect(origin: .zero, size: canvasSize))
-//
-//              // Draw Title Background
-//              let title1BackgroundRect = CGRect(x: 0, y: 0, width: canvasSize.width, height: title1Height)
-//              let title1Path = UIBezierPath(roundedRect: title1BackgroundRect, cornerRadius: cornerRadius)
-//              titleBackgroundColor.setFill()
-//              title1Path.fill()
-//
-//              // Draw Title
-//              title1.draw(with: title1BackgroundRect.insetBy(dx: 10, dy: 0), options: .usesLineFragmentOrigin, attributes: title1Attributes, context: nil)
-//
-//              // Draw Image
-//              let imageYPosition = title1BackgroundRect.maxY + textToImagePadding
-//              let imageRect = CGRect(x: (canvasSize.width - imageSize.width) / 2, y: imageYPosition, width: imageSize.width, height: imageSize.height)
-//              image.draw(in: imageRect)
-//
-//              // Draw Description Background
-//              let descYPosition = imageRect.maxY + textToImagePadding
-//              let descBackgroundRect = CGRect(x: 0, y: descYPosition, width: canvasSize.width, height: descHeight)
-//              let descPath = UIBezierPath(roundedRect: descBackgroundRect, cornerRadius: cornerRadius)
-//              descBackgroundColor.setFill()
-//              descPath.fill()
-//
-//              // Draw Description
-//              desc.draw(with: descBackgroundRect.insetBy(dx: 10, dy: 0), options: .usesLineFragmentOrigin, attributes: descAttributes, context: nil)
-//          }
-//      }
+
       
     
     // remove popup btns

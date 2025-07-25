@@ -11,7 +11,6 @@ class HeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     @IBOutlet weak var pickerView: UIPickerView!
     @IBOutlet weak var Viewpopup: UIView!
-    @IBOutlet weak var DragDownView: UIView!
     
     @IBOutlet weak var ftBtnO: UIButton!
     @IBOutlet weak var cmBtnO: UIButton!
@@ -49,7 +48,7 @@ class HeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 
                 if let index = self.ftInData.firstIndex(where: { $0 == formattedHeight}) {
                     self.runTimeSelctedHeight = formattedHeight
-                    self.pickerView.selectRow(index, inComponent: 0, animated: true)
+                    self.pickerView.selectRow(index, inComponent: 0, animated: false)
                 }
             }
          
@@ -65,7 +64,7 @@ class HeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 if let index = self.cmData.firstIndex(where: { $0 == self.selectedHeight}) {
                     self.runTimeSelctedHeight = self.selectedHeight
-                    self.pickerView.selectRow(index, inComponent: 0, animated: true)
+                    self.pickerView.selectRow(index, inComponent: 0, animated: false)
                 }
             }
         }
@@ -77,15 +76,10 @@ class HeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
         
         
-        let gestureRecognizer = UIPanGestureRecognizer(target: self,
-                                                                   action: #selector(panGestureRecognizerHandler(_:)))
-        DragDownView.addGestureRecognizer(gestureRecognizer)
+   
     }
     
-    // to change the Picker Seloctor color.
- 
- 
-    
+  
     func generateFtInData() {
             for feet in 2...8 {
                 for inch in 0...11 {
@@ -106,43 +100,7 @@ class HeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             }
         }
     
-    @objc func panGestureRecognizerHandler(_ sender: UIPanGestureRecognizer) {
-              guard let rootView = Viewpopup, let rootWindow = rootView.window else { return }
-              let rootWindowHeight: CGFloat = rootWindow.frame.size.height
     
-              let touchPoint = sender.location(in: Viewpopup?.window)
-              var initialTouchPoint = CGPoint.zero
-              let blankViewHeight =  (rootWindowHeight - Viewpopup.frame.size.height)
-              let dismissDragSize: CGFloat = 200.00
-    
-              switch sender.state {
-              case .began:
-                  initialTouchPoint = touchPoint
-                 // self.view.backgroundColor = UIColor.clear
-              case .changed:
-                  // dynamic alpha
-                  if touchPoint.y > (initialTouchPoint.y + blankViewHeight)  { // change dim background (alpha)
-                      Viewpopup.frame.origin.y = (touchPoint.y - blankViewHeight) - initialTouchPoint.y
-                  }
-    
-              case .ended, .cancelled:
-                  if touchPoint.y - initialTouchPoint.y > (dismissDragSize + blankViewHeight) {
-                      self.view.backgroundColor = UIColor.clear
-                      dismiss(animated: true, completion: nil)
-                  } else {
-                      UIView.animate(withDuration: 0.2, animations: {
-                          self.Viewpopup.frame = CGRect(x: 0,
-                                                   y: 0,
-                                                   width: self.Viewpopup.frame.size.width,
-                                                   height: self.Viewpopup.frame.size.height)
-                        
-                      })
-                    
-                  }
-              case .failed, .possible:
-                  break
-              }
-          }
     
     // MARK: - Actions
         
@@ -161,7 +119,7 @@ class HeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
              
             if let index = self.ftInData.firstIndex(where: { $0 == runft}) {
                 
-                self.pickerView.selectRow(index, inComponent: 0, animated: true)
+                self.pickerView.selectRow(index, inComponent: 0, animated: false)
                 self.runTimeSelctedHeight = runft
             }
         }
@@ -182,7 +140,7 @@ class HeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             print(runcm,"runcm")
             self.runTimeSelctedHeight = runcm
             if let index = self.cmData.firstIndex(where: { $0.removeSpaces == runcm.removeSpaces}) {
-                self.pickerView.selectRow(index, inComponent: 0, animated: true)
+                self.pickerView.selectRow(index, inComponent: 0, animated: false)
             }
         }
     }

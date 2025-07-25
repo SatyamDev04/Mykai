@@ -216,6 +216,14 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
                 self.Api_To_Get_NutritionGoalSuggestionData()
             }
         }
+        vc.modalPresentationStyle = .pageSheet
+        if let sheet = vc.sheetPresentationController {
+            sheet.detents = [.medium()]
+            sheet.prefersGrabberVisible = true
+            sheet.preferredCornerRadius = 20
+        }
+        vc.isModalInPresentation = false
+        
         self.present(vc, animated: true, completion: nil)
     }
     
@@ -264,6 +272,14 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
             }
         }
 
+        vc.modalPresentationStyle = .pageSheet
+        if let sheet = vc.sheetPresentationController {
+            sheet.detents = [.medium()]
+            sheet.prefersGrabberVisible = true
+            sheet.preferredCornerRadius = 20
+        }
+        vc.isModalInPresentation = false
+        
         self.present(vc, animated: true, completion: nil)
     }
     
@@ -319,6 +335,14 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
             }
         }
 
+        vc.modalPresentationStyle = .pageSheet
+        if let sheet = vc.sheetPresentationController {
+            sheet.detents = [.medium()]
+            sheet.prefersGrabberVisible = true
+            sheet.preferredCornerRadius = 20
+        }
+        vc.isModalInPresentation = false
+        
         self.present(vc, animated: true, completion: nil)
     }
     
