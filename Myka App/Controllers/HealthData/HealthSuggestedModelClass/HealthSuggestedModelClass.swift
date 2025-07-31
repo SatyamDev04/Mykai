@@ -39,7 +39,8 @@ struct HealthSuggestedData: Codable {
     var isfatSliderMoves:Bool? = false
     var isCarbSliderMoves:Bool? = false
     var isProtienliderMoves:Bool? = false
-    var iscarbFatProtienMoves:Bool? = false
+    var iscarbProtienMoves:Bool? = false
+    var isFatProtienMoves:Bool? = false
         enum CodingKeys: String, CodingKey {
             case dataPerWeek = "data_per_week"
             case dob, macro_options, disclaimer
@@ -59,7 +60,7 @@ struct HealthSuggestedData: Codable {
             case weight
             case targetWeightType = "target_weight_type"
             case heightType = "height_type"
-            case protein, calories,typeStatus,old_macro,isCaloriesSliderMoves,isfatSliderMoves,isCarbSliderMoves,isProtienliderMoves
+            case protein, calories,typeStatus,old_macro,isCaloriesSliderMoves,isfatSliderMoves,isCarbSliderMoves,isProtienliderMoves,iscarbProtienMoves,isFatProtienMoves
         }
     }
 

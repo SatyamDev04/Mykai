@@ -344,11 +344,22 @@ class NutritionGoalVC: UIViewController {
         let isFatMoved = !(SuggestedData.isfatSliderMoves ?? false)
         let isCarbMoved = !(SuggestedData.isCarbSliderMoves ?? false)
         let isProteinMoved = !(SuggestedData.isProtienliderMoves ?? false)
+       
         
-        
-        if (carbs == 0 && protein < 10) || (fat == 0 && protein < 10) {
-            headsupPopupView.isHidden = false
-            CustomCaloriesPopupView.isHidden = true
+        if (carbs == 0 && protein < 10){
+            if isCarbMoved || isProteinMoved {
+                headsupPopupView.isHidden = false
+                CustomCaloriesPopupView.isHidden = true
+            }
+           
+            
+        }else if (fat == 0 && protein < 10) {
+            if isFatMoved || isProteinMoved {
+                headsupPopupView.isHidden = false
+                CustomCaloriesPopupView.isHidden = true
+            }
+         
+           
         } else if (carbs == 0 && isCarbMoved) ||
                     (fat == 0 && isFatMoved) ||
                     (protein == 0 && isProteinMoved) {
@@ -369,16 +380,17 @@ class NutritionGoalVC: UIViewController {
         resetProteinBtn.isHidden = SuggestedData.macroPer?.protein == uNchangedSuggestedData.macroPer?.protein
         resetFatBtn.isHidden = SuggestedData.macroPer?.fat == uNchangedSuggestedData.macroPer?.fat
         resetCarbsBtn.isHidden = SuggestedData.macroPer?.carbs == uNchangedSuggestedData.macroPer?.carbs
+        evaluateMacroChange()
     }
     
     private func evaluateMacroChange() {
         let calChanged = SuggestedData.calories != uNchangedSuggestedData.calories
         print(calChanged,"calChanged")
-        let proChanged = SuggestedData.protein != uNchangedSuggestedData.protein
+        let proChanged = SuggestedData.macroPer?.protein != uNchangedSuggestedData.macroPer?.protein
         print(proChanged,"proChanged")
-        let fatChanged = SuggestedData.fat != uNchangedSuggestedData.fat
+        let fatChanged = SuggestedData.macroPer?.fat != uNchangedSuggestedData.macroPer?.fat
         print(fatChanged,"fatChanged")
-        let carbChanged = SuggestedData.carbs != uNchangedSuggestedData.carbs
+        let carbChanged = SuggestedData.macroPer?.carbs != uNchangedSuggestedData.macroPer?.carbs
         print(carbChanged,"carbChanged")
         
         if calChanged || proChanged || fatChanged || carbChanged {
@@ -387,11 +399,12 @@ class NutritionGoalVC: UIViewController {
         } else {
             SuggestedData.isCaloriesSliderMoves = false
             SuggestedData.isfatSliderMoves = false
-            SuggestedData.iscarbFatProtienMoves = false
+            SuggestedData.iscarbProtienMoves = false
+            SuggestedData.isFatProtienMoves = false
             SuggestedData.isCarbSliderMoves = false
             SuggestedData.isProtienliderMoves = false
             DropDownTxtF.text = originalMacroName
-            DropDownTxtF.text = originalMacroName
+            view.viewWithTag(110)?.isHidden = false
             if let selected = macroTypeDataArr.first(where: { $0.name == originalMacroName }) {
                 infoLbl.text = selected.desc
             }
@@ -438,9 +451,9 @@ class NutritionGoalVC: UIViewController {
         self.CaloriesSlider.value = Float(list.calories ?? 0)
         self.CaloriesSliderLbl.text = "\(Int(list.calories ?? 0))"
         self.SuggestedData.calories = list.calories
-        self.resetProtien(list: list)
-        self.resetCarb(list: list)
-        self.resetFat(list: list)
+//        self.resetProtien(list: list)
+//        self.resetCarb(list: list)
+//        self.resetFat(list: list)
     }
     
     func resetCarb(list: HealthSuggestedData) {
@@ -556,8 +569,11 @@ class NutritionGoalVC: UIViewController {
         case "protien":
             SuggestedData.isProtienliderMoves = false
             self.resetProtien(list: uNchangedSuggestedData)
-        case "carfatpro":
-            SuggestedData.iscarbFatProtienMoves = false
+        case "carbpro":
+            SuggestedData.iscarbProtienMoves = false
+            self.resetProtien(list: uNchangedSuggestedData)
+        case "fatpro":
+            SuggestedData.iscarbProtienMoves = false
             self.resetProtien(list: uNchangedSuggestedData)
         case "calorie":
             self.SuggestedData.isCaloriesSliderMoves = false
@@ -566,7 +582,7 @@ class NutritionGoalVC: UIViewController {
             self.SuggestedData.isCaloriesSliderMoves = false
             self.setData(list: uNchangedSuggestedData)
         }
-        
+        updateIndividualResetButtons()
         self.infoLbl.text = self.infoLableTxt
         self.DropDownTxtF.text = self.originalMacroName
         view.viewWithTag(110)?.isHidden = false
@@ -579,6 +595,7 @@ class NutritionGoalVC: UIViewController {
         self.infoLbl.text = self.infoLableTxt
         self.DropDownTxtF.text = self.originalMacroName
         view.viewWithTag(110)?.isHidden = false
+        updateIndividualResetButtons()
     }
     
     @IBAction func ProceedAnywayBtn(_ sender: UIButton) {
@@ -597,8 +614,10 @@ class NutritionGoalVC: UIViewController {
             SuggestedData.isCarbSliderMoves = true
         case "protien":
             SuggestedData.isProtienliderMoves = true
-        case "carfatpro":
-            SuggestedData.iscarbFatProtienMoves = true
+        case "carbpro":
+            SuggestedData.iscarbProtienMoves = true
+        case "fatpro":
+            SuggestedData.isFatProtienMoves = true
         case "calorie":
             self.SuggestedData.isCaloriesSliderMoves = true
         default:

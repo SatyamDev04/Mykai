@@ -567,7 +567,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
             self.HeighProtine = heighProt
             
             if isCaloriesSliderMoves {
-                self.targetWeightMsgLbl.text = "You have set your own calories so your target weight cannot be calculated."
+//                self.targetWeightMsgLbl.text = "You have set your own calories so your target weight cannot be calculated."
                 
                 self.view.viewWithTag(101)?.isHidden = true
                 self.view.viewWithTag(102)?.isHidden = false
@@ -578,7 +578,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
                 self.targetDateInfoLbl.isHidden = true
                 self.SuggestedData.typeStatus = "1"
                 self.targetDateInfoLbl.textColor = .red
-                self.targetWeightTxtF.text = ""
+              //  self.targetWeightTxtF.text = ""
                 self.targetDateDropdownLbl.text = ""
                 self.targetDateDropdownLbl.placeholder = "Target Date"
                 self.targetWeightBtnO.isUserInteractionEnabled = false
@@ -599,7 +599,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
                     if targetWeight != "" && targetWeight != "0"{
                         self.targetWeightTxtF.text = "\(targetWeight) lb"
                     }else{
-                        self.targetWeightTxtF.text = ""
+                     self.targetWeightTxtF.text = ""
                     }
                 }
                
@@ -617,7 +617,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
                 self.targetDateDropdownBtnO.isUserInteractionEnabled = true
             }
              
-            //let calories = self.SuggestedData.calories ?? 0
+            let calories = self.SuggestedData.calories ?? 0
             self.CalTxtF.text = "\(calories)"
             
             self.SuggestedData.calories = calories
@@ -876,7 +876,7 @@ extension HealthDataVC {
                     }
                     
                     if self.SuggestedData.typeStatus == "1"{
-                        self.targetWeightMsgLbl.text = "You have set your own calories so your target weight cannot be calculated."
+//                        self.targetWeightMsgLbl.text = "You have set your own calories so your target weight cannot be calculated."
                         
                         self.view.viewWithTag(101)?.isHidden = true
                         if let label = self.view.viewWithTag(103) as? UILabel{
@@ -1177,7 +1177,7 @@ extension HealthDataVC {
                         self.SuggestedData = list ?? HealthSuggestedData()
                         
                         if self.SuggestedData.typeStatus == "1"{
-                            self.targetWeightMsgLbl.text = "You have set your own calories so your target weight cannot be calculated."
+//                            self.targetWeightMsgLbl.text = "You have set your own calories so your target weight cannot be calculated."
                             
                             self.view.viewWithTag(101)?.isHidden = true
                             if let label = self.view.viewWithTag(103) as? UILabel{
