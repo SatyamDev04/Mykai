@@ -16,7 +16,7 @@ struct YourCookedMealModelClass: Codable {
 
 // MARK: - DataClass
 struct YourCookedMealModel: Codable {
-    var breakfast: [Lunch]?
+    var breakfast,dessert: [Lunch]?
     var lunch: [Lunch]?
     var snacks, teatime, dinner: [Lunch]?
     var fridge, freezer: Int?
@@ -31,6 +31,7 @@ struct YourCookedMealModel: Codable {
         case snacks = "Snacks"//"Snacks"
         case teatime = "Brunch"
         case dinner = "Dinner"
+        case dessert = "Dessert"
         case fridge, freezer, fat, protein, kcal, carbs
         case is_add
         case show

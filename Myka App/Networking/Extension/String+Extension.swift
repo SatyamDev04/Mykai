@@ -208,3 +208,19 @@ extension String {
         return html
     }
 }
+
+
+extension UIViewController {
+    static let swizzleViewDidAppear: Void = {
+        let original = class_getInstanceMethod(UIViewController.self, #selector(viewDidAppear(_:)))
+        let swizzled = class_getInstanceMethod(UIViewController.self, #selector(swizzled_viewDidAppear(_:)))
+        if let original = original, let swizzled = swizzled {
+            method_exchangeImplementations(original, swizzled)
+        }
+    }()
+
+    @objc func swizzled_viewDidAppear(_ animated: Bool) {
+        swizzled_viewDidAppear(animated) // calls original
+        print("Screen appeared: \(type(of: self))")
+    }
+}

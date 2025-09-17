@@ -24,7 +24,7 @@ class SearchPrefVC: UIViewController {
     @IBOutlet weak var PopularCatCollV: UICollectionView!
     
     @IBOutlet weak var SearchByRecipeCollV: UICollectionView!
-    
+    @IBOutlet weak var SearchByRecipeCollVH: NSLayoutConstraint!
     @IBOutlet weak var PrefToggleBtnO: UIButton!
     //SearchRecipe PopUpView
     @IBOutlet weak var SearchByMealBgV: UIView!
@@ -258,9 +258,9 @@ extension SearchPrefVC: UICollectionViewDelegate, UICollectionViewDataSource ,UI
                 
             }else if collectionView == SearchByRecipeCollV{
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MealCollVCell", for: indexPath) as! MealCollVCell
-                cell.NameLbl.text = SearchRecipeSelItem.recipes?[indexPath.item].recipe.label ?? ""
+                cell.NameLbl.text = SearchRecipeSelItem.recipes?[indexPath.item].recipe?.label ?? ""
               //  cell.NameLblH.constant = 48
-                let img =  SearchRecipeSelItem.recipes?[indexPath.item].recipe.images?.small?.url ?? ""
+                let img =  SearchRecipeSelItem.recipes?[indexPath.item].recipe?.images?.small?.url ?? ""
                 let imgUrl = URL(string: img)
                 
                 cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
@@ -304,14 +304,14 @@ extension SearchPrefVC: UICollectionViewDelegate, UICollectionViewDataSource ,UI
                 self.navigationController?.pushViewController(vc, animated: true)
              
             }else if collectionView == SearchByRecipeCollV{
-                let string = SearchRecipeSelItem.recipes?[indexPath.item].recipe.mealType?.first ?? ""
+                let string = SearchRecipeSelItem.recipes?[indexPath.item].recipe?.mealType?.first ?? ""
          
                 let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
                 let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
                 if let result = string.components(separatedBy: "/").first {
                     vc.MealType = result
                 }
-                vc.uri = SearchRecipeSelItem.recipes?[indexPath.item].recipe.uri ?? ""
+                vc.uri = SearchRecipeSelItem.recipes?[indexPath.item].recipe?.uri ?? ""
                 vc.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(vc, animated: true)
             }
@@ -328,7 +328,11 @@ extension SearchPrefVC: UICollectionViewDelegate, UICollectionViewDataSource ,UI
                 let collectionViewWidthSize = (collectionView.frame.size.width) - padding
                 
                 if collectionView == SearchByRecipeCollV{
-                    return CGSize(width: collectionViewWidthSize/2 - 5, height: collectionViewSize/2)
+                    if  self.SearchRecipeSelItem.recipes?.count ?? 0 == 2{
+                        return CGSize(width: collectionViewWidthSize/2 - 5, height: 215)
+                    }else{
+                        return CGSize(width: collectionViewWidthSize/2 - 5, height: 210)
+                    }
                 }else{
                     return CGSize(width: collectionViewWidthSize/2.5 - 5, height: collectionViewSize/2)
                 }
@@ -419,7 +423,11 @@ extension SearchPrefVC {
                         self.SearchByMealBgV.isHidden = false
                         self.SearchByPopularCatBgV.isHidden = false
                     }
-                    
+                    if  self.SearchRecipeSelItem.recipes?.count ?? 0 == 2{
+                        self.SearchByRecipeCollVH.constant = 215
+                    }else{
+                        self.SearchByRecipeCollVH.constant = 430
+                    }
                     self.IngredientCollV.reloadData()
                     self.MealCollV.reloadData()
                     self.SearchByRecipeCollV.reloadData()

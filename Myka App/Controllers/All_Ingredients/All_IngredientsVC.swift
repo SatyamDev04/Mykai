@@ -111,7 +111,6 @@ extension All_IngredientsVC: UICollectionViewDelegate, UICollectionViewDataSourc
                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCollVCell", for: indexPath) as! CategoryCollVCell
                cell.NameLbl.text = All_IngredientsArr.categories?[indexPath.item]
               
-               
                //if CatselIndex == indexPath.item{
                if self.SelCatName == All_IngredientsArr.categories?[indexPath.item]{
                    cell.NameLbl.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
@@ -219,6 +218,7 @@ extension All_IngredientsVC: UICollectionViewDelegate, UICollectionViewDataSourc
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         let frameHeight = scrollView.frame.size.height
+        
 
         // Detect scrolling direction
         let isScrollingDown = offsetY > lastContentOffset
@@ -272,33 +272,49 @@ extension All_IngredientsVC {
                 if d.success == true {
                     let list = d.data ?? All_IngredientsModel()
                      
-                    if self.All_IngredientsArr.categories?.count ?? 0 > 0{
-                        if let ingredients = list.ingredients {
-                            let uniqueIngredients = Array(
-                                Dictionary(grouping: ingredients) { $0.name }
-                                    .values
-                                    .compactMap { $0.first }
-                            )
-                            
-                            // Assign back to your array if needed
-                            self.All_IngredientsArr.ingredients?.append(contentsOf: uniqueIngredients)
-                        }
-                         
-                    }else{
-                        self.All_IngredientsArr = list
-                        if let ingredients = self.All_IngredientsArr.ingredients {
-                            let uniqueIngredients = Array(
-                                Dictionary(grouping: ingredients) { $0.name }
-                                    .values
-                                    .compactMap { $0.first }
-                            )
-                            
-                            // Assign back to your array if needed
-                            self.All_IngredientsArr.ingredients = uniqueIngredients
-                        }
+                    self.All_IngredientsArr.categories = list.categories
+//                    self.All_IngredientsArr.ingredients = list.ingredients
+                    
+                    if let ingredients = list.ingredients {
+                        let uniqueIngredients = Array(
+                            Dictionary(grouping: ingredients, by: { $0.name })
+                                .compactMap { $0.value.first }
+                        )
+                        self.All_IngredientsArr.ingredients = uniqueIngredients
                     }
-                     
+                    
+//                    if self.All_IngredientsArr.categories?.count ?? 0 > 0{
+//                        if let ingredients = list.ingredients {
+//                            let uniqueIngredients = Array(
+//                                Dictionary(grouping: ingredients, by: { $0.name })
+//                                    .compactMap { $0.value.first }
+//                            )
+//                            
+//                            // Assign back to your array if needed
+//                            self.All_IngredientsArr.ingredients?.append(contentsOf: uniqueIngredients)
+//                        }
+//                         
+//                    }else{
+//                        self.All_IngredientsArr = list
+//
+//                        if let ingredients = self.All_IngredientsArr.ingredients {
+//                            let uniqueIngredients = Array(
+//                                Dictionary(grouping: ingredients, by: { $0.name })
+//                                    .compactMap { $0.value.first }
+//                            )
+//                            self.All_IngredientsArr.ingredients = uniqueIngredients
+//                        }
+//                    }
+                    
                     self.hasReachedEnd = false
+                    
+//                    if let ingredients = self.All_IngredientsArr.ingredients {
+//                        let uniqueIngredients = Array(
+//                            Dictionary(grouping: ingredients, by: { $0.name })
+//                                .compactMap { $0.value.first }
+//                        )
+//                        self.All_IngredientsArr.ingredients = uniqueIngredients
+//                    }
                     
                     if self.All_IngredientsArr.ingredients?.count ?? 0 > 0{
                         self.CollV.setEmptyMessage("", UIImage())

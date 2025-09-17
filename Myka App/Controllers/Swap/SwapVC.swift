@@ -412,8 +412,8 @@ extension SwapVC{
                 let doubleValue = number.doubleValue
                     print(doubleValue) // Output: 1595.84
                 
-                let prod = Product(created_at: "", deleted_at: "", food_id: self.IngArrData[self.selIndx].foodID, id: id, market_id: Mrktid, name: self.IngArrData[self.selIndx].name, price: pric, pro_id: ProID, pro_img: self.IngArrData[self.selIndx].image, pro_name: self.IngArrData[self.selIndx].name, pro_price: "\(doubleValue)", product_id: self.IngArrData[self.selIndx].productID, quantity: 0, sch_id: self.IngArrData[self.selIndx].schID, status: status, updated_at: "", user_id: userid)
-                 
+                let prod = Product(created_at: "", deleted_at: "", food_id: self.IngArrData[self.selIndx].foodID, id: id, market_id: Mrktid, name: self.IngArrData[self.selIndx].name, price: pric, pro_id: ProID, pro_img: self.IngArrData[self.selIndx].image, pro_name: self.IngArrData[self.selIndx].name, pro_price: "\(doubleValue)", product_id: self.IngArrData[self.selIndx].productID, quantity: 0, sch_id: self.IngArrData[self.selIndx].schID, status: status,  unit_size: 0, updated_at: "", user_id: userid, unit_of_measurement: "", is_checked: 0)
+                    //   status was 0 satyam assign status vaerible to it on date 15 sep
                 self.BackAction(prod, self.Indx)
                 self.navigationController?.popViewController(animated: true)
             }else{

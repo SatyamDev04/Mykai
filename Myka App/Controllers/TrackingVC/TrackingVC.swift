@@ -27,7 +27,8 @@ class TrackingVC: UIViewController , WKNavigationDelegate, WKUIDelegate {
         webView.navigationDelegate = self
         webView.uiDelegate = self
         self.webV.addSubview(webView)
-        
+       
+       
         // Load Initial URL
         if let url = URL(string: WebUrl) {
             let request = URLRequest(url: url)

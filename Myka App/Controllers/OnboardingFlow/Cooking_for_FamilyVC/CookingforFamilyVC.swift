@@ -3,29 +3,22 @@
 //  Myka App
 //
 //  Created by YES IT Labs on 02/12/24.
-//
 
 import UIKit
 import Alamofire
 import SwiftyJSON
 
 class CookingforFamilyVC: UIViewController {
-    
     @IBOutlet weak var MemberNameTxt: UITextField!
     @IBOutlet weak var MemberAgeTxt: UITextField!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var ProgressLbl: UILabel!
-    
     @IBOutlet weak var ChildFrindlyBtnO: UIButton!
     @IBOutlet weak var NextbtnStackV: UIStackView!
     @IBOutlet weak var UpdateBtnO: UIButton!
-    
     var type = ""
-    
     var comesfrom = ""
-    
     var ischildFrndlyMeal = false
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         if comesfrom == ""{
@@ -40,16 +33,13 @@ class CookingforFamilyVC: UIViewController {
         let progressVw = Float(1) / Float(11)
         progressView.progress = Float(progressVw)
         // Do any additional setup after loading the view.
-        
         if comesfrom != ""{
          self.Api_To_GetPrefrenceBodyGoals()
         }
     }
-    
     @IBAction func BackBtn(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: false)
     }
-    
     @IBAction func CheckBox(_ sender: UIButton) {
         if ChildFrindlyBtnO.isSelected {
             ChildFrindlyBtnO.isSelected = false
@@ -59,8 +49,6 @@ class CookingforFamilyVC: UIViewController {
             ischildFrndlyMeal = true
         }
     }
-    
-    
      @IBAction func SkipBtn(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "CookingForMySelf", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "SkipPopupVC") as! SkipPopupVC
@@ -84,8 +72,6 @@ class CookingforFamilyVC: UIViewController {
             AlertControllerOnr(title: "", message: "Enter member's age first.")
             return
         }
-      
-        
         StateMangerModelClass.shared.onboardingSelectedData.FamilyMembername.Name = self.MemberNameTxt.text!
         StateMangerModelClass.shared.onboardingSelectedData.FamilyMembername.Age = self.MemberAgeTxt.text!
         StateMangerModelClass.shared.onboardingSelectedData.FamilyMembername.ChildFriendlyMeals = ischildFrndlyMeal
@@ -99,7 +85,6 @@ class CookingforFamilyVC: UIViewController {
     @IBAction func UpdateBtn(_ sender: UIButton) {
         self.Api_To_UpdatePrefrence()
     }
- 
 }
 
 extension CookingforFamilyVC {
@@ -110,31 +95,23 @@ extension CookingforFamilyVC {
         let headers: HTTPHeaders = [
                      "Authorization": "Bearer \(token)"
                    ]
-         
         showIndicator(withTitle: "", and: "")
-        
         let loginURL = baseURL.baseURL + appEndPoints.Getprefrence
         print(params,"Params")
         print(loginURL,"loginURL")
-        
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
-            
             self.hideIndicator()
-            
             guard let dictData = json.dictionaryObject else{
                 return
             }
-            
             if dictData["success"] as? Bool == true{
                 let result = dictData["data"] as? NSDictionary ?? NSDictionary()
                 
                 let response = result["familyDetail"] as?  NSDictionary ?? NSDictionary()
                 let name = response["name"] as? String ?? ""
                 self.MemberNameTxt.text = name
-                
                 let age = response["age"] as? String ?? ""
                 self.MemberAgeTxt.text = age
-                
                 let IsChildFriendlyMeal = response["child_friendly_meals"] as? String ?? "0"
                  
                 if IsChildFriendlyMeal == "0" {
@@ -150,30 +127,21 @@ extension CookingforFamilyVC {
             }
         })
     }
-    
     func Api_To_UpdatePrefrence(){
         var params : [String:Any] = [:]
-    
         params["family_member_name"] = self.MemberNameTxt.text!
         params["family_member_age"] = Int(self.MemberAgeTxt.text!)
-         
         if ischildFrndlyMeal == true{
             params["child_friendly_meals"] = "1"
         }else{
             params["child_friendly_meals"] = "0"
         }
-
         let token  = UserDetail.shared.getTokenWith()
         let headers: HTTPHeaders = [
             "Authorization": "Bearer \(token)"
         ]
-        
-        
-        
         let loginURL = baseURL.baseURL + appEndPoints.Updateprefrence
-        
         showIndicator(withTitle: "", and: "")
-        
         AF.upload(multipartFormData: { multipartFormData in
             for (key, value) in params {
                 if let temp = value as? String {
@@ -198,7 +166,6 @@ extension CookingforFamilyVC {
         },to: loginURL, method: .post , headers: headers)
         .responseJSON(completionHandler: { (encodingResult) in
             self.hideIndicator()
-            
             do {
                 if let err = encodingResult.error{
                     //                    if loader { CommonFunctions.hideActivityLoader() }
@@ -210,10 +177,8 @@ extension CookingforFamilyVC {
                     if let f = encodingResult.data {
                         print("Print Server Error: " + String(data: f, encoding: String.Encoding.utf8)!)
                     }
-                    
                     return
                 }
-                
                 //                if loader { CommonFunctions.hideActivityLoader() }
                 
                 print(encodingResult.data!)
@@ -233,7 +198,6 @@ extension CookingforFamilyVC {
                 self.hideIndicator()
                 print("===================== FAILURE =======================")
                 print(error.localizedDescription)
-                
             }
         })
     }

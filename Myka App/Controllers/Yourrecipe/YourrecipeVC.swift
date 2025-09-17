@@ -10,7 +10,7 @@ import Alamofire
 import SDWebImage
 
 class YourrecipeVC: UIViewController {
-    
+  
     @IBOutlet weak var BreakfastCollV: UICollectionView!
     @IBOutlet weak var LunchCollV: UICollectionView!
     @IBOutlet weak var DinnerCollV: UICollectionView!

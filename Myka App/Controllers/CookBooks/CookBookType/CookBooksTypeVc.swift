@@ -19,7 +19,7 @@ struct DropDownModule {
 }
 
 class CookBooksTypeVc: UIViewController {
-
+    
     @IBOutlet weak var TitleLbl: UILabel!
     
     @IBOutlet weak var CollV: UICollectionView!
@@ -38,7 +38,7 @@ class CookBooksTypeVc: UIViewController {
     var cookBookImg:UIImage?
     let dropDown = DropDown()
     let CelldropDown = DropDown()
-  
+    
     var dropDownData = [DropDownModule(name: "Edit Cookbook", image: "Edit"),DropDownModule(name: "Share Cookbook", image: "ShareIcon"),DropDownModule(name: "Delete Cookbook", image: "DeleteIcon")]
     
     var CelldropDownData = [DropDownModule(name: "Remove Recipe", image: "Group 1171276393"),DropDownModule(name: "Move Recipe", image: "Group 1171275890")]
@@ -46,7 +46,7 @@ class CookBooksTypeVc: UIViewController {
     var cookBookDataArr = [Datum]()
     
     var DropcookBooksData = [FavDropDownModel]()
-
+    
     var uri = ""
     var selID = ""
     var cookbookID = ""
@@ -133,97 +133,95 @@ class CookBooksTypeVc: UIViewController {
         }
         
         dropDown.dataSource = self.dropDownData.map { $0.name }
-          dropDown.anchorView = sender
-          
-          // Add trailing space (adjust x for horizontal offset)
-          let trailingSpace: CGFloat = 160 // Adjust as needed
-          dropDown.bottomOffset = CGPoint(x: -trailingSpace, y: sender.bounds.height)
-          dropDown.topOffset = CGPoint(x: -trailingSpace, y: -(dropDown.anchorView?.plainView.bounds.height ?? 0))
-          dropDown.width = 180
-          dropDown.setupCornerRadius(10)
-          
-          // Optional: You may also need to disable shadow for proper clipping
-          dropDown.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
-          dropDown.layer.shadowOpacity = 0
-          dropDown.layer.shadowRadius = 4
-          dropDown.layer.shadowOffset = CGSize(width: 0, height: 0)
-          dropDown.backgroundColor = .white
-          dropDown.cellHeight = 35
-
-          // Use custom cell configuration
-          dropDown.cellNib = UINib(nibName: "CustomDropDownCell", bundle: nil)
-          dropDown.customCellConfiguration = { [weak self] (index: Index, item: String, cell: DropDownCell) in
-              guard let cell = cell as? CustomDropDownCell else { return }
-              guard let self = self else { return }
-              let img = self.dropDownData[index].image
-              cell.logoImageView.image = UIImage(named: img)
-          }
-          
-          // Handle selection
-          dropDown.selectionAction = { [weak self] (index: Int, item: String) in
-              guard let self = self else { return }
-              print(index)
-              if index == 0 {
+        dropDown.anchorView = sender
+        
+        // Add trailing space (adjust x for horizontal offset)
+        let trailingSpace: CGFloat = 160 // Adjust as needed
+        dropDown.bottomOffset = CGPoint(x: -trailingSpace, y: sender.bounds.height)
+        dropDown.topOffset = CGPoint(x: -trailingSpace, y: -(dropDown.anchorView?.plainView.bounds.height ?? 0))
+        dropDown.width = 180
+        dropDown.setupCornerRadius(10)
+        
+        // Optional: You may also need to disable shadow for proper clipping
+        dropDown.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        dropDown.layer.shadowOpacity = 0
+        dropDown.layer.shadowRadius = 4
+        dropDown.layer.shadowOffset = CGSize(width: 0, height: 0)
+        dropDown.backgroundColor = .white
+        dropDown.cellHeight = 35
+        
+        // Use custom cell configuration
+        dropDown.cellNib = UINib(nibName: "CustomDropDownCell", bundle: nil)
+        dropDown.customCellConfiguration = { [weak self] (index: Index, item: String, cell: DropDownCell) in
+            guard let cell = cell as? CustomDropDownCell else { return }
+            guard let self = self else { return }
+            let img = self.dropDownData[index].image
+            cell.logoImageView.image = UIImage(named: img)
+        }
+        
+        // Handle selection
+        dropDown.selectionAction = { [weak self] (index: Int, item: String) in
+            guard let self = self else { return }
+            print(index)
+            if index == 0 {
                 
-                  let storyboard = UIStoryboard(name: "Fav", bundle: nil)
-                  let vc = storyboard.instantiateViewController(withIdentifier: "CreateCookbookVC") as! CreateCookbookVC
-                  vc.comesfrom = "EditcookBooks"
-                  vc.EditcookBooksData = self.EditcookBooksData
-                  vc.titleStr = self.titleTxt
-                  vc.backAction = { data  in
-                      self.EditcookBooksData.image = data.image
-                      self.EditcookBooksData.name = data.name
-                      self.EditcookBooksData.status = data.status
-                      
-                      self.titleTxt = data.name ?? ""
-                      self.TitleLbl.text = "\(self.titleTxt)"
-                  }
-                  self.navigationController?.pushViewController(vc, animated: true)
-             
-              }else if index == 1 {
-                  guard self.Private_PublicStatus == 1 else{
-                      AlertControllerOnr(title: "", message: "You can't share this cookbook as it is private.")
-                      return
-                  }
-                  generateInviteLink { inviteLink in
-                      let productImage = self.cookBookImg
-                      
-                      guard let inviteURL = URL(string: inviteLink) else { return }
-                      
-                      // 1. Product details with title and link included in the text
-                      let productText = "Hey! I put together this cookbook in My Kai, and I think you’ll love it! It’s packed with delicious meals, check it out and let me know what you think!\n\nCookbook: \(self.titleTxt)\n"
-                      
-                      // 3. Prepare items to share
-                      let itemsToShare: [Any] = [productText, productImage!, inviteURL]
-                      
-                      // 4. Create and present the UIActivityViewController
-                      let activityViewController = UIActivityViewController(activityItems: itemsToShare, applicationActivities: nil)
-                      
-                      // Exclude irrelevant activities if needed
-                      activityViewController.excludedActivityTypes = [
+                let storyboard = UIStoryboard(name: "Fav", bundle: nil)
+                let vc = storyboard.instantiateViewController(withIdentifier: "CreateCookbookVC") as! CreateCookbookVC
+                vc.comesfrom = "EditcookBooks"
+                vc.EditcookBooksData = self.EditcookBooksData
+                vc.titleStr = self.titleTxt
+                vc.backAction = { data  in
+                    self.EditcookBooksData.image = data.image
+                    self.EditcookBooksData.name = data.name
+                    self.EditcookBooksData.status = data.status
+                    
+                    self.titleTxt = data.name ?? ""
+                    self.TitleLbl.text = "\(self.titleTxt)"
+                }
+                self.navigationController?.pushViewController(vc, animated: true)
+                
+            }else if index == 1 {
+                guard self.Private_PublicStatus == 1 else{
+                    AlertControllerOnr(title: "", message: "You can't share this cookbook as it is private.")
+                    return
+                }
+                generateInviteLink { inviteLink in
+                    let productImage = self.cookBookImg
+                    
+                    guard let inviteURL = URL(string: inviteLink) else { return }
+                    
+                    // 1. Product details with title and link included in the text
+                    let productText = "Hey! I put together this cookbook in My Kai, and I think you’ll love it! It’s packed with delicious meals, check it out and let me know what you think!\n\nCookbook: \(self.titleTxt)\n"
+                    
+                    // 3. Prepare items to share
+                    let itemsToShare: [Any] = [productText, productImage!, inviteURL]
+                    
+                    // 4. Create and present the UIActivityViewController
+                    let activityViewController = UIActivityViewController(activityItems: itemsToShare, applicationActivities: nil)
+                    
+                    // Exclude irrelevant activities if needed
+                    activityViewController.excludedActivityTypes = [
                         .addToReadingList,
                         .saveToCameraRoll,
                         .assignToContact
-                      ]
-                      
-                      // Present the activity view controller
-                      DispatchQueue.main.async {
-                          self.present(activityViewController, animated: true, completion: nil)
-                      }
-        
+                    ]
+                    
+                    // Present the activity view controller
+                    DispatchQueue.main.async {
+                        self.present(activityViewController, animated: true, completion: nil)
                     }
-              }else{
-                  self.PopupMsgLbl.text = "Do you really want to remove this cookbook?"
-                  self.RemoveBgV.isHidden = false
-                  self.Tag = 0
-              }
-          }
-          dropDown.show()
+                    
+                }
+            }else{
+                self.PopupMsgLbl.text = "Do you really want to remove this cookbook?"
+                self.RemoveBgV.isHidden = false
+                self.Tag = 0
+            }
+        }
+        dropDown.show()
     }
     
     func generateInviteLink(completion: @escaping (String) -> Void) {
-
- 
         let userID = UserDetail.shared.getUserId()
         let afUserId = userID
         let referrerCode = UserDetail.shared.getUserRefferalCode()
@@ -232,44 +230,44 @@ class CookBooksTypeVc: UIViewController {
         let CookBookType = "CookBooksType"
         let cookBookID = self.type
         let Name = self.titleTxt
-       
-    
-         
+        
+        
+        
         // Base URL for the OneLink template
         let baseURL = "https://mykaimealplanner.onelink.me/mPqu/" // Replace with your OneLink template
-         
+        
         // Deep link URL for when the app is installed
         let deepLink = "mykai://property?" +
-            "af_user_id=\(afUserId)" +
-            "&Referrer=\(referrerCode)" +
-            "&providerName=\(providerName)" +
-            "&providerImage=\(providerImage)" +
-            "&CookbooksID=\(cookBookID)" +
-            "&ItemName=\(Name)" +
-            "&ScreenName=\(CookBookType)"
-            
+        "af_user_id=\(afUserId)" +
+        "&Referrer=\(referrerCode)" +
+        "&providerName=\(providerName)" +
+        "&providerImage=\(providerImage)" +
+        "&CookbooksID=\(cookBookID)" +
+        "&ItemName=\(Name)" +
+        "&ScreenName=\(CookBookType)"
+        
         
         // Web fallback URL (e.g., if app is not installed)
         let webLink = "https://www.mykaimealplanner.com" // Replace with your fallback web URL
-         
+        
         // Create the final URL with query parameters
         var components = URLComponents(string: baseURL)!
         components.queryItems = [
             URLQueryItem(name: "af_dp", value: deepLink),
             URLQueryItem(name: "af_web_dp", value: webLink)
         ]
-         
+        
         // Convert to string and log or use the URL
         if let fullURL = components.url?.absoluteString {
             let referLink = fullURL
-
+            
             completion(referLink)
-
+            
             print("Generated OneLink URL: \(referLink)")
         }
     }
-
-      
+    
+    
     
     // remove popup btns
     @IBAction func CancelBtn(_ sender: UIButton) {
@@ -284,7 +282,7 @@ class CookBooksTypeVc: UIViewController {
             self.Api_To_Delete_CookBook()
         }
     }
-     
+    
     
     // remove popup btns
     
@@ -319,117 +317,116 @@ class CookBooksTypeVc: UIViewController {
 
 extension CookBooksTypeVc: UICollectionViewDelegate, UICollectionViewDataSource ,UICollectionViewDelegateFlowLayout{
     
-        func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return cookBookDataArr.count
-        }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return cookBookDataArr.count
+    }
     
-        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CookBooksCollVCell", for: indexPath) as! CookBooksCollVCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CookBooksCollVCell", for: indexPath) as! CookBooksCollVCell
         
         let data = cookBookDataArr[indexPath.row].data?.recipe
         cell.NameLbl.text = data?.label
         cell.TimeLbl.text = "\(data?.totalTime ?? 0) min"
         
-            let imgUrl =  data?.images?.large?.url ?? ""
+        let imgUrl =  data?.images?.large?.url ?? ""
         cell.img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
         cell.img.sd_setImage(with: URL(string: imgUrl), placeholderImage: UIImage(named: "No_Image"))
         
-       // cell.DotBtn.isHidden = true
-            cell.DotBtn.tag = indexPath.row
-            cell.DotBtn.addTarget(self, action: #selector(OptnsBtnTapped), for: .touchUpInside)
-             
-            cell.CartBtn.tag = indexPath.row
-            cell.CartBtn.addTarget(self, action: #selector(AddtoBasketBtnClick), for: .touchUpInside)
-            
+        // cell.DotBtn.isHidden = true
+        cell.DotBtn.tag = indexPath.row
+        cell.DotBtn.addTarget(self, action: #selector(OptnsBtnTapped), for: .touchUpInside)
+        
+        cell.CartBtn.tag = indexPath.row
+        cell.CartBtn.addTarget(self, action: #selector(AddtoBasketBtnClick), for: .touchUpInside)
+        
         cell.AddToPlanBtn.tag = indexPath.row
         cell.AddToPlanBtn.addTarget(self, action: #selector(AddToPlanBtnTapped), for: .touchUpInside)
-            
-            return cell
-        }
         
-        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-            let data = cookBookDataArr[indexPath.item].data?.recipe
-           
-            guard data?.label != nil else {
-                AlertControllerOnr(title: "", message: "You can view this recipe after 45 minutes")
-                return
-            }
-            
-            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
-            let Type = cookBookDataArr[indexPath.item].data?.recipe?.mealType?[0] ?? ""
-            let type = Type.prefix(while: { $0 != "/" })
-            vc.MealType = "\(type)"
-            vc.uri = self.cookBookDataArr[indexPath.item].data?.recipe?.uri ?? ""
-            vc.hidesBottomBarWhenPushed = true
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
-    
-    
-    @objc func OptnsBtnTapped(sender: UIButton){
-        dropDown.dataSource = self.CelldropDownData.map { $0.name }
-          dropDown.anchorView = sender
-          
-          // Add trailing space (adjust x for horizontal offset)
-          let trailingSpace: CGFloat = 120 // Adjust as needed
-          dropDown.bottomOffset = CGPoint(x: -trailingSpace, y: sender.bounds.height)
-          dropDown.topOffset = CGPoint(x: -trailingSpace, y: -(dropDown.anchorView?.plainView.bounds.height ?? 0))
-          dropDown.width = 140
-          dropDown.setupCornerRadius(10)
-          
-          // Optional: You may also need to disable shadow for proper clipping
-          dropDown.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
-          dropDown.layer.shadowOpacity = 0
-          dropDown.layer.shadowRadius = 4
-          dropDown.layer.shadowOffset = CGSize(width: 0, height: 0)
-          dropDown.backgroundColor = .white
-          dropDown.cellHeight = 32
-          dropDown.textFont = UIFont.systemFont(ofSize: 11)
-
-          // Use custom cell configuration
-          dropDown.cellNib = UINib(nibName: "CustomDropDownCell", bundle: nil)
-          dropDown.customCellConfiguration = { [weak self] (index: Index, item: String, cell: DropDownCell) in
-              guard let cell = cell as? CustomDropDownCell else { return }
-              guard let self = self else { return }
-              let img = self.CelldropDownData[index].image
-              cell.logoImageView.image = UIImage(named: img)
-          }
-          
-          // Handle selection
-          dropDown.selectionAction = { [weak self] (index: Int, item: String) in
-              guard let self = self else { return }
-              print(index)
-              if index == 0 {
-                  self.PopupMsgLbl.text = "Do you really want to remove this recipe?"
-                  self.Tag = 1
-                  self.RemoveBgV.isHidden = false
-                  self.uri = cookBookDataArr[sender.tag].uri ?? ""
-                  self.selID = "\(cookBookDataArr[sender.tag].id ?? 0)"
-                  self.SelIndx = sender.tag
-              }else{
-                  self.MoveBgV.isHidden = false
-              }
-          }
-          
-          dropDown.show()
+        return cell
     }
-     
-    @objc func AddtoBasketBtnClick(_ sender: UIButton)   {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let data = cookBookDataArr[indexPath.item].data?.recipe
         
-        let data = cookBookDataArr[sender.tag].data?.recipe
-       
         guard data?.label != nil else {
             AlertControllerOnr(title: "", message: "You can view this recipe after 45 minutes")
             return
         }
-       
+        
+        let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
+        let Type = cookBookDataArr[indexPath.item].data?.recipe?.mealType?[0] ?? ""
+        let type = Type.prefix(while: { $0 != "/" })
+        vc.MealType = "\(type)"
+        vc.uri = self.cookBookDataArr[indexPath.item].data?.recipe?.uri ?? ""
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    
+    @objc func OptnsBtnTapped(sender: UIButton){
+        dropDown.dataSource = self.CelldropDownData.map { $0.name }
+        dropDown.anchorView = sender
+        
+        // Add trailing space (adjust x for horizontal offset)
+        let trailingSpace: CGFloat = 120 // Adjust as needed
+        dropDown.bottomOffset = CGPoint(x: -trailingSpace, y: sender.bounds.height)
+        dropDown.topOffset = CGPoint(x: -trailingSpace, y: -(dropDown.anchorView?.plainView.bounds.height ?? 0))
+        dropDown.width = 140
+        dropDown.setupCornerRadius(10)
+        
+        // Optional: You may also need to disable shadow for proper clipping
+        dropDown.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        dropDown.layer.shadowOpacity = 0
+        dropDown.layer.shadowRadius = 4
+        dropDown.layer.shadowOffset = CGSize(width: 0, height: 0)
+        dropDown.backgroundColor = .white
+        dropDown.cellHeight = 32
+        dropDown.textFont = UIFont.systemFont(ofSize: 11)
+        
+        // Use custom cell configuration
+        dropDown.cellNib = UINib(nibName: "CustomDropDownCell", bundle: nil)
+        dropDown.customCellConfiguration = { [weak self] (index: Index, item: String, cell: DropDownCell) in
+            guard let cell = cell as? CustomDropDownCell else { return }
+            guard let self = self else { return }
+            let img = self.CelldropDownData[index].image
+            cell.logoImageView.image = UIImage(named: img)
+        }
+        
+        // Handle selection
+        dropDown.selectionAction = { [weak self] (index: Int, item: String) in
+            guard let self = self else { return }
+            print(index)
+            if index == 0 {
+                self.PopupMsgLbl.text = "Do you really want to remove this recipe?"
+                self.Tag = 1
+                self.RemoveBgV.isHidden = false
+                self.uri = cookBookDataArr[sender.tag].uri ?? ""
+                self.selID = "\(cookBookDataArr[sender.tag].id ?? 0)"
+                self.SelIndx = sender.tag
+            }else{
+                self.MoveBgV.isHidden = false
+            }
+        }
+        dropDown.show()
+    }
+    
+    @objc func AddtoBasketBtnClick(_ sender: UIButton)   {
+        
+        let data = cookBookDataArr[sender.tag].data?.recipe
+        
+        guard data?.label != nil else {
+            AlertControllerOnr(title: "", message: "You can view this recipe after 45 minutes")
+            return
+        }
+        
         let uri = self.cookBookDataArr[sender.tag].data?.recipe?.uri ?? ""
         
         let mealType = self.cookBookDataArr[sender.tag].data?.recipe?.mealType?.first ?? ""
         
         let Type = mealType.components(separatedBy: "/").first ?? ""
         self.Api_To_AddToBasket_Recipe(uri: uri, type: Type)
-      }
+    }
     
     @objc func AddToPlanBtnTapped(sender: UIButton){
         let SubscriptionStatus = Int(UserDetail.shared.getSubscriptionStatus())
@@ -443,16 +440,16 @@ extension CookBooksTypeVc: UICollectionViewDelegate, UICollectionViewDataSource 
         }
         
         let data = cookBookDataArr[sender.tag].data?.recipe
-       
+        
         guard data?.label != nil else {
             AlertControllerOnr(title: "", message: "You can view this recipe after 45 minutes")
             return
         }
-         
+        
         let uri = cookBookDataArr[sender.tag].data?.recipe?.uri ?? ""
         let Type = cookBookDataArr[sender.tag].data?.recipe?.mealType?[0] ?? ""
         let type = Type.prefix(while: { $0 != "/" })
-         
+        
         let storyboard = UIStoryboard(name: "RestScreens", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "ChooseDaysVC") as! ChooseDaysVC
         vc.backActionCookbook = { Date in
@@ -473,30 +470,27 @@ extension CookBooksTypeVc: UICollectionViewDelegate, UICollectionViewDataSource 
         self.view.bringSubviewToFront(vc.view)
         vc.didMove(toParent: self)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let padding: CGFloat = 10
+        let itemsPerRow: CGFloat = 2
+        let totalPadding = padding * (itemsPerRow + 1)
+        let availableWidth = collectionView.frame.size.width - totalPadding
+        let itemWidth = availableWidth / itemsPerRow
         
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-                let padding: CGFloat = 10
-                let itemsPerRow: CGFloat = 2
-                let totalPadding = padding * (itemsPerRow + 1)
-                let availableWidth = collectionView.frame.size.width - totalPadding
-                let itemWidth = availableWidth / itemsPerRow
-                
-                return CGSize(width: itemWidth, height: 235)
-        }
-        
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-                return UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-        }
-        
+        return CGSize(width: itemWidth, height: 235)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 10
     }
-        
-        
-        
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-                return 10
-         }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 10
+    }
     
     func SubscriptionPopUp()  {
         let storyboard = UIStoryboard(name: "Subscription", bundle: nil)
@@ -516,14 +510,14 @@ extension CookBooksTypeVc: UICollectionViewDelegate, UICollectionViewDataSource 
         self.view.bringSubviewToFront(vc.view)
         vc.didMove(toParent: self)
     }
-    }
+}
 
 extension CookBooksTypeVc {
     
     func Api_To_GetCookBookType(){
         var params = [String: Any]()
         params["type"] = self.type
-      
+        
         
         showIndicator(withTitle: "", and: "")
         
@@ -543,13 +537,13 @@ extension CookBooksTypeVc {
                     self.cookBookDataArr.removeAll()
                     self.cookBookDataArr = d.data ?? []
                     self.CollV.reloadData()
-                   
-                        if self.cookBookDataArr.count == 0 {
-                            self.CollV.setEmptyMessage("No recipe yet", UIImage())
-                        }else{
-                            self.CollV.setEmptyMessage("", UIImage())
-                        }
-                     
+                    
+                    if self.cookBookDataArr.count == 0 {
+                        self.CollV.setEmptyMessage("No recipe yet", UIImage())
+                    }else{
+                        self.CollV.setEmptyMessage("", UIImage())
+                    }
+                    
                 }else{
                     self.hideIndicator()
                     let msg = d.message ?? ""
@@ -564,11 +558,11 @@ extension CookBooksTypeVc {
     
     func Api_To_RemoveFavMeal(){
         var params = [String: Any]()
- 
+        
         params["uri"] = self.uri
         params["type"] = 0
         params["cook_book"] = self.selID
-     
+        
         
         showIndicator(withTitle: "", and: "")
         
@@ -588,7 +582,7 @@ extension CookBooksTypeVc {
                 let MSG = dictData["message"] as? String ?? ""
                 self.showToast(MSG)
                 self.RemoveBgV.isHidden = true
-              //  self.Api_To_GetCookBookType()
+                //  self.Api_To_GetCookBookType()
                 self.cookBookDataArr.remove(at: self.SelIndx)
                 
                 if self.cookBookDataArr.count == 0 {
@@ -606,7 +600,7 @@ extension CookBooksTypeVc {
         })
     }
     
- 
+    
     
     func Api_To_MoveMeal(){
         var params = [String: Any]()
@@ -628,26 +622,26 @@ extension CookBooksTypeVc {
             guard let dictData = json.dictionaryObject else{
                 return
             }
-        
+            
             if dictData["success"] as? Bool == true{
                 let MSG = dictData["message"] as? String ?? ""
                 self.showToast(MSG)
                 self.MoveBgV.isHidden = true
                 self.Api_To_GetCookBookType()
-               }else{
-                   let responseMessage = dictData["message"] as? String ?? ""
-                   self.showToast(responseMessage)
-               }
-          })
-         }
-  
+            }else{
+                let responseMessage = dictData["message"] as? String ?? ""
+                self.showToast(responseMessage)
+            }
+        })
+    }
+    
     
     func Api_To_AddToBasket_Recipe(uri: String, type: String){
         var params = [String: Any]()
-            params["uri"] = uri
-            params["quantity"] = ""
-            params["type"] = type
-      
+        params["uri"] = uri
+        params["quantity"] = ""
+        params["type"] = type
+        
         
         showIndicator(withTitle: "", and: "")
         
@@ -663,22 +657,21 @@ extension CookBooksTypeVc {
             guard let dictData = json.dictionaryObject else{
                 return
             }
-        
+            
             if dictData["success"] as? Bool == true{
                 self.showToast("Added to basket.")
-               }else{
-                   let responseMessage = dictData["message"] as? String ?? ""
-                   self.showToast(responseMessage)
-               }
-          })
-         }
+            }else{
+                let responseMessage = dictData["message"] as? String ?? ""
+                self.showToast(responseMessage)
+            }
+        })
+    }
     
-    
-  //  remove-cook-book
+    //  remove-cook-book
     func Api_To_Delete_CookBook(){
         var params = [String: Any]()
         params["id"] = self.type
-     
+        
         
         showIndicator(withTitle: "", and: "")
         
@@ -693,58 +686,57 @@ extension CookBooksTypeVc {
             guard let dictData = json.dictionaryObject else{
                 return
             }
-        
+            
             if dictData["success"] as? Bool == true{
                 self.navigationController?.showToast("Deleted successfully.")
                 self.backAction()
                 self.navigationController?.popViewController(animated: true)
-               }else{
-                   let responseMessage = dictData["message"] as? String ?? ""
-                   self.showToast(responseMessage)
-               }
-          })
-         }
+            }else{
+                let responseMessage = dictData["message"] as? String ?? ""
+                self.showToast(responseMessage)
+            }
+        })
+    }
     
-//    func Api_To_Get_ProfileData(){
-//        var params = [String: Any]()
-//       
-//       
-//        showIndicator(withTitle: "", and: "")
-//        
-//        let loginURL = baseURL.baseURL + appEndPoints.getUserProfile
-//        print(params,"Params")
-//        print(loginURL,"loginURL")
-//        
-//        WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
-//            
-//            self.hideIndicator()
-//            
-//            guard let dictData = json.dictionaryObject else{
-//                return
-//            }
-//            
-//            if dictData["success"] as? Bool == true{
-//                let response = dictData["data"] as? NSDictionary ?? NSDictionary()
-//                let Name = response["name"] as? String ?? String()
-//                self.UserName = Name.capitalizedFirst
-//                
-//                let ProfImg = response["profile_img"] as? String ?? String()
-//                let img = "\(baseURL.imageUrl)\(ProfImg)"
-//                self.UserPickUrl = img
-//                 
-//            }else{
-//                let responseMessage = dictData["message"] as? String ?? ""
-//                self.showToast(responseMessage)
-//            }
-//        })
-//    }
-     
+    //    func Api_To_Get_ProfileData(){
+    //        var params = [String: Any]()
+    //
+    //
+    //        showIndicator(withTitle: "", and: "")
+    //
+    //        let loginURL = baseURL.baseURL + appEndPoints.getUserProfile
+    //        print(params,"Params")
+    //        print(loginURL,"loginURL")
+    //
+    //        WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
+    //
+    //            self.hideIndicator()
+    //
+    //            guard let dictData = json.dictionaryObject else{
+    //                return
+    //            }
+    //
+    //            if dictData["success"] as? Bool == true{
+    //                let response = dictData["data"] as? NSDictionary ?? NSDictionary()
+    //                let Name = response["name"] as? String ?? String()
+    //                self.UserName = Name.capitalizedFirst
+    //
+    //                let ProfImg = response["profile_img"] as? String ?? String()
+    //                let img = "\(baseURL.imageUrl)\(ProfImg)"
+    //                self.UserPickUrl = img
+    //
+    //            }else{
+    //                let responseMessage = dictData["message"] as? String ?? ""
+    //                self.showToast(responseMessage)
+    //            }
+    //        })
+    //    }
     
     func Api_To_AddCookBookFromInvite(){
         var params = [String: Any]()
- 
+        
         params["cook_book_id"] = self.type
-         
+        
         
         showIndicator(withTitle: "", and: "")
         
@@ -753,7 +745,7 @@ extension CookBooksTypeVc {
         print(loginURL,"loginURL")
         
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
-             
+            
             guard let dictData = json.dictionaryObject else{
                 return
             }
@@ -761,11 +753,11 @@ extension CookBooksTypeVc {
             if dictData["success"] as? Bool == true{
                 let id = dictData["id"] as? Int ?? 0
                 self.type = "\(id)"
-//                "cook_book" : {
-//                  "id" : 162,
-//                  "user_id" : 359,
-//                  "status" : 0,
-//                  "shared" : 1,
+                //                "cook_book" : {
+                //                  "id" : 162,
+                //                  "user_id" : 359,
+                //                  "status" : 0,
+                //                  "shared" : 1,
                 self.Api_To_GetCookBookType()
             }else{
                 self.hideIndicator()
@@ -777,24 +769,24 @@ extension CookBooksTypeVc {
 }
 
 
- 
+
 // CustomActivityItemSource should implement the UIActivityItemSource protocol
 class CustomActivityItemSource: NSObject, UIActivityItemSource {
     let metadata: LPLinkMetadata
-
+    
     init(metadata: LPLinkMetadata) {
         self.metadata = metadata
     }
-
+    
     // Provide the data for the activity item
     func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
         return metadata
     }
-
+    
     func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
         return metadata
     }
-
+    
     func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
         // Ensure a non-optional return value by providing a default if title is nil
         return metadata.title ?? "Default Title"

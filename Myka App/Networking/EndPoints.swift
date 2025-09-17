@@ -24,9 +24,9 @@ enum appEndPoints{
     static let dietaryRestrictions = "dietary_restrictions"
     
     static let dislikeIngredients = "dislike_ingredients"
-    
+    static let ingredientAndCookware = "ingredient-and-cookware"
     static let allergensIngredients = "allergens_ingredients"
-    
+
     static let mealRoutine = "meal_routine"
     
     static let cookingFrequency = "cooking_frequency"

@@ -29,6 +29,7 @@ class MealRoutineVC: UIViewController {
     
         var ArrData = [BodyGoalsModel]()//(Name: "Select all", isSelected: false), BodyGoalsModel(Name: "Breakfast", isSelected: false), BodyGoalsModel(Name: "Lunch", isSelected: false), BodyGoalsModel(Name: "Dinner", isSelected: false), BodyGoalsModel(Name: "Snacks", isSelected: false)]
     
+    
   
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -268,7 +269,6 @@ extension MealRoutineVC {
                 
                 self.ArrData.insert(contentsOf: [BodyGoalsModel(Name: "Select all", id: nil, isSelected: false)], at: 0)
                 
-                 
                 self.TblV.reloadData()
                
             }else{
@@ -414,7 +414,6 @@ extension MealRoutineVC {
                 self.hideIndicator()
                 print("===================== FAILURE =======================")
                 print(error.localizedDescription)
-                
             }
         })
     }

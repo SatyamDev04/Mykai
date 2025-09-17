@@ -129,6 +129,8 @@ class WeightPickerVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             self.headingLbl.text = "Target Weight"
         }
         
+
+        
         let cleanedWeight = weightSource.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "kg", with: "")
         numericPart = cleanedWeight
 

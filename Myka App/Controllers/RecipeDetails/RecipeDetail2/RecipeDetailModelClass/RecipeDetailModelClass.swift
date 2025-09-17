@@ -43,15 +43,28 @@ struct RecipeDetail: Codable {
     var yield: Double?
     var dietLabels, healthLabels, cautions, ingredientLines: [String]? 
     var ingredients: [Ingredient]?
+    var cookware: [Cookware]?
     var calories, totalWeight: Double?
     var totalTime: Int?
+    var prep_time: Int?
     var cuisineType, mealType, dishType: [String]?
     var totalNutrients, totalDaily: [String: Total]?
     var digest: [Digest]?
     var instructionLines: [String]?
 }
 
- 
+struct Cookware: Codable {
+    let createdOn: String
+    let imageURL: String
+    let id, name: String
+
+    enum CodingKeys: String, CodingKey {
+        case createdOn = "created_on"
+        case imageURL = "image_url"
+        case id, name
+    }
+}
+
 // MARK: - Regular
 struct Regular: Codable {
     var url: String?

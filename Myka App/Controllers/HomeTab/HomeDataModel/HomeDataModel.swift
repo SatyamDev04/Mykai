@@ -40,7 +40,7 @@ struct HomeDataModel: Codable {
 
     // MARK: - Frezzer
     struct Frezzer: Codable {
-        let lunch, breakfast, dinner, teatime: Int?
+        let lunch, breakfast, dinner, teatime,dessert: Int?
         let snacks: Int?
 
         enum CodingKeys: String, CodingKey {
@@ -49,6 +49,7 @@ struct HomeDataModel: Codable {
             case dinner = "Dinner"
             case teatime = "Brunch"
             case snacks = "Snacks"
+            case dessert = "Dessert"
         }
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -57,6 +58,7 @@ struct HomeDataModel: Codable {
             self.dinner = try container.decodeIfPresent(Int.self, forKey: .dinner)
             self.teatime = try container.decodeIfPresent(Int.self, forKey: .teatime)
             self.snacks = try container.decodeIfPresent(Int.self, forKey: .snacks)
+            self.dessert = try container.decodeIfPresent(Int.self, forKey: .dessert)
         }
     }
 
@@ -197,7 +199,7 @@ struct HomeDataModel: Codable {
     // MARK: - Ingredient
     struct IngredientHome: Codable {
         let text: String?
-        let quantity: Double?
+        let quantity: String?
         let measure: String?
         let food: String?
         let weight: Double?
@@ -213,7 +215,7 @@ struct HomeDataModel: Codable {
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.text = try container.decodeIfPresent(String.self, forKey: .text)
-            self.quantity = try container.decodeIfPresent(Double.self, forKey: .quantity)
+            self.quantity = try container.decodeIfPresent(String.self, forKey: .quantity)
             self.measure = try container.decodeIfPresent(String.self, forKey: .measure)
             self.food = try container.decodeIfPresent(String.self, forKey: .food)
             self.weight = try container.decodeIfPresent(Double.self, forKey: .weight)

@@ -560,6 +560,7 @@
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "My Kai App wants to access your location to show services according to your location";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "My Kai App wants to access your location to show services according to your location";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "My Kai wants to access your location to show services according to your location";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "uewidgewgd\\";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "My Kai use your data to personalize your experience and improve our services.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
@@ -605,6 +606,7 @@
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "My Kai App wants to access your location to show services according to your location";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "My Kai App wants to access your location to show services according to your location";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "My Kai wants to access your location to show services according to your location";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "uewidgewgd\\";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "My Kai use your data to personalize your experience and improve our services.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";

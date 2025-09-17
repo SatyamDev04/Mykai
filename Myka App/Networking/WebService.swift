@@ -34,8 +34,10 @@ class WebService {
                 "Authorization": "Bearer \(token)"
             ]
         }
-        
-        
+        print("===============parameters===============")
+        print(parameters)
+        print("=========================headers===========================")
+        print(headers)
         let reuestUrl =  request
         
         var encodingFormat: ParameterEncoding = URLEncoding()
@@ -44,8 +46,7 @@ class WebService {
 //            encodingFormat = URLEncoding()
            encodingFormat = JSONEncoding()
         }
-        
-        
+       
   
         guard VC.isConnectedToNetwork() == true else{
             VC.hideIndicator()
@@ -61,7 +62,7 @@ class WebService {
         AF.request(reuestUrl, method: .post, parameters: parameters , encoding: URLEncoding.default, headers: headers).responseJSON { (responseData) in
             
             if let data = responseData.data, let utf8Text = String(data: data, encoding: .utf8) {
-                print("Data: \(utf8Text)") // original server data as UTF8 string
+             //   print("Data: \(utf8Text)") // original server data as UTF8 string
                 do{
                     let statusCode = responseData.response?.statusCode
                     if statusCode == 401{
@@ -71,6 +72,8 @@ class WebService {
                     
                     // Get json data
                     let json = try JSON(data: data)
+                    
+                   print("===========================response===========================")
                     print(json)
                    // success(json, statusCode!)
                     if responseData.result != nil {
@@ -89,7 +92,7 @@ class WebService {
                     VC.hideIndicator()
                     AlertController.alert(title: "Message", message: "  Could not connect to the server.")
                    // alertUser(strTitle: "Message", strMessage: "  Could not connect to the server.")
-                     
+                
                 }
             }else{
               //  // hideHud()
@@ -137,7 +140,7 @@ class WebService {
         AF.request(reuestUrl, method: .post, parameters: parameters , encoding: URLEncoding.default, headers: headers).responseJSON { (responseData) in
             
             if let data = responseData.data, let utf8Text = String(data: data, encoding: .utf8) {
-                print("Data: \(utf8Text)") // original server data as UTF8 string
+            //    print("Data: \(utf8Text)") // original server data as UTF8 string
                 do{
                     let statusCode = responseData.response?.statusCode
                     if statusCode == 401{
@@ -248,7 +251,7 @@ class WebService {
     .responseJSON(completionHandler: { responseData in
             
             if let data = responseData.data, let utf8Text = String(data: data, encoding: .utf8) {
-                print("Data: \(utf8Text)") // original server data as UTF8 string
+        //        print("Data: \(utf8Text)") // original server data as UTF8 string
                 do{
                     let statusCode = responseData.response?.statusCode
                     if statusCode == 401{
@@ -319,7 +322,7 @@ class WebService {
         
         AF.request(urlRequest).responseJSON { (responseData) in
             if let data = responseData.data, let utf8Text = String(data: data, encoding: .utf8) {
-                print("Data: \(utf8Text)") // Original server data as UTF8 string
+                //print("Data: \(utf8Text)") // Original server data as UTF8 string
                 do {
                     let statusCode = responseData.response?.statusCode
                     if statusCode == 401 {
@@ -384,7 +387,7 @@ class WebService {
         AF.request(reuestUrl, method: .post, parameters: parameters, encoding: encodingFormat, headers: headers).responseJSON{ (responseData) in
             
             if let data = responseData.data, let utf8Text = String(data: data, encoding: .utf8) {
-                print("Data: \(utf8Text)") // original server data as UTF8 string
+              //  print("Data: \(utf8Text)") // original server data as UTF8 string
                 do{
                     let statusCode = responseData.response?.statusCode
                     if statusCode == 401{
@@ -460,7 +463,7 @@ class WebService {
         headers: headers).responseJSON{ (responseData) in
             
             if let data = responseData.data, let utf8Text = String(data: data, encoding: .utf8) {
-                print("Data: \(utf8Text)") // original server data as UTF8 string
+             //   print("Data: \(utf8Text)") // original server data as UTF8 string
                 do{
                     let statusCode = responseData.response?.statusCode
                     if statusCode == 401{
@@ -642,7 +645,7 @@ class WebService {
 //        headers: [:]).responseJSON{ (responseData) in
             
             if let data = responseData.data, let utf8Text = String(data: data, encoding: .utf8) {
-                print("Data: \(utf8Text)") // original server data as UTF8 string
+            //    print("Data: \(utf8Text)") // original server data as UTF8 string
                 do{
                     let statusCode = responseData.response?.statusCode
                     if statusCode == 401{
@@ -762,7 +765,7 @@ class WebService {
                         //Do what ever you want to do with response
                         print(responseData)
                         if let data = responseData.data, let utf8Text = String(data: data, encoding: .utf8) {
-                            print("Data: \(utf8Text)") // original server data as UTF8 string
+                           // print("Data: \(utf8Text)") // original server data as UTF8 string
                             do{
                                 let statusCode = responseData.response?.statusCode
                                 if statusCode == 401{
@@ -846,7 +849,7 @@ class WebService {
                         //Do what ever you want to do with response
                         print(responseData)
                         if let data = responseData.data, let utf8Text = String(data: data, encoding: .utf8) {
-                            print("Data: \(utf8Text)") // original server data as UTF8 string
+                         //   print("Data: \(utf8Text)") // original server data as UTF8 string
                             do{
                                 let statusCode = responseData.response?.statusCode
                                 if statusCode == 401{
@@ -1014,7 +1017,7 @@ class WebService {
                     //Do what ever you want to do with response
                     print(responseData)
                     if let data = responseData.data, let utf8Text = String(data: data, encoding: .utf8) {
-                        print("Data: \(utf8Text)") // original server data as UTF8 string
+                   //     print("Data: \(utf8Text)") // original server data as UTF8 string
                         do{
                             let statusCode = responseData.response?.statusCode
                             if statusCode == 401{

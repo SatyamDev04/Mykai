@@ -432,12 +432,13 @@ extension ProfileVC {
         
         let imgData = self.ProgImg.image?.jpegData(compressionQuality: 0.5)
     
-        
         showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.UpdateProfile
-        print(params,"Params")
-        print(loginURL,"loginURL")
+        print("*************************Params******************************")
+        print(params)
+        print("*************************loginURL****************************")
+        print(loginURL)
         
         WebService.shared.uploadImageWithParameter(request: loginURL, image: imgData, VC: self, parameters: params, imageName: "profile_img", withCompletion: { (json, statusCode) in
           
@@ -489,7 +490,6 @@ extension ProfileVC {
                         let dob = response?["dob"] as? String ?? String()
                         self.dob = dob
                        
-                        
                          
                         // let Email = response["email"] as? String ?? String()
                         let gender = response?["gender"] as? String ?? String()
@@ -543,8 +543,10 @@ extension ProfileVC {
         showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.user_Logout
-        print(params,"Params")
-        print(loginURL,"loginURL")
+        print("*************************Params******************************")
+        print(params)
+        print("*************************loginURL****************************")
+        print(loginURL)
         
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
             
@@ -598,13 +600,12 @@ extension ProfileVC {
     
     func Api_To_DeleteAcc(){
         var params = [String: Any]()
-        
-  
         showIndicator(withTitle: "", and: "")
-        
         let loginURL = baseURL.baseURL + appEndPoints.user_delete
-        print(params,"Params")
-        print(loginURL,"loginURL")
+        print("*************************Params******************************")
+        print(params)
+        print("*************************loginURL****************************")
+        print(loginURL)
         
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
             

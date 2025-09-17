@@ -16,6 +16,7 @@ class Shopping_ListTblVCell: UITableViewCell {
     
     @IBOutlet weak var MinusBtn: UIButton!
     @IBOutlet weak var PlusBtn: UIButton!
+    @IBOutlet weak var selectBtnTap: UIButton!
   //  @IBOutlet weak var CheckBtn: UIButton!
     
     

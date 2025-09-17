@@ -25,6 +25,7 @@ class AddUrlVC: UIViewController {
         self.willMove(toParent: nil)
         self.view.removeFromSuperview()
         self.removeFromParent()
+        
     }
     
     
@@ -37,5 +38,6 @@ class AddUrlVC: UIViewController {
         self.willMove(toParent: nil)
         self.view.removeFromSuperview()
         self.removeFromParent()
+       
     }
 }

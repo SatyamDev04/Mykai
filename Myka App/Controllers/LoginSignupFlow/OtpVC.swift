@@ -228,6 +228,12 @@ extension OtpVC {
         
         let loginURL = baseURL.baseURL + appEndPoints.getSignUpOtpVerify
         
+        
+        print("*************************Params******************************")
+        print(params)
+        print("*************************loginURL****************************")
+        print(loginURL)
+        
         showIndicator(withTitle: "", and: "")
         
         AF.upload(multipartFormData: { multipartFormData in
@@ -345,9 +351,10 @@ extension OtpVC {
         showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.SignUpResendotp
-        print(params,"Params")
-        print(loginURL,"loginURL")
-        
+        print("*************************Params******************************")
+        print(params)
+        print("*************************loginURL****************************")
+        print(loginURL)
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
             
             self.hideIndicator()
@@ -396,8 +403,10 @@ extension OtpVC {
         showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.forget_otp_verify
-        print(params,"Params")
-        print(loginURL,"loginURL")
+        print("*************************Params******************************")
+        print(params)
+        print("*************************loginURL****************************")
+        print(loginURL)
         
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
             
@@ -445,8 +454,10 @@ extension OtpVC {
         showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.forgetPassword
-        print(params,"Params")
-        print(loginURL,"loginURL")
+        print("*************************Params******************************")
+        print(params)
+        print("*************************loginURL****************************")
+        print(loginURL)
         
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
             

@@ -82,9 +82,10 @@ extension FoergetVC {
         showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.forgetPassword
-        print(params,"Params")
-        print(loginURL,"loginURL")
-        
+        print("*************************Params******************************")
+        print(params)
+        print("*************************loginURL****************************")
+        print(loginURL)
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
             
             self.hideIndicator()

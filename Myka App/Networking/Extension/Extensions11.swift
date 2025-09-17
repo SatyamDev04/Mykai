@@ -14,21 +14,21 @@ import AVFoundation
 
 @IBDesignable
 extension UILabel {
-
+    
     @IBInspectable var fontName: String {
         get { self.font.fontName }
         set {
             updateFont(name: newValue, size: self.font.pointSize)
         }
     }
-
+    
     @IBInspectable var fontSize: CGFloat {
         get { self.font.pointSize }
         set {
             updateFont(name: self.font.fontName, size: newValue)
         }
     }
-
+    
     private func updateFont(name: String, size: CGFloat) {
         if let newFont = UIFont(name: name, size: size) {
             self.font = newFont
@@ -121,17 +121,17 @@ extension UIView {
         }
     }
     
-//    @IBInspectable var shadowCornerRadius: CGFloat {
-//            get {
-//                return self.layer.cornerRadius
-//            }
-//            set {
-//                self.layer.cornerRadius = newValue
-//                self.layer.masksToBounds = false
-//                self.layer.shadowPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: newValue).cgPath
-//            }
-//        }
- 
+    //    @IBInspectable var shadowCornerRadius: CGFloat {
+    //            get {
+    //                return self.layer.cornerRadius
+    //            }
+    //            set {
+    //                self.layer.cornerRadius = newValue
+    //                self.layer.masksToBounds = false
+    //                self.layer.shadowPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: newValue).cgPath
+    //            }
+    //        }
+    
     
     @IBInspectable var topLeftRadius: CGFloat {
         get {
@@ -145,7 +145,7 @@ extension UIView {
             layer.mask = maskLayer1
         }
     }
-   
+    
     
     
 }
@@ -158,7 +158,7 @@ extension UIImageView {
         set {
             let v = newValue
             if v {
-//                self.pavan_tapToSeeFullImage()
+                //                self.pavan_tapToSeeFullImage()
             }
         }
     }
@@ -166,17 +166,17 @@ extension UIImageView {
 //#MARK: - Gradiont Color
 
 extension UIView {
-        func setGradientBackground(view: UIView, colorOne: UIColor, colorTwo: UIColor, colorThree: UIColor)  {
-            let gradientlayer = CAGradientLayer()
-            gradientlayer.frame = view.bounds
-            gradientlayer.colors = [colorOne.cgColor, colorTwo.cgColor, colorThree.cgColor]
-            //gradientlayer.cornerRadius = 15.0
-            gradientlayer.locations = [0, 0.53, 1]
-            gradientlayer.startPoint = CGPoint(x: 0.25, y: 0.5)
-            gradientlayer.endPoint = CGPoint(x: 0.75, y: 0.5)
-            gradientlayer.frame = CGRect(x: view.bounds.minX , y: view.bounds.minY, width: view.bounds.size.width , height: view.frame.size.height)
-            view.layer.insertSublayer(gradientlayer, at: 0)
-        }
+    func setGradientBackground(view: UIView, colorOne: UIColor, colorTwo: UIColor, colorThree: UIColor)  {
+        let gradientlayer = CAGradientLayer()
+        gradientlayer.frame = view.bounds
+        gradientlayer.colors = [colorOne.cgColor, colorTwo.cgColor, colorThree.cgColor]
+        //gradientlayer.cornerRadius = 15.0
+        gradientlayer.locations = [0, 0.53, 1]
+        gradientlayer.startPoint = CGPoint(x: 0.25, y: 0.5)
+        gradientlayer.endPoint = CGPoint(x: 0.75, y: 0.5)
+        gradientlayer.frame = CGRect(x: view.bounds.minX , y: view.bounds.minY, width: view.bounds.size.width , height: view.frame.size.height)
+        view.layer.insertSublayer(gradientlayer, at: 0)
+    }
     
     func shake(duration: CFTimeInterval) {
         
@@ -283,31 +283,31 @@ extension String
 
 extension UIApplication {
     var statusBarUIView: UIView? {
-
-      if #available(iOS 13.0, *) {
-          let tag = 3848245
-          let keyWindow = UIApplication.shared.connectedScenes
-              .map({$0 as? UIWindowScene})
-              .compactMap({$0})
-              .first?.windows.first
-
-          if let statusBar = keyWindow?.viewWithTag(tag) {
-              return statusBar
-          } else {
-              let height = keyWindow?.windowScene?.statusBarManager?.statusBarFrame ?? .zero
-              let statusBarView = UIView(frame: height)
-              statusBarView.tag = tag
-              statusBarView.layer.zPosition = 999999
-
-              keyWindow?.addSubview(statusBarView)
-              return statusBarView
-          }
-      } else {
-          if responds(to: Selector(("statusBar"))) {
-              return value(forKey: "statusBar") as? UIView
-          }
-      }
-      return nil
+        
+        if #available(iOS 13.0, *) {
+            let tag = 3848245
+            let keyWindow = UIApplication.shared.connectedScenes
+                .map({$0 as? UIWindowScene})
+                .compactMap({$0})
+                .first?.windows.first
+            
+            if let statusBar = keyWindow?.viewWithTag(tag) {
+                return statusBar
+            } else {
+                let height = keyWindow?.windowScene?.statusBarManager?.statusBarFrame ?? .zero
+                let statusBarView = UIView(frame: height)
+                statusBarView.tag = tag
+                statusBarView.layer.zPosition = 999999
+                
+                keyWindow?.addSubview(statusBarView)
+                return statusBarView
+            }
+        } else {
+            if responds(to: Selector(("statusBar"))) {
+                return value(forKey: "statusBar") as? UIView
+            }
+        }
+        return nil
     }
 }
 
@@ -349,20 +349,20 @@ extension UITextField{
         self.layer.masksToBounds = true
     }
     
-//    @IBInspectable var placeHolderAddStar: UIColor? {
-//        get {
-//            return self.placeHolderAddStar
-//        }
-//        set {
-//            let passwordAttriburedString = NSMutableAttributedString(string:self.placeholder != nil ? self.placeholder! : "", attributes:[NSAttributedString.Key.foregroundColor: newValue!])
-//                
-//            let asterix = NSAttributedString(string: "*", attributes: [.foregroundColor: UIColor.red])
-//            passwordAttriburedString.append(asterix)
-//
-//            self.attributedPlaceholder = passwordAttriburedString
-//            
-//        }
-//    }
+    //    @IBInspectable var placeHolderAddStar: UIColor? {
+    //        get {
+    //            return self.placeHolderAddStar
+    //        }
+    //        set {
+    //            let passwordAttriburedString = NSMutableAttributedString(string:self.placeholder != nil ? self.placeholder! : "", attributes:[NSAttributedString.Key.foregroundColor: newValue!])
+    //                
+    //            let asterix = NSAttributedString(string: "*", attributes: [.foregroundColor: UIColor.red])
+    //            passwordAttriburedString.append(asterix)
+    //
+    //            self.attributedPlaceholder = passwordAttriburedString
+    //            
+    //        }
+    //    }
     
 }
 
@@ -458,7 +458,7 @@ extension UIImage {
         let img:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         let imageData:NSData = img.jpegData(compressionQuality: 1.0)! as NSData
         
-//    let imageData:NSData = UIImageJPEGRepresentation(img, 1.0)! as NSData
+        //    let imageData:NSData = UIImageJPEGRepresentation(img, 1.0)! as NSData
         UIGraphicsEndImageContext()
         
         return UIImage(data: imageData as Data)!
@@ -471,7 +471,7 @@ extension UIImage {
         draw(in: CGRect(origin: .zero, size: canvasSize))
         return UIGraphicsGetImageFromCurrentImageContext()
     }
-
+    
     func resizeWithPercent(percentage: CGFloat) -> UIImage? {
         let imageView = UIImageView(frame: CGRect(origin: .zero, size: CGSize(width: size.width * percentage, height: size.height * percentage)))
         imageView.contentMode = .scaleAspectFit
@@ -483,7 +483,7 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return result
     }
-  
+    
     
     func resizeByByte(maxMB: Double, completion: @escaping (Data) -> Void) {
         
@@ -492,11 +492,11 @@ extension UIImage {
         let max = maxMB * 1000000.0
         var imageByte = Double(self.jpegData(compressionQuality: 1.0)?.count ?? 0)
         imageData = self.jpegData(compressionQuality: compressQuality)!
-                
+        
         while imageByte > max {
             imageData = self.jpegData(compressionQuality: compressQuality)!
             imageByte = Double(imageData.count)
-//            imageByte = Double(self.jpegData(compressionQuality: compressQuality)?.count ?? 0)
+            //            imageByte = Double(self.jpegData(compressionQuality: compressQuality)?.count ?? 0)
             compressQuality -= 0.1
         }
         
@@ -663,78 +663,78 @@ extension UITableView {
         messageLabel.textAlignment = .center
         messageLabel.font = UIFont(name: "Poppins Medium", size: 17)
         messageLabel.sizeToFit()
-
+        
         self.backgroundView = messageLabel
         self.separatorStyle = .none
     }
     
     func setEmptyImag(_ message: UIImage) {
-//          let messageLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height))
+        //          let messageLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height))
         let messageLabel = UIImageView(frame: CGRect(x: self.center.x, y: center.y, width: self.bounds.size.width, height: self.bounds.size.height))
-//          messageLabel.text = message
-//          messageLabel.textColor = .black
-//          messageLabel.numberOfLines = 0
-//          messageLabel.textAlignment = .center
-//          messageLabel.font = UIFont(name: AppFonts.Bebas_Neue_Pro_Book.rawValue, size: 15)
-          messageLabel.image = message
-//          messageLabel.sizeToFit()
-          messageLabel.contentMode = .scaleAspectFit
-
-          self.backgroundView = messageLabel
-          self.separatorStyle = .none
-      }
-
+        //          messageLabel.text = message
+        //          messageLabel.textColor = .black
+        //          messageLabel.numberOfLines = 0
+        //          messageLabel.textAlignment = .center
+        //          messageLabel.font = UIFont(name: AppFonts.Bebas_Neue_Pro_Book.rawValue, size: 15)
+        messageLabel.image = message
+        //          messageLabel.sizeToFit()
+        messageLabel.contentMode = .scaleAspectFit
+        
+        self.backgroundView = messageLabel
+        self.separatorStyle = .none
+    }
+    
     func restore() {
         self.backgroundView = nil
         self.separatorStyle = .none
     }
-
+    
 }
 
 extension UICollectionView {
-
+    
     func setEmptyMessage(_ message: String,_ img:UIImage) {
-
-//        let image = UIImageView()
-//        image.contentMode = .center//.scaleAspectFit
-//        image.image = img
-//
-//
-//        let messageLabel = UILabel()
-//        messageLabel.text = message
-//        messageLabel.font = UIFont(name: "Poppins Medium", size: 17)
-//        messageLabel.textColor = .black
-//        messageLabel.numberOfLines = 0
-//        messageLabel.textAlignment = .center
-//        messageLabel.sizeToFit()
-//
-//        let mainView = UIView()
-//        mainView.addSubview(image)
-//        mainView.addSubview(messageLabel)
-//
-//        //Auto Layout
-//        image.translatesAutoresizingMaskIntoConstraints = false
-//        image.centerXAnchor.constraint(equalTo: mainView.centerXAnchor).isActive = true
-//        image.centerYAnchor.constraint(equalTo: mainView.centerYAnchor , constant: -120).isActive = true
-//
-//        messageLabel.translatesAutoresizingMaskIntoConstraints = false
-//        messageLabel.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 20).isActive = true
-//        messageLabel.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 10).isActive = true
-//        messageLabel.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: -15).isActive = true
-//
-//        self.backgroundView = mainView
+        
+        //        let image = UIImageView()
+        //        image.contentMode = .center//.scaleAspectFit
+        //        image.image = img
+        //
+        //
+        //        let messageLabel = UILabel()
+        //        messageLabel.text = message
+        //        messageLabel.font = UIFont(name: "Poppins Medium", size: 17)
+        //        messageLabel.textColor = .black
+        //        messageLabel.numberOfLines = 0
+        //        messageLabel.textAlignment = .center
+        //        messageLabel.sizeToFit()
+        //
+        //        let mainView = UIView()
+        //        mainView.addSubview(image)
+        //        mainView.addSubview(messageLabel)
+        //
+        //        //Auto Layout
+        //        image.translatesAutoresizingMaskIntoConstraints = false
+        //        image.centerXAnchor.constraint(equalTo: mainView.centerXAnchor).isActive = true
+        //        image.centerYAnchor.constraint(equalTo: mainView.centerYAnchor , constant: -120).isActive = true
+        //
+        //        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        //        messageLabel.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 20).isActive = true
+        //        messageLabel.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 10).isActive = true
+        //        messageLabel.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: -15).isActive = true
+        //
+        //        self.backgroundView = mainView
         
         let messageLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height))
-               messageLabel.text = message
-               messageLabel.textColor = .black
-               messageLabel.numberOfLines = 0
-               messageLabel.textAlignment = .center
-               messageLabel.font = UIFont(name: "Poppins Medium", size: 17) // Set your font type
-               messageLabel.sizeToFit()
-               
-               self.backgroundView = messageLabel;
+        messageLabel.text = message
+        messageLabel.textColor = .black
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center
+        messageLabel.font = UIFont(name: "Poppins Medium", size: 17) // Set your font type
+        messageLabel.sizeToFit()
+        
+        self.backgroundView = messageLabel;
     }
-
+    
     func restoreBackgroundView() {
         self.backgroundView = nil
     }
@@ -742,11 +742,11 @@ extension UICollectionView {
 //
 
 class CurvedView: UIView {
-     func drawRect(rect: CGRect) {
-
+    func drawRect(rect: CGRect) {
+        
         let y:CGFloat = 20
         let curveTo:CGFloat = 0
-
+        
         let myBezier = UIBezierPath()
         myBezier.move(to: CGPoint(x: 0, y: y))
         myBezier.addQuadCurve(to: CGPoint(x: rect.width, y: y), controlPoint: CGPoint(x: rect.width / 2, y: curveTo))
@@ -761,103 +761,103 @@ class CurvedView: UIView {
 }
 
 extension UIView {
-
+    
     func addTopRoundedCornerToView(targetView:UIView?, desiredCurve:CGFloat?)
     {
         let offset:CGFloat =  targetView!.frame.width/desiredCurve!
         let bounds: CGRect = targetView!.bounds
-
+        
         let rectBounds: CGRect = CGRect(x: bounds.origin.x, y: bounds.origin.y+bounds.size.height / 2, width: bounds.size.width, height: bounds.size.height)
-
+        
         let rectPath: UIBezierPath = UIBezierPath(rect: rectBounds)
         let ovalBounds: CGRect = CGRect(x: bounds.origin.x - offset / 2, y: bounds.origin.y, width: bounds.size.width + offset, height: bounds.size.height)
         print(ovalBounds)
         let ovalPath: UIBezierPath = UIBezierPath(ovalIn: ovalBounds)
         rectPath.append(ovalPath)
-
+        
         // Create the shape layer and set its path
         let maskLayer: CAShapeLayer = CAShapeLayer()
         maskLayer.frame = bounds
         maskLayer.path = rectPath.cgPath
-
+        
         // Set the newly created shape layer as the mask for the view's layer
         targetView!.layer.mask = maskLayer
     }
 }
 @IBDesignable class BubbleView: UIView { // 1
-
-  override init(frame: CGRect) { // 2
-    super.init(frame: frame)
     
-    commonInit()
-  }
-  
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
-    
-    commonInit()
-  }
-  
-  private func commonInit() {
-    super.backgroundColor = .clear // 3
-  }
-  
-  private var bubbleColor: UIColor? { // 4
-    didSet {
-      setNeedsDisplay() // 5
+    override init(frame: CGRect) { // 2
+        super.init(frame: frame)
+        
+        commonInit()
     }
-  }
-  
-  override var backgroundColor: UIColor? { // 6
-    get { return bubbleColor }
-    set { bubbleColor = newValue }
-  }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        
+        commonInit()
+    }
+    
+    private func commonInit() {
+        super.backgroundColor = .clear // 3
+    }
+    
+    private var bubbleColor: UIColor? { // 4
+        didSet {
+            setNeedsDisplay() // 5
+        }
+    }
+    
+    override var backgroundColor: UIColor? { // 6
+        get { return bubbleColor }
+        set { bubbleColor = newValue }
+    }
     enum ArrowDirection: String { // 1
         case left = "left"
         case right = "right"
-      }
-
-      var arrowDirection: ArrowDirection = .right { // 2
+    }
+    
+    var arrowDirection: ArrowDirection = .right { // 2
         didSet {
-          setNeedsDisplay()
+            setNeedsDisplay()
         }
-      }
-
-      @IBInspectable var arrowDirectionIB: String { // 3
+    }
+    
+    @IBInspectable var arrowDirectionIB: String { // 3
         get {
-          return arrowDirection.rawValue
+            return arrowDirection.rawValue
         }
         set {
-          if let direction = ArrowDirection(rawValue: newValue) {
-            arrowDirection = direction
-          }
+            if let direction = ArrowDirection(rawValue: newValue) {
+                arrowDirection = direction
+            }
         }
-      }
-  override func draw(_ rect: CGRect) { // 7
-    let bezierPath = UIBezierPath() // 8
-
-      bezierPath.lineWidth = borderWidth // 3
-         
+    }
+    override func draw(_ rect: CGRect) { // 7
+        let bezierPath = UIBezierPath() // 8
+        
+        bezierPath.lineWidth = borderWidth // 3
+        
         let bottom = rect.height - borderWidth // 4
-         let right = rect.width - borderWidth
-         let top = borderWidth
-         let left = borderWidth
-      
-      if arrowDirection == .right { // 4
-                bezierPath.move(to: CGPoint(x: right - 22, y: bottom)) // 5
-                    bezierPath.addLine(to: CGPoint(x: 17 + borderWidth, y: bottom))
-                    bezierPath.addCurve(to: CGPoint(x: left, y: bottom - 18), controlPoint1: CGPoint(x: 7.61 + borderWidth, y: bottom), controlPoint2: CGPoint(x: left, y: bottom - 7.61))
-                    bezierPath.addLine(to: CGPoint(x: left, y: 17 + borderWidth))
-                    bezierPath.addCurve(to: CGPoint(x: 17 + borderWidth, y: top), controlPoint1: CGPoint(x: left, y: 7.61 + borderWidth), controlPoint2: CGPoint(x: 7.61 + borderWidth, y: top))
-                    bezierPath.addLine(to: CGPoint(x: right - 21, y: top))
-                    bezierPath.addCurve(to: CGPoint(x: right - 4, y: 17 + borderWidth), controlPoint1: CGPoint(x: right - 11.61, y: top), controlPoint2: CGPoint(x: right - 4, y: 7.61 + borderWidth))
-                    bezierPath.addLine(to: CGPoint(x: right - 4, y: bottom - 11))
-                    bezierPath.addCurve(to: CGPoint(x: right, y: bottom), controlPoint1: CGPoint(x: right - 4, y: bottom - 1), controlPoint2: CGPoint(x: right, y: bottom))
-                    bezierPath.addLine(to: CGPoint(x: right + 0.05, y: bottom - 0.01))
-                    bezierPath.addCurve(to: CGPoint(x: right - 11.04, y: bottom - 4.04), controlPoint1: CGPoint(x: right - 4.07, y: bottom + 0.43), controlPoint2: CGPoint(x: right - 8.16, y: bottom - 1.06))
-                    bezierPath.addCurve(to: CGPoint(x: right - 22, y: bottom), controlPoint1: CGPoint(x: right - 16, y: bottom), controlPoint2: CGPoint(x: right - 19, y: bottom))
-                    bezierPath.close()
-          } else {
+        let right = rect.width - borderWidth
+        let top = borderWidth
+        let left = borderWidth
+        
+        if arrowDirection == .right { // 4
+            bezierPath.move(to: CGPoint(x: right - 22, y: bottom)) // 5
+            bezierPath.addLine(to: CGPoint(x: 17 + borderWidth, y: bottom))
+            bezierPath.addCurve(to: CGPoint(x: left, y: bottom - 18), controlPoint1: CGPoint(x: 7.61 + borderWidth, y: bottom), controlPoint2: CGPoint(x: left, y: bottom - 7.61))
+            bezierPath.addLine(to: CGPoint(x: left, y: 17 + borderWidth))
+            bezierPath.addCurve(to: CGPoint(x: 17 + borderWidth, y: top), controlPoint1: CGPoint(x: left, y: 7.61 + borderWidth), controlPoint2: CGPoint(x: 7.61 + borderWidth, y: top))
+            bezierPath.addLine(to: CGPoint(x: right - 21, y: top))
+            bezierPath.addCurve(to: CGPoint(x: right - 4, y: 17 + borderWidth), controlPoint1: CGPoint(x: right - 11.61, y: top), controlPoint2: CGPoint(x: right - 4, y: 7.61 + borderWidth))
+            bezierPath.addLine(to: CGPoint(x: right - 4, y: bottom - 11))
+            bezierPath.addCurve(to: CGPoint(x: right, y: bottom), controlPoint1: CGPoint(x: right - 4, y: bottom - 1), controlPoint2: CGPoint(x: right, y: bottom))
+            bezierPath.addLine(to: CGPoint(x: right + 0.05, y: bottom - 0.01))
+            bezierPath.addCurve(to: CGPoint(x: right - 11.04, y: bottom - 4.04), controlPoint1: CGPoint(x: right - 4.07, y: bottom + 0.43), controlPoint2: CGPoint(x: right - 8.16, y: bottom - 1.06))
+            bezierPath.addCurve(to: CGPoint(x: right - 22, y: bottom), controlPoint1: CGPoint(x: right - 16, y: bottom), controlPoint2: CGPoint(x: right - 19, y: bottom))
+            bezierPath.close()
+        } else {
             bezierPath.move(to: CGPoint(x: 22 + borderWidth, y: bottom)) // 5
             bezierPath.addLine(to: CGPoint(x: right - 17, y: bottom))
             bezierPath.addCurve(to: CGPoint(x: right, y: bottom - 17), controlPoint1: CGPoint(x: right - 7.61, y: bottom), controlPoint2: CGPoint(x: right, y: bottom - 7.61))
@@ -870,13 +870,13 @@ extension UIView {
             bezierPath.addLine(to: CGPoint(x: borderWidth - 0.05, y: bottom - 0.01))
             bezierPath.addCurve(to: CGPoint(x: borderWidth + 11.04, y: bottom - 4.04), controlPoint1: CGPoint(x: borderWidth + 4.07, y: bottom + 0.43), controlPoint2: CGPoint(x: borderWidth + 8.16, y: bottom - 1.06))
             bezierPath.addCurve(to: CGPoint(x: borderWidth + 22, y: bottom), controlPoint1: CGPoint(x: borderWidth + 16, y: bottom), controlPoint2: CGPoint(x: borderWidth + 19, y: bottom))
-          }
-
-    
-    backgroundColor?.setFill() // 9
-    bezierPath.fill()
-    bezierPath.stroke()
-  }
+        }
+        
+        
+        backgroundColor?.setFill() // 9
+        bezierPath.fill()
+        bezierPath.stroke()
+    }
     
 }
 
@@ -914,29 +914,29 @@ extension UIViewController{
     }
 }
 
- 
+
 
 class GradientLabel: UILabel {
     var gradientColors: [CGColor] = []
-
+    
     override func drawText(in rect: CGRect) {
         if let gradientColor = drawGradientColor(in: rect, colors: gradientColors) {
             self.textColor = gradientColor
         }
         super.drawText(in: rect)
     }
-
+    
     private func drawGradientColor(in rect: CGRect, colors: [CGColor]) -> UIColor? {
         let currentContext = UIGraphicsGetCurrentContext()
         currentContext?.saveGState()
         defer { currentContext?.restoreGState() }
-
+        
         let size = rect.size
         UIGraphicsBeginImageContextWithOptions(size, false, 0)
         guard let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(),
                                         colors: colors as CFArray,
                                         locations: nil) else { return nil }
-
+        
         let context = UIGraphicsGetCurrentContext()
         context?.drawLinearGradient(gradient,
                                     start: CGPoint.zero,
@@ -948,7 +948,7 @@ class GradientLabel: UILabel {
         return UIColor(patternImage: image)
     }
 }
- 
+
 
 //extension UITextView {
 //
@@ -1050,7 +1050,7 @@ extension UIViewController{
         }
         // Convert image data to a Base64 encoded string
         let base64 =  imageData.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
-                              
+        
         let base64String = base64.replacingOccurrences(of: "\r\n", with: "")
         return base64String
     }
@@ -1058,7 +1058,7 @@ extension UIViewController{
     func roundedFormattedValue(_ value: Double, decimalPlaces: Int) -> String {
         let factor = pow(10.0, Double(decimalPlaces))
         let roundedValue = round(value * factor) / factor
-
+        
         // Format based on value type
         if roundedValue.truncatingRemainder(dividingBy: 1) == 0 {
             // Whole number
@@ -1097,7 +1097,7 @@ extension UIViewController{
         return qnty
     }
 }
- 
+
 extension Double {
     func roundedTo(places: Int) -> Double {
         let multiplier = pow(10.0, Double(places))

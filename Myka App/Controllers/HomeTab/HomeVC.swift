@@ -42,13 +42,14 @@ class HomeVC: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var FridgeDinnerLbl: UILabel!
     @IBOutlet weak var FridgeSnacksLbl: UILabel!
     @IBOutlet weak var FridgeTeaTimeLbl: UILabel!
+    @IBOutlet weak var FridgeDesertLbl: UILabel!
     
     @IBOutlet weak var FreezerBreakFastLbl: UILabel!
     @IBOutlet weak var FreezerLunchLbl: UILabel!
     @IBOutlet weak var FreezerDinnerLbl: UILabel!
     @IBOutlet weak var FreezerSnacksLbl: UILabel!
     @IBOutlet weak var FreezerTeaTimeLbl: UILabel!
-   
+    @IBOutlet weak var FreezerDesertLbl: UILabel!
    
     let locationManager = CLLocationManager()
     
@@ -67,7 +68,8 @@ class HomeVC: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+//        let vc = InstacartContainerVC()
+//        self.navigationController?.pushViewController(vc, animated: false)
         self.PlanMealBgV.isHidden = false
         self.RecipesCookedlBgV.isHidden = true
         self.CookedMealSeeAllBgV.isHidden = true
@@ -80,7 +82,7 @@ class HomeVC: UIViewController, CLLocationManagerDelegate {
 #if !DEBUG
 startSubscriptionTimer()
 #endif
-      //  self.Api_To_get_SavedAddress()
+     
         
         HomeService.shared.Api_To_get_SavedAddress(vc: self) { result in
             switch result {
@@ -288,7 +290,7 @@ startSubscriptionTimer()
     
     @IBAction func CartBtn(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Basket", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "BasketVC") as! BasketVC
+        let vc = storyboard.instantiateViewController(withIdentifier: "BasketNewVC") as! BasketNewVC
         vc.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -695,14 +697,14 @@ extension HomeVC{
         self.FridgeDinnerLbl.text = "\(fridgeMeal?.dinner ?? 0)"
         self.FridgeSnacksLbl.text = "\(fridgeMeal?.snacks ?? 0)"
         self.FridgeTeaTimeLbl.text = "\(fridgeMeal?.teatime ?? 0)"
-        
+        self.FridgeDesertLbl.text = "\(fridgeMeal?.dessert ?? 0)"
         let freezerMeal = allData?.frezzer
         self.FreezerLunchLbl.text = "\(freezerMeal?.lunch ?? 0)"
         self.FreezerBreakFastLbl.text = "\(freezerMeal?.breakfast ?? 0)"
         self.FreezerDinnerLbl.text = "\(freezerMeal?.dinner ?? 0)"
         self.FreezerSnacksLbl.text = "\(freezerMeal?.snacks ?? 0)"
         self.FreezerTeaTimeLbl.text = "\(freezerMeal?.teatime ?? 0)"
-        
+        self.FreezerDesertLbl.text = "\(freezerMeal?.dessert ?? 0)"
         self.recipeCookedData.removeAll()
         self.recipeCookedData = allData?.userData ?? []
         
@@ -829,22 +831,22 @@ extension HomeVC{
     
     func MarketDataFetch(Result: [MarketModel]?){
         
-        self.SuperMarketArr.append(contentsOf: Result ?? [])
-        
-        self.SuperMarketArr = self.SuperMarketArr.filter { store in
-            store.total != nil && store.total != 0.0
-        }
-        
-        self.hasReachedEnd = false
-        
-        if self.SuperMarketArr.count == 0 {
-            self.SelectSuperMarketPopupV.isHidden = true
-            self.showToast("There is no store available near your location.")
-        }else{
-            self.SelectSuperMarketPopupV.isHidden = false
-        }
-        
-        self.SelectSuperMarketCollV.reloadData()
+//        self.SuperMarketArr.append(contentsOf: Result ?? [])
+//        
+//        self.SuperMarketArr = self.SuperMarketArr.filter { store in
+//            store.total != nil && store.total != 0.0
+//        }
+//        
+//        self.hasReachedEnd = false
+//        
+//        if self.SuperMarketArr.count == 0 {
+//            self.SelectSuperMarketPopupV.isHidden = true
+//            self.showToast("There is no store available near your location.")
+//        }else{
+//            self.SelectSuperMarketPopupV.isHidden = false
+//        }
+//        
+//        self.SelectSuperMarketCollV.reloadData()
     }
 }
  

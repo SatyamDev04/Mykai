@@ -33,7 +33,6 @@ class SignUpVC: UIViewController {
     @IBAction func BackBtn(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
-   
     //invisible, eye (img name).
     @IBAction func PassHideShowBtn(_ sender: UIButton) {
         if self.PassHideShowBtnO.isSelected {
@@ -47,7 +46,6 @@ class SignUpVC: UIViewController {
     
     @IBAction func SignupBtn(_ sender: UIButton) {
         guard validation() else { return }
-        
         self.Api_To_Signup()
     }
     
@@ -56,15 +54,11 @@ class SignUpVC: UIViewController {
         // Create Google Sign In configuration object.
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
-        
         // Start the sign in flow!
         GIDSignIn.sharedInstance.signIn(withPresenting: self) { result, error in
-            
             guard error == nil else {
                 return
             }
-            
-            
             guard let user = result?.user else { return }
             
             let idToken = user.idToken?.tokenString
@@ -154,12 +148,9 @@ class SignUpVC: UIViewController {
         if PassTxt.text?.count == 0 {
             self.popupAlert(title: "Error", message: "Password can't be empty", actionTitles: ["Okay!"], actions:[{action1 in}])
     return false
-       
         }else if !PassTxt.text!.isPasswordValid(){
             self.popupAlert(title: "Error", message: "Password must have at least one Uppercase, one Lowercase alphabet, one spacial characters and one numeric caracters.", actionTitles: ["Okay!"], actions:[{action1 in}])
-      
         return false
-
         }
         return true
     }

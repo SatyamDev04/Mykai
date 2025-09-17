@@ -68,12 +68,13 @@ struct YourCookedMealModelNew: Codable {
 // MARK: - FreezerDataClass
 struct FreezerDataClass: Codable {
     var breakfast, teatime: [Lunch]?
-    var lunch: [Lunch]?
+    var lunch, dessert: [Lunch]?
     var snacks, dinner: [Lunch]?
 
     enum CodingKeys: String, CodingKey {
         case breakfast = "Breakfast"
         case teatime = "Brunch"
+        case dessert = "Dessert"
         case lunch = "Lunch"
         case snacks = "Snacks"
         case dinner = "Dinner"

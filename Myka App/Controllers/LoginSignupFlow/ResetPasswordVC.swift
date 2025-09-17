@@ -9,7 +9,6 @@ import UIKit
 
 class ResetPasswordVC: UIViewController {
     
-    
     @IBOutlet weak var CreatePassTxt: UITextField!
     
     @IBOutlet weak var ConfirmPassTxt: UITextField!
@@ -25,11 +24,10 @@ class ResetPasswordVC: UIViewController {
         self.SuccessView.isHidden = true
     }
     
-
     @IBAction func BackBtn(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
-
+    
     @IBAction func SubmitBtn(_ sender: UIButton) {
         guard validation() else {
             return
@@ -38,38 +36,33 @@ class ResetPasswordVC: UIViewController {
         self.Api_To_ResetPass()
     }
     
-    
     @IBAction func OKBtn(_ sender: UIButton) {
         self.SuccessView.isHidden = true
         navigationController?.popToViewController(ofClass: LoginVC.self, animated: true)
     }
     
-
-    
-    
     func validation() -> Bool {
-
+        
         if CreatePassTxt.text?.count == 0 {
             self.popupAlert(title: "Error", message: "Create password can't be empty", actionTitles: ["Okay!"], actions:[{action1 in}])
-    return false
-       
+            return false
+            
         }else if !CreatePassTxt.text!.isPasswordValid(){
             self.popupAlert(title: "Error", message: "Password must have at least one Uppercase, one Lowercase alphabet, one spacial characters and one numeric caracters.", actionTitles: ["Okay!"], actions:[{action1 in}])
-      
-        return false
-
-        }else if ConfirmPassTxt.text?.count == 0 {
-        self.popupAlert(title: "Error", message: " Confirm Password can't be empty", actionTitles: ["Okay!"], actions:[{action1 in}])
-    return false
             
-    } else if ConfirmPassTxt.text != CreatePassTxt.text {
-        self.popupAlert(title: "Error", message: " Password not matched", actionTitles: ["Okay!"], actions:[{action1 in}])
-    return false
-    }
+            return false
+            
+        }else if ConfirmPassTxt.text?.count == 0 {
+            self.popupAlert(title: "Error", message: " Confirm Password can't be empty", actionTitles: ["Okay!"], actions:[{action1 in}])
+            return false
+            
+        } else if ConfirmPassTxt.text != CreatePassTxt.text {
+            self.popupAlert(title: "Error", message: " Password not matched", actionTitles: ["Okay!"], actions:[{action1 in}])
+            return false
+        }
         return true
     }
 }
-
 
 extension ResetPasswordVC {
     func Api_To_ResetPass(){

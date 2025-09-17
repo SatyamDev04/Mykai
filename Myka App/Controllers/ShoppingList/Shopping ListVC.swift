@@ -35,17 +35,11 @@ class Shopping_ListVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var CountLbl: UILabel!
     @IBOutlet weak var ItemNameTxtF: UITextField!
     @IBOutlet weak var SearchBgV: UIView!
-    //
-    
   
     var count = 1
-    
     var textChangedWorkItem: DispatchWorkItem?
-    
     var DislikesIngredientArr = [ModelClass]()
-    
     var moreCount = 100
-    
     var dropDown = DropDown()
     //
     
@@ -78,11 +72,9 @@ class Shopping_ListVC: UIViewController, UITextFieldDelegate {
         self.YourRecipeBgV.isHidden = true
         
         IngredientsTblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
+
         
-        self.ItemNameTxtF.delegate = self
-        self.ItemNameTxtF.addTarget(self, action: #selector(TextSearch(sender: )), for: .editingChanged)
-        
-        self.getShopping_ListData()
+       
     }
     
     
@@ -112,34 +104,11 @@ class Shopping_ListVC: UIViewController, UITextFieldDelegate {
     }
     
     
-    @objc func TextSearch(sender: UITextField){
-        if self.ItemNameTxtF.text == ""{
-            textChangedWorkItem?.cancel()
-            self.dropDown.hide()
-        }else{
-            // Cancel the previous work item
-            textChangedWorkItem?.cancel()
-            
-            // Create a new debounced work item
-            textChangedWorkItem = DispatchWorkItem { [weak self] in
-                guard let self = self else { return }
-                
-                self.hideIndicator()
-                
-                self.Api_To_GetIngredientDislikes()
-                
-            }
-            
-            // Schedule the work item to execute after a debounce time (e.g., 1 second)
-            if let workItem = textChangedWorkItem {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: workItem)
-            }
-        }
-        
-    }
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.getShopping_ListData()
 //        let SubscriptionStatus = Int(UserDetail.shared.getSubscriptionStatus())
 //        
 //        if SubscriptionStatus == 1{
@@ -157,13 +126,12 @@ class Shopping_ListVC: UIViewController, UITextFieldDelegate {
     }
     
     
-    
     @IBAction func AddMoreBtn(_ sender: UIButton) {
-        //        let storyboard = UIStoryboard(name: "Basket", bundle: nil)
-        //        let vc = storyboard.instantiateViewController(withIdentifier: "AddMoreVc") as! AddMoreVc
-        //        vc.hidesBottomBarWhenPushed = true
-        //        navigationController?.pushViewController(vc, animated: true)
-        self.AddNewItemPopupV.isHidden = false
+                let storyboard = UIStoryboard(name: "Basket", bundle: nil)
+                let vc = storyboard.instantiateViewController(withIdentifier: "AddMoreVc") as! AddMoreVc
+                vc.hidesBottomBarWhenPushed = true
+                navigationController?.pushViewController(vc, animated: true)
+     //   self.AddNewItemPopupV.isHidden = false
     }
     
     
@@ -176,7 +144,6 @@ class Shopping_ListVC: UIViewController, UITextFieldDelegate {
     
     
     // popup btns.
-    
     @IBAction func MinusBtn(_ sender: UIButton) {
         if self.count > 1 {
             self.count -= 1
@@ -201,10 +168,10 @@ class Shopping_ListVC: UIViewController, UITextFieldDelegate {
             AlertControllerOnr(title: "", message: "Please enter item name.")
             return
         }
-        self.ShoppingListArr?.ingredient?.append(contentsOf: [Product(created_at: "", deleted_at: "", food_id: "", id: nil, market_id: "", name: "", price: nil, pro_id: "", pro_img: "", pro_name: self.ItemNameTxtF.text!, pro_price: "", product_id: "", sch_id: self.count, status: nil, updated_at: "", user_id: nil)])
+        
+        self.ShoppingListArr?.ingredient?.append(contentsOf: [Product(created_at: "", deleted_at: "", food_id: "", id: nil, market_id: "", name: "", price: nil, pro_id: "", pro_img: "", pro_name: self.ItemNameTxtF.text!, pro_price: "", product_id: "", sch_id: self.count, status: nil, unit_size: 0, updated_at: "", user_id: nil, unit_of_measurement: "", is_checked: 0)])
         
        // [DataIngredient(id: nil, userID: nil, foodID: "", schID: self.count, name: "", productID: "", price: nil, status: nil, marketID: nil, createdAt: "", updatedAt: "", deletedAt: "", proPrice: "", proName: self.ItemNameTxtF.text!, proID: "", proImg: "")]
-        
         
         self.AddNewItemPopupV.isHidden = true
         self.count = 1
@@ -219,10 +186,9 @@ class Shopping_ListVC: UIViewController, UITextFieldDelegate {
         self.ItemNameTxtF.text = ""
         self.AddNewItemPopupV.isHidden = true
     }
-    //
-    
+  
     @IBAction func SaveBtn(_ sender: UIButton) {
-        self.Api_To_SaveIngedients()
+      
     }
 }
 
@@ -249,14 +215,14 @@ extension Shopping_ListVC: UICollectionViewDelegate, UICollectionViewDataSource,
            cell.Img.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "No_Image"))
            
            cell.ServCountLbl.text = "Serves \(ShoppingListArr?.recipe?[indexPath.row].serving ?? "1")"
-//.recipe?.serving ?? "0")"
+
            
            cell.MinusBtn.tag = indexPath.item
            cell.MinusBtn.addTarget(self, action: #selector(RecipeServCountMinusBtn(_:)), for: .touchUpInside)
            
            cell.plusBtn.tag = indexPath.item
            cell.plusBtn.addTarget(self, action: #selector(RecipeServCountPlusBtn(_:)), for: .touchUpInside)
-           
+          
            cell.RemoveBtn.tag = indexPath.item
            cell.RemoveBtn.addTarget(self, action: #selector(removeBtnClick(_:)), for: .touchUpInside)
             
@@ -269,7 +235,9 @@ extension Shopping_ListVC: UICollectionViewDelegate, UICollectionViewDataSource,
         guard ServCount > 1 else{
             return
         }
+        
         ServCount -= 1
+        
         ShoppingListArr?.recipe?[sender.tag].serving = "\(ServCount)"
         self.yourRecipeCollV.reloadData()
         
@@ -302,8 +270,6 @@ extension Shopping_ListVC: UICollectionViewDelegate, UICollectionViewDataSource,
         vc.didMove(toParent: self)
     }
     
-    
- 
   
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
@@ -342,7 +308,6 @@ extension Shopping_ListVC: UICollectionViewDelegate, UICollectionViewDataSource,
         }
      }
 
-
 extension Shopping_ListVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return ShoppingListArr?.ingredient?.count ?? 0 
@@ -351,9 +316,6 @@ extension Shopping_ListVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
        
             let cell = tableView.dequeueReusableCell(withIdentifier: "Shopping_ListTblVCell", for: indexPath) as! Shopping_ListTblVCell
-       
-     //   cell.NameLbl.text = ShoppingListArr?.ingredient?[indexPath.row].proName ?? ""
-        
         
         
         cell.Countlbl.text = "\(ShoppingListArr?.ingredient?[indexPath.row].sch_id ?? 0)"
@@ -395,10 +357,16 @@ extension Shopping_ListVC: UITableViewDelegate, UITableViewDataSource {
         
         cell.MinusBtn.tag = indexPath.row
         cell.MinusBtn.addTarget(self, action: #selector(IngServCountMinusBtn(_:)), for: .touchUpInside)
-        
+        cell.QuantityLbl.text = "\(ShoppingListArr?.ingredient?[indexPath.row].unit_size ?? 1) \(ShoppingListArr?.ingredient?[indexPath.row].unit_of_measurement ?? "")"
         cell.PlusBtn.tag = indexPath.row
         cell.PlusBtn.addTarget(self, action: #selector(IngServCountPlusBtn(_:)), for: .touchUpInside)
-        
+        if ShoppingListArr?.ingredient?[indexPath.row].is_checked == 0 {
+            cell.selectBtnTap.setImage(UIImage(named: "YelloUncheck"), for: .normal)
+        }else{
+            cell.selectBtnTap.setImage(UIImage(named: "YellowCheck"), for: .normal)
+        }
+        cell.selectBtnTap.tag = indexPath.row
+        cell.selectBtnTap.addTarget(self, action: #selector(checkSelectBtn(_:)), for: .touchUpInside)
             return cell
     }
     
@@ -430,6 +398,20 @@ extension Shopping_ListVC: UITableViewDelegate, UITableViewDataSource {
             self.Api_To_Plus_Minus_ingredientsCount(FoodID: foodID, Quenty: "\(ServCount)")
         }
     }
+    
+    @objc func checkSelectBtn(_ sender: UIButton) {
+     let row = sender.tag
+    let is_checked = self.ShoppingListArr?.ingredient?[row].is_checked ?? 0
+   
+        if is_checked == 0{
+            self.ShoppingListArr?.ingredient?[row].is_checked = 1
+        }else{
+            ShoppingListArr?.ingredient?[row].is_checked = 0
+        }
+        let indexPath = IndexPath(row: row, section: 0)
+        self.IngredientsTblV.reloadRows(at: [indexPath], with: .automatic)
+    }
+    
     
 //    @objc func CheckBtnAction(_ sender: UIButton) {
 //        let indexPath = IndexPath(row: sender.tag, section: 0)
@@ -465,7 +447,6 @@ extension Shopping_ListVC: UITableViewDelegate, UITableViewDataSource {
         
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }
-    //
     
       func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -486,16 +467,12 @@ extension Shopping_ListVC: UITableViewDelegate, UITableViewDataSource {
 extension Shopping_ListVC{
     
     func getShopping_ListData() {
-        var params:JSONDictionary = [:]
-        
-//        params["latitude"] = AppLocation.lat
-//        params["longitude"] = AppLocation.long
-        
+        let params:JSONDictionary = [:]
+
         showIndicator(withTitle: "", and: "")
          
         let loginURL = baseURL.baseURL + appEndPoints.shopping_list
-        print(params,"Params")
-        print(loginURL,"loginURL")
+    
        
         
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
@@ -517,11 +494,15 @@ extension Shopping_ListVC{
                     }else{
                         self.YourRecipeBgV.isHidden = true
                     }
-                  
+                    DispatchQueue.main.async {
+                        guard var shopping = self.ShoppingListArr else { return}
+                        if !(shopping.ingredient?.isEmpty ?? false) {
+                            shopping.ingredient = shopping.ingredient?.stableSorted { $0.is_checked < $1.is_checked }
+                            self.ShoppingListArr = shopping
+                        }
+                    }
                     self.yourRecipeCollV.reloadData()
-                    
                     self.IngredientsTblV.reloadData()
-                    
                     self.SaveBtnO.isUserInteractionEnabled = false
                     self.SaveBtnO.backgroundColor = UIColor.lightGray
                
@@ -634,132 +615,9 @@ extension Shopping_ListVC{
             }
         })
     }
-    //
-    
-        func Api_To_GetIngredientDislikes(){
-            var params = [String: Any]()
-           let type = UserDetail.shared.getUserType()
-            
-            if type == "MySelf"{
-                params["type"] = "1"
-                 
-            }else if type == "Partner"{
-                params["type"] = "2"
-            }else{
-                params["type"] = "3"
-            }
-    //        let delegate = AppDelegate.shared
-    //        let token = delegate.deviceToken
-    //        params["device_token"] = token
-             
-            showIndicator(withTitle: "", and: "")
-          //  https://myka.tgastaging.com/api/dislike_ingredients/40/apple
-            let loginURL = baseURL.baseURL + appEndPoints.dislikeIngredients + "/\(moreCount)/\(self.ItemNameTxtF.text!)"
-            print(params,"Params")
-            print(loginURL,"loginURL")
-            
-            WebService.shared.getServiceURLEncodingwithParams(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
-                
-                self.hideIndicator()
-                
-                guard let dictData = json.dictionaryObject else{
-                    return
-                }
-                
-                if dictData["success"] as? Bool == true{
-                    let responseArray = dictData["data"] as? [[String : Any]] ?? [[String: Any]]()
-                    
-                    self.DislikesIngredientArr.removeAll()
-                    self.DislikesIngredientArr = ModelClass.getBodyGoalsDetails(responseArray: responseArray)
-                    
-                    DispatchQueue.main.async {
-                        if self.DislikesIngredientArr.isEmpty{
-                            self.dropDown.hide()
-                        }else{
-                            self.dropDown.dataSource = self.DislikesIngredientArr.map { $0.name }
-                            self.dropDown.anchorView = self.SearchBgV
-                            self.dropDown.bottomOffset = CGPoint(x: 0, y: self.SearchBgV.frame.size.height)
-                            self.dropDown.width = self.SearchBgV.frame.width
-                            self.dropDown.direction = .bottom
-                            self.dropDown.show()
-                            self.dropDown.setupCornerRadius(10)
-                            self.dropDown.backgroundColor = .white
-                            self.dropDown.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
-                            self.dropDown.layer.shadowOpacity = 0
-                            self.dropDown.layer.shadowRadius = 4
-                            self.dropDown.layer.shadowOffset = CGSize(width: 0, height: 0)
-                            self.dropDown.selectionAction = { [self] (index: Int, item: String) in
-                                print(index)
-                                self.ItemNameTxtF.text = item
-                            }
-                         
-                            self.dropDown.show()
-                        }
-                    }
-                    
-                }else{
-                    let responseMessage = dictData["message"] as! String
-                    self.showToast(responseMessage)
-                }
-            })
-        }
     
     
-    func Api_To_SaveIngedients(){
-        var params = [String: Any]()
-        
-        var foodIds : [String] = []
-        var names : [String] = []
-        var Status : [String] = []
-        var schID : [String] = []
-        
-        for indx in 0..<(self.ShoppingListArr?.ingredient?.count ?? 0) {
-            let ServCount = self.ShoppingListArr?.ingredient?[indx].quantity ?? 1
-            let name = self.ShoppingListArr?.ingredient?[indx].pro_name  ?? ""
-            let foodid = self.ShoppingListArr?.ingredient?[indx].food_id ?? ""
-            
-            if foodid == ""{
-                let uniqueNumber = generateUniqueFiveDigitNumber()
-                foodIds.append("\(uniqueNumber)")
-                names.append(name)
-                schID.append("\(ServCount)")
-                Status.append("3")
-            }
-        }
-        
-        params["food_ids"] = foodIds
-        params["sch_id"] = schID
-        params["names"] = names
-        params["status"] = Status
-      
-        
-        showIndicator(withTitle: "", and: "")
-        let loginURL = baseURL.baseURL + appEndPoints.add_to_cart
-        
-        print("Parameters:", params)
-        
-        WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
-            
-            self.hideIndicator()
-            
-            guard let dictData = json.dictionaryObject else{
-                return
-            }
-        
-            if dictData["success"] as? Bool == true{
-              //  let responseMessage = dictData["message"] as? String ?? ""
-                self.showToast("Saved successfully.")
-                self.getShopping_ListData()
-               }else{
-                   let responseMessage = dictData["message"] as? String ?? ""
-                   self.showToast(responseMessage)
-               }
-          })
-         }
     
-    func generateUniqueFiveDigitNumber() -> Int {
-        // Generate a random 5-digit number between 10000 and 99999
-        return Int.random(in: 10000...99999)
-    }
+    
     }
 

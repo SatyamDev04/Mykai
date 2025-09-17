@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
         // Override point for customization after application launch.
         IQKeyboardManager.shared().isEnabled = true
         IQKeyboardManager.shared().shouldResignOnTouchOutside = true
-        
+//        IQKeyboardManager.shared().disabledToolbarClasses.add(CreateRecipeNewVC.self)
         Thread.sleep(forTimeInterval: 3)
         
         AppsFlyerLib.shared().appsFlyerDevKey = "<M57zyjkFgb7nSQwHWN6isW>" //YOUR_DEV_KEY
@@ -73,7 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
         )
         
         FirebaseApp.configure()
-        
+        UIViewController.swizzleViewDidAppear
         
         if #available(iOS 10.0, *) {
             // For iOS 10 display notification (sent via APNS)

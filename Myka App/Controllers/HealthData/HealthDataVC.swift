@@ -398,6 +398,7 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
                 self.Api_To_Get_NutritionGoalSuggestionData()
             }
         }
+        
 
         LevelDropDown.show()
     }
@@ -702,9 +703,6 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
     }
     
 }
- 
-
-
 extension HealthDataVC {
     func Api_To_Get_HealthData(){
         let params = [String: Any]()

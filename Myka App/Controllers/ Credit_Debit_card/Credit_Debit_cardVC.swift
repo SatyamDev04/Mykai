@@ -280,7 +280,7 @@ class Credit_Debit_cardVC: UIViewController, UITextFieldDelegate {
         }
         return true
     }
-
+    
     func format2(with mask: String, phone: String) -> String {
            let numbers = phone.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
            var result = ""
@@ -406,9 +406,15 @@ extension Credit_Debit_cardVC{
             params["status"] = "0"
         }
         
+       
 
      showIndicator(withTitle: "", and: "")
         let loginURL = baseURL.baseURL + appEndPoints.add_card_mealme
+        print("*************************Params******************************")
+        print(params)
+        print("*************************loginURL****************************")
+        print(loginURL)
+        
 
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion:  { (json, statusCode) in
  
@@ -514,6 +520,11 @@ extension Credit_Debit_cardVC{
  
      showIndicator(withTitle: "", and: "")
         let loginURL = baseURL.baseURL + appEndPoints.delete_card_mealme
+        
+        print("*************************Params******************************")
+        print(params)
+        print("*************************loginURL****************************")
+        print(loginURL)
 
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion:  { (json, statusCode) in
  
@@ -552,6 +563,11 @@ extension Credit_Debit_cardVC{
  
      showIndicator(withTitle: "", and: "")
         let loginURL = baseURL.baseURL + appEndPoints.set_preferred_card
+        
+        print("*************************Params******************************")
+        print(params)
+        print("*************************loginURL****************************")
+        print(loginURL)
 
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion:  { (json, statusCode) in
  

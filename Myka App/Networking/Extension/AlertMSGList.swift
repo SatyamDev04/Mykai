@@ -38,7 +38,6 @@ class messageString {
     static let mEmptyField = "Field can't be empty"
     static let mProofofbank = "Please select proof of  bank account."
     static let mAccountmatch = "Account number does not match with the confirm account number."
-    
     static let mFirstName = "Enter first name"
     static let mLastName = "Enter last name"
     static let mEmail = "Enter email"

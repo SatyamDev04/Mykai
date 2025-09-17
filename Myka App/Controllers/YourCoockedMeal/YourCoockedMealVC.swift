@@ -15,6 +15,7 @@ class YourCoockedMealVC: UIViewController {
     @IBOutlet weak var CalanderCollV: UICollectionView!
     @IBOutlet weak var weekLabel: UILabel!
     @IBOutlet weak var BreakFastCollV: UICollectionView!
+    @IBOutlet weak var dessertCollV: UICollectionView!
     @IBOutlet weak var LunchCollV: UICollectionView!
     @IBOutlet weak var DinnerCollV: UICollectionView!
     @IBOutlet weak var SnackCollV: UICollectionView!
@@ -36,6 +37,7 @@ class YourCoockedMealVC: UIViewController {
     @IBOutlet weak var DinnerBgV: UIView!
     @IBOutlet weak var SnackBgV: UIView!
     @IBOutlet weak var TeatimeBgV: UIView!
+    @IBOutlet weak var dessertBgV: UIView!
     
     @IBOutlet weak var CalanderDropBtnO: UIButton!
     @IBOutlet weak var DropIcon: UIImageView!
@@ -73,6 +75,7 @@ class YourCoockedMealVC: UIViewController {
         self.EmptyMealBgV.isHidden = false
         self.CalanderBgV.isHidden = false
         self.BreakFastBgV.isHidden = true
+        self.dessertBgV.isHidden = true
         self.LunchBgV.isHidden = true
         self.DinnerBgV.isHidden = true
         self.SnackBgV.isHidden = true
@@ -149,6 +152,10 @@ class YourCoockedMealVC: UIViewController {
             BreakFastCollV.dataSource = self
             BreakFastCollV.register(UINib(nibName: "YourCoockedMealCollVCell", bundle: nil), forCellWithReuseIdentifier: "YourCoockedMealCollVCell")
             
+            dessertCollV.delegate = self
+            dessertCollV.dataSource = self
+            dessertCollV.register(UINib(nibName: "YourCoockedMealCollVCell", bundle: nil), forCellWithReuseIdentifier: "YourCoockedMealCollVCell")
+            
             LunchCollV.delegate = self
             LunchCollV.dataSource = self
             LunchCollV.register(UINib(nibName: "YourCoockedMealCollVCell", bundle: nil), forCellWithReuseIdentifier: "YourCoockedMealCollVCell")
@@ -164,6 +171,7 @@ class YourCoockedMealVC: UIViewController {
             TeatimeCollV.delegate = self
             TeatimeCollV.dataSource = self
             TeatimeCollV.register(UINib(nibName: "YourCoockedMealCollVCell", bundle: nil), forCellWithReuseIdentifier: "YourCoockedMealCollVCell")
+            
         }
      
         func setupCurrentWeek() {
@@ -295,7 +303,7 @@ class YourCoockedMealVC: UIViewController {
         self.FridgeBtnO.isSelected = true
         self.FreezerBtnO.isSelected = false
         
-//        self.Api_To_GetAllMealsList()
+        self.Api_To_GetAllMealsList()// Uncommented on 04/09/2025
         self.ShowNoDataFoundonCollV()
     }
     
@@ -314,12 +322,21 @@ class YourCoockedMealVC: UIViewController {
         self.FridgeBtnO.isSelected = false
         self.FreezerBtnO.isSelected = true
         
-        //self.Api_To_GetAllMealsList()
+        self.Api_To_GetAllMealsList() // Uncommented on 04/09/2025
         self.ShowNoDataFoundonCollV()
     }
     
-    
     @IBAction func AddbreakFastBtn(_ sender: UIButton) {
+        let storyboard = UIStoryboard(name: "RestScreens", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "AddMealVC") as! AddMealVC
+        vc.hidesBottomBarWhenPushed = true
+        vc.backActionn = { tag in
+            self.tag = tag
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @IBAction func AddDessertBtn(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "RestScreens", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "AddMealVC") as! AddMealVC
         vc.hidesBottomBarWhenPushed = true
@@ -338,7 +355,6 @@ class YourCoockedMealVC: UIViewController {
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
     
     @IBAction func DinnerBtn(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "RestScreens", bundle: nil)
@@ -380,6 +396,12 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
                 return self.AllDataList.fridgeData?.breakfast?.count ?? 0
             }else{
                 return self.AllDataList.freezerData?.breakfast?.count ?? 0
+            }
+        }else if collectionView == dessertCollV{
+            if self.FridgeBtnO.isSelected == true{
+                return self.AllDataList.fridgeData?.dessert?.count ?? 0
+            }else{
+                return self.AllDataList.freezerData?.dessert?.count ?? 0
             }
         }else if collectionView == LunchCollV{
             if self.FridgeBtnO.isSelected == true{
@@ -474,7 +496,64 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
                cell.FavBtn.addTarget(self, action: #selector(BreakFastFavBtnClick(_:)), for: .touchUpInside)
                
                return cell
-           }else if collectionView == LunchCollV{
+           }else if collectionView == dessertCollV{
+           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "YourCoockedMealCollVCell", for: indexPath) as! YourCoockedMealCollVCell
+           
+           var nme = ""
+           var img = ""
+           var serv = ""
+           var createdDate = ""
+           var isLike = 0
+           
+           if self.FridgeBtnO.isSelected == true{
+               nme = self.AllDataList.fridgeData?.dessert?[indexPath.item].recipe?.label ?? ""
+               serv = "\(self.AllDataList.fridgeData?.dessert?[indexPath.item].servings ?? 0)"
+               createdDate = self.AllDataList.fridgeData?.dessert?[indexPath.item].createdDate ?? "0 days ago"
+               img = self.AllDataList.fridgeData?.dessert?[indexPath.item].recipe?.images?.small?.url ?? ""
+               isLike = self.AllDataList.fridgeData?.dessert?[indexPath.item].isLike ?? 0
+           }else{
+               nme = self.AllDataList.freezerData?.dessert?[indexPath.item].recipe?.label ?? ""
+               serv = "\(self.AllDataList.freezerData?.dessert?[indexPath.item].servings ?? 0)"
+               createdDate = self.AllDataList.freezerData?.dessert?[indexPath.item].createdDate ?? "0 days ago"
+               img = self.AllDataList.freezerData?.dessert?[indexPath.item].recipe?.images?.small?.url ?? ""
+               isLike = self.AllDataList.freezerData?.dessert?[indexPath.item].isLike ?? 0
+           }
+           
+           
+           cell.NameLbl.text = nme
+           
+           cell.ServeCountLbl.text = "Serves \(serv)"
+           
+           cell.DayLbl.text = createdDate
+           
+           let imgUrl = img
+           
+           cell.IMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
+           cell.IMg.sd_setImage(with: URL(string: imgUrl), placeholderImage: UIImage(named: "No_Image"))
+           
+           let islike = isLike
+           
+           if islike == 1{
+               cell.FavBtn.setImage(UIImage(named: "Fav"), for: .normal)
+           }else{
+               cell.FavBtn.setImage(UIImage(named: "UnFav"), for: .normal)
+           }
+      
+           cell.MinusBtn.tag = indexPath.item
+           cell.MinusBtn.addTarget(self, action: #selector(DessertServecountMinusBtnClick(_:)), for: .touchUpInside)
+           
+           cell.PlusBtn.tag = indexPath.item
+           cell.PlusBtn.addTarget(self, action: #selector(DessertServecountPlusBtnClick(_:)), for: .touchUpInside)
+           
+           cell.EatBtn.tag = indexPath.item
+           cell.EatBtn.addTarget(self, action: #selector(DessertfastremoveBtnClick(_:)), for: .touchUpInside)
+            
+                  
+           cell.FavBtn.tag = indexPath.item
+           cell.FavBtn.addTarget(self, action: #selector(DessertFavBtnClick(_:)), for: .touchUpInside)
+           
+           return cell
+       }else if collectionView == LunchCollV{
                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "YourCoockedMealCollVCell", for: indexPath) as! YourCoockedMealCollVCell
                var nme = ""
                var img = ""
@@ -708,6 +787,21 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
         
         }
     
+    @objc func DessertfastremoveBtnClick(_ sender: UIButton){
+        self.RemovePopupV.isHidden = false
+        if self.FridgeBtnO.isSelected == true{
+            selID = self.AllDataList.fridgeData?.dessert?[sender.tag].id ?? 0
+        }else{
+            selID = self.AllDataList.freezerData?.dessert?[sender.tag].id ?? 0
+        }
+        
+        selCollv = 1
+        self.SelRemoveIndx = sender.tag
+        typeClicked = "Dessert"
+        
+    }
+    
+    
     @objc func LunchremoveBtnClick(_ sender: UIButton)   {
         self.RemovePopupV.isHidden = false
         if self.FridgeBtnO.isSelected == true{
@@ -715,7 +809,7 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
         }else{
             selID = self.AllDataList.freezerData?.lunch?[sender.tag].id ?? 0
         }
-        selCollv = 1
+        selCollv = 2
         self.SelRemoveIndx = sender.tag
         typeClicked = "Lunch"
         }
@@ -727,7 +821,7 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
         }else{
             selID = self.AllDataList.freezerData?.dinner?[sender.tag].id ?? 0
         }
-        selCollv = 2
+        selCollv = 3
         self.SelRemoveIndx = sender.tag
         typeClicked = "Dinner"
         }
@@ -739,7 +833,7 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
         }else{
             selID = self.AllDataList.freezerData?.snacks?[sender.tag].id ?? 0
         }
-        selCollv = 3
+        selCollv = 4
         self.SelRemoveIndx = sender.tag
         typeClicked = "Snacks"
         }
@@ -751,7 +845,7 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
         }else{
             selID = self.AllDataList.freezerData?.teatime?[sender.tag].id ?? 0
         }
-        selCollv = 4
+        selCollv = 5
         self.SelRemoveIndx = sender.tag
         typeClicked = "Teatime"
         }
@@ -781,6 +875,29 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             self.FavBtnClickNav(TypeClicked: "Breakfast", Uri: uri, SelID: selID)
         }
       }
+    
+    @objc func DessertFavBtnClick(_ sender: UIButton)   {
+        let index  = sender.tag
+        var uri = ""
+        var selID = ""
+        var islike = 0
+        
+        if self.FridgeBtnO.isSelected == true{
+            uri = self.AllDataList.fridgeData?.dessert?[index].recipe?.uri ?? ""
+            selID = "\(self.AllDataList.fridgeData?.dessert?[index].id ?? 0)"
+            islike = self.AllDataList.fridgeData?.dessert?[index].isLike ?? 0
+        }else{
+            uri = self.AllDataList.freezerData?.dessert?[index].recipe?.uri ?? ""
+            selID = "\(self.AllDataList.freezerData?.dessert?[index].id ?? 0)"
+            islike = self.AllDataList.freezerData?.dessert?[index].isLike ?? 0
+        }
+        
+        if islike == 1{
+            self.Api_To_UnFAv(uri: uri)
+        }else{
+            self.FavBtnClickNav(TypeClicked: "Dessert", Uri: uri, SelID: selID)
+        }
+    }
     
     @objc func LunchFavBtnClick(_ sender: UIButton)   {
         let index  = sender.tag
@@ -898,7 +1015,7 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
     // for colllView for Plus btns..
     @objc func BreakServecountPlusBtnClick(_ sender: UIButton)   {
         let index = sender.tag
-        
+        var date = ""
         var uri = ""
         var count = 0
          
@@ -906,93 +1023,128 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             uri = self.AllDataList.fridgeData?.breakfast?[index].recipe?.uri ?? ""
             self.AllDataList.fridgeData?.breakfast?[index].servings! += 1
             count = self.AllDataList.fridgeData?.breakfast?[index].servings ?? 0
+            date = self.AllDataList.fridgeData?.breakfast?[index].date ?? ""
         }else{
             uri = self.AllDataList.freezerData?.breakfast?[index].recipe?.uri ?? ""
             self.AllDataList.freezerData?.breakfast?[index].servings! += 1
             count = self.AllDataList.freezerData?.breakfast?[index].servings ?? 0
+            date = self.AllDataList.freezerData?.breakfast?[index].date ?? ""
         }
          
         self.BreakFastCollV.reloadData()
           
-        self.Api_For_AddServingcount(uri: uri, type: "Breakfast", servingCount: count)
+        self.Api_For_AddServingcount(uri: uri, date: date, type: "Breakfast", servingCount: count)
+        }
+    
+    @objc func DessertServecountPlusBtnClick(_ sender: UIButton)   {
+        let index = sender.tag
+        var uri = ""
+        var count = 0
+        var date = ""
+        if self.FridgeBtnO.isSelected == true{
+            uri = self.AllDataList.fridgeData?.dessert?[index].recipe?.uri ?? ""
+            self.AllDataList.fridgeData?.dessert?[index].servings! += 1
+            count = self.AllDataList.fridgeData?.dessert?[index].servings ?? 0
+            date = self.AllDataList.fridgeData?.dessert?[index].date ?? ""
+        }else{
+            uri = self.AllDataList.freezerData?.dessert?[index].recipe?.uri ?? ""
+            self.AllDataList.freezerData?.dessert?[index].servings! += 1
+            count = self.AllDataList.freezerData?.dessert?[index].servings ?? 0
+            date = self.AllDataList.freezerData?.dessert?[index].date ?? ""
+        }
+       
+        self.dessertCollV.reloadData()
+         
+        self.Api_For_AddServingcount(uri: uri, date: date, type: "Dessert", servingCount: count)
         }
     
     @objc func LunchServecountPlusBtnClick(_ sender: UIButton)   {
         let index = sender.tag
         var uri = ""
         var count = 0
-         
+         var date = ""
+        
         if self.FridgeBtnO.isSelected == true{
             uri = self.AllDataList.fridgeData?.lunch?[index].recipe?.uri ?? ""
             self.AllDataList.fridgeData?.lunch?[index].servings! += 1
             count = self.AllDataList.fridgeData?.lunch?[index].servings ?? 0
+            date = self.AllDataList.fridgeData?.lunch?[index].date ?? ""
         }else{
             uri = self.AllDataList.freezerData?.lunch?[index].recipe?.uri ?? ""
             self.AllDataList.freezerData?.lunch?[index].servings! += 1
             count = self.AllDataList.freezerData?.lunch?[index].servings ?? 0
+            date = self.AllDataList.freezerData?.lunch?[index].date ?? ""
         }
        
         self.LunchCollV.reloadData()
          
-        self.Api_For_AddServingcount(uri: uri, type: "Lunch", servingCount: count)
+        self.Api_For_AddServingcount(uri: uri, date: date, type: "Lunch", servingCount: count)
         }
     
     @objc func DinnerServecountPlusBtnClick(_ sender: UIButton)   {
         let index = sender.tag
         var uri = ""
         var count = 0
-         
+         var date = ""
+        
         if self.FridgeBtnO.isSelected == true{
             uri = self.AllDataList.fridgeData?.dinner?[index].recipe?.uri ?? ""
             self.AllDataList.fridgeData?.dinner?[index].servings! += 1
             count = self.AllDataList.fridgeData?.dinner?[index].servings ?? 0
+            date = self.AllDataList.fridgeData?.dinner?[index].date ?? ""
         }else{
             uri = self.AllDataList.freezerData?.dinner?[index].recipe?.uri ?? ""
             self.AllDataList.freezerData?.dinner?[index].servings! += 1
             count = self.AllDataList.freezerData?.dinner?[index].servings ?? 0
+            date = self.AllDataList.freezerData?.dinner?[index].date ?? ""
         }
         
         self.DinnerCollV.reloadData()
         
-        self.Api_For_AddServingcount(uri: uri, type: "Dinner", servingCount: count)
+        self.Api_For_AddServingcount(uri: uri, date: date, type: "Dinner", servingCount: count)
         }
     
     @objc func SnacksServecountPlusBtnClick(_ sender: UIButton)   {
         let index = sender.tag
         var uri = ""
         var count = 0
-         
+         var date = ""
+        
         if self.FridgeBtnO.isSelected == true{
             uri = self.AllDataList.fridgeData?.snacks?[index].recipe?.uri ?? ""
             self.AllDataList.fridgeData?.snacks?[index].servings! += 1
             count = self.AllDataList.fridgeData?.snacks?[index].servings ?? 0
+            date = self.AllDataList.fridgeData?.snacks?[index].date ?? ""
         }else{
             uri = self.AllDataList.freezerData?.snacks?[index].recipe?.uri ?? ""
             self.AllDataList.freezerData?.snacks?[index].servings! += 1
             count = self.AllDataList.freezerData?.snacks?[index].servings ?? 0
+            date = self.AllDataList.freezerData?.snacks?[index].date ?? ""
         }
         self.SnackCollV.reloadData()
          
-        self.Api_For_AddServingcount(uri: uri, type: "Snacks", servingCount: count)
+        self.Api_For_AddServingcount(uri: uri, date: date, type: "Snacks", servingCount: count)
         }
     
     @objc func TeaTimeServecountPlusBtnClick(_ sender: UIButton)   {
         let index = sender.tag
         var uri = ""
         var count = 0
-         
+        var date = ""
         if self.FridgeBtnO.isSelected == true{
             uri = self.AllDataList.fridgeData?.teatime?[index].recipe?.uri ?? ""
             self.AllDataList.fridgeData?.teatime?[index].servings! += 1
             count = self.AllDataList.fridgeData?.teatime?[index].servings ?? 0
+            date = self.AllDataList.fridgeData?.teatime?[index].date ?? ""
         }else{
             uri = self.AllDataList.freezerData?.teatime?[index].recipe?.uri ?? ""
             self.AllDataList.freezerData?.teatime?[index].servings! += 1
             count = self.AllDataList.freezerData?.teatime?[index].servings ?? 0
+            date = self.AllDataList.freezerData?.teatime?[index].date ?? ""
         }
         self.TeatimeCollV.reloadData()
          
-        self.Api_For_AddServingcount(uri: uri, type: "Brunch", servingCount: count)
+        self.Api_For_AddServingcount(uri: uri, date: date, type: "Brunch", servingCount: count)
         }
     
     // for colllView for minus btns.
@@ -1000,7 +1152,7 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
         let index = sender.tag
         var uri = ""
         var count = 0
-         
+         var date = ""
         if self.FridgeBtnO.isSelected == true{
             guard self.AllDataList.fridgeData?.breakfast?[index].servings ?? 0 > 1 else{
                 return
@@ -1009,6 +1161,7 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             uri = self.AllDataList.fridgeData?.breakfast?[index].recipe?.uri ?? ""
             self.AllDataList.fridgeData?.breakfast?[index].servings! -= 1
             count = self.AllDataList.fridgeData?.breakfast?[index].servings ?? 0
+            date = self.AllDataList.fridgeData?.breakfast?[index].date ?? ""
         }else{
             guard self.AllDataList.freezerData?.breakfast?[index].servings ?? 0 > 1 else{
                 return
@@ -1017,21 +1170,52 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             uri = self.AllDataList.freezerData?.breakfast?[index].recipe?.uri ?? ""
             self.AllDataList.freezerData?.breakfast?[index].servings! -= 1
             count = self.AllDataList.freezerData?.breakfast?[index].servings ?? 0
+            date = self.AllDataList.freezerData?.breakfast?[index].date ?? ""
         }
         
-       
-         
         self.BreakFastCollV.reloadData()
               
-        self.Api_For_AddServingcount(uri: uri, type: "Breakfast", servingCount: count)
+        self.Api_For_AddServingcount(uri: uri, date: date, type: "Breakfast", servingCount: count)
         }
+    
+    @objc func DessertServecountMinusBtnClick(_ sender: UIButton)   {
+        let index = sender.tag
+        
+        var uri = ""
+        var count = 0
+         var date = ""
+        if self.FridgeBtnO.isSelected == true{
+            guard self.AllDataList.fridgeData?.dessert?[index].servings ?? 0 > 1 else{
+                return
+            }
+            
+            uri = self.AllDataList.fridgeData?.dessert?[index].recipe?.uri ?? ""
+            self.AllDataList.fridgeData?.dessert?[index].servings! -= 1
+            count = self.AllDataList.fridgeData?.dessert?[index].servings ?? 0
+            date = self.AllDataList.fridgeData?.dessert?[index].date ?? ""
+        }else{
+            guard self.AllDataList.freezerData?.dessert?[index].servings ?? 0 > 1 else{
+                return
+            }
+            
+            uri = self.AllDataList.freezerData?.dessert?[index].recipe?.uri ?? ""
+            self.AllDataList.freezerData?.dessert?[index].servings! -= 1
+            count = self.AllDataList.freezerData?.dessert?[index].servings ?? 0
+            date = self.AllDataList.freezerData?.dessert?[index].date ?? ""
+        }
+        
+        self.dessertCollV.reloadData()
+          
+        self.Api_For_AddServingcount(uri: uri, date: date, type: "Dessert", servingCount: count)
+    }
     
     @objc func LunchServecountMinusBtnClick(_ sender: UIButton)   {
         let index = sender.tag
         
         var uri = ""
         var count = 0
-         
+        var date = ""
+        
         if self.FridgeBtnO.isSelected == true{
             guard self.AllDataList.fridgeData?.lunch?[index].servings ?? 0 > 1 else{
                 return
@@ -1040,6 +1224,7 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             uri = self.AllDataList.fridgeData?.lunch?[index].recipe?.uri ?? ""
             self.AllDataList.fridgeData?.lunch?[index].servings! -= 1
             count = self.AllDataList.fridgeData?.lunch?[index].servings ?? 0
+            date = self.AllDataList.fridgeData?.lunch?[index].date ?? ""
         }else{
             guard self.AllDataList.freezerData?.lunch?[index].servings ?? 0 > 1 else{
                 return
@@ -1048,18 +1233,19 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             uri = self.AllDataList.freezerData?.lunch?[index].recipe?.uri ?? ""
             self.AllDataList.freezerData?.lunch?[index].servings! -= 1
             count = self.AllDataList.freezerData?.lunch?[index].servings ?? 0
+            date = self.AllDataList.freezerData?.lunch?[index].date ?? ""
         }
         
         self.LunchCollV.reloadData()
           
-        self.Api_For_AddServingcount(uri: uri, type: "Lunch", servingCount: count)
+        self.Api_For_AddServingcount(uri: uri, date: date, type: "Lunch", servingCount: count)
         }
     
     @objc func DinnerServecountMinusBtnClick(_ sender: UIButton)   {
         let index = sender.tag
         var uri = ""
         var count = 0
-         
+         var date = ""
         if self.FridgeBtnO.isSelected == true{
             guard self.AllDataList.fridgeData?.dinner?[index].servings ?? 0 > 1 else{
                 return
@@ -1068,6 +1254,7 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             uri = self.AllDataList.fridgeData?.dinner?[index].recipe?.uri ?? ""
             self.AllDataList.fridgeData?.dinner?[index].servings! -= 1
             count = self.AllDataList.fridgeData?.dinner?[index].servings ?? 0
+            date = self.AllDataList.fridgeData?.dinner?[index].date ?? ""
         }else{
             guard self.AllDataList.freezerData?.dinner?[index].servings ?? 0 > 1 else{
                 return
@@ -1076,10 +1263,11 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             uri = self.AllDataList.freezerData?.dinner?[index].recipe?.uri ?? ""
             self.AllDataList.freezerData?.dinner?[index].servings! -= 1
             count = self.AllDataList.freezerData?.dinner?[index].servings ?? 0
+            date = self.AllDataList.freezerData?.dinner?[index].date ?? ""
         }
         self.DinnerCollV.reloadData()
         
-        self.Api_For_AddServingcount(uri: uri, type: "Dinner", servingCount: count)
+        self.Api_For_AddServingcount(uri: uri, date: date, type: "Dinner", servingCount: count)
         }
     
     @objc func SnacksServecountMinusBtnClick(_ sender: UIButton)   {
@@ -1087,7 +1275,7 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
          
         var uri = ""
         var count = 0
-         
+         var date = ""
         if self.FridgeBtnO.isSelected == true{
             guard self.AllDataList.fridgeData?.snacks?[index].servings ?? 0 > 1 else{
                 return
@@ -1096,6 +1284,7 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             uri = self.AllDataList.fridgeData?.snacks?[index].recipe?.uri ?? ""
             self.AllDataList.fridgeData?.snacks?[index].servings! -= 1
             count = self.AllDataList.fridgeData?.snacks?[index].servings ?? 0
+            date = self.AllDataList.fridgeData?.snacks?[index].date ?? ""
         }else{
             guard self.AllDataList.freezerData?.snacks?[index].servings ?? 0 > 1 else{
                 return
@@ -1104,17 +1293,19 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             uri = self.AllDataList.freezerData?.snacks?[index].recipe?.uri ?? ""
             self.AllDataList.freezerData?.snacks?[index].servings! -= 1
             count = self.AllDataList.freezerData?.snacks?[index].servings ?? 0
+            date = self.AllDataList.freezerData?.snacks?[index].date ?? ""
         }
         
         self.SnackCollV.reloadData()
          
-        self.Api_For_AddServingcount(uri: uri, type: "Snacks", servingCount: count)
+        self.Api_For_AddServingcount(uri: uri, date: date, type: "Snacks", servingCount: count)
         }
     
     @objc func TeaTimeServecountMinusBtnClick(_ sender: UIButton)   {
         let index = sender.tag
         var uri = ""
         var count = 0
+        var date = ""
          
         if self.FridgeBtnO.isSelected == true{
             guard self.AllDataList.fridgeData?.teatime?[index].servings ?? 0 > 1 else{
@@ -1124,6 +1315,7 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             uri = self.AllDataList.fridgeData?.teatime?[index].recipe?.uri ?? ""
             self.AllDataList.fridgeData?.teatime?[index].servings! -= 1
             count = self.AllDataList.fridgeData?.teatime?[index].servings ?? 0
+            date = self.AllDataList.fridgeData?.teatime?[index].date ?? ""
         }else{
             guard self.AllDataList.freezerData?.teatime?[index].servings ?? 0 > 1 else{
                 return
@@ -1132,11 +1324,12 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             uri = self.AllDataList.freezerData?.teatime?[index].recipe?.uri ?? ""
             self.AllDataList.freezerData?.teatime?[index].servings! -= 1
             count = self.AllDataList.freezerData?.teatime?[index].servings ?? 0
+            date = self.AllDataList.freezerData?.teatime?[index].date ?? ""
         }
         
         self.TeatimeCollV.reloadData()
          
-        self.Api_For_AddServingcount(uri: uri, type: "Brunch", servingCount: count)
+        self.Api_For_AddServingcount(uri: uri, date: date, type: "Brunch", servingCount: count)
         }
         
        
@@ -1174,6 +1367,27 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
             vc.uri = uri
             vc.MealType = "Breakfast"
+            vc.Id = "\(self.AllDataList.fridgeData?.breakfast?[indexPath.item].id ?? 0)"
+            vc.type = "0"
+            vc.ServCount = self.AllDataList.fridgeData?.breakfast?[indexPath.item].servings ?? 0
+            vc.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else if collectionView == dessertCollV{
+            var uri = ""
+           
+            if self.FridgeBtnO.isSelected == true{
+                uri = self.AllDataList.fridgeData?.dessert?[indexPath.item].recipe?.uri ?? ""
+            }else{
+                uri = self.AllDataList.freezerData?.dessert?[indexPath.item].recipe?.uri ?? ""
+            }
+            
+            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
+            vc.uri = uri
+            vc.MealType = "Dessert"
+            vc.Id = "\(self.AllDataList.fridgeData?.dessert?[indexPath.item].id ?? 0)"
+            vc.type = "0"
+            vc.ServCount = self.AllDataList.fridgeData?.dessert?[indexPath.item].servings ?? 0
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }else if collectionView == LunchCollV{
@@ -1189,6 +1403,9 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
             vc.uri = uri
             vc.MealType = "Lunch"
+            vc.Id = "\(self.AllDataList.fridgeData?.lunch?[indexPath.item].id ?? 0)"
+            vc.type = "0"
+            vc.ServCount = self.AllDataList.fridgeData?.lunch?[indexPath.item].servings ?? 0
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }else if collectionView == DinnerCollV{
@@ -1204,6 +1421,9 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
             vc.uri = uri
             vc.MealType = "Dinner"
+            vc.Id = "\(self.AllDataList.fridgeData?.dinner?[indexPath.item].id ?? 0)"
+            vc.type = "0"
+            vc.ServCount = self.AllDataList.fridgeData?.dinner?[indexPath.item].servings ?? 0
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }else if collectionView == SnackCollV{
@@ -1219,6 +1439,9 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
             vc.uri = uri
             vc.MealType = "Snacks"
+            vc.Id = "\(self.AllDataList.fridgeData?.snacks?[indexPath.item].id ?? 0)"
+            vc.type = "0"
+            vc.ServCount = self.AllDataList.fridgeData?.snacks?[indexPath.item].servings ?? 0
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }else{
@@ -1234,6 +1457,9 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
             vc.uri = uri
             vc.MealType = "Brunch"
+            vc.Id = "\(self.AllDataList.fridgeData?.teatime?[indexPath.item].id ?? 0)"
+            vc.type = "0"
+            vc.ServCount = self.AllDataList.fridgeData?.teatime?[indexPath.item].servings ?? 0
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }
@@ -1358,9 +1584,10 @@ extension YourCoockedMealVC {
                              
                     
                     if self.FridgeBtnO.isSelected == true{
-                        if self.AllDataList.fridgeData?.breakfast?.count ?? 0 == 0 && self.AllDataList.fridgeData?.lunch?.count ?? 0 == 0 && self.AllDataList.fridgeData?.dinner?.count ?? 0 == 0 && self.AllDataList.fridgeData?.snacks?.count ?? 0 == 0 && self.AllDataList.fridgeData?.teatime?.count ?? 0 == 0{
+                        if self.AllDataList.fridgeData?.breakfast?.count ?? 0 == 0 && self.AllDataList.fridgeData?.dessert?.count ?? 0 == 0 && self.AllDataList.fridgeData?.lunch?.count ?? 0 == 0 && self.AllDataList.fridgeData?.dinner?.count ?? 0 == 0 && self.AllDataList.fridgeData?.snacks?.count ?? 0 == 0 && self.AllDataList.fridgeData?.teatime?.count ?? 0 == 0{
                             self.EmptyMealBgV.isHidden = false
                             self.BreakFastBgV.isHidden = true
+                            self.dessertBgV.isHidden = true
                             self.LunchBgV.isHidden = true
                             self.DinnerBgV.isHidden = true
                             self.SnackBgV.isHidden = true
@@ -1368,15 +1595,19 @@ extension YourCoockedMealVC {
                         }else{
                             self.EmptyMealBgV.isHidden = true
                             self.BreakFastBgV.isHidden = false
+                            self.dessertBgV.isHidden = false
                             self.LunchBgV.isHidden = false
                             self.DinnerBgV.isHidden = false
                             self.SnackBgV.isHidden = false
                             self.TeatimeBgV.isHidden = false
                         }
                     }else{
-                        if self.AllDataList.freezerData?.breakfast?.count ?? 0 == 0 && self.AllDataList.freezerData?.lunch?.count ?? 0 == 0 && self.AllDataList.freezerData?.dinner?.count ?? 0 == 0 && self.AllDataList.freezerData?.snacks?.count ?? 0 == 0 && self.AllDataList.freezerData?.teatime?.count ?? 0 == 0{
+                        if self.AllDataList.freezerData?.breakfast?.count ?? 0 == 0 && self.AllDataList.freezerData?.dessert?.count ?? 0 == 0 &&
+                            self.AllDataList.freezerData?.lunch?.count ?? 0 == 0 &&
+                            self.AllDataList.freezerData?.dinner?.count ?? 0 == 0 && self.AllDataList.freezerData?.snacks?.count ?? 0 == 0 && self.AllDataList.freezerData?.teatime?.count ?? 0 == 0{
                             self.EmptyMealBgV.isHidden = false
                             self.BreakFastBgV.isHidden = true
+                            self.dessertBgV.isHidden = true
                             self.LunchBgV.isHidden = true
                             self.DinnerBgV.isHidden = true
                             self.SnackBgV.isHidden = true
@@ -1384,6 +1615,7 @@ extension YourCoockedMealVC {
                         }else{
                             self.EmptyMealBgV.isHidden = true
                             self.BreakFastBgV.isHidden = false
+                            self.dessertBgV.isHidden = false
                             self.LunchBgV.isHidden = false
                             self.DinnerBgV.isHidden = false
                             self.SnackBgV.isHidden = false
@@ -1446,6 +1678,12 @@ extension YourCoockedMealVC {
                 self.BreakFastBgV.isHidden = false
             }
             
+            if self.AllDataList.fridgeData?.dessert?.count ?? 0 == 0{
+                self.dessertBgV.isHidden = true
+            }else{
+                self.dessertBgV.isHidden = false
+            }
+            
             if self.AllDataList.fridgeData?.lunch?.count ?? 0 == 0{
                 self.LunchBgV.isHidden = true
             }else{
@@ -1477,6 +1715,12 @@ extension YourCoockedMealVC {
                 self.BreakFastBgV.isHidden = false
             }
             
+            if self.AllDataList.freezerData?.dessert?.count ?? 0 == 0{
+                self.dessertBgV.isHidden = true
+            }else{
+                self.dessertBgV.isHidden = false
+            }
+            
             if self.AllDataList.freezerData?.lunch?.count ?? 0 == 0{
                 self.LunchBgV.isHidden = true
             }else{
@@ -1504,6 +1748,7 @@ extension YourCoockedMealVC {
         }
         
         self.BreakFastCollV.reloadData()
+        self.dessertCollV.reloadData()
         self.LunchCollV.reloadData()
         self.DinnerCollV.reloadData()
         self.SnackCollV.reloadData()
@@ -1540,6 +1785,12 @@ extension YourCoockedMealVC {
                         self.AllDataList.fridgeData?.breakfast?.remove(at: self.SelRemoveIndx)
                     }else{
                         self.AllDataList.freezerData?.breakfast?.remove(at: self.SelRemoveIndx)
+                    }
+                }else if self.typeClicked == "Dessert"{
+                    if self.FridgeBtnO.isSelected == true{
+                        self.AllDataList.fridgeData?.dessert?.remove(at: self.SelRemoveIndx)
+                    }else{
+                        self.AllDataList.freezerData?.dessert?.remove(at: self.SelRemoveIndx)
                     }
                 }else if self.typeClicked == "Lunch"{
                     if self.FridgeBtnO.isSelected == true{
@@ -1607,7 +1858,7 @@ extension YourCoockedMealVC {
         
         params["uri"] = uri
         params["type"] = 0
-//        params["cook_book"] = self.selID
+        params["cook_book"] = self.selID
  
         
         showIndicator(withTitle: "", and: "")
@@ -1635,35 +1886,41 @@ extension YourCoockedMealVC {
           })
          }
     
-    func Api_For_AddServingcount(uri: String, type: String, servingCount: Int) {
+    func Api_For_AddServingcount(uri: String, date:String, type: String, servingCount: Int) {
        
-        let dateformatter = DateFormatter()
+//        let dateformatter = DateFormatter()
+//        
+//        var SerArray = [[String: String]]()
         
-        var SerArray = [[String: String]]()
-        
-            let date = self.seldate
-            dateformatter.dateFormat = "yyyy-MM-dd"
-        let Sdate = dateformatter.string(from: date)
-            
-            dateformatter.dateFormat = "EEEE" // Full day name, e.g., "Monday"
-            let dayOfWeek = dateformatter.string(from: date)
-         
-                print("\(dayOfWeek), \(Sdate) is selected!")
-                
-            let dictionary1: [String: String] = ["date": Sdate, "day": dayOfWeek]
-                SerArray.append(dictionary1)
-        
-        
-        print(SerArray)
+//            let date = self.seldate
+//            dateformatter.dateFormat = "yyyy-MM-dd"
+//        let Sdate = dateformatter.string(from: date)
+//            
+//            dateformatter.dateFormat = "EEEE" // Full day name, e.g., "Monday"
+//            let dayOfWeek = dateformatter.string(from: date)
+//         
+//                print("\(dayOfWeek), \(Sdate) is selected!")
+//                
+//            let dictionary1: [String: String] = ["date": Sdate, "day": dayOfWeek]
+//                SerArray.append(dictionary1)
         
         
-            let paramsDict: [String: Any] = [
-                "type": type,
-                "uri": uri,
-                "slot": SerArray,
-                "servings": servingCount
-            ]
-      
+//        print(SerArray)
+        
+        var planType = ""
+        if FridgeBtnO.isSelected{
+            planType = "1"
+        }else{
+            planType = "2"
+        }
+        
+        let paramsDict: [String: Any] = [
+            "type": type,
+            "plan_type": planType,
+            "uri": uri,
+            "date": date,
+            "servings": servingCount
+        ]
       
         showIndicator(withTitle: "", and: "")
         

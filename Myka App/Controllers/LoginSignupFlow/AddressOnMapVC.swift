@@ -261,7 +261,7 @@ extension AddressOnMapVC: CLLocationManagerDelegate,GMSMapViewDelegate {
         mapView.settings.myLocationButton = true
         let lattitude = Double(AppLocation.lat)
         let longitude = Double(AppLocation.long)
-         
+       
         let center = CLLocationCoordinate2D(latitude: lattitude ?? 0.0, longitude: longitude ?? 0.0)
 
         let camera: GMSCameraPosition = GMSCameraPosition.camera(withLatitude: lattitude ?? 0.0, longitude: longitude ?? 0.0, zoom: Float(19.0))

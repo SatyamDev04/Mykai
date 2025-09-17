@@ -64,8 +64,6 @@ class FeedBackVC: UIViewController, UITextViewDelegate {
         }
     }
     
-    
-    
     @IBAction func BackBtn(_ sender: UIButton) {
         self.DiscardPopUpV.isHidden = false
     }
@@ -106,10 +104,7 @@ class FeedBackVC: UIViewController, UITextViewDelegate {
     @IBAction func DiscardCrossIcon(_ sender: UIButton) {
         self.DiscardPopUpV.isHidden = true
     }
-
 }
-
-
 extension FeedBackVC {
     func Api_To_Save_FeedBack(){
         var params = [String: Any]()
@@ -120,7 +115,7 @@ extension FeedBackVC {
             params["message"] = DescTxtV.text!
         }
         
-        params["email"] = EmailTxtF.text!
+        params["email"] = EmailTxtF.text ?? ""
       
         showIndicator(withTitle: "", and: "")
         

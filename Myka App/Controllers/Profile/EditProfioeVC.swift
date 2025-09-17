@@ -89,8 +89,10 @@ extension EditProfioeVC{
         showIndicator(withTitle: "", and: "")
          
         let loginURL = baseURL.baseURL + appEndPoints.profileImgUpdate
-        print(params,"Params")
-        print(loginURL,"loginURL")
+        print("*************************Params******************************")
+        print(params)
+        print("*************************loginURL****************************")
+        print(loginURL)
         
         WebService.shared.uploadImageWithParameter(request: loginURL, image: imgData, VC: self, parameters: params, imageName: "profile_img", withCompletion: { (json, statusCode) in
           

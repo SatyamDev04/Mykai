@@ -64,7 +64,6 @@ class FilterVC: UIViewController {
     
     var FilterDataList = FilterModel() // for api
     
-    
     var oneLineHeight: CGFloat {
         return 54.0
     }
@@ -84,11 +83,9 @@ class FilterVC: UIViewController {
         mealCollv.delegate = self
         mealCollv.dataSource = self
         
-        
         DietCollv.register(UINib(nibName: "TagCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "TagCollectionViewCell")
         DietCollv.delegate = self
         DietCollv.dataSource = self
-        
         
         CookTimeCollv.register(UINib(nibName: "TagCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "TagCollectionViewCell")
         CookTimeCollv.delegate = self
@@ -101,7 +98,6 @@ class FilterVC: UIViewController {
         NutritionCollv.register(UINib(nibName: "TagCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "TagCollectionViewCell")
         NutritionCollv.delegate = self
         NutritionCollv.dataSource = self
-         
         
         self.Api_To_Get_FilterData()
         
@@ -128,12 +124,10 @@ class FilterVC: UIViewController {
          
         // Adjust initial heights
             adjustAllCollectionViewHeights()
-        //
          
         self.SearchTxt.addTarget(self, action: #selector(TextSearch(sender: )), for: .editingChanged)
     }
     
-    //
     @objc func TextSearch(sender: UITextField) {
         guard let searchText = sender.text, !searchText.isEmpty else {
             // If the text field is empty, reset the arrays to their original values
@@ -176,7 +170,6 @@ class FilterVC: UIViewController {
             return
         }
         
-        // For search with name only.
         MealArray = MealArray1.filter { (item) -> Bool in
             let value: FilterModuel = item as FilterModuel
             return value.name.range(of: searchText, options: .caseInsensitive) != nil
@@ -211,7 +204,6 @@ class FilterVC: UIViewController {
         }else{
             mealCollvBgV.isHidden = true
         }
-        
         if DietArray.count > 0 {
             DietCollvBgV.isHidden = false
         }else{
@@ -239,7 +231,6 @@ class FilterVC: UIViewController {
         self.reloadAllCollectionViews()
     }
    
-     
     @IBAction func BackBtn(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
@@ -255,9 +246,7 @@ class FilterVC: UIViewController {
         vc.comesfrom = "Filter"
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
 }
-
 
 extension FilterVC: UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -328,6 +317,7 @@ extension FilterVC: UICollectionViewDelegate,UICollectionViewDataSource,UICollec
             cell.tagView?.text = CookTimeArray[indexPath.row].name
             if CookTimeArray[indexPath.row].Selcolor == true{
                 cell.tagView?.borderColor = #colorLiteral(red: 0.9960784314, green: 0.6235294118, blue: 0.2705882353, alpha: 1)
+              
             }else{
                 cell.tagView?.borderColor = #colorLiteral(red: 0.8977110982, green: 0.8977110982, blue: 0.8977110982, alpha: 1)
             }
@@ -428,7 +418,7 @@ extension FilterVC: UICollectionViewDelegate,UICollectionViewDataSource,UICollec
                 self.DietArray0.remove(at: indexPath.item)
                 self.reloadAllCollectionViews()
             }
-            
+            print(self.DietArray)
         }else if collectionView == CookTimeCollv{
              
              if CookTimeArray[indexPath.row].Selcolor == true {
@@ -493,7 +483,6 @@ extension FilterVC: UICollectionViewDelegate,UICollectionViewDataSource,UICollec
                 self.reloadAllCollectionViews()
             }
        }
-        
         
         let selectedMealCount = MealArray.filter { $0.Selcolor == true }.count
         let selectedDietCount = DietArray.filter { $0.Selcolor == true }.count
@@ -574,20 +563,15 @@ extension FilterVC: TagCellLayoutDelegate {
         }
     }
 
-
-
 extension FilterVC{
     func Api_To_Get_FilterData(){
-      //  var params = [String: Any]()
-       
-       // params["q"] = ""
-       
-    
         showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.for_filter_search
     
-        print(loginURL,"loginURL")
+   
+        print("*************************loginURL****************************")
+        print(loginURL)
         
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: [:], withCompletion: { (json, statusCode) in
             
@@ -651,7 +635,7 @@ extension FilterVC{
                     self.CuisinesArray1.removeAll()
                     for itm in self.FilterDataList.dishType ?? []{
                         self.CuisinesArray1.append(FilterModuel(name: itm.name ?? "", id: "", Selcolor: false, value: itm.name ?? ""))
-                      }
+                    }
                     
                     for itm in self.FilterDataList.dishType ?? []{
                         if self.CuisinesArray.count == 5{
@@ -662,10 +646,9 @@ extension FilterVC{
                             }
                         }
                     }
-                    
                     self.NutritionArray1.removeAll()
                     for itm in self.FilterDataList.protein ?? []{
-                        self.NutritionArray1.append(FilterModuel(name: itm.name ?? "", id: "", Selcolor: false, value: itm.name ?? ""))
+                        self.NutritionArray1.append(FilterModuel(name: itm.name ?? "", id: "", Selcolor: false, value: itm.value ?? ""))
                       }
                     
                     for itm in self.FilterDataList.protein ?? []{
@@ -673,7 +656,7 @@ extension FilterVC{
                             self.NutritionArray.append(FilterModuel(name: "More", id: "", Selcolor: false, value: ""))
                         }else{
                             if self.NutritionArray.count < 5{
-                                self.NutritionArray.append(FilterModuel(name: itm.name ?? "", id: "", Selcolor: false, value: itm.name ?? ""))
+                                self.NutritionArray.append(FilterModuel(name: itm.name ?? "", id: "", Selcolor: false, value: itm.value ?? ""))
                             }
                         }
                     }
@@ -685,7 +668,6 @@ extension FilterVC{
                     self.NutritionArray0 = self.NutritionArray
                        
                     self.Show_or_Hide_FilterView()
- 
                 }else{
                     let msg = d.message ?? ""
                     self.showToast(msg)

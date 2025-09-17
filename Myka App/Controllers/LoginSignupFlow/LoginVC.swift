@@ -321,8 +321,10 @@ extension LoginVC {
         showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.getLogin
-        print(params,"Params")
-        print(loginURL,"loginURL")
+        print("*************************Params******************************")
+        print(params)
+        print("*************************loginURL****************************")
+        print(loginURL)
         
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
             
@@ -464,6 +466,11 @@ extension LoginVC {
         params["referral_from"] = StateMangerModelClass.shared.ReffCode
         
         let loginURL = baseURL.baseURL + appEndPoints.social_login
+        
+        print("*************************Params******************************")
+        print(params)
+        print("*************************loginURL****************************")
+        print(loginURL)
         
         showIndicator(withTitle: "", and: "")
                

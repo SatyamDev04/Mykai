@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -70,7 +70,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tZF-QY-H3n">
-                                <rect key="frame" x="230.66666666666666" y="30" width="68.333333333333343" height="20"/>
+                                <rect key="frame" x="230.66666666666666" y="26" width="68.333333333333343" height="20"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S9f-Xo-1ez">
                                         <rect key="frame" x="30.000000000000025" y="0.0" width="8.3333333333333321" height="20"/>
@@ -120,20 +120,31 @@
                                     <constraint firstItem="T8X-cT-p4n" firstAttribute="top" secondItem="tZF-QY-H3n" secondAttribute="top" id="wZO-H9-ANe"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="paa-C4-6aU">
+                                <rect key="frame" x="279" y="54" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="1W0-Hx-kei"/>
+                                    <constraint firstAttribute="height" constant="20" id="fjL-nv-UjS"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="YelloUncheck"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="tZF-QY-H3n" firstAttribute="centerY" secondItem="Rec-6P-M7C" secondAttribute="centerY" id="0LT-qO-5M4"/>
+                            <constraint firstItem="tZF-QY-H3n" firstAttribute="centerY" secondItem="Rec-6P-M7C" secondAttribute="centerY" constant="-4" id="0LT-qO-5M4"/>
                             <constraint firstItem="zeG-vg-Mu2" firstAttribute="leading" secondItem="xMt-1s-0P4" secondAttribute="trailing" constant="15" id="3eN-0q-fWh"/>
                             <constraint firstAttribute="bottom" secondItem="xMt-1s-0P4" secondAttribute="bottom" constant="10" id="6mw-jz-FJA"/>
-                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="bAS-bh-9s2" secondAttribute="bottom" constant="2" id="HZK-GC-v7G"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="bAS-bh-9s2" secondAttribute="bottom" constant="10" id="HZK-GC-v7G"/>
                             <constraint firstItem="zeG-vg-Mu2" firstAttribute="top" secondItem="MTI-y9-Tgq" secondAttribute="top" constant="10" id="R9F-Ty-6HN"/>
                             <constraint firstItem="bAS-bh-9s2" firstAttribute="top" secondItem="zeG-vg-Mu2" secondAttribute="bottom" constant="-7.1054273576010019e-15" id="X04-cW-bpt"/>
                             <constraint firstAttribute="trailing" secondItem="bAS-bh-9s2" secondAttribute="trailing" constant="154" id="X9c-eX-Ar1"/>
                             <constraint firstItem="xMt-1s-0P4" firstAttribute="leading" secondItem="MTI-y9-Tgq" secondAttribute="leading" constant="15" id="cr3-rf-Fo4"/>
+                            <constraint firstItem="paa-C4-6aU" firstAttribute="top" secondItem="T8X-cT-p4n" secondAttribute="bottom" constant="8" symbolic="YES" id="dQ9-H9-8gS"/>
                             <constraint firstAttribute="trailing" secondItem="zeG-vg-Mu2" secondAttribute="trailing" constant="102" id="jmJ-qr-ufi"/>
                             <constraint firstItem="xMt-1s-0P4" firstAttribute="top" secondItem="MTI-y9-Tgq" secondAttribute="top" constant="10" id="mVR-fb-JqP"/>
                             <constraint firstItem="bAS-bh-9s2" firstAttribute="leading" secondItem="xMt-1s-0P4" secondAttribute="trailing" constant="15" id="wxQ-wz-fWc"/>
+                            <constraint firstItem="paa-C4-6aU" firstAttribute="trailing" secondItem="T8X-cT-p4n" secondAttribute="trailing" id="xTM-pS-rqm"/>
                             <constraint firstAttribute="trailing" secondItem="tZF-QY-H3n" secondAttribute="trailing" constant="15" id="xlX-8l-3DH"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
@@ -170,6 +181,7 @@
                 <outlet property="NameLbl" destination="zeG-vg-Mu2" id="YiT-ee-TW1"/>
                 <outlet property="PlusBtn" destination="T8X-cT-p4n" id="GE1-Ff-qWQ"/>
                 <outlet property="QuantityLbl" destination="bAS-bh-9s2" id="Spl-Yd-4px"/>
+                <outlet property="selectBtnTap" destination="paa-C4-6aU" id="HBz-PP-crt"/>
             </connections>
             <point key="canvasLocation" x="-9.1603053435114496" y="4.5774647887323949"/>
         </tableViewCell>
@@ -178,6 +190,7 @@
         <image name="MinusIcon" width="13" height="14"/>
         <image name="Oilimage" width="58.333332061767578" height="58.333332061767578"/>
         <image name="PlusIcon" width="13" height="14"/>
+        <image name="YelloUncheck" width="25" height="24"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

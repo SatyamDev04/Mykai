@@ -46,11 +46,11 @@ struct RecipeElement: Codable {
 }
 
 struct RecipeElement1: Codable {
-    let belongs, reviewNumber: Int
-    let review: Double
-    let isLike: Int
-    let links: Links
-    let recipe: RecipeRecipe
+    let belongs, reviewNumber: Int?
+    let review: Double?
+    let isLike: Int?
+    let links: Links?
+    let recipe: RecipeRecipe?
 
     enum CodingKeys: String, CodingKey {
         case belongs
@@ -175,17 +175,19 @@ struct Large: Codable {
 // MARK: - Ingredient
 struct Ingredient: Codable {
     var text: String?
-    var quantity: Double?
+    var quantity: String?
     var measure: String?
     var food: String?
     var weight: Double?
     var foodCategory, foodID: String?
     var image: String?
+    var ingredientCost:String?
 
     enum CodingKeys: String, CodingKey {
         case text, quantity, measure, food, weight, foodCategory
         case foodID = "foodId"
         case image
+        case ingredientCost = "ingredient_cost"
     }
 }
 

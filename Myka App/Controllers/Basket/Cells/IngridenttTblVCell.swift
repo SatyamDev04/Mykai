@@ -11,12 +11,14 @@ class IngridenttTblVCell: UITableViewCell {
     
     @IBOutlet weak var Img: UIImageView!
     @IBOutlet weak var NameLbl: UILabel!
-    @IBOutlet weak var QuantityLbl: UILabel!
-    @IBOutlet weak var Pricelbl: UILabel!
-    @IBOutlet weak var Countlbl: UILabel!
-    
-    @IBOutlet weak var MinusBtn: UIButton!
-    @IBOutlet weak var PlusBtn: UIButton!
+    @IBOutlet weak var quantityLbl: UILabel!
+    @IBOutlet weak var checkBoxBtn: UIButton!
+//    @IBOutlet weak var QuantityLbl: UILabel!
+//    @IBOutlet weak var Pricelbl: UILabel!
+//    @IBOutlet weak var Countlbl: UILabel!
+//    
+//    @IBOutlet weak var MinusBtn: UIButton!
+//    @IBOutlet weak var PlusBtn: UIButton!
     
     
     
@@ -28,7 +30,7 @@ class IngridenttTblVCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
     }
     
 }
+

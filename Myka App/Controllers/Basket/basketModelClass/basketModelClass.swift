@@ -23,9 +23,9 @@ struct basketModelData: Codable {
 }
 
 // MARK: - Billing
+
 struct Billing: Codable {
-    var recipes: Int?
-    var netTotal, total: Double?
+    var netTotal, recipes, total: Int
 
     enum CodingKeys: String, CodingKey {
         case recipes
@@ -35,6 +35,7 @@ struct Billing: Codable {
 }
 
 // MARK: - DataIngredient
+
 struct DataIngredient: Codable {
     var id, userID: Int?
     var foodID: String?
@@ -72,21 +73,23 @@ struct DataIngredient: Codable {
 
 // MARK: - RecipeElement
 struct RecipeElementt: Codable {
-    var id, userID: Int?
-    var uri: String?
-    var serving, type, updatedAt, createdAt: String?
-    var deletedAt: String?
-    var data: RecipeData?
+    let updatedAt: String?
+        let userID: Int?
+        let data: RecipeData?
+        let id: Int?
+        let type, uri: String?
+        let createdAt: String?
+        var serving: String?
+        let deletedAt: String?
 
-    enum CodingKeys: String, CodingKey {
-        case id
-        case userID = "user_id"
-        case uri, serving, type
-        case updatedAt = "updated_at"
-        case createdAt = "created_at"
-        case deletedAt = "deleted_at"
-        case data
-    }
+        enum CodingKeys: String, CodingKey {
+            case updatedAt = "updated_at"
+            case userID = "user_id"
+            case data, id, type, uri
+            case createdAt = "created_at"
+            case serving
+            case deletedAt = "deleted_at"
+        }
 }
 
 // MARK: - RecipeData
@@ -104,40 +107,139 @@ struct RecipeData: Codable {
 
 // MARK: - PurpleRecipe
 struct PurpleRecipe: Codable {
-    var uri: String?
-    var label: String?
-    var image: String?
-    var images: Images?
-    var source: String?
-    var url: String?
-    var shareAs: String?
-    var yield: Double?
-    var dietLabels, healthLabels, cautions, ingredientLines: [String]?
-    var ingredients: [RecipeIngredient]?
-    var calories, totalWeight: Double?
-    var totalTime: Int?
-    var cuisineType, mealType, dishType: [String]?
-    var totalNutrients, totalDaily: [String: Total]?
-    var digest: [Digest]?
-    var instructionLines: [String]?
+    let reviewsCount: Int?
+        let mealType: [String]?
+        let recipeMealType, id: String?
+        let imageURL: String?
+        let createdOn, createdAt: String?
+        let dishType: [String]?
+        let description: String?
+        let totalDaily: Total?
+        let fingerprint: String?
+        let videoURL: String?
+        let preparedWeightG, servings: Int?
+        let macros, sourceType: String?
+        let dietLabels: [String]?
+        let updatedAt, estimatedPrice: String?
+        let popularCategory: [String]?
+        let ingredients: [RecipeIngredient]?
+        let image: String?
+        let yield, recipeTotalTime: Int?
+        let cuisineType: [String]?
+        let difficulty: String?
+//        let healthLabels: [JSONAny]?
+        let instructionLines: [String]?
+        let label, keywords: String?
+        let totalTime: Int?
+        let userID: Int?
+        let totalNutrients: Total
+        let ratingsAvg: String?
+        let images: Images?
+        let sourceURL, uri, ingredientCostTotal: String?
+        let instructions: [Instruction]?
+        let micronutrients: String?
+        let ingredientLines: [String]?
+        let source: String?
+        let imageURLBackup: String?
+        let url: String?
+        let cookware: [Cookware]?
+        let isPublic: Int?
+        let cuisine: String?
+        let calories, prepTime: Int?
+
+        enum CodingKeys: String, CodingKey {
+            case reviewsCount = "reviews_count"
+            case mealType
+            case recipeMealType = "meal_type"
+            case id
+            case imageURL = "image_url"
+            case createdOn = "created_on"
+            case createdAt = "created_at"
+            case dishType, description, totalDaily, fingerprint
+            case videoURL = "video_url"
+            case preparedWeightG = "prepared_weight_g"
+            case servings, macros
+            case sourceType = "source_type"
+            case dietLabels
+            case updatedAt = "updated_at"
+            case estimatedPrice = "estimated_price"
+            case popularCategory, ingredients, image, yield
+            case recipeTotalTime = "total_time"
+            case cuisineType, difficulty, instructionLines, label, keywords, totalTime
+            case userID = "user_id"
+            case totalNutrients
+            case ratingsAvg = "ratings_avg"
+            case images
+            case sourceURL = "source_url"
+            case uri
+            case ingredientCostTotal = "ingredient_cost_total"
+            case instructions, micronutrients, ingredientLines, source
+            case imageURLBackup = "image_url_backup"
+            case url, cookware
+            case isPublic = "is_public"
+            case cuisine, calories
+            case prepTime = "prep_time"
+        }
 }
 
- 
+// MARK: - Instruction
+struct Instruction: Codable {
+    let timerMin: Int?
+    let id, sectionID: String?
+    let createdAt: String?
+    let text: String?
+    let stepOrder: Int?
+    let updatedAt: String?
+    let createdOn: String?
+
+    enum CodingKeys: String, CodingKey {
+        case timerMin = "timer_min"
+        case id
+        case sectionID = "section_id"
+        case createdAt = "created_at"
+        case text
+        case stepOrder = "step_order"
+        case updatedAt = "updated_at"
+        case createdOn = "created_on"
+    }
+}
 
  
 // MARK: - RecipeIngredient
 struct RecipeIngredient: Codable {
-    var text: String?
-    var quantity: Double?
-    var measure, food: String?
-    var weight: Double?
-    var foodCategory, foodID: String?
-    var image: String?
+    let ingredientID, measurementUnitsImperialID: Int?
+    let category: String?
+    let image: String?
+    let ingredientCost, name: String?
+    let unit: String?
+    let searchKey: String?
+    let createdAt: String?
+    let createdOn, text, quantity: String?
+    let imageURL: String?
+    let id: String?
+    let measure: String?
+    let measureImperial, food: String?
+    let updatedAt: String?
+    let orderIndex: Int?
+    let recipeID: String?
 
     enum CodingKeys: String, CodingKey {
-        case text, quantity, measure, food, weight, foodCategory
-        case foodID = "foodId"
-        case image
+        case ingredientID = "ingredient_id"
+        case measurementUnitsImperialID = "measurement_units_imperial_id"
+        case category, image
+        case ingredientCost = "ingredient_cost"
+        case name, unit
+        case searchKey = "search_key"
+        case createdAt = "created_at"
+        case createdOn = "created_on"
+        case text, quantity
+        case imageURL = "image_url"
+        case id, measure
+        case measureImperial = "measure_imperial"
+        case food
+        case updatedAt = "updated_at"
+        case orderIndex = "order_index"
+        case recipeID = "recipe_id"
     }
 }
 

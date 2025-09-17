@@ -23,7 +23,7 @@ class AddRecipePopUpVC: UIViewController {
     @IBOutlet weak var TblBGV: UIView!
     @IBOutlet weak var BgV: UIView!
     
-    var SearchRecipeData = [AddRecipeModel(name: "Add a Recipe from Web", image: UIImage(named: "web")!), AddRecipeModel(name: "Create New Recipe", image: UIImage(named: "Create")!), AddRecipeModel(name: "Add Recipe from Image", image: UIImage(named: "Add")!)]
+    var SearchRecipeData = [AddRecipeModel(name: "Add a Recipe from Web", image: UIImage(named: "web")!), AddRecipeModel(name: "Create New Recipe", image: UIImage(named: "Create")!)/*, AddRecipeModel(name: "Add Recipe from Image", image: UIImage(named: "Add")!)*/]
     //
     
     //  var model: VNCoreMLModel!
@@ -159,8 +159,6 @@ extension AddRecipePopUpVC: UITableViewDelegate, UITableViewDataSource {
         self.view.removeFromSuperview()
         self.removeFromParent()
     }
-    
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }

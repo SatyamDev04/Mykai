@@ -412,7 +412,6 @@ class NutritionGoalVC: UIViewController {
     }
     
     // MARK: - Reset Methods
-    
     @objc func resetCalTap() {
         resetCalorie(list: uNchangedSuggestedData)
         updateIndividualResetButtons()
@@ -423,7 +422,6 @@ class NutritionGoalVC: UIViewController {
         resetFat(list: uNchangedSuggestedData)
         updateIndividualResetButtons()
         evaluateMacroChange()
-        
     }
     
     @objc func resetCarbTap() {
@@ -451,11 +449,12 @@ class NutritionGoalVC: UIViewController {
         self.CaloriesSlider.value = Float(list.calories ?? 0)
         self.CaloriesSliderLbl.text = "\(Int(list.calories ?? 0))"
         self.SuggestedData.calories = list.calories
-//        self.resetProtien(list: list)
-//        self.resetCarb(list: list)
-//        self.resetFat(list: list)
+        //        self.resetProtien(list: list)
+        //        self.resetCarb(list: list)
+        //        self.resetFat(list: list)
     }
     
+ 
     func resetCarb(list: HealthSuggestedData) {
         self.CarbsSlider.value = Float(list.macroPer?.carbs ?? 0)
         self.carbsPercentageLbl.text = "\(list.macroPer?.carbs ?? 0)%"

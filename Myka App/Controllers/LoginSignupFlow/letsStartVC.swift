@@ -38,12 +38,9 @@ class letsStartVC: UIViewController {
         }
     }
     
-    
-    
     @IBAction func LoginBtn(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
-    
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

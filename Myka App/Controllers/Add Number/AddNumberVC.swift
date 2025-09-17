@@ -13,7 +13,6 @@ class AddNumberVC: UIViewController, UITextFieldDelegate, ADCountryPickerDelegat
   
     @IBOutlet weak var CountryImg: UIImageView!
     @IBOutlet weak var PhoneTxtF: UITextField!
-    
     @IBOutlet weak var SentCodeonPhoneNumLbl: UILabel!
     @IBOutlet weak var OtpView: DPOTPView!
     
@@ -303,7 +302,10 @@ extension AddNumberVC{
         
         let loginURL = baseURL.baseURL + appEndPoints.send_sms
         
-        print(loginURL,"loginURL")
+        print("*************************Params******************************")
+        print(params)
+        print("*************************loginURL****************************")
+        print(loginURL)
         
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
             
@@ -364,7 +366,10 @@ extension AddNumberVC{
         
         let loginURL = baseURL.baseURL + appEndPoints.add_phone
         
-        print(loginURL,"loginURL")
+        print("*************************Params******************************")
+        print(params)
+        print("*************************loginURL****************************")
+        print(loginURL)
         
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
             

@@ -19,37 +19,40 @@ class PlanVc: UIViewController {
     @IBOutlet weak var CalanderCollV: UICollectionView!
     @IBOutlet weak var weekLabel: UILabel!
     @IBOutlet weak var BreakFastCollV: UICollectionView!
+    @IBOutlet weak var dessertCollV: UICollectionView!
     @IBOutlet weak var LunchCollV: UICollectionView!
     @IBOutlet weak var DinnerCollV: UICollectionView!
     @IBOutlet weak var TeaTimeCollV: UICollectionView!
     @IBOutlet weak var SnacksCollV: UICollectionView!
     
     @IBOutlet var BreakFastCollVBgV: UIView!
+    @IBOutlet var dessertCollVBgV: UIView!
     @IBOutlet var LunchCollVBgV: UIView!
     @IBOutlet var DinnerCollVBgV: UIView!
     @IBOutlet var TeaTimeCollVBgV: UIView!
     @IBOutlet var SnacksCollVBgV: UIView!
     
     @IBOutlet weak var BreakFastBtnBgV: UIView!
+    @IBOutlet weak var dessertBtnBgV: UIView!
     @IBOutlet weak var LunchBtnBgV: UIView!
     @IBOutlet weak var DinnerBtnBgV: UIView!
     @IBOutlet weak var SnacksBtnBgV: UIView!
     @IBOutlet weak var TeaTimeBtnBgV: UIView!
     
-    
-    
     @IBOutlet weak var BreakFastDishCollV: UICollectionView!
+    @IBOutlet weak var dessertDishCollV: UICollectionView!
     @IBOutlet weak var LunchDishCollV: UICollectionView!
     @IBOutlet weak var DinnerDishCollV: UICollectionView!
     @IBOutlet weak var TeaTimeDishCollV: UICollectionView!
     @IBOutlet weak var SnacksDishCollV: UICollectionView!
     
     @IBOutlet var BreakFastDishCollVBgV: UIView!
+    @IBOutlet var dessertDishCollVBgV: UIView!
     @IBOutlet var LunchDishCollVBgV: UIView!
     @IBOutlet var DinnerDishCollVBgV: UIView!
     @IBOutlet var TeaTimeDishCollVBgV: UIView!
     @IBOutlet var SnacksDishCollVBgV: UIView!
-     
+    
     
     @IBOutlet weak var DailyNutritionCountBgV: UIView!
     
@@ -105,8 +108,6 @@ class PlanVc: UIViewController {
     
     var longPressedEnabled = false
     
-    
-    
     var BreakfastData = ["Pasta", "BBQ", "stawberry"]
     var LunchData = ["Lasagne", "Pasta", "Bar-B-Q"]
     var DinnerData = ["Lasagne", "stawberry", "Pizza"]
@@ -115,16 +116,11 @@ class PlanVc: UIViewController {
     
     var ChooseDayData = [BodyGoalsModel(Name: "Monday", isSelected: false), BodyGoalsModel(Name: "Tuesday", isSelected: false), BodyGoalsModel(Name: "Wednesday", isSelected: false), BodyGoalsModel(Name: "Thursday", isSelected: false), BodyGoalsModel(Name: "Friday", isSelected: false), BodyGoalsModel(Name: "Saturday", isSelected: false), BodyGoalsModel(Name: "Sunday", isSelected: false)]
     
-    var ChooseMealTypeyData = [BodyGoalsModel(Name: "Breakfast", isSelected: false), BodyGoalsModel(Name: "Lunch", isSelected: false), BodyGoalsModel(Name: "Dinner", isSelected: false), BodyGoalsModel(Name: "Snacks", isSelected: false), BodyGoalsModel(Name: "Brunch", isSelected: false)]
-    
-    // var AddAnotherMealArr = [BodyGoalsModel(Name: "Snacks", isSelected: false), BodyGoalsModel(Name: "Teatime", isSelected: false)]
-    //
+    var ChooseMealTypeyData = [BodyGoalsModel(Name: "Breakfast", isSelected: false), BodyGoalsModel(Name: "Brunch", isSelected: false),BodyGoalsModel(Name: "Dessert", isSelected: false), BodyGoalsModel(Name: "Lunch", isSelected: false), BodyGoalsModel(Name: "Dinner", isSelected: false), BodyGoalsModel(Name: "Snacks", isSelected: false)]
     
     var AllRecipeSelItem = PlanDataClass()
     
-    var AllDataList = YourCookedMealModel() // for by date Api data
-    
-    // for api use only.
+    var AllDataList = YourCookedMealModel()
     var uri = ""
     var mealType = ""
     
@@ -189,12 +185,14 @@ class PlanVc: UIViewController {
         CalculateBMRBgV.sendSubviewToBack(customBlurEffectView)
         
         self.BreakFastCollVBgV.isHidden = false
+        self.dessertCollVBgV.isHidden = false
         self.LunchCollVBgV.isHidden = false
         self.DinnerCollVBgV.isHidden = false
         self.SnacksCollVBgV.isHidden = false
         self.TeaTimeCollVBgV.isHidden = false
         
         self.BreakFastDishCollVBgV.isHidden = true
+        self.dessertDishCollVBgV.isHidden = true
         self.LunchDishCollVBgV.isHidden = true
         self.DinnerDishCollVBgV.isHidden = true
         self.SnacksDishCollVBgV.isHidden = true
@@ -216,7 +214,7 @@ class PlanVc: UIViewController {
         
         let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(handleTap2(_:)))
         AddAnotherMealBgV.addGestureRecognizer(tapGesture2)
-
+        
         NotificationCenter.default.addObserver(self, selector: #selector(listnerFunction(_:)), name: NSNotification.Name(rawValue: "notificationName"), object: nil)
         
         
@@ -224,64 +222,64 @@ class PlanVc: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(listnerFunctionRealoadData(_:)), name: NSNotification.Name(rawValue: "notificationNameReloadData"), object: nil)
         
-       // self.Api_To_GetAllRecipe()
+        //        self.Api_To_GetAllRecipe()
         planService.shared.Api_To_GetAllRecipe(vc: self) { result in
-        
-                switch result {
-                case .success(let allData):
-                    if let list = allData, list.recipes != nil {
-                        self.AllRecipeSelItem = list
-                       
-                        self.ShowNoDataFoundonCollV()
-                    }else{
-                        self.ShowNoDataFoundonCollV()
+            
+            switch result {
+            case .success(let allData):
+                if let list = allData, list.recipes != nil {
+                    self.AllRecipeSelItem = list
+                    
+                    self.ShowNoDataFoundonCollV()
+                }else{
+                    self.ShowNoDataFoundonCollV()
+                }
+                
+                //                    if self.veryFirstLoading == 1{
+                //                        self.veryFirstLoading = 0
+                DispatchQueue.global().asyncAfter(deadline: .now()) {
+                    let dateformatter = DateFormatter()
+                    dateformatter.dateFormat = "yyyy-MM-dd"
+                    let Sdate = dateformatter.string(from: self.seldate)
+                    planService.shared.Api_To_GetAllRecipeByDate(Sdate: Sdate,vc: self) { result in
+                        
+                        switch result {
+                        case .success(let allData):
+                            self.fetchPlanDataByDate(list: allData)
+                        case .failure(let error):
+                            // Handle error
+                            self.ShowNoDataFoundonCollV1()
+                            print("Error retrieving data: \(error.localizedDescription)")
+                        }
                     }
                     
-    //                    if self.veryFirstLoading == 1{
-    //                        self.veryFirstLoading = 0
-                        DispatchQueue.global().asyncAfter(deadline: .now()) {
-                                    let dateformatter = DateFormatter()
-                                    dateformatter.dateFormat = "yyyy-MM-dd"
-                            let Sdate = dateformatter.string(from: self.seldate)
-                            planService.shared.Api_To_GetAllRecipeByDate(Sdate: Sdate,vc: self) { result in
-                            
-                                    switch result {
-                                    case .success(let allData):
-                                        self.fetchPlanDataByDate(list: allData)
-                                    case .failure(let error):
-                                        // Handle error
-                                        self.ShowNoDataFoundonCollV1()
-                                        print("Error retrieving data: \(error.localizedDescription)")
-                                    }
-                            }
-                            
-                        }
-                case .failure(let error):
-                    // Handle error
-                    self.ShowNoDataFoundonCollV()
-                    print("Error retrieving data: \(error.localizedDescription)")
                 }
+            case .failure(let error):
+                // Handle error
+                self.ShowNoDataFoundonCollV()
+                print("Error retrieving data: \(error.localizedDescription)")
+            }
         }
-      //
+        //
     }
-     
-     
-     @objc func listnerFunction(_ notification: NSNotification) {
-         if let data = notification.userInfo?["data"] as? String {
-             if data == "SearchPopup"{
-                 let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-                 let vc = storyboard.instantiateViewController(withIdentifier: "SearchPopUpVC") as! SearchPopUpVC
-                 
-                 self.addChild(vc)
-                 vc.view.frame = self.view.frame
-                 self.view.addSubview(vc.view)
-                 self.view.bringSubviewToFront(vc.view)
-                 vc.didMove(toParent: self)
-             }
-         }
-         }
-
-     
+    
+    
+    @objc func listnerFunction(_ notification: NSNotification) {
+        if let data = notification.userInfo?["data"] as? String {
+            if data == "SearchPopup"{
+                let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
+                let vc = storyboard.instantiateViewController(withIdentifier: "SearchPopUpVC") as! SearchPopUpVC
+                
+                self.addChild(vc)
+                vc.view.frame = self.view.frame
+                self.view.addSubview(vc.view)
+                self.view.bringSubviewToFront(vc.view)
+                vc.didMove(toParent: self)
+            }
+        }
+    }
+    
+    
     @objc func listnerFunctionAddRecipe(_ notification: NSNotification) {
         if let data = notification.userInfo?["data"] as? String {
             if data == "AddRecipePopup"{
@@ -291,7 +289,7 @@ class PlanVc: UIViewController {
                     self.tabBarController?.tabBar.isHidden = false
                 }
                 self.tabBarController?.tabBar.isHidden = true
-//                self.present(vc, animated: true)
+                //                self.present(vc, animated: true)
                 
                 self.addChild(vc)
                 vc.view.frame = self.view.frame
@@ -299,52 +297,50 @@ class PlanVc: UIViewController {
                 self.view.bringSubviewToFront(vc.view)
                 vc.didMove(toParent: self)
             }
-         }
         }
+    }
     
     @objc func listnerFunctionRealoadData(_ notification: NSNotification) {
         if let data = notification.userInfo?["data"] as? String {
             print(data)
             planService.shared.Api_To_GetAllRecipe(vc: self) { result in
-            
-                    switch result {
-                    case .success(let allData):
-                        if let list = allData, list.recipes != nil {
-                            self.AllRecipeSelItem = list
-                           
-                            self.ShowNoDataFoundonCollV()
-                        }else{
-                            self.ShowNoDataFoundonCollV()
-                        }
+                
+                switch result {
+                case .success(let allData):
+                    if let list = allData, list.recipes != nil {
+                        self.AllRecipeSelItem = list
                         
-        //                    if self.veryFirstLoading == 1{
-        //                        self.veryFirstLoading = 0
-                            DispatchQueue.global().asyncAfter(deadline: .now()) {
-                                let dateformatter = DateFormatter()
-                                dateformatter.dateFormat = "yyyy-MM-dd"
+                        self.ShowNoDataFoundonCollV()
+                    }else{
+                        self.ShowNoDataFoundonCollV()
+                    }
+                    
+                    //                    if self.veryFirstLoading == 1{
+                    //                        self.veryFirstLoading = 0
+                    DispatchQueue.global().asyncAfter(deadline: .now()) {
+                        let dateformatter = DateFormatter()
+                        dateformatter.dateFormat = "yyyy-MM-dd"
                         let Sdate = dateformatter.string(from: self.seldate)
                         planService.shared.Api_To_GetAllRecipeByDate(Sdate: Sdate,vc: self) { result in
-                        
-                                switch result {
-                                case .success(let allData):
-                                    self.fetchPlanDataByDate(list: allData)
-                                case .failure(let error):
-                                    // Handle error
-                                    self.ShowNoDataFoundonCollV1()
-                                    print("Error retrieving data: \(error.localizedDescription)")
-                                }
-                        }
+                            
+                            switch result {
+                            case .success(let allData):
+                                self.fetchPlanDataByDate(list: allData)
+                            case .failure(let error):
+                                // Handle error
+                                self.ShowNoDataFoundonCollV1()
+                                print("Error retrieving data: \(error.localizedDescription)")
                             }
-                    case .failure(let error):
-                        // Handle error
-                        self.ShowNoDataFoundonCollV()
-                        print("Error retrieving data: \(error.localizedDescription)")
+                        }
                     }
+                case .failure(let error):
+                    // Handle error
+                    self.ShowNoDataFoundonCollV()
+                    print("Error retrieving data: \(error.localizedDescription)")
+                }
             }
         }
-        }
-
-    
+    }
     
     // Action method called when the view is tapped
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
@@ -405,12 +401,11 @@ class PlanVc: UIViewController {
         }
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         ScrollV.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
         DispatchQueue.global().asyncAfter(deadline: .now()) {
-       
+            
             planService.shared.Api_To_Get_ProfileData(vc: self) { result in
                 
                 switch result {
@@ -422,7 +417,7 @@ class PlanVc: UIViewController {
                     if Name != ""{
                         self.NameLbl.text = "\(Name.capitalizedFirst)'s week"
                     }
-                     
+                    
                     let ProfImg = response?["profile_img"] as? String ?? String()
                     let img = URL(string: baseURL.imageUrl + ProfImg)
                     
@@ -433,30 +428,25 @@ class PlanVc: UIViewController {
                     print("Error retrieving data: \(error.localizedDescription)")
                 }
             }
-           
+            
             planService.shared.Api_To_GetPrefrenceBodyGoals(vc: self) { result in
                 
                 switch result {
                 case .success(let allData):
                     self.fetchBodyGoalsData(responseArray: allData)
                 case .failure(let error):
-                    // Handle error
                     print("Error retrieving data: \(error.localizedDescription)")
                 }
             }
         }
     }
     
- 
-    
     private func setupInitialWeek() {
         let today = Date()
         let CalculateWeekDates = calculateWeekDates(for: today)
         currentWeekDates = CalculateWeekDates
         updateWeekLabel()
-        //
         selectCurrentDate()
-        //
     }
     
     
@@ -465,7 +455,7 @@ class PlanVc: UIViewController {
         let calendar = Calendar.current
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1){
-        // Find the index of today's date in currentWeekDates
+            // Find the index of today's date in currentWeekDates
             if let todayIndex = self.currentWeekDates.firstIndex(where: { calendar.isDate($0, inSameDayAs: today) }) {
                 let indexPath = IndexPath(item: todayIndex, section: 0)
                 
@@ -480,58 +470,64 @@ class PlanVc: UIViewController {
                 self.seldate = self.currentWeekDates[indexPath.item]
                 // Trigger API for current date
                 self.veryFirstLoading = 1
-//                     self.Api_To_GetAllRecipeByDate()
+                //                     self.Api_To_GetAllRecipeByDate()
             }
         }
     }
-
     
-        private func setupCollectionView() {
-            CalanderCollV.delegate = self
-            CalanderCollV.dataSource = self
-            CalanderCollV.register(UINib(nibName: "CalendarCell", bundle: nil), forCellWithReuseIdentifier: "CalendarCell")
-            
-            BreakFastCollV.delegate = self
-            BreakFastCollV.dataSource = self
-            BreakFastCollV.register(UINib(nibName: "PlanRecipeCollVCell", bundle: nil), forCellWithReuseIdentifier: "PlanRecipeCollVCell")
-            
-            LunchCollV.delegate = self
-            LunchCollV.dataSource = self
-            LunchCollV.register(UINib(nibName: "PlanRecipeCollVCell", bundle: nil), forCellWithReuseIdentifier: "PlanRecipeCollVCell")
-            
-            DinnerCollV.delegate = self
-            DinnerCollV.dataSource = self
-            DinnerCollV.register(UINib(nibName: "PlanRecipeCollVCell", bundle: nil), forCellWithReuseIdentifier: "PlanRecipeCollVCell")
-            
-            TeaTimeCollV.delegate = self
-            TeaTimeCollV.dataSource = self
-            TeaTimeCollV.register(UINib(nibName: "PlanRecipeCollVCell", bundle: nil), forCellWithReuseIdentifier: "PlanRecipeCollVCell")
-            
-            SnacksCollV.delegate = self
-            SnacksCollV.dataSource = self
-            SnacksCollV.register(UINib(nibName: "PlanRecipeCollVCell", bundle: nil), forCellWithReuseIdentifier: "PlanRecipeCollVCell")
-            
-            //
-            BreakFastDishCollV.delegate = self
-            BreakFastDishCollV.dataSource = self
-            BreakFastDishCollV.register(UINib(nibName: "DishCollVCell", bundle: nil), forCellWithReuseIdentifier: "DishCollVCell")
-            
-            LunchDishCollV.delegate = self
-            LunchDishCollV.dataSource = self
-            LunchDishCollV.register(UINib(nibName: "DishCollVCell", bundle: nil), forCellWithReuseIdentifier: "DishCollVCell")
-            
-            DinnerDishCollV.delegate = self
-            DinnerDishCollV.dataSource = self
-            DinnerDishCollV.register(UINib(nibName: "DishCollVCell", bundle: nil), forCellWithReuseIdentifier: "DishCollVCell")
-            
-            TeaTimeDishCollV.delegate = self
-            TeaTimeDishCollV.dataSource = self
-            TeaTimeDishCollV.register(UINib(nibName: "DishCollVCell", bundle: nil), forCellWithReuseIdentifier: "DishCollVCell")
-            
-            SnacksDishCollV.delegate = self
-            SnacksDishCollV.dataSource = self
-            SnacksDishCollV.register(UINib(nibName: "DishCollVCell", bundle: nil), forCellWithReuseIdentifier: "DishCollVCell")
-        }
+    private func setupCollectionView() {
+        CalanderCollV.delegate = self
+        CalanderCollV.dataSource = self
+        CalanderCollV.register(UINib(nibName: "CalendarCell", bundle: nil), forCellWithReuseIdentifier: "CalendarCell")
+        
+        BreakFastCollV.delegate = self
+        BreakFastCollV.dataSource = self
+        BreakFastCollV.register(UINib(nibName: "DinnerCollVCell", bundle: nil), forCellWithReuseIdentifier: "DinnerCollVCell")
+        
+        dessertCollV.delegate = self
+        dessertCollV.dataSource = self
+        dessertCollV.register(UINib(nibName: "DinnerCollVCell", bundle: nil), forCellWithReuseIdentifier: "DinnerCollVCell")
+        
+        LunchCollV.delegate = self
+        LunchCollV.dataSource = self
+        LunchCollV.register(UINib(nibName: "DinnerCollVCell", bundle: nil), forCellWithReuseIdentifier: "DinnerCollVCell")
+        
+        DinnerCollV.delegate = self
+        DinnerCollV.dataSource = self
+        DinnerCollV.register(UINib(nibName: "DinnerCollVCell", bundle: nil), forCellWithReuseIdentifier: "DinnerCollVCell")
+        
+        TeaTimeCollV.delegate = self
+        TeaTimeCollV.dataSource = self
+        TeaTimeCollV.register(UINib(nibName: "DinnerCollVCell", bundle: nil), forCellWithReuseIdentifier: "DinnerCollVCell")
+        
+        SnacksCollV.delegate = self
+        SnacksCollV.dataSource = self
+        SnacksCollV.register(UINib(nibName: "DinnerCollVCell", bundle: nil), forCellWithReuseIdentifier: "DinnerCollVCell")
+        
+        BreakFastDishCollV.delegate = self
+        BreakFastDishCollV.dataSource = self
+        BreakFastDishCollV.register(UINib(nibName: "DishCollVCell", bundle: nil), forCellWithReuseIdentifier: "DishCollVCell")
+        
+        dessertDishCollV.delegate = self
+        dessertDishCollV.dataSource = self
+        dessertDishCollV.register(UINib(nibName: "DishCollVCell", bundle: nil), forCellWithReuseIdentifier: "DishCollVCell")
+        
+        LunchDishCollV.delegate = self
+        LunchDishCollV.dataSource = self
+        LunchDishCollV.register(UINib(nibName: "DishCollVCell", bundle: nil), forCellWithReuseIdentifier: "DishCollVCell")
+        
+        DinnerDishCollV.delegate = self
+        DinnerDishCollV.dataSource = self
+        DinnerDishCollV.register(UINib(nibName: "DishCollVCell", bundle: nil), forCellWithReuseIdentifier: "DishCollVCell")
+        
+        TeaTimeDishCollV.delegate = self
+        TeaTimeDishCollV.dataSource = self
+        TeaTimeDishCollV.register(UINib(nibName: "DishCollVCell", bundle: nil), forCellWithReuseIdentifier: "DishCollVCell")
+        
+        SnacksDishCollV.delegate = self
+        SnacksDishCollV.dataSource = self
+        SnacksDishCollV.register(UINib(nibName: "DishCollVCell", bundle: nil), forCellWithReuseIdentifier: "DishCollVCell")
+    }
     
     // for popups
     private func setupTableView() {
@@ -571,22 +567,19 @@ class PlanVc: UIViewController {
         // Update the height constraint with the tableView's contentSize height
         AddAnotherMealTblVH.constant = AddAnotherMealTblV.contentSize.height
     }
-    //
     
-        func setupCurrentWeek() {
-            let today = Date()
-            currentWeekDates = calculateWeekDates(for: today)
-            updateWeekLabel()
-            CalanderCollV.reloadData()
-        }
-          
- 
+    func setupCurrentWeek() {
+        let today = Date()
+        currentWeekDates = calculateWeekDates(for: today)
+        updateWeekLabel()
+        CalanderCollV.reloadData()
+    }
+    
     @IBAction func FavBtn(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "RestScreens", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "CookBooksVC") as! CookBooksVC
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
     
     @IBAction func CartBtn(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Basket", bundle: nil)
@@ -595,15 +588,12 @@ class PlanVc: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-     
-    
     @IBAction func ProfileBtn(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "ProfileVC") as! ProfileVC
         vc.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(vc, animated: true)
     }
-  
     
     @IBAction func CalculateBMRBtn(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
@@ -613,8 +603,6 @@ class PlanVc: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    
-
     @IBAction func CalanderDropBtn(_ sender: UIButton) {
         
         let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
@@ -644,46 +632,46 @@ class PlanVc: UIViewController {
         let today = Date()
         let VfirstDate = currentWeekDates.first ?? Date()
         guard VfirstDate >= today else{
-                 return // Exit if the previous week's start date is earlier than today
-             }
+            return // Exit if the previous week's start date is earlier than today
+        }
         
         if let firstDate = currentWeekDates.first {
-                currentWeekDates = calculateWeekDates(for: calendar.date(byAdding: .day, value: -7, to: firstDate)!)
-                updateWeekLabel()
+            currentWeekDates = calculateWeekDates(for: calendar.date(byAdding: .day, value: -7, to: firstDate)!)
+            updateWeekLabel()
             for i in 0..<currentWeekDates.count {
                 let previousIndex = IndexPath(item: i, section: 0)
                 let previousCell = CalanderCollV.cellForItem(at: previousIndex) as? CalendarCell
                 previousCell?.updateSelection(isSelected: false)
             }
             CalanderCollV.reloadData()
-            }
+        }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
             self.toCheckLastSelDate()
         }
-       }
-
-       @IBAction func nextWeekTapped(_ sender: UIButton) {
-           if let lastDate = currentWeekDates.last {
-                 currentWeekDates = calculateWeekDates(for: calendar.date(byAdding: .day, value: 7, to: lastDate)!)
-                 updateWeekLabel()
-               for i in 0..<currentWeekDates.count {
-                   let previousIndex = IndexPath(item: i, section: 0)
-                   let previousCell = CalanderCollV.cellForItem(at: previousIndex) as? CalendarCell
-                   previousCell?.updateSelection(isSelected: false)
-               }
-               CalanderCollV.reloadData()
-             }
-           
-           DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
-               self.toCheckLastSelDate()
-           }
-       }
+    }
+    
+    @IBAction func nextWeekTapped(_ sender: UIButton) {
+        if let lastDate = currentWeekDates.last {
+            currentWeekDates = calculateWeekDates(for: calendar.date(byAdding: .day, value: 7, to: lastDate)!)
+            updateWeekLabel()
+            for i in 0..<currentWeekDates.count {
+                let previousIndex = IndexPath(item: i, section: 0)
+                let previousCell = CalanderCollV.cellForItem(at: previousIndex) as? CalendarCell
+                previousCell?.updateSelection(isSelected: false)
+            }
+            CalanderCollV.reloadData()
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+            self.toCheckLastSelDate()
+        }
+    }
     
     func toCheckLastSelDate() {
-       
+        
         let SelDate = seldate
-         
+        
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         formatter.timeZone = TimeZone.current // Use the local time zone
@@ -703,8 +691,8 @@ class PlanVc: UIViewController {
         let TodayreconvertedDate = formatter1.date(from: dateString1) ?? Date()
         
         guard reconvertedDate! >= TodayreconvertedDate else{
-                 return // Exit if the previous week's start date is earlier than today
-             }
+            return // Exit if the previous week's start date is earlier than today
+        }
         
         // Deselect the previously selected item, if any
         if let previousIndex = selectedIndex {
@@ -716,7 +704,7 @@ class PlanVc: UIViewController {
             let indexPath = IndexPath(item: index, section: 0)
             
             // Select the current item
- 
+            
             let currentCell = CalanderCollV.cellForItem(at: indexPath) as? CalendarCell
             currentCell?.updateSelection(isSelected: true)
             
@@ -727,10 +715,9 @@ class PlanVc: UIViewController {
         }
     }
     
-    
     @IBAction func AddnotherMealBtn(_ sender: UIButton) {
         StateMangerModelClass.shared.SearchClickFromPopup = true
-
+        
         if let tabBar = tabBarController?.tabBar,
            let items = tabBar.items,
            items.count > 1 {
@@ -772,9 +759,8 @@ class PlanVc: UIViewController {
     }
     
     @IBAction func ConfirmBtn(_ sender: UIButton) {
-
+        
     }
-    
     
     // for popUps btns
     // for popups
@@ -784,10 +770,10 @@ class PlanVc: UIViewController {
             return
         }
         self.ChoosedaysPopupV.isHidden = true
-      //  if isAddAnotherMealPopupVClicked == false{
-            self.ChooseMealTypePopupV.isHidden = false
-      //  }
-   
+        //  if isAddAnotherMealPopupVClicked == false{
+        self.ChooseMealTypePopupV.isHidden = false
+        //  }
+        
     }
     
     @IBAction func ChooseMealDoneBtn(_ sender: UIButton) {
@@ -796,34 +782,34 @@ class PlanVc: UIViewController {
             return
         }
         self.ChooseMealTypePopupV.isHidden = true
-         
-                let dateformatter = DateFormatter()
         
-                var SerArray = [[String: String]]()
-                for i in 0..<self.currentWeekDates.count {
-                    let date = self.currentWeekDates[i]
-                    dateformatter.dateFormat = "yyyy-MM-dd"
-                    let Sdate = dateformatter.string(from: date)
+        let dateformatter = DateFormatter()
         
-                    dateformatter.dateFormat = "EEEE" // Full day name, e.g., "Monday"
-                    let dayOfWeek = dateformatter.string(from: date)
+        var SerArray = [[String: String]]()
+        for i in 0..<self.currentWeekDates.count {
+            let date = self.currentWeekDates[i]
+            dateformatter.dateFormat = "yyyy-MM-dd"
+            let Sdate = dateformatter.string(from: date)
+            
+            dateformatter.dateFormat = "EEEE" // Full day name, e.g., "Monday"
+            let dayOfWeek = dateformatter.string(from: date)
+            
+            let matchingDays = self.ChooseDayData.filter { $0.isSelected && $0.Name == dayOfWeek }
+            if !matchingDays.isEmpty {
+                print("\(dayOfWeek), \(Sdate) is selected!")
+                
+                let dictionary1: [String: String] = ["date": Sdate, "day": dayOfWeek]
+                SerArray.append(dictionary1)
+            }
+        }
         
-                    let matchingDays = self.ChooseDayData.filter { $0.isSelected && $0.Name == dayOfWeek }
-                    if !matchingDays.isEmpty {
-                        print("\(dayOfWeek), \(Sdate) is selected!")
-        
-                        let dictionary1: [String: String] = ["date": Sdate, "day": dayOfWeek]
-                        SerArray.append(dictionary1)
-                    }
-                }
-        
-                print(SerArray)
+        print(SerArray)
         
         planService.shared.Api_For_AddToPlan(uri: self.uri, type: self.mealType, SerArray: SerArray, vc: self) { result in
-        
+            
             switch result {
             case .success(_):
-  
+                
                 for i in 0..<self.ChooseDayData.count {
                     self.ChooseDayData[i].isSelected = false
                 }
@@ -840,18 +826,18 @@ class PlanVc: UIViewController {
                 
                 let dateformatter = DateFormatter()
                 dateformatter.dateFormat = "yyyy-MM-dd"
-        let Sdate = dateformatter.string(from: self.seldate)
-        planService.shared.Api_To_GetAllRecipeByDate(Sdate: Sdate,vc: self) { result in
-        
-                switch result {
-                case .success(let allData):
-                    self.fetchPlanDataByDate(list: allData)
-                case .failure(let error):
-                    // Handle error
-                    self.ShowNoDataFoundonCollV1()
-                    print("Error retrieving data: \(error.localizedDescription)")
+                let Sdate = dateformatter.string(from: self.seldate)
+                planService.shared.Api_To_GetAllRecipeByDate(Sdate: Sdate,vc: self) { result in
+                    
+                    switch result {
+                    case .success(let allData):
+                        self.fetchPlanDataByDate(list: allData)
+                    case .failure(let error):
+                        // Handle error
+                        self.ShowNoDataFoundonCollV1()
+                        print("Error retrieving data: \(error.localizedDescription)")
+                    }
                 }
-        }
                 
             case .failure(let error):
                 // Handle error
@@ -861,50 +847,50 @@ class PlanVc: UIViewController {
     }
     
     @IBAction func PoppUpreviousWeekTapped(_ sender: UIButton) {
-
+        
         let today = Date()
         let VfirstDate = currentWeekDates.first ?? Date()
         guard VfirstDate >= today else{
-                 return // Exit if the previous week's start date is earlier than today
-             }
+            return // Exit if the previous week's start date is earlier than today
+        }
         
         if let firstDate = currentWeekDates.first {
-                currentWeekDates = calculateWeekDates(for: calendar.date(byAdding: .day, value: -7, to: firstDate)!)
-                updateWeekLabel()
+            currentWeekDates = calculateWeekDates(for: calendar.date(byAdding: .day, value: -7, to: firstDate)!)
+            updateWeekLabel()
             for i in 0..<currentWeekDates.count {
                 let previousIndex = IndexPath(item: i, section: 0)
                 let previousCell = CalanderCollV.cellForItem(at: previousIndex) as? CalendarCell
                 previousCell?.updateSelection(isSelected: false)
             }
             CalanderCollV.reloadData()
+        }
+    }
+    
+    @IBAction func PopUpnextWeekTapped(_ sender: UIButton) {
+        
+        if let lastDate = currentWeekDates.last {
+            currentWeekDates = calculateWeekDates(for: calendar.date(byAdding: .day, value: 7, to: lastDate)!)
+            updateWeekLabel()
+            for i in 0..<currentWeekDates.count {
+                let previousIndex = IndexPath(item: i, section: 0)
+                let previousCell = CalanderCollV.cellForItem(at: previousIndex) as? CalendarCell
+                previousCell?.updateSelection(isSelected: false)
             }
-       }
-
-       @IBAction func PopUpnextWeekTapped(_ sender: UIButton) {
-
-           if let lastDate = currentWeekDates.last {
-                 currentWeekDates = calculateWeekDates(for: calendar.date(byAdding: .day, value: 7, to: lastDate)!)
-                 updateWeekLabel()
-               for i in 0..<currentWeekDates.count {
-                   let previousIndex = IndexPath(item: i, section: 0)
-                   let previousCell = CalanderCollV.cellForItem(at: previousIndex) as? CalendarCell
-                   previousCell?.updateSelection(isSelected: false)
-               }
-               CalanderCollV.reloadData()
-             }
-       }
+            CalanderCollV.reloadData()
+        }
+    }
     
     @IBAction func AddToPlanBtn(_ sender: UIButton) {
-
+        
         let allDeselected = ArrData.allSatisfy { !$0.isSelected }
-
+        
         if allDeselected {
             print("All items are deselected")
             AlertControllerOnr(title: "", message: "Select at least one meal type.")
         } else {
             print("Some items are selected")
             self.isAddAnotherMealPopupVClicked = true
-   
+            
             var SelMealRoutineArr = [String]()
             
             for i in 0..<ArrData.count {
@@ -966,7 +952,7 @@ class PlanVc: UIViewController {
             }
         }
     }
-
+    
 }
 
 extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -975,6 +961,8 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             return currentWeekDates.count
         }else if collectionView == BreakFastCollV{
             return self.AllRecipeSelItem.recipes?.breakfast?.count ?? 0//BreakfastData.count
+        }else if collectionView == dessertCollV{
+            return self.AllRecipeSelItem.recipes?.Dessert?.count ?? 0//BreakfastData.count
         }else if collectionView == LunchCollV{
             return self.AllRecipeSelItem.recipes?.lunch?.count ?? 0//LunchData.count
         }else if collectionView == DinnerCollV{
@@ -985,6 +973,8 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             return self.AllRecipeSelItem.recipes?.Teatime?.count ?? 0
         }else if collectionView == BreakFastDishCollV{
             return self.AllDataList.breakfast?.count ?? 0
+        }else if collectionView == dessertDishCollV{
+            return self.AllDataList.dessert?.count ?? 0
         }else if collectionView == LunchDishCollV{
             return self.AllDataList.lunch?.count ?? 0
         }else if collectionView == DinnerDishCollV{
@@ -994,348 +984,436 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         }else{
             return self.AllDataList.snacks?.count ?? 0
         }
-       }
-       
-       func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            
-           if collectionView == CalanderCollV{
-               let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CalendarCell", for: indexPath) as! CalendarCell
-               let date = currentWeekDates[indexPath.item]
-               cell.configure(with: date)
-               return cell
-           }else if collectionView == BreakFastCollV{
-               let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PlanRecipeCollVCell", for: indexPath) as! PlanRecipeCollVCell
-              cell.NameLbl.text =  self.AllRecipeSelItem.recipes?.breakfast?[indexPath.item].recipe?.label ?? ""
-           //    cell.PriceLbl.text = ""
-               cell.RAtingLbl.text = "\(self.AllRecipeSelItem.recipes?.breakfast?[indexPath.item].review ?? 0)(\(self.AllRecipeSelItem.recipes?.breakfast?[indexPath.item].review_number ?? 0))"
-               
-               let img = self.AllRecipeSelItem.recipes?.breakfast?[indexPath.item].recipe?.images?.small?.url ?? ""
-               let ImgUrl = URL(string: img)
-               cell.ImgV.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-               cell.ImgV.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
-               
-               cell.TimeLbl.text = "\(self.AllRecipeSelItem.recipes?.breakfast?[indexPath.item].recipe?.totalTime ?? 0) min"
-               
-               let islike = self.AllRecipeSelItem.recipes?.breakfast?[indexPath.item].isLike
-               
-               if islike == 1{
-                   cell.FavBtn.setImage(UIImage(named: "Fav"), for: .normal)
-               }else{
-                   cell.FavBtn.setImage(UIImage(named: "UnFav"), for: .normal)
-               }
- 
-               cell.AddToPlanBtn.tag = indexPath.item
-               cell.AddToPlanBtn.addTarget(self, action: #selector(BreakAddtoPlanBtnClick(_:)), for: .touchUpInside)
-               
-               cell.FavBtn.tag = indexPath.item
-               cell.FavBtn.addTarget(self, action: #selector(FavBreakfastBtnClick(_:)), for: .touchUpInside)
-               
-               cell.CartBtn.tag = indexPath.item
-               cell.CartBtn.addTarget(self, action: #selector(BreakAddtoBasketBtnClick(_:)), for: .touchUpInside)
-               
-               
-               
-               return cell
-           }else if collectionView == LunchCollV{
-               let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PlanRecipeCollVCell", for: indexPath) as! PlanRecipeCollVCell
-               cell.NameLbl.text =  self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].recipe?.label ?? ""
-          //     cell.PriceLbl.text = ""
-               cell.RAtingLbl.text = "\(self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].review ?? 0)(\(self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].review_number ?? 0))"
-               
-               let img = self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].recipe?.images?.small?.url ?? ""
-               let ImgUrl = URL(string: img)
-               cell.ImgV.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-               cell.ImgV.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
-               
-               cell.TimeLbl.text = "\(self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].recipe?.totalTime ?? 0) min"
-               
-               cell.AddToPlanBtn.tag = indexPath.item
-               cell.AddToPlanBtn.addTarget(self, action: #selector(LunchAddtoPlanBtnClick(_:)), for: .touchUpInside)
-              
-               let islike = self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].isLike
-               
-               if islike == 1{
-                   cell.FavBtn.setImage(UIImage(named: "Fav"), for: .normal)
-               }else{
-                   cell.FavBtn.setImage(UIImage(named: "UnFav"), for: .normal)
-               }
-               
-              
-               cell.FavBtn.tag = indexPath.item
-               cell.FavBtn.addTarget(self, action: #selector(FavLunchBtnClick(_:)), for: .touchUpInside)
-               
-               cell.CartBtn.tag = indexPath.item
-               cell.CartBtn.addTarget(self, action: #selector(LunchAddtoBasketBtnClick(_:)), for: .touchUpInside)
-               
-               return cell
-           }else if collectionView == DinnerCollV{
-               let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PlanRecipeCollVCell", for: indexPath) as! PlanRecipeCollVCell
-               cell.NameLbl.text =  self.AllRecipeSelItem.recipes?.dinner?[indexPath.item].recipe?.label ?? ""
-             //  cell.PriceLbl.text = ""
-               cell.RAtingLbl.text = "\(self.AllRecipeSelItem.recipes?.dinner?[indexPath.item].review ?? 0)(\(self.AllRecipeSelItem.recipes?.dinner?[indexPath.item].review_number ?? 0))"
-               
-               let img = self.AllRecipeSelItem.recipes?.dinner?[indexPath.item].recipe?.images?.small?.url ?? ""
-               let ImgUrl = URL(string: img)
-               cell.ImgV.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-               cell.ImgV.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
-               
-               cell.TimeLbl.text = "\(self.AllRecipeSelItem.recipes?.dinner?[indexPath.item].recipe?.totalTime ?? 0) min"
-               
-               let islike = self.AllRecipeSelItem.recipes?.dinner?[indexPath.item].isLike
-               
-               if islike == 1{
-                   cell.FavBtn.setImage(UIImage(named: "Fav"), for: .normal)
-               }else{
-                   cell.FavBtn.setImage(UIImage(named: "UnFav"), for: .normal)
-               }
-               
-               cell.AddToPlanBtn.tag = indexPath.item
-               cell.AddToPlanBtn.addTarget(self, action: #selector(DinnerAddtoPlanBtnClick(_:)), for: .touchUpInside)
-             
-               cell.FavBtn.tag = indexPath.item
-               cell.FavBtn.addTarget(self, action: #selector(FavDinnerBtnClick(_:)), for: .touchUpInside)
-               
-               cell.CartBtn.tag = indexPath.item
-               cell.CartBtn.addTarget(self, action: #selector(DinnerAddtoBasketBtnClick(_:)), for: .touchUpInside)
-               
-               return cell
-           }else if collectionView == SnacksCollV{
-               let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PlanRecipeCollVCell", for: indexPath) as! PlanRecipeCollVCell
-               cell.NameLbl.text =  self.AllRecipeSelItem.recipes?.Snack?[indexPath.item].recipe?.label ?? ""
-          //     cell.PriceLbl.text = ""
-               cell.RAtingLbl.text = "\(self.AllRecipeSelItem.recipes?.Snack?[indexPath.item].review ?? 0)(\(self.AllRecipeSelItem.recipes?.Snack?[indexPath.item].review_number ?? 0))"
-               
-               let img = self.AllRecipeSelItem.recipes?.Snack?[indexPath.item].recipe?.images?.small?.url ?? ""
-               let ImgUrl = URL(string: img)
-               cell.ImgV.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-               cell.ImgV.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
-               
-               cell.TimeLbl.text = "\(self.AllRecipeSelItem.recipes?.Snack?[indexPath.item].recipe?.totalTime ?? 0) min"
-               
-               let islike = self.AllRecipeSelItem.recipes?.Snack?[indexPath.item].isLike
-               
-               if islike == 1{
-                   cell.FavBtn.setImage(UIImage(named: "Fav"), for: .normal)
-               }else{
-                   cell.FavBtn.setImage(UIImage(named: "UnFav"), for: .normal)
-               }
-               
-               cell.AddToPlanBtn.tag = indexPath.item
-               cell.AddToPlanBtn.addTarget(self, action: #selector(SnacksAddtoPlanBtnClick(_:)), for: .touchUpInside)
-             
-               cell.FavBtn.tag = indexPath.item
-               cell.FavBtn.addTarget(self, action: #selector(FavSnacksBtnClick(_:)), for: .touchUpInside)
-               
-               cell.CartBtn.tag = indexPath.item
-               cell.CartBtn.addTarget(self, action: #selector(SnacksAddtoBasketBtnClick(_:)), for: .touchUpInside)
-               
-               return cell
-           }else if collectionView == TeaTimeCollV{
-               let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PlanRecipeCollVCell", for: indexPath) as! PlanRecipeCollVCell
-               cell.NameLbl.text =  self.AllRecipeSelItem.recipes?.Teatime?[indexPath.item].recipe?.label ?? ""
-               
-               cell.TimeLbl.text = "\(self.AllRecipeSelItem.recipes?.Teatime?[indexPath.item].recipe?.totalTime ?? 0) min"
-        //       cell.PriceLbl.text = ""
-               cell.RAtingLbl.text = "\(self.AllRecipeSelItem.recipes?.Teatime?[indexPath.item].review ?? 0)(\(self.AllRecipeSelItem.recipes?.Teatime?[indexPath.item].review_number ?? 0))"
-               
-               let img = self.AllRecipeSelItem.recipes?.Teatime?[indexPath.item].recipe?.images?.small?.url ?? ""
-               let ImgUrl = URL(string: img)
-               cell.ImgV.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-               cell.ImgV.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
-               
-               let islike = self.AllRecipeSelItem.recipes?.Teatime?[indexPath.item].isLike
-               
-               if islike == 1{
-                   cell.FavBtn.setImage(UIImage(named: "Fav"), for: .normal)
-               }else{
-                   cell.FavBtn.setImage(UIImage(named: "UnFav"), for: .normal)
-               }
-               
-               cell.AddToPlanBtn.tag = indexPath.item
-               cell.AddToPlanBtn.addTarget(self, action: #selector(TeaTimeAddtoPlanBtnClick(_:)), for: .touchUpInside)
-             
-               cell.FavBtn.tag = indexPath.item
-               cell.FavBtn.addTarget(self, action: #selector(FavTeaTimeBtnClick(_:)), for: .touchUpInside)
-               
-               cell.CartBtn.tag = indexPath.item
-               cell.CartBtn.addTarget(self, action: #selector(TeaTimeAddtoBasketBtnClick(_:)), for: .touchUpInside)
-               
-               return cell
-           }else if collectionView == BreakFastDishCollV{
-               let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DishCollVCell", for: indexPath) as! DishCollVCell
-               
-               cell.MealNameLbl.text = self.AllDataList.breakfast?[indexPath.item].recipe?.label ?? ""
-               cell.TotalTimeLbl.text = "\(self.AllDataList.breakfast?[indexPath.item].recipe?.totalTime ?? 0) min"
-               
-               cell.PrepTimelbl.text = "0 min"//self.AllDataList.breakfast[indexPath.item].
-               cell.Calorieslbl.text = "\(Int(self.AllDataList.breakfast?[indexPath.item].recipe?.calories ?? 0))"
-               
-               let Fat = self.AllDataList.breakfast?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "FAT"})
-               cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))"
-
-               let Protine = self.AllDataList.breakfast?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "PROCNT"})
-               cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))"
-                          
-               let carbs = self.AllDataList.breakfast?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
-               cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))"
-
- 
-               cell.ServCountLbl.text = "\(self.AllDataList.breakfast?[indexPath.item].servings ?? 0) Servings"
-                
-               let img = self.AllDataList.breakfast?[indexPath.item].recipe?.images?.small?.url ?? ""
-               cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-               cell.MealIMg.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
-             
-              
- 
-               cell.MinusBtn.tag = indexPath.item
-               cell.MinusBtn.addTarget(self, action: #selector(BreakDishServecountMinusBtnClick(_:)), for: .touchUpInside)
-               
-               cell.PlusBtn.tag = indexPath.item
-               cell.PlusBtn.addTarget(self, action: #selector(BreakDishServecountPlusBtnClick(_:)), for: .touchUpInside)
-               
-               cell.SwapBtn.tag = indexPath.item
-               cell.SwapBtn.addTarget(self, action: #selector(BreakFastSwipBtnClicked(_:)), for: .touchUpInside)
-               return cell
-           }else if collectionView == LunchDishCollV{
-               let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DishCollVCell", for: indexPath) as! DishCollVCell
-               cell.MealNameLbl.text = self.AllDataList.lunch?[indexPath.item].recipe?.label ?? ""
-               cell.TotalTimeLbl.text = "\(self.AllDataList.lunch?[indexPath.item].recipe?.totalTime ?? 0) min"
-               
-               cell.PrepTimelbl.text = "0 min"//self.AllDataList.breakfast[indexPath.item].
-               cell.Calorieslbl.text = "\(Int(self.AllDataList.lunch?[indexPath.item].recipe?.calories ?? 0))"
-               
-               let Fat = self.AllDataList.lunch?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "FAT"})
-               cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))"
-
-               let Protine = self.AllDataList.lunch?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "PROCNT"})
-               cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))"
-                          
-               let carbs = self.AllDataList.lunch?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
-               cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))"
-
- 
-               cell.ServCountLbl.text = "\(self.AllDataList.lunch?[indexPath.item].servings ?? 0) Servings"
-                
-               let img = self.AllDataList.lunch?[indexPath.item].recipe?.images?.small?.url ?? ""
-               cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-               cell.MealIMg.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
-               
-               cell.MinusBtn.tag = indexPath.item
-               cell.MinusBtn.addTarget(self, action: #selector(LunchDishServecountMinusBtnClick(_:)), for: .touchUpInside)
-               
-               cell.PlusBtn.tag = indexPath.item
-               cell.PlusBtn.addTarget(self, action: #selector(LunchDishServecountPlusBtnClick(_:)), for: .touchUpInside)
-               
-               cell.SwapBtn.tag = indexPath.item
-               cell.SwapBtn.addTarget(self, action: #selector(LunchSwipBtnClicked(_:)), for: .touchUpInside)
-               return cell
-           }else if collectionView == DinnerDishCollV{
-               let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DishCollVCell", for: indexPath) as! DishCollVCell
-               
-               cell.MealNameLbl.text = self.AllDataList.dinner?[indexPath.item].recipe?.label ?? ""
-               cell.TotalTimeLbl.text = "\(self.AllDataList.dinner?[indexPath.item].recipe?.totalTime ?? 0) min"
-               
-               cell.PrepTimelbl.text = "0 min"//self.AllDataList.breakfast[indexPath.item].
-               cell.Calorieslbl.text = "\(Int(self.AllDataList.dinner?[indexPath.item].recipe?.calories ?? 0))"
-               
-               let Fat = self.AllDataList.dinner?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "FAT"})
-               cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))"
-
-               let Protine = self.AllDataList.dinner?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "PROCNT"})
-               cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))"
-                          
-               let carbs = self.AllDataList.dinner?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
-               cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))"
-
- 
-               cell.ServCountLbl.text = "\(self.AllDataList.dinner?[indexPath.item].servings ?? 0) Servings"
-                
-               let img = self.AllDataList.dinner?[indexPath.item].recipe?.images?.small?.url ?? ""
-               cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-               cell.MealIMg.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
-               
-               cell.MinusBtn.tag = indexPath.item
-               cell.MinusBtn.addTarget(self, action: #selector(DinnerDishServecountMinusBtnClick(_:)), for: .touchUpInside)
-               
-               cell.PlusBtn.tag = indexPath.item
-               cell.PlusBtn.addTarget(self, action: #selector(DinnerDishServecountPlusBtnClick(_:)), for: .touchUpInside)
-               
-               cell.SwapBtn.tag = indexPath.item
-               cell.SwapBtn.addTarget(self, action: #selector(DinnerSwipBtnClicked(_:)), for: .touchUpInside)
-               return cell
-           }else if collectionView == TeaTimeDishCollV{
-               let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DishCollVCell", for: indexPath) as! DishCollVCell
-               
-               cell.MealNameLbl.text = self.AllDataList.teatime?[indexPath.item].recipe?.label ?? ""
-               cell.TotalTimeLbl.text = "\(self.AllDataList.teatime?[indexPath.item].recipe?.totalTime ?? 0) min"
-               
-               cell.PrepTimelbl.text = "0 min"//self.AllDataList.breakfast[indexPath.item].
-               cell.Calorieslbl.text = "\(Int(self.AllDataList.teatime?[indexPath.item].recipe?.calories ?? 0))"
-               
-               let Fat = self.AllDataList.teatime?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "FAT"})
-               cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))"
-
-               let Protine = self.AllDataList.teatime?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "PROCNT"})
-               cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))"
-                          
-               let carbs = self.AllDataList.teatime?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
-               cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))"
-
- 
-               cell.ServCountLbl.text = "\(self.AllDataList.teatime?[indexPath.item].servings ?? 0) Servings"
-                
-               let img = self.AllDataList.teatime?[indexPath.item].recipe?.images?.small?.url ?? ""
-               cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-               cell.MealIMg.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
-               
-               cell.MinusBtn.tag = indexPath.item
-               cell.MinusBtn.addTarget(self, action: #selector(TeaTimeDishServecountMinusBtnClick(_:)), for: .touchUpInside)
-               
-               cell.PlusBtn.tag = indexPath.item
-               cell.PlusBtn.addTarget(self, action: #selector(TeaTimeDishServecountPlusBtnClick(_:)), for: .touchUpInside)
-               
-               cell.SwapBtn.tag = indexPath.item
-               cell.SwapBtn.addTarget(self, action: #selector(TeatimeSwipBtnClicked(_:)), for: .touchUpInside)
-               return cell
-           }else{
-               let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DishCollVCell", for: indexPath) as! DishCollVCell
-               
-               cell.MealNameLbl.text = self.AllDataList.snacks?[indexPath.item].recipe?.label ?? ""
-               cell.TotalTimeLbl.text = "\(self.AllDataList.snacks?[indexPath.item].recipe?.totalTime ?? 0) min"
-               
-               cell.PrepTimelbl.text = "0 min"//self.AllDataList.breakfast[indexPath.item].
-               cell.Calorieslbl.text = "\(Int(self.AllDataList.snacks?[indexPath.item].recipe?.calories ?? 0))"
-               
-               let Fat = self.AllDataList.snacks?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "FAT"})
-               cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))"
-
-               let Protine = self.AllDataList.snacks?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "PROCNT"})
-               cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))"
-                          
-               let carbs = self.AllDataList.snacks?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
-               cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))"
-
- 
-               cell.ServCountLbl.text = "\(self.AllDataList.snacks?[indexPath.item].servings ?? 0) Servings"
-                
-               let img = self.AllDataList.snacks?[indexPath.item].recipe?.images?.small?.url ?? ""
-               cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-               cell.MealIMg.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
-               
-               cell.MinusBtn.tag = indexPath.item
-               cell.MinusBtn.addTarget(self, action: #selector(SnacksDishServecountMinusBtnClick(_:)), for: .touchUpInside)
-               
-               cell.PlusBtn.tag = indexPath.item
-               cell.PlusBtn.addTarget(self, action: #selector(SnacksDishServecountPlusBtnClick(_:)), for: .touchUpInside)
-               
-               cell.SwapBtn.tag = indexPath.item
-               cell.SwapBtn.addTarget(self, action: #selector(SnacksSwipBtnClicked(_:)), for: .touchUpInside)
-               return cell
-           }
-       }
+    }
     
-    //
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        if collectionView == CalanderCollV{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CalendarCell", for: indexPath) as! CalendarCell
+            let date = currentWeekDates[indexPath.item]
+            cell.configure(with: date)
+            return cell
+        }else if collectionView == BreakFastCollV{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DinnerCollVCell", for: indexPath) as! DinnerCollVCell
+            cell.NameLbl.text =  self.AllRecipeSelItem.recipes?.breakfast?[indexPath.item].recipe?.label ?? ""
+            //    cell.PriceLbl.text = ""
+            //               cell.RAtingLbl.text = "\(self.AllRecipeSelItem.recipes?.breakfast?[indexPath.item].review ?? 0)(\(self.AllRecipeSelItem.recipes?.breakfast?[indexPath.item].review_number ?? 0))"
+            let review = self.AllRecipeSelItem.recipes?.breakfast?[indexPath.item].review ?? 0
+            
+            let roundedReview = Double(round(10 * review) / 10.0)
+            cell.ratingView.rating = roundedReview
+            
+            let img = self.AllRecipeSelItem.recipes?.breakfast?[indexPath.item].recipe?.images?.small?.url ?? ""
+            let ImgUrl = URL(string: img)
+            cell.ImgV.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
+            cell.ImgV.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
+            
+            cell.TimeLbl.text = "\(self.AllRecipeSelItem.recipes?.breakfast?[indexPath.item].recipe?.totalTime ?? 0) min"
+            
+            let islike = self.AllRecipeSelItem.recipes?.breakfast?[indexPath.item].isLike
+            
+            if islike == 1{
+                cell.FavBtn.setImage(UIImage(named: "Fav"), for: .normal)
+            }else{
+                cell.FavBtn.setImage(UIImage(named: "UnFav"), for: .normal)
+            }
+            
+            cell.AddToPlanBtn.tag = indexPath.item
+            cell.AddToPlanBtn.addTarget(self, action: #selector(BreakAddtoPlanBtnClick(_:)), for: .touchUpInside)
+            
+            cell.FavBtn.tag = indexPath.item
+            cell.FavBtn.addTarget(self, action: #selector(FavBreakfastBtnClick(_:)), for: .touchUpInside)
+            
+            cell.CartBtn.tag = indexPath.item
+            cell.CartBtn.addTarget(self, action: #selector(BreakAddtoBasketBtnClick(_:)), for: .touchUpInside)
+            
+            return cell
+        }else if collectionView == LunchCollV{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DinnerCollVCell", for: indexPath) as! DinnerCollVCell
+            cell.NameLbl.text =  self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].recipe?.label ?? ""
+            //     cell.PriceLbl.text = ""
+            //               cell.RAtingLbl.text = "\(self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].review ?? 0)(\(self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].review_number ?? 0))"
+            
+            let review = self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].review ?? 0
+            
+            let roundedReview = Double(round(10 * review) / 10.0)
+            cell.ratingView.rating = roundedReview
+            
+            let img = self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].recipe?.images?.small?.url ?? ""
+            let ImgUrl = URL(string: img)
+            cell.ImgV.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
+            cell.ImgV.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
+            
+            cell.TimeLbl.text = "\(self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].recipe?.totalTime ?? 0) min"
+            
+            cell.AddToPlanBtn.tag = indexPath.item
+            cell.AddToPlanBtn.addTarget(self, action: #selector(LunchAddtoPlanBtnClick(_:)), for: .touchUpInside)
+            
+            let islike = self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].isLike
+            
+            if islike == 1{
+                cell.FavBtn.setImage(UIImage(named: "Fav"), for: .normal)
+            }else{
+                cell.FavBtn.setImage(UIImage(named: "UnFav"), for: .normal)
+            }
+            
+            cell.FavBtn.tag = indexPath.item
+            cell.FavBtn.addTarget(self, action: #selector(FavLunchBtnClick(_:)), for: .touchUpInside)
+            
+            cell.CartBtn.tag = indexPath.item
+            cell.CartBtn.addTarget(self, action: #selector(LunchAddtoBasketBtnClick(_:)), for: .touchUpInside)
+            
+            return cell
+        }else if collectionView == dessertCollV{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DinnerCollVCell", for: indexPath) as! DinnerCollVCell
+            cell.NameLbl.text =  self.AllRecipeSelItem.recipes?.Dessert?[indexPath.item].recipe?.label ?? ""
+            //     cell.PriceLbl.text = ""
+            //               cell.RAtingLbl.text = "\(self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].review ?? 0)(\(self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].review_number ?? 0))"
+            
+            let review = self.AllRecipeSelItem.recipes?.Dessert?[indexPath.item].review ?? 0
+            
+            let roundedReview = Double(round(10 * review) / 10.0)
+            cell.ratingView.rating = roundedReview
+            
+            let img = self.AllRecipeSelItem.recipes?.Dessert?[indexPath.item].recipe?.images?.small?.url ?? ""
+            let ImgUrl = URL(string: img)
+            cell.ImgV.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
+            cell.ImgV.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
+            
+            cell.TimeLbl.text = "\(self.AllRecipeSelItem.recipes?.Dessert?[indexPath.item].recipe?.totalTime ?? 0) min"
+            
+            cell.AddToPlanBtn.tag = indexPath.item
+            cell.AddToPlanBtn.addTarget(self, action: #selector(DessertAddtoPlanBtnClick(_:)), for: .touchUpInside)
+            
+            let islike = self.AllRecipeSelItem.recipes?.Dessert?[indexPath.item].isLike
+            
+            if islike == 1{
+                cell.FavBtn.setImage(UIImage(named: "Fav"), for: .normal)
+            }else{
+                cell.FavBtn.setImage(UIImage(named: "UnFav"), for: .normal)
+            }
+            
+            cell.FavBtn.tag = indexPath.item
+            cell.FavBtn.addTarget(self, action: #selector(FavDessertBtnClick(_:)), for: .touchUpInside)
+            
+            cell.CartBtn.tag = indexPath.item
+            cell.CartBtn.addTarget(self, action: #selector(DessertAddtoBasketBtnClick(_:)), for: .touchUpInside)
+            
+            return cell
+        }else if collectionView == DinnerCollV{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DinnerCollVCell", for: indexPath) as! DinnerCollVCell
+            cell.NameLbl.text =  self.AllRecipeSelItem.recipes?.dinner?[indexPath.item].recipe?.label ?? ""
+            //  cell.PriceLbl.text = ""
+            //               cell.RAtingLbl.text = "\(self.AllRecipeSelItem.recipes?.dinner?[indexPath.item].review ?? 0)(\(self.AllRecipeSelItem.recipes?.dinner?[indexPath.item].review_number ?? 0))"
+            
+            let review = self.AllRecipeSelItem.recipes?.dinner?[indexPath.item].review ?? 0
+            
+            let roundedReview = Double(round(10 * review) / 10.0)
+            cell.ratingView.rating = roundedReview
+            
+            let img = self.AllRecipeSelItem.recipes?.dinner?[indexPath.item].recipe?.images?.small?.url ?? ""
+            let ImgUrl = URL(string: img)
+            cell.ImgV.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
+            cell.ImgV.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
+            
+            cell.TimeLbl.text = "\(self.AllRecipeSelItem.recipes?.dinner?[indexPath.item].recipe?.totalTime ?? 0) min"
+            
+            let islike = self.AllRecipeSelItem.recipes?.dinner?[indexPath.item].isLike
+            
+            if islike == 1{
+                cell.FavBtn.setImage(UIImage(named: "Fav"), for: .normal)
+            }else{
+                cell.FavBtn.setImage(UIImage(named: "UnFav"), for: .normal)
+            }
+            
+            cell.AddToPlanBtn.tag = indexPath.item
+            cell.AddToPlanBtn.addTarget(self, action: #selector(DinnerAddtoPlanBtnClick(_:)), for: .touchUpInside)
+            
+            cell.FavBtn.tag = indexPath.item
+            cell.FavBtn.addTarget(self, action: #selector(FavDinnerBtnClick(_:)), for: .touchUpInside)
+            
+            cell.CartBtn.tag = indexPath.item
+            cell.CartBtn.addTarget(self, action: #selector(DinnerAddtoBasketBtnClick(_:)), for: .touchUpInside)
+            
+            return cell
+        }else if collectionView == SnacksCollV{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DinnerCollVCell", for: indexPath) as! DinnerCollVCell
+            cell.NameLbl.text =  self.AllRecipeSelItem.recipes?.Snack?[indexPath.item].recipe?.label ?? ""
+            //     cell.PriceLbl.text = ""
+            //               cell.RAtingLbl.text = "\(self.AllRecipeSelItem.recipes?.Snack?[indexPath.item].review ?? 0)(\(self.AllRecipeSelItem.recipes?.Snack?[indexPath.item].review_number ?? 0))"
+            
+            let review = self.AllRecipeSelItem.recipes?.Snack?[indexPath.item].review ?? 0
+            
+            let roundedReview = Double(round(10 * review) / 10.0)
+            cell.ratingView.rating = roundedReview
+            
+            let img = self.AllRecipeSelItem.recipes?.Snack?[indexPath.item].recipe?.images?.small?.url ?? ""
+            let ImgUrl = URL(string: img)
+            cell.ImgV.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
+            cell.ImgV.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
+            
+            cell.TimeLbl.text = "\(self.AllRecipeSelItem.recipes?.Snack?[indexPath.item].recipe?.totalTime ?? 0) min"
+            
+            let islike = self.AllRecipeSelItem.recipes?.Snack?[indexPath.item].isLike
+            
+            if islike == 1{
+                cell.FavBtn.setImage(UIImage(named: "Fav"), for: .normal)
+            }else{
+                cell.FavBtn.setImage(UIImage(named: "UnFav"), for: .normal)
+            }
+            
+            cell.AddToPlanBtn.tag = indexPath.item
+            cell.AddToPlanBtn.addTarget(self, action: #selector(SnacksAddtoPlanBtnClick(_:)), for: .touchUpInside)
+            
+            cell.FavBtn.tag = indexPath.item
+            cell.FavBtn.addTarget(self, action: #selector(FavSnacksBtnClick(_:)), for: .touchUpInside)
+            
+            cell.CartBtn.tag = indexPath.item
+            cell.CartBtn.addTarget(self, action: #selector(SnacksAddtoBasketBtnClick(_:)), for: .touchUpInside)
+            
+            return cell
+        }else if collectionView == TeaTimeCollV{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DinnerCollVCell", for: indexPath) as! DinnerCollVCell
+            cell.NameLbl.text =  self.AllRecipeSelItem.recipes?.Teatime?[indexPath.item].recipe?.label ?? ""
+            
+            cell.TimeLbl.text = "\(self.AllRecipeSelItem.recipes?.Teatime?[indexPath.item].recipe?.totalTime ?? 0) min"
+            //       cell.PriceLbl.text = ""
+            //               cell.RAtingLbl.text = "\(self.AllRecipeSelItem.recipes?.Teatime?[indexPath.item].review ?? 0)(\(self.AllRecipeSelItem.recipes?.Teatime?[indexPath.item].review_number ?? 0))"
+            
+            let review = self.AllRecipeSelItem.recipes?.Teatime?[indexPath.item].review ?? 0
+            
+            let roundedReview = Double(round(10 * review) / 10.0)
+            cell.ratingView.rating = roundedReview
+            
+            let img = self.AllRecipeSelItem.recipes?.Teatime?[indexPath.item].recipe?.images?.small?.url ?? ""
+            let ImgUrl = URL(string: img)
+            cell.ImgV.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
+            cell.ImgV.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
+            
+            let islike = self.AllRecipeSelItem.recipes?.Teatime?[indexPath.item].isLike
+            
+            if islike == 1{
+                cell.FavBtn.setImage(UIImage(named: "Fav"), for: .normal)
+            }else{
+                cell.FavBtn.setImage(UIImage(named: "UnFav"), for: .normal)
+            }
+            
+            cell.AddToPlanBtn.tag = indexPath.item
+            cell.AddToPlanBtn.addTarget(self, action: #selector(TeaTimeAddtoPlanBtnClick(_:)), for: .touchUpInside)
+            
+            cell.FavBtn.tag = indexPath.item
+            cell.FavBtn.addTarget(self, action: #selector(FavTeaTimeBtnClick(_:)), for: .touchUpInside)
+            
+            cell.CartBtn.tag = indexPath.item
+            cell.CartBtn.addTarget(self, action: #selector(TeaTimeAddtoBasketBtnClick(_:)), for: .touchUpInside)
+            
+            return cell
+        }else if collectionView == BreakFastDishCollV{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DishCollVCell", for: indexPath) as! DishCollVCell
+            
+            cell.MealNameLbl.text = self.AllDataList.breakfast?[indexPath.item].recipe?.label ?? ""
+            cell.TotalTimeLbl.text = "\(self.AllDataList.breakfast?[indexPath.item].recipe?.totalTime ?? 0) min"
+            
+            cell.PrepTimelbl.text = "0 min"//self.AllDataList.breakfast[indexPath.item].
+            cell.Calorieslbl.text = "\(Int(self.AllDataList.breakfast?[indexPath.item].recipe?.calories ?? 0))"
+            
+            let Fat = self.AllDataList.breakfast?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "FAT"})
+            cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))"
+            
+            let Protine = self.AllDataList.breakfast?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "PROCNT"})
+            cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))"
+            
+            let carbs = self.AllDataList.breakfast?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
+            cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))"
+            
+            
+            cell.ServCountLbl.text = "\(self.AllDataList.breakfast?[indexPath.item].servings ?? 0) Servings"
+            
+            let img = self.AllDataList.breakfast?[indexPath.item].recipe?.images?.small?.url ?? ""
+            cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
+            cell.MealIMg.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
+            
+            
+            
+            cell.MinusBtn.tag = indexPath.item
+            cell.MinusBtn.addTarget(self, action: #selector(BreakDishServecountMinusBtnClick(_:)), for: .touchUpInside)
+            
+            cell.PlusBtn.tag = indexPath.item
+            cell.PlusBtn.addTarget(self, action: #selector(BreakDishServecountPlusBtnClick(_:)), for: .touchUpInside)
+            
+            cell.SwapBtn.tag = indexPath.item
+            cell.SwapBtn.addTarget(self, action: #selector(BreakFastSwipBtnClicked(_:)), for: .touchUpInside)
+            return cell
+        }else if collectionView == dessertDishCollV{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DishCollVCell", for: indexPath) as! DishCollVCell
+            
+            cell.MealNameLbl.text = self.AllDataList.dessert?[indexPath.item].recipe?.label ?? ""
+            cell.TotalTimeLbl.text = "\(self.AllDataList.dessert?[indexPath.item].recipe?.totalTime ?? 0) min"
+            
+            cell.PrepTimelbl.text = "0 min"//self.AllDataList.breakfast[indexPath.item].
+            cell.Calorieslbl.text = "\(Int(self.AllDataList.dessert?[indexPath.item].recipe?.calories ?? 0))"
+            
+            let Fat = self.AllDataList.dessert?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "FAT"})
+            cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))"
+            
+            let Protine = self.AllDataList.dessert?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "PROCNT"})
+            cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))"
+            
+            let carbs = self.AllDataList.dessert?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
+            cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))"
+            
+            cell.ServCountLbl.text = "\(self.AllDataList.dessert?[indexPath.item].servings ?? 0) Servings"
+            
+            let img = self.AllDataList.dessert?[indexPath.item].recipe?.images?.small?.url ?? ""
+            cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
+            cell.MealIMg.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
+            
+            cell.MinusBtn.tag = indexPath.item
+            cell.MinusBtn.addTarget(self, action: #selector(DessertDishServecountMinusBtnClick(_:)), for: .touchUpInside)
+            
+            cell.PlusBtn.tag = indexPath.item
+            cell.PlusBtn.addTarget(self, action: #selector(DessertDishServecountPlusBtnClick(_:)), for: .touchUpInside)
+            
+            cell.SwapBtn.tag = indexPath.item
+            cell.SwapBtn.addTarget(self, action: #selector(dessertSwipBtnClicked(_:)), for: .touchUpInside)
+            return cell
+        }else if collectionView == LunchDishCollV{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DishCollVCell", for: indexPath) as! DishCollVCell
+            cell.MealNameLbl.text = self.AllDataList.lunch?[indexPath.item].recipe?.label ?? ""
+            cell.TotalTimeLbl.text = "\(self.AllDataList.lunch?[indexPath.item].recipe?.totalTime ?? 0) min"
+            
+            cell.PrepTimelbl.text = "0 min"//self.AllDataList.breakfast[indexPath.item].
+            cell.Calorieslbl.text = "\(Int(self.AllDataList.lunch?[indexPath.item].recipe?.calories ?? 0))"
+            
+            let Fat = self.AllDataList.lunch?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "FAT"})
+            cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))"
+            
+            let Protine = self.AllDataList.lunch?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "PROCNT"})
+            cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))"
+            
+            let carbs = self.AllDataList.lunch?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
+            cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))"
+            
+            
+            cell.ServCountLbl.text = "\(self.AllDataList.lunch?[indexPath.item].servings ?? 0) Servings"
+            
+            let img = self.AllDataList.lunch?[indexPath.item].recipe?.images?.small?.url ?? ""
+            cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
+            cell.MealIMg.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
+            
+            cell.MinusBtn.tag = indexPath.item
+            cell.MinusBtn.addTarget(self, action: #selector(LunchDishServecountMinusBtnClick(_:)), for: .touchUpInside)
+            
+            cell.PlusBtn.tag = indexPath.item
+            cell.PlusBtn.addTarget(self, action: #selector(LunchDishServecountPlusBtnClick(_:)), for: .touchUpInside)
+            
+            cell.SwapBtn.tag = indexPath.item
+            cell.SwapBtn.addTarget(self, action: #selector(LunchSwipBtnClicked(_:)), for: .touchUpInside)
+            return cell
+        }else if collectionView == DinnerDishCollV{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DishCollVCell", for: indexPath) as! DishCollVCell
+            
+            cell.MealNameLbl.text = self.AllDataList.dinner?[indexPath.item].recipe?.label ?? ""
+            cell.TotalTimeLbl.text = "\(self.AllDataList.dinner?[indexPath.item].recipe?.totalTime ?? 0) min"
+            
+            cell.PrepTimelbl.text = "0 min"//self.AllDataList.breakfast[indexPath.item].
+            cell.Calorieslbl.text = "\(Int(self.AllDataList.dinner?[indexPath.item].recipe?.calories ?? 0))"
+            
+            let Fat = self.AllDataList.dinner?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "FAT"})
+            cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))"
+            
+            let Protine = self.AllDataList.dinner?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "PROCNT"})
+            cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))"
+            
+            let carbs = self.AllDataList.dinner?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
+            cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))"
+            
+            
+            cell.ServCountLbl.text = "\(self.AllDataList.dinner?[indexPath.item].servings ?? 0) Servings"
+            
+            let img = self.AllDataList.dinner?[indexPath.item].recipe?.images?.small?.url ?? ""
+            cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
+            cell.MealIMg.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
+            
+            cell.MinusBtn.tag = indexPath.item
+            cell.MinusBtn.addTarget(self, action: #selector(DinnerDishServecountMinusBtnClick(_:)), for: .touchUpInside)
+            
+            cell.PlusBtn.tag = indexPath.item
+            cell.PlusBtn.addTarget(self, action: #selector(DinnerDishServecountPlusBtnClick(_:)), for: .touchUpInside)
+            
+            cell.SwapBtn.tag = indexPath.item
+            cell.SwapBtn.addTarget(self, action: #selector(DinnerSwipBtnClicked(_:)), for: .touchUpInside)
+            return cell
+        }else if collectionView == TeaTimeDishCollV{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DishCollVCell", for: indexPath) as! DishCollVCell
+            
+            cell.MealNameLbl.text = self.AllDataList.teatime?[indexPath.item].recipe?.label ?? ""
+            cell.TotalTimeLbl.text = "\(self.AllDataList.teatime?[indexPath.item].recipe?.totalTime ?? 0) min"
+            
+            cell.PrepTimelbl.text = "0 min"//self.AllDataList.breakfast[indexPath.item].
+            cell.Calorieslbl.text = "\(Int(self.AllDataList.teatime?[indexPath.item].recipe?.calories ?? 0))"
+            
+            let Fat = self.AllDataList.teatime?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "FAT"})
+            cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))"
+            
+            let Protine = self.AllDataList.teatime?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "PROCNT"})
+            cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))"
+            
+            let carbs = self.AllDataList.teatime?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
+            cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))"
+            
+            
+            cell.ServCountLbl.text = "\(self.AllDataList.teatime?[indexPath.item].servings ?? 0) Servings"
+            
+            let img = self.AllDataList.teatime?[indexPath.item].recipe?.images?.small?.url ?? ""
+            cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
+            cell.MealIMg.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
+            
+            cell.MinusBtn.tag = indexPath.item
+            cell.MinusBtn.addTarget(self, action: #selector(TeaTimeDishServecountMinusBtnClick(_:)), for: .touchUpInside)
+            
+            cell.PlusBtn.tag = indexPath.item
+            cell.PlusBtn.addTarget(self, action: #selector(TeaTimeDishServecountPlusBtnClick(_:)), for: .touchUpInside)
+            
+            cell.SwapBtn.tag = indexPath.item
+            cell.SwapBtn.addTarget(self, action: #selector(TeatimeSwipBtnClicked(_:)), for: .touchUpInside)
+            return cell
+        }else{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DishCollVCell", for: indexPath) as! DishCollVCell
+            
+            cell.MealNameLbl.text = self.AllDataList.snacks?[indexPath.item].recipe?.label ?? ""
+            cell.TotalTimeLbl.text = "\(self.AllDataList.snacks?[indexPath.item].recipe?.totalTime ?? 0) min"
+            
+            cell.PrepTimelbl.text = "0 min"//self.AllDataList.breakfast[indexPath.item].
+            cell.Calorieslbl.text = "\(Int(self.AllDataList.snacks?[indexPath.item].recipe?.calories ?? 0))"
+            
+            let Fat = self.AllDataList.snacks?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "FAT"})
+            cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))"
+            
+            let Protine = self.AllDataList.snacks?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "PROCNT"})
+            cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))"
+            
+            let carbs = self.AllDataList.snacks?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
+            cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))"
+            
+            
+            cell.ServCountLbl.text = "\(self.AllDataList.snacks?[indexPath.item].servings ?? 0) Servings"
+            
+            let img = self.AllDataList.snacks?[indexPath.item].recipe?.images?.small?.url ?? ""
+            cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
+            cell.MealIMg.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
+            
+            cell.MinusBtn.tag = indexPath.item
+            cell.MinusBtn.addTarget(self, action: #selector(SnacksDishServecountMinusBtnClick(_:)), for: .touchUpInside)
+            
+            cell.PlusBtn.tag = indexPath.item
+            cell.PlusBtn.addTarget(self, action: #selector(SnacksDishServecountPlusBtnClick(_:)), for: .touchUpInside)
+            
+            cell.SwapBtn.tag = indexPath.item
+            cell.SwapBtn.addTarget(self, action: #selector(SnacksSwipBtnClicked(_:)), for: .touchUpInside)
+            return cell
+        }
+    }
     
     @objc func BreakAddtoPlanBtnClick(_ sender: UIButton)   {
         let SubscriptionStatus = Int(UserDetail.shared.getSubscriptionStatus())
@@ -1380,7 +1458,52 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             self.uri = uri
             self.ChoosedaysPopupV.isHidden = false
         }
+    }
+    
+    @objc func DessertAddtoPlanBtnClick(_ sender: UIButton)   {
+        let SubscriptionStatus = Int(UserDetail.shared.getSubscriptionStatus())
+        
+        if SubscriptionStatus == 1{
+            let addtoplanStatus = Int(UserDetail.shared.getaddmeal()) ?? 0
+            guard addtoplanStatus == 0 else {
+                SubscriptionPopUp ()
+                return
+            }
         }
+        
+        let index = sender.tag
+        let uri = self.AllRecipeSelItem.recipes?.Dessert?[index].recipe?.uri ?? ""
+        if self.SwapMealType == "Dessert"{
+            planService.shared.Api_To_Swap(uri: uri, swipeID: self.SwipeID, vc: self) { result in
+                switch result {
+                case .success(_):
+                    self.SwipeID = ""
+                    self.SwapMealType = ""
+                    
+                    let dateformatter = DateFormatter()
+                    dateformatter.dateFormat = "yyyy-MM-dd"
+                    let Sdate = dateformatter.string(from: self.seldate)
+                    planService.shared.Api_To_GetAllRecipeByDate(Sdate: Sdate,vc: self) { result in
+                        
+                        switch result {
+                        case .success(let allData):
+                            self.fetchPlanDataByDate(list: allData)
+                        case .failure(let error):
+                            // Handle error
+                            self.ShowNoDataFoundonCollV1()
+                            print("Error retrieving data: \(error.localizedDescription)")
+                        }
+                    }
+                case .failure(let error):
+                    // Handle error
+                    print("Error retrieving data: \(error.localizedDescription)")
+                }
+            }
+        }else{
+            self.uri = uri
+            self.ChoosedaysPopupV.isHidden = false
+        }
+    }
     
     @objc func LunchAddtoPlanBtnClick(_ sender: UIButton)   {
         let SubscriptionStatus = Int(UserDetail.shared.getSubscriptionStatus())
@@ -1425,7 +1548,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             self.uri = uri
             self.ChoosedaysPopupV.isHidden = false
         }
-        }
+    }
     
     @objc func DinnerAddtoPlanBtnClick(_ sender: UIButton)   {
         let SubscriptionStatus = Int(UserDetail.shared.getSubscriptionStatus())
@@ -1470,8 +1593,8 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             self.uri = uri
             self.ChoosedaysPopupV.isHidden = false
         }
-        }
-   
+    }
+    
     @objc func SnacksAddtoPlanBtnClick(_ sender: UIButton)   {
         let SubscriptionStatus = Int(UserDetail.shared.getSubscriptionStatus())
         
@@ -1515,7 +1638,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             self.uri = uri
             self.ChoosedaysPopupV.isHidden = false
         }
-        }
+    }
     
     @objc func TeaTimeAddtoPlanBtnClick(_ sender: UIButton)   {
         let SubscriptionStatus = Int(UserDetail.shared.getSubscriptionStatus())
@@ -1564,8 +1687,6 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         }
     }
     
-    
-    
     //basketBtn
     @objc func BreakAddtoBasketBtnClick(_ sender: UIButton)   {
         let index = sender.tag
@@ -1584,10 +1705,27 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         
     }
     
+    @objc func DessertAddtoBasketBtnClick(_ sender: UIButton)   {
+        let index = sender.tag
+        let uri = self.AllRecipeSelItem.recipes?.Dessert?[index].recipe?.uri ?? ""
+        
+        planService.shared.Api_To_AddToBasket_Recipe(uri: uri, type: "Dessert", vc: self) { result in
+            
+            switch result {
+            case .success(_):
+                print("Successfully Added to basket")
+            case .failure(let error):
+                // Handle error
+                print("Error retrieving data: \(error.localizedDescription)")
+            }
+        }
+        
+    }
+    
     @objc func LunchAddtoBasketBtnClick(_ sender: UIButton)   {
         let index = sender.tag
         let uri = self.AllRecipeSelItem.recipes?.lunch?[index].recipe?.uri ?? ""
-
+        
         planService.shared.Api_To_AddToBasket_Recipe(uri: uri, type: "Lunch", vc: self) { result in
             
             switch result {
@@ -1598,12 +1736,12 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
                 print("Error retrieving data: \(error.localizedDescription)")
             }
         }
-        }
+    }
     
     @objc func DinnerAddtoBasketBtnClick(_ sender: UIButton)   {
         let index = sender.tag
         let uri = self.AllRecipeSelItem.recipes?.dinner?[index].recipe?.uri ?? ""
-  
+        
         planService.shared.Api_To_AddToBasket_Recipe(uri: uri, type: "Dinner", vc: self) { result in
             
             switch result {
@@ -1614,7 +1752,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
                 print("Error retrieving data: \(error.localizedDescription)")
             }
         }
-        }
+    }
     
     @objc func SnacksAddtoBasketBtnClick(_ sender: UIButton)   {
         let index = sender.tag
@@ -1635,7 +1773,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     @objc func TeaTimeAddtoBasketBtnClick(_ sender: UIButton)   {
         let index = sender.tag
         let uri = self.AllRecipeSelItem.recipes?.Teatime?[index].recipe?.uri ?? ""
-       
+        
         planService.shared.Api_To_AddToBasket_Recipe(uri: uri, type: "Brunch", vc: self) { result in
             
             switch result {
@@ -1646,7 +1784,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
                 print("Error retrieving data: \(error.localizedDescription)")
             }
         }
-        }
+    }
     
     //favBtn
     @objc func FavBreakfastBtnClick(_ sender: UIButton)   {
@@ -1665,36 +1803,84 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         let islike = self.AllRecipeSelItem.recipes?.breakfast?[index].isLike
         if islike == 1{
             self.AllRecipeSelItem.recipes?.breakfast?[index].isLike = 0
-           // self.Api_To_Like_UnlikeRecipe(uri: uri, type: "0")
+            // self.Api_To_Like_UnlikeRecipe(uri: uri, type: "0")
             planService.shared.Api_To_Like_UnlikeRecipe(uri: uri, type: "0", vc: self) { result in
-            
+                
                 switch result {
                 case .success(_):
                     let dateformatter = DateFormatter()
                     dateformatter.dateFormat = "yyyy-MM-dd"
-            let Sdate = dateformatter.string(from: self.seldate)
-            planService.shared.Api_To_GetAllRecipeByDate(Sdate: Sdate,vc: self) { result in
-            
-                    switch result {
-                    case .success(let allData):
-                        self.fetchPlanDataByDate(list: allData)
-                    case .failure(let error):
-                        // Handle error
-                        self.ShowNoDataFoundonCollV1()
-                        print("Error retrieving data: \(error.localizedDescription)")
+                    let Sdate = dateformatter.string(from: self.seldate)
+                    planService.shared.Api_To_GetAllRecipeByDate(Sdate: Sdate,vc: self) { result in
+                        
+                        switch result {
+                        case .success(let allData):
+                            self.fetchPlanDataByDate(list: allData)
+                        case .failure(let error):
+                            // Handle error
+                            self.ShowNoDataFoundonCollV1()
+                            print("Error retrieving data: \(error.localizedDescription)")
+                        }
                     }
-            }
                 case .failure(let error):
                     // Handle error
                     print("Error retrieving data: \(error.localizedDescription)")
                 }
-        }
+            }
         }else{
-//            self.AllRecipeSelItem.recipes?.breakfast?[index].isLike = 1
-//            self.Api_To_Like_UnlikeRecipe(uri: uri, type: "1")
+            //            self.AllRecipeSelItem.recipes?.breakfast?[index].isLike = 1
+            //            self.Api_To_Like_UnlikeRecipe(uri: uri, type: "1")
             self.FavBtnClickNav(TypeClicked: "Breakfast", Uri: uri, SelID: "", index: index)
         }
         self.BreakFastCollV.reloadData()
+    }
+    
+    @objc func FavDessertBtnClick(_ sender: UIButton)   {
+        let SubscriptionStatus = Int(UserDetail.shared.getSubscriptionStatus())
+        
+        if SubscriptionStatus == 1{
+            let addtoplanStatus = Int(UserDetail.shared.getfavorite()) ?? 0
+            guard addtoplanStatus <= 2 else {
+                SubscriptionPopUp ()
+                return
+            }
+        }
+        
+        let index = sender.tag
+        let uri = self.AllRecipeSelItem.recipes?.Dessert?[index].recipe?.uri ?? ""
+        let islike = self.AllRecipeSelItem.recipes?.Dessert?[index].isLike
+        if islike == 1{
+            self.AllRecipeSelItem.recipes?.Dessert?[index].isLike = 0
+            // self.Api_To_Like_UnlikeRecipe(uri: uri, type: "0")
+            planService.shared.Api_To_Like_UnlikeRecipe(uri: uri, type: "0", vc: self) { result in
+                
+                switch result {
+                case .success(_):
+                    let dateformatter = DateFormatter()
+                    dateformatter.dateFormat = "yyyy-MM-dd"
+                    let Sdate = dateformatter.string(from: self.seldate)
+                    planService.shared.Api_To_GetAllRecipeByDate(Sdate: Sdate,vc: self) { result in
+                        
+                        switch result {
+                        case .success(let allData):
+                            self.fetchPlanDataByDate(list: allData)
+                        case .failure(let error):
+                            // Handle error
+                            self.ShowNoDataFoundonCollV1()
+                            print("Error retrieving data: \(error.localizedDescription)")
+                        }
+                    }
+                case .failure(let error):
+                    // Handle error
+                    print("Error retrieving data: \(error.localizedDescription)")
+                }
+            }
+        }else{
+            //            self.AllRecipeSelItem.recipes?.breakfast?[index].isLike = 1
+            //            self.Api_To_Like_UnlikeRecipe(uri: uri, type: "1")
+            self.FavBtnClickNav(TypeClicked: "Dessert", Uri: uri, SelID: "", index: index)
+        }
+        self.dessertCollV.reloadData()
     }
     
     @objc func FavLunchBtnClick(_ sender: UIButton)   {
@@ -1715,31 +1901,31 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             self.AllRecipeSelItem.recipes?.lunch?[index].isLike = 0
             
             planService.shared.Api_To_Like_UnlikeRecipe(uri: uri, type: "0", vc: self) { result in
-            
+                
                 switch result {
                 case .success(_):
                     let dateformatter = DateFormatter()
                     dateformatter.dateFormat = "yyyy-MM-dd"
-            let Sdate = dateformatter.string(from: self.seldate)
-            planService.shared.Api_To_GetAllRecipeByDate(Sdate: Sdate,vc: self) { result in
-            
-                    switch result {
-                    case .success(let allData):
-                        self.fetchPlanDataByDate(list: allData)
-                    case .failure(let error):
-                        // Handle error
-                        self.ShowNoDataFoundonCollV1()
-                        print("Error retrieving data: \(error.localizedDescription)")
+                    let Sdate = dateformatter.string(from: self.seldate)
+                    planService.shared.Api_To_GetAllRecipeByDate(Sdate: Sdate,vc: self) { result in
+                        
+                        switch result {
+                        case .success(let allData):
+                            self.fetchPlanDataByDate(list: allData)
+                        case .failure(let error):
+                            // Handle error
+                            self.ShowNoDataFoundonCollV1()
+                            print("Error retrieving data: \(error.localizedDescription)")
+                        }
                     }
-            }
                 case .failure(let error):
                     // Handle error
                     print("Error retrieving data: \(error.localizedDescription)")
                 }
-        }
+            }
         }else{
-//            self.AllRecipeSelItem.recipes?.lunch?[index].isLike = 1
-//            self.Api_To_Like_UnlikeRecipe(uri: uri, type: "1")
+            //            self.AllRecipeSelItem.recipes?.lunch?[index].isLike = 1
+            //            self.Api_To_Like_UnlikeRecipe(uri: uri, type: "1")
             self.FavBtnClickNav(TypeClicked: "Lunch", Uri: uri, SelID: "", index: index)
         }
         
@@ -1763,31 +1949,31 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         if islike == 1{
             self.AllRecipeSelItem.recipes?.dinner?[index].isLike = 0
             planService.shared.Api_To_Like_UnlikeRecipe(uri: uri, type: "0", vc: self) { result in
-            
+                
                 switch result {
                 case .success(_):
                     let dateformatter = DateFormatter()
                     dateformatter.dateFormat = "yyyy-MM-dd"
-            let Sdate = dateformatter.string(from: self.seldate)
-            planService.shared.Api_To_GetAllRecipeByDate(Sdate: Sdate,vc: self) { result in
-            
-                    switch result {
-                    case .success(let allData):
-                        self.fetchPlanDataByDate(list: allData)
-                    case .failure(let error):
-                        // Handle error
-                        self.ShowNoDataFoundonCollV1()
-                        print("Error retrieving data: \(error.localizedDescription)")
+                    let Sdate = dateformatter.string(from: self.seldate)
+                    planService.shared.Api_To_GetAllRecipeByDate(Sdate: Sdate,vc: self) { result in
+                        
+                        switch result {
+                        case .success(let allData):
+                            self.fetchPlanDataByDate(list: allData)
+                        case .failure(let error):
+                            // Handle error
+                            self.ShowNoDataFoundonCollV1()
+                            print("Error retrieving data: \(error.localizedDescription)")
+                        }
                     }
-            }
                 case .failure(let error):
                     // Handle error
                     print("Error retrieving data: \(error.localizedDescription)")
                 }
-        }
+            }
         }else{
-//            self.AllRecipeSelItem.recipes?.dinner?[index].isLike = 1
-//            self.Api_To_Like_UnlikeRecipe(uri: uri, type: "1")
+            //            self.AllRecipeSelItem.recipes?.dinner?[index].isLike = 1
+            //            self.Api_To_Like_UnlikeRecipe(uri: uri, type: "1")
             self.FavBtnClickNav(TypeClicked: "Dinner", Uri: uri, SelID: "", index: index)
         }
         self.DinnerCollV.reloadData()
@@ -1810,14 +1996,14 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         if islike == 1{
             self.AllRecipeSelItem.recipes?.Snack?[index].isLike = 0
             planService.shared.Api_To_Like_UnlikeRecipe(uri: uri, type: "0", vc: self) { result in
-            
-                    switch result {
-                    case .success(_):
-                        let dateformatter = DateFormatter()
-                        dateformatter.dateFormat = "yyyy-MM-dd"
-                let Sdate = dateformatter.string(from: self.seldate)
-                planService.shared.Api_To_GetAllRecipeByDate(Sdate: Sdate,vc: self) { result in
                 
+                switch result {
+                case .success(_):
+                    let dateformatter = DateFormatter()
+                    dateformatter.dateFormat = "yyyy-MM-dd"
+                    let Sdate = dateformatter.string(from: self.seldate)
+                    planService.shared.Api_To_GetAllRecipeByDate(Sdate: Sdate,vc: self) { result in
+                        
                         switch result {
                         case .success(let allData):
                             self.fetchPlanDataByDate(list: allData)
@@ -1826,15 +2012,15 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
                             self.ShowNoDataFoundonCollV1()
                             print("Error retrieving data: \(error.localizedDescription)")
                         }
-                }
-                    case .failure(let error):
-                        // Handle error
-                        print("Error retrieving data: \(error.localizedDescription)")
                     }
+                case .failure(let error):
+                    // Handle error
+                    print("Error retrieving data: \(error.localizedDescription)")
+                }
             }
         }else{
-           // self.AllRecipeSelItem.recipes?.Snack?[index].isLike = 1
-          //  self.Api_To_Like_UnlikeRecipe(uri: uri, type: "1")
+            // self.AllRecipeSelItem.recipes?.Snack?[index].isLike = 1
+            //  self.Api_To_Like_UnlikeRecipe(uri: uri, type: "1")
             self.FavBtnClickNav(TypeClicked: "Snacks", Uri: uri, SelID: "", index: index)
         }
         self.SnacksCollV.reloadData()
@@ -1853,19 +2039,19 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         
         let index = sender.tag
         let uri = self.AllRecipeSelItem.recipes?.Teatime?[index].recipe?.uri ?? ""
-      
+        
         let islike = self.AllRecipeSelItem.recipes?.Teatime?[index].isLike
         if islike == 1{
             self.AllRecipeSelItem.recipes?.Teatime?[index].isLike = 0
             planService.shared.Api_To_Like_UnlikeRecipe(uri: uri, type: "0", vc: self) { result in
-            
-                    switch result {
-                    case .success(_):
-                        let dateformatter = DateFormatter()
-                        dateformatter.dateFormat = "yyyy-MM-dd"
-                let Sdate = dateformatter.string(from: self.seldate)
-                planService.shared.Api_To_GetAllRecipeByDate(Sdate: Sdate,vc: self) { result in
                 
+                switch result {
+                case .success(_):
+                    let dateformatter = DateFormatter()
+                    dateformatter.dateFormat = "yyyy-MM-dd"
+                    let Sdate = dateformatter.string(from: self.seldate)
+                    planService.shared.Api_To_GetAllRecipeByDate(Sdate: Sdate,vc: self) { result in
+                        
                         switch result {
                         case .success(let allData):
                             self.fetchPlanDataByDate(list: allData)
@@ -1874,24 +2060,24 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
                             self.ShowNoDataFoundonCollV1()
                             print("Error retrieving data: \(error.localizedDescription)")
                         }
-                }
-                    case .failure(let error):
-                        // Handle error
-                        print("Error retrieving data: \(error.localizedDescription)")
                     }
+                case .failure(let error):
+                    // Handle error
+                    print("Error retrieving data: \(error.localizedDescription)")
+                }
             }
         }else{
-          //  self.AllRecipeSelItem.recipes?.Teatime?[index].isLike = 1
+            //  self.AllRecipeSelItem.recipes?.Teatime?[index].isLike = 1
             self.FavBtnClickNav(TypeClicked: "Brunch", Uri: uri, SelID: "", index: index)
         }
         self.TeaTimeCollV.reloadData()
     }
-  
-  
+    
+    
     
     func FavBtnClickNav(TypeClicked: String, Uri: String, SelID: String, index: Int)   {
-         indx = index
-         Seltype = TypeClicked
+        indx = index
+        Seltype = TypeClicked
         
         let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "FavrouitPopupVC") as! FavrouitPopupVC
@@ -1905,6 +2091,9 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             if self.Seltype == "Breakfast"{
                 self.AllRecipeSelItem.recipes?.breakfast?[self.indx].isLike = 1
                 self.BreakFastCollV.reloadData()
+            }else if self.Seltype == "Dessert"{
+                self.AllRecipeSelItem.recipes?.Dessert?[self.indx].isLike = 1
+                self.dessertCollV.reloadData()
             }else if self.Seltype == "Lunch"{
                 self.AllRecipeSelItem.recipes?.lunch?[self.indx].isLike = 1
                 self.LunchCollV.reloadData()
@@ -1918,7 +2107,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
                 self.AllRecipeSelItem.recipes?.breakfast?[self.indx].isLike = 1
                 self.TeaTimeCollV.reloadData()
             }
-          //  self.Api_To_GetAllRecipe()
+            //  self.Api_To_GetAllRecipe()
         }
         self.addChild(vc)
         vc.view.frame = self.view.frame
@@ -1946,7 +2135,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         vc.didMove(toParent: self)
     }
     
-        //
+    //
     
     // for dish colllView for plus btns..
     @objc func BreakDishServecountPlusBtnClick(_ sender: UIButton)   {
@@ -1954,9 +2143,9 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         let uri = self.AllDataList.breakfast?[index].recipe?.uri ?? ""
         self.AllDataList.breakfast?[index].servings! += 1
         self.BreakFastDishCollV.reloadData()
-         
+        
         let count = self.AllDataList.breakfast?[index].servings ?? 0
-    
+        
         planService.shared.Api_For_AddServingcount(uri: uri, type: "Breakfast", servingCount: count, seldate: self.seldate,vc: self) { result in
             
             switch result {
@@ -1968,7 +2157,28 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             }
         }
         
+    }
+    
+    @objc func DessertDishServecountPlusBtnClick(_ sender: UIButton)   {
+        let index = sender.tag
+        let uri = self.AllDataList.dessert?[index].recipe?.uri ?? ""
+        self.AllDataList.dessert?[index].servings! += 1
+        self.dessertDishCollV.reloadData()
+        
+        let count = self.AllDataList.dessert?[index].servings ?? 0
+        
+        planService.shared.Api_For_AddServingcount(uri: uri, type: "Dessert", servingCount: count, seldate: self.seldate,vc: self) { result in
+            
+            switch result {
+            case .success(_):
+                print("count added successfully")
+            case .failure(let error):
+                // Handle error
+                print("Error retrieving data: \(error.localizedDescription)")
+            }
         }
+        
+    }
     
     @objc func LunchDishServecountPlusBtnClick(_ sender: UIButton)   {
         let index = sender.tag
@@ -1977,7 +2187,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         self.LunchDishCollV.reloadData()
         
         let count = self.AllDataList.lunch?[index].servings ?? 0
-    
+        
         planService.shared.Api_For_AddServingcount(uri: uri, type: "Lunch", servingCount: count, seldate: self.seldate,vc: self) { result in
             
             switch result {
@@ -1988,7 +2198,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
                 print("Error retrieving data: \(error.localizedDescription)")
             }
         }
-        }
+    }
     
     @objc func DinnerDishServecountPlusBtnClick(_ sender: UIButton)   {
         let index = sender.tag
@@ -2008,7 +2218,8 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
                 print("Error retrieving data: \(error.localizedDescription)")
             }
         }
-        }
+    }
+    
     
     @objc func SnacksDishServecountPlusBtnClick(_ sender: UIButton)   {
         let index = sender.tag
@@ -2017,7 +2228,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         self.SnacksDishCollV.reloadData()
         
         let count = self.AllDataList.snacks?[index].servings ?? 0
-
+        
         planService.shared.Api_For_AddServingcount(uri: uri, type: "Snacks", servingCount: count, seldate: self.seldate,vc: self) { result in
             
             switch result {
@@ -2028,7 +2239,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
                 print("Error retrieving data: \(error.localizedDescription)")
             }
         }
-        }
+    }
     
     @objc func TeaTimeDishServecountPlusBtnClick(_ sender: UIButton)   {
         let index = sender.tag
@@ -2037,7 +2248,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         self.TeaTimeDishCollV.reloadData()
         
         let count = self.AllDataList.snacks?[index].servings ?? 0
-
+        
         planService.shared.Api_For_AddServingcount(uri: uri, type: "Brunch", servingCount: count, seldate: self.seldate,vc: self) { result in
             
             switch result {
@@ -2048,7 +2259,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
                 print("Error retrieving data: \(error.localizedDescription)")
             }
         }
-        }
+    }
     
     // for dish colllView for minus btns.
     @objc func BreakDishServecountMinusBtnClick(_ sender: UIButton)   {
@@ -2061,9 +2272,9 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         
         self.AllDataList.breakfast?[index].servings! -= 1
         self.BreakFastDishCollV.reloadData()
-                 
+        
         let count = self.AllDataList.breakfast?[index].servings ?? 0
- 
+        
         planService.shared.Api_For_AddServingcount(uri: uri, type: "Breakfast", servingCount: count, seldate: self.seldate,vc: self) { result in
             
             switch result {
@@ -2074,7 +2285,32 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
                 print("Error retrieving data: \(error.localizedDescription)")
             }
         }
+    }
+    
+    @objc func DessertDishServecountMinusBtnClick(_ sender: UIButton)   {
+        let index = sender.tag
+        let uri = self.AllDataList.dessert?[index].recipe?.uri ?? ""
+        
+        guard self.AllDataList.dessert?[index].servings ?? 0 > 1 else{
+            return
         }
+        
+        self.AllDataList.dessert?[index].servings! -= 1
+        self.dessertDishCollV.reloadData()
+        
+        let count = self.AllDataList.dessert?[index].servings ?? 0
+        
+        planService.shared.Api_For_AddServingcount(uri: uri, type: "Dessert", servingCount: count, seldate: self.seldate,vc: self) { result in
+            
+            switch result {
+            case .success(_):
+                print("count added successfully")
+            case .failure(let error):
+                // Handle error
+                print("Error retrieving data: \(error.localizedDescription)")
+            }
+        }
+    }
     
     @objc func LunchDishServecountMinusBtnClick(_ sender: UIButton)   {
         let index = sender.tag
@@ -2086,7 +2322,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         
         self.AllDataList.lunch?[index].servings! -= 1
         self.LunchDishCollV.reloadData()
-         
+        
         let count = self.AllDataList.lunch?[index].servings ?? 0
         
         planService.shared.Api_For_AddServingcount(uri: uri, type: "Lunch", servingCount: count, seldate: self.seldate,vc: self) { result in
@@ -2099,7 +2335,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
                 print("Error retrieving data: \(error.localizedDescription)")
             }
         }
-        }
+    }
     
     @objc func DinnerDishServecountMinusBtnClick(_ sender: UIButton)   {
         let index = sender.tag
@@ -2113,7 +2349,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         self.DinnerDishCollV.reloadData()
         
         let count = self.AllDataList.dinner?[index].servings ?? 0
- 
+        
         planService.shared.Api_For_AddServingcount(uri: uri, type: "Dinner", servingCount: count, seldate: self.seldate,vc: self) { result in
             
             switch result {
@@ -2124,7 +2360,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
                 print("Error retrieving data: \(error.localizedDescription)")
             }
         }
-        }
+    }
     
     @objc func SnacksDishServecountMinusBtnClick(_ sender: UIButton)   {
         let index = sender.tag
@@ -2138,7 +2374,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         self.SnacksDishCollV.reloadData()
         
         let count = self.AllDataList.snacks?[index].servings ?? 0
-  
+        
         planService.shared.Api_For_AddServingcount(uri: uri, type: "Snacks", servingCount: count, seldate: self.seldate,vc: self) { result in
             
             switch result {
@@ -2149,7 +2385,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
                 print("Error retrieving data: \(error.localizedDescription)")
             }
         }
-        }
+    }
     
     @objc func TeaTimeDishServecountMinusBtnClick(_ sender: UIButton)   {
         let index = sender.tag
@@ -2163,7 +2399,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         self.TeaTimeDishCollV.reloadData()
         
         let count = self.AllDataList.snacks?[index].servings ?? 0
- 
+        
         planService.shared.Api_For_AddServingcount(uri: uri, type: "Brunch", servingCount: count, seldate: self.seldate,vc: self) { result in
             
             switch result {
@@ -2174,17 +2410,17 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
                 print("Error retrieving data: \(error.localizedDescription)")
             }
         }
-        }
+    }
     
     //
-       
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == CalanderCollV{
             let today = Date()
             print(indexPath.row)
             
             let SelDate = currentWeekDates[indexPath.row]
-             
+            
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd"
             formatter.timeZone = TimeZone.current // Use the local time zone
@@ -2204,8 +2440,8 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             let TodayreconvertedDate = formatter1.date(from: dateString1) ?? Date()
             
             guard reconvertedDate! >= TodayreconvertedDate else{
-                     return // Exit if the previous week's start date is earlier than today
-                 }
+                return // Exit if the previous week's start date is earlier than today
+            }
             
             // Deselect the previously selected item, if any
             if let previousIndex = selectedIndex {
@@ -2221,43 +2457,43 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             selectedIndex = indexPath
             
             seldate = currentWeekDates[indexPath.item]
-           // self.Api_To_GetAllRecipeByDate()
+            // self.Api_To_GetAllRecipeByDate()
             planService.shared.Api_To_GetAllRecipe(vc: self) { result in
-            
-                    switch result {
-                    case .success(let allData):
-                        if let list = allData, list.recipes != nil {
-                            self.AllRecipeSelItem = list
-                           
-                            self.ShowNoDataFoundonCollV()
-                        }else{
-                            self.ShowNoDataFoundonCollV()
-                        }
+                
+                switch result {
+                case .success(let allData):
+                    if let list = allData, list.recipes != nil {
+                        self.AllRecipeSelItem = list
                         
-        //                    if self.veryFirstLoading == 1{
-        //                        self.veryFirstLoading = 0
-                            DispatchQueue.global().asyncAfter(deadline: .now()) {
-                                let dateformatter = DateFormatter()
-                                dateformatter.dateFormat = "yyyy-MM-dd"
+                        self.ShowNoDataFoundonCollV()
+                    }else{
+                        self.ShowNoDataFoundonCollV()
+                    }
+                    
+                    //                    if self.veryFirstLoading == 1{
+                    //                        self.veryFirstLoading = 0
+                    DispatchQueue.global().asyncAfter(deadline: .now()) {
+                        let dateformatter = DateFormatter()
+                        dateformatter.dateFormat = "yyyy-MM-dd"
                         let Sdate = dateformatter.string(from: self.seldate)
                         planService.shared.Api_To_GetAllRecipeByDate(Sdate: Sdate,vc: self) { result in
-                        
-                                switch result {
-                                case .success(let allData):
-                                    self.fetchPlanDataByDate(list: allData)
-                                case .failure(let error):
-                                    // Handle error
-                                    self.ShowNoDataFoundonCollV1()
-                                    print("Error retrieving data: \(error.localizedDescription)")
-                                }
-                        }
+                            
+                            switch result {
+                            case .success(let allData):
+                                self.fetchPlanDataByDate(list: allData)
+                            case .failure(let error):
+                                // Handle error
+                                self.ShowNoDataFoundonCollV1()
+                                print("Error retrieving data: \(error.localizedDescription)")
                             }
-                       // }
-                    case .failure(let error):
-                        // Handle error
-                        self.ShowNoDataFoundonCollV()
-                        print("Error retrieving data: \(error.localizedDescription)")
+                        }
                     }
+                    // }
+                case .failure(let error):
+                    // Handle error
+                    self.ShowNoDataFoundonCollV()
+                    print("Error retrieving data: \(error.localizedDescription)")
+                }
             }
         }
         else if collectionView == BreakFastCollV{
@@ -2265,6 +2501,13 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
             vc.MealType = "Breakfast"
             vc.uri = self.AllRecipeSelItem.recipes?.breakfast?[indexPath.item].recipe?.uri ?? ""
+            vc.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(vc, animated: true)
+        }else if collectionView == dessertCollV{
+            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
+            vc.MealType = "Dessert"
+            vc.uri = self.AllRecipeSelItem.recipes?.Dessert?[indexPath.item].recipe?.uri ?? ""
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }else if collectionView == LunchCollV{
@@ -2297,28 +2540,30 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
- 
-       func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-           _ = collectionView.frame.width // Full width for each cell, adjust as needed
-           let height = collectionView.frame.height // Full height for each cell, adjust if needed
-           
-           if collectionView == CalanderCollV{
-               let width = collectionView.frame.width / 7
-               return CGSize(width: width, height: collectionView.frame.height)
-           }else if collectionView == BreakFastCollV{
-               return CGSize(width: 197, height: collectionView.frame.height)
-           }else if collectionView == LunchCollV{
-               return CGSize(width: 197, height: collectionView.frame.height)
-           }else if collectionView == DinnerCollV{
-               return CGSize(width: 197, height: collectionView.frame.height)
-           }else if collectionView == TeaTimeCollV{
-               return CGSize(width: 197, height: collectionView.frame.height)
-           }else if collectionView == SnacksCollV{
-               return CGSize(width: 197, height: collectionView.frame.height)
-           } else {
-               return CGSize(width: self.view.frame.width - 50, height: height)
-           }
-       }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        _ = collectionView.frame.width // Full width for each cell, adjust as needed
+        let height = collectionView.frame.height // Full height for each cell, adjust if needed
+        
+        if collectionView == CalanderCollV{
+            let width = collectionView.frame.width / 7
+            return CGSize(width: width, height: collectionView.frame.height)
+        }else if collectionView == BreakFastCollV{
+            return CGSize(width: 197, height: collectionView.frame.height)
+        }else if collectionView == dessertCollV{
+            return CGSize(width: 197, height: collectionView.frame.height)
+        }else if collectionView == LunchCollV{
+            return CGSize(width: 197, height: collectionView.frame.height)
+        }else if collectionView == DinnerCollV{
+            return CGSize(width: 197, height: collectionView.frame.height)
+        }else if collectionView == TeaTimeCollV{
+            return CGSize(width: 197, height: collectionView.frame.height)
+        }else if collectionView == SnacksCollV{
+            return CGSize(width: 197, height: collectionView.frame.height)
+        } else {
+            return CGSize(width: self.view.frame.width - 50, height: height)
+        }
+    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         if collectionView == CalanderCollV{
@@ -2326,12 +2571,18 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         }else{
             return 5
         }
-        }
+    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         if collectionView == CalanderCollV{
             return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         }else if collectionView == BreakFastCollV{
+            if section == 0 {
+                return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
+            }else{
+                return UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+            }
+        }else if collectionView == dessertCollV{
             if section == 0 {
                 return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
             }else{
@@ -2372,11 +2623,12 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         }else{
             return 5
         }
-     }
-     
+    }
+    
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         guard let collectionView = scrollView as? UICollectionView,
               collectionView == BreakFastDishCollV ||
+                collectionView == dessertDishCollV ||
                 collectionView == LunchDishCollV ||
                 collectionView == DinnerDishCollV ||
                 collectionView == SnacksDishCollV ||
@@ -2390,11 +2642,11 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         let cell = collectionView.cellForItem(at: index)!
         let position = collectionView.contentOffset.x - cell.frame.origin.x
         if position > cell.frame.size.width/2{
-           index.row = index.row+1
+            index.row = index.row+1
         }
         collectionView.scrollToItem(at: index, at: .left, animated: true )
-     }
     }
+}
 
 
 extension PlanVc: UITableViewDelegate, UITableViewDataSource {
@@ -2427,7 +2679,7 @@ extension PlanVc: UITableViewDelegate, UITableViewDataSource {
         }else if tableView == AddAnotherMealTblV{
             let cell = tableView.dequeueReusableCell(withIdentifier: "BodyGoalTblVCell", for: indexPath) as! BodyGoalTblVCell
             cell.NameLbl.text = ArrData[indexPath.row].Name
-             
+            
             if ArrData[indexPath.row].isSelected == true && ArrData[indexPath.row].Name == "Select all" {
                 cell.TickImg.image = ArrData[indexPath.row].isSelected ? UIImage(named: "GreenTick") : UIImage(named: "")
                 cell.selectedBgImg.image = ArrData[indexPath.row].isSelected ? UIImage(named: "GreenBorder") : UIImage(named: "Group 1171276489")
@@ -2443,20 +2695,20 @@ extension PlanVc: UITableViewDelegate, UITableViewDataSource {
     
     
     @objc func BreakFastSwipBtnClicked(_ sender: UIButton){
-//        let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-//        let vc = storyboard.instantiateViewController(withIdentifier: "DailyInspirationsVC") as! DailyInspirationsVC
-//        
-//        self.addChild(vc)
-//        vc.view.frame = self.view.frame
-//        self.view.addSubview(vc.view)
-//        self.view.bringSubviewToFront(vc.view)
-//        vc.didMove(toParent: self)
+        //        let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
+        //        let vc = storyboard.instantiateViewController(withIdentifier: "DailyInspirationsVC") as! DailyInspirationsVC
+        //
+        //        self.addChild(vc)
+        //        vc.view.frame = self.view.frame
+        //        self.view.addSubview(vc.view)
+        //        self.view.bringSubviewToFront(vc.view)
+        //        vc.didMove(toParent: self)
         
         self.SwipeID = "\(self.AllDataList.breakfast?[sender.tag].id ?? 0)"
         self.SwapMealType = "Breakfast"
-           
-            self.BreakFastCollVBgV.isHidden = false
-            self.BreakFastDishCollVBgV.isHidden = true
+        
+        self.BreakFastCollVBgV.isHidden = false
+        self.BreakFastDishCollVBgV.isHidden = true
         
         if self.AllRecipeSelItem.recipes?.breakfast?.count ?? 0 == 0{
             self.BreakFastCollVBgV.isHidden = true
@@ -2467,11 +2719,27 @@ extension PlanVc: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    @objc func dessertSwipBtnClicked(_ sender: UIButton){
+        
+        self.SwipeID = "\(self.AllDataList.dessert?[sender.tag].id ?? 0)"
+        self.SwapMealType = "Dessert"
+        
+        self.dessertCollVBgV.isHidden = false
+        self.dessertDishCollVBgV.isHidden = true
+        
+        if self.AllRecipeSelItem.recipes?.Dessert?.count ?? 0 == 0{
+            self.dessertCollVBgV.isHidden = true
+            self.dessertBtnBgV.isHidden = true
+        }else{
+            self.dessertCollVBgV.isHidden = false
+            self.dessertBtnBgV.isHidden = false
+        }
+    }
     
     @objc func LunchSwipBtnClicked(_ sender: UIButton){
         self.SwipeID = "\(self.AllDataList.lunch?[sender.tag].id ?? 0)"
         self.SwapMealType = "Lunch"
-         
+        
         self.LunchCollVBgV.isHidden = false
         self.LunchDishCollVBgV.isHidden = true
         
@@ -2487,7 +2755,7 @@ extension PlanVc: UITableViewDelegate, UITableViewDataSource {
     @objc func DinnerSwipBtnClicked(_ sender: UIButton){
         self.SwipeID = "\(self.AllDataList.dinner?[sender.tag].id ?? 0)"
         self.SwapMealType = "Dinner"
-         
+        
         self.DinnerCollVBgV.isHidden = false
         self.DinnerDishCollVBgV.isHidden = true
         
@@ -2519,7 +2787,7 @@ extension PlanVc: UITableViewDelegate, UITableViewDataSource {
     @objc func TeatimeSwipBtnClicked(_ sender: UIButton){
         self.SwipeID = "\(self.AllDataList.teatime?[sender.tag].id ?? 0)"
         self.SwapMealType = "Brunch"
-         
+        
         self.TeaTimeCollVBgV.isHidden = false
         self.TeaTimeDishCollVBgV.isHidden = true
         
@@ -2540,14 +2808,14 @@ extension PlanVc: UITableViewDelegate, UITableViewDataSource {
             }else{
                 
                 let dateformatter = DateFormatter()
-                    let date = self.currentWeekDates[indexPath.row]
-                    dateformatter.dateFormat = "yyyy-MM-dd"
-                    let Sdate = dateformatter.string(from: date)
+                let date = self.currentWeekDates[indexPath.row]
+                dateformatter.dateFormat = "yyyy-MM-dd"
+                let Sdate = dateformatter.string(from: date)
                 dateformatter.dateFormat = "yyyy-MM-dd"
                 let ReconvertDate = dateformatter.date(from: Sdate)!
-                    
-                    dateformatter.dateFormat = "EEEE" // Full day name, e.g., "Monday"
-                    let dayOfWeek = dateformatter.string(from: date)
+                
+                dateformatter.dateFormat = "EEEE" // Full day name, e.g., "Monday"
+                let dayOfWeek = dateformatter.string(from: date)
                 let selDay = ChooseDayData[indexPath.row].Name
                 
                 guard selDay == dayOfWeek else { return }
@@ -2575,7 +2843,7 @@ extension PlanVc: UITableViewDelegate, UITableViewDataSource {
             }else{
                 self.mealType = ChooseMealTypeyData[indexPath.row].Name
             }
-          
+            
             ChooseMealTypeTblV.reloadData()
         }else if tableView == AddAnotherMealTblV{
             if ArrData[indexPath.row].isSelected {
@@ -2593,7 +2861,7 @@ extension PlanVc: UITableViewDelegate, UITableViewDataSource {
                     ArrData[indexPath.row].isSelected = true
                 }
             }
-        
+            
             self.AddAnotherMealTblV.reloadData()
         }
     }
@@ -2616,19 +2884,19 @@ extension PlanVc: UITableViewDelegate, UITableViewDataSource {
         }
     }
 }
-   
+
 
 extension PlanVc {
     func calculateWeekDates(for date: Date) -> [Date] {
         // Ensure the first day of the week is Monday
         guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: date) else { return [] }
         let startOfWeek = calendar.date(byAdding: .day, value: -(calendar.component(.weekday, from: weekInterval.start) - 2), to: weekInterval.start)!
-
+        
         // Return all dates from Monday to Sunday
         return (0..<7).compactMap { calendar.date(byAdding: .day, value: $0, to: startOfWeek) }
     }
     
-   
+    
     
     func updateWeekLabel() {
         let formatter = DateFormatter()
@@ -2684,7 +2952,7 @@ extension PlanVc {
             self.DailyNutritionCountBgV.isHidden = false
         }
         
-        if self.AllDataList.breakfast?.count ?? 0 != 0 || self.AllDataList.lunch?.count ?? 0 != 0 || self.AllDataList.dinner?.count ?? 0 != 0 || self.AllDataList.snacks?.count ?? 0 != 0 ||
+        if self.AllDataList.breakfast?.count ?? 0 != 0 || self.AllDataList.dessert?.count ?? 0 != 0 || self.AllDataList.lunch?.count ?? 0 != 0 || self.AllDataList.dinner?.count ?? 0 != 0 || self.AllDataList.snacks?.count ?? 0 != 0 ||
             self.AllDataList.teatime?.count ?? 0 != 0{
             self.AddtoBasketBtnO.isUserInteractionEnabled = true
             self.AddtoBasketBtnO.backgroundColor = #colorLiteral(red: 0, green: 0.786260426, blue: 0.4870494008, alpha: 1)
@@ -2717,6 +2985,14 @@ extension PlanVc {
         }else{
             self.BreakFastCollVBgV.isHidden = false
             self.BreakFastBtnBgV.isHidden = false
+        }
+        
+        if self.AllRecipeSelItem.recipes?.Dessert?.count ?? 0 == 0{
+            self.dessertCollVBgV.isHidden = true
+            self.dessertBtnBgV.isHidden = true
+        }else{
+            self.dessertCollVBgV.isHidden = false
+            self.dessertBtnBgV.isHidden = false
         }
         
         if self.AllRecipeSelItem.recipes?.lunch?.count ?? 0 == 0{
@@ -2754,6 +3030,7 @@ extension PlanVc {
         
         
         self.BreakFastCollV.reloadData()
+        self.dessertCollV.reloadData()
         self.LunchCollV.reloadData()
         self.DinnerCollV.reloadData()
         self.SnacksCollV.reloadData()
@@ -2778,6 +3055,24 @@ extension PlanVc {
             self.BreakFastCollVBgV.isHidden = true
             self.BreakFastDishCollVBgV.isHidden = false
             self.BreakFastBtnBgV.isHidden = false
+        }
+        
+        if self.AllDataList.dessert?.count ?? 0 == 0{
+            // self.BreakFastCollVBgV.isHidden = false
+            self.dessertDishCollVBgV.isHidden = true
+            
+            
+            if self.AllRecipeSelItem.recipes?.Dessert?.count ?? 0 == 0{
+                self.dessertCollVBgV.isHidden = true
+                self.dessertBtnBgV.isHidden = true
+            }else{
+                self.dessertCollVBgV.isHidden = false
+                self.dessertBtnBgV.isHidden = false
+            }
+        }else{
+            self.dessertCollVBgV.isHidden = true
+            self.dessertDishCollVBgV.isHidden = false
+            self.dessertBtnBgV.isHidden = false
         }
         
         if self.AllDataList.lunch?.count ?? 0 == 0{
@@ -2849,15 +3144,15 @@ extension PlanVc {
             self.TeaTimeBtnBgV.isHidden = false
         }
         
-        if self.AllDataList.breakfast?.count ?? 0 != 0 || self.AllDataList.lunch?.count ?? 0 != 0 || self.AllDataList.dinner?.count ?? 0 != 0 || self.AllDataList.snacks?.count ?? 0 != 0 || self.AllDataList.teatime?.count ?? 0 != 0{
+        if self.AllDataList.breakfast?.count ?? 0 != 0 || self.AllDataList.dessert?.count ?? 0 != 0 || self.AllDataList.lunch?.count ?? 0 != 0 || self.AllDataList.dinner?.count ?? 0 != 0 || self.AllDataList.snacks?.count ?? 0 != 0 || self.AllDataList.teatime?.count ?? 0 != 0{
             //            self.AddtoBasketBtnO.isUserInteractionEnabled = true
             //            self.AddtoBasketBtnO.backgroundColor = #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)
         }else{
             self.AddtoBasketBtnO.isUserInteractionEnabled = false
             self.AddtoBasketBtnO.backgroundColor = UIColor.lightGray
         }
-        
         self.BreakFastDishCollV.reloadData()
+        self.dessertDishCollV.reloadData()
         self.LunchDishCollV.reloadData()
         self.DinnerDishCollV.reloadData()
         self.SnacksDishCollV.reloadData()
@@ -2865,4 +3160,4 @@ extension PlanVc {
     }
 }
 
-     
+

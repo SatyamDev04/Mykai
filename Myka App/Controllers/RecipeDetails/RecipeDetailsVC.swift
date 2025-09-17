@@ -8,6 +8,7 @@
 import UIKit
 import SDWebImage
 import Alamofire
+import Cosmos
 
 struct RecipeDetailsIngredientModel{
     var name: String = ""
@@ -17,6 +18,7 @@ struct RecipeDetailsIngredientModel{
     var foodCategory: String = ""
     var measure: String = ""
     var foodID: String = ""
+    var ingredient_cost:String = ""
 }
 
 class RecipeDetailsVC: UIViewController {
@@ -25,9 +27,9 @@ class RecipeDetailsVC: UIViewController {
     @IBOutlet weak var ImgV: UIImageView!
     
     @IBOutlet weak var RatingLbl: UILabel!
-    
+    @IBOutlet weak var RatingView: CosmosView!
     @IBOutlet weak var ImgDesc: UILabel!
-   
+    
     
     @IBOutlet weak var Calorieslbl: UILabel!
     @IBOutlet weak var FatLbl: UILabel!
@@ -77,37 +79,27 @@ class RecipeDetailsVC: UIViewController {
     //
     
     var ServCount = 1
-    
     var ChooseDayData = [BodyGoalsModel(Name: "Monday", isSelected: false), BodyGoalsModel(Name: "Tuesday", isSelected: false), BodyGoalsModel(Name: "Wednesday", isSelected: false), BodyGoalsModel(Name: "Thursday", isSelected: false), BodyGoalsModel(Name: "Friday", isSelected: false), BodyGoalsModel(Name: "Saturday", isSelected: false), BodyGoalsModel(Name: "Sunday", isSelected: false)]
     
     var ChooseMealTypeyData = [BodyGoalsModel(Name: "Breakfast", isSelected: false), BodyGoalsModel(Name: "Lunch", isSelected: false), BodyGoalsModel(Name: "Dinner", isSelected: false), BodyGoalsModel(Name: "Snacks", isSelected: false), BodyGoalsModel(Name: "Brunch", isSelected: false)]
     
     var recipesArray: [RecipeDetailsIngredientModel] = []
-    
-    var CookWareArray: [IngredientModel] = [
-        IngredientModel(name: "Cooker", image: UIImage(named: "1")!, Quantity: ""), IngredientModel(name: "Cutting borad", image: UIImage(named: "2")!, Quantity: ""), IngredientModel(name: "Grater", image: UIImage(named: "3.0")!, Quantity: ""), IngredientModel(name: "Peeler", image: UIImage(named: "3")!, Quantity: ""), IngredientModel(name: "Mixing bowl", image: UIImage(named: "4")!, Quantity: "")]
-    
+    var CookWareArray = [Cookware]()
     var RecipeInstArr = [String]()
-    
     var selectedIndex = [Int]()
-    
     var currentWeekDates: [Date] = []
     var calendar = Calendar.current
-    
     var uri = ""
-    
-    var MealId = ""
-    
+    var Id = ""
+    var type = ""
     var RecipeDetailsData = [RecipeDetailModel]()
-    
     var MealType = ""
-    
     var backAction:()->() = {}
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.ServCountLbl.text = "\(ServCount)"
-      //  ImgbottomBorder.roundCorners([.bottomLeft, .bottomRight], radius: 22.0)
+        //  ImgbottomBorder.roundCorners([.bottomLeft, .bottomRight], radius: 22.0)
         self.ChoosedaysPopupV.frame = self.view.bounds
         self.view.addSubview(self.ChoosedaysPopupV)
         self.ChoosedaysPopupV.isHidden = true
@@ -115,7 +107,7 @@ class RecipeDetailsVC: UIViewController {
         self.ChooseMealTypePopupV.frame = self.view.bounds
         self.view.addSubview(self.ChooseMealTypePopupV)
         self.ChooseMealTypePopupV.isHidden = true
-
+        
         // Do any additional setup after loading the view.
         
         self.IngredientLbl.backgroundColor = UIColor.init(red: 254/255, green: 159/255, blue: 69/255, alpha: 1)
@@ -125,8 +117,8 @@ class RecipeDetailsVC: UIViewController {
         self.IngredientLbl.textColor = UIColor.white
         self.CookwareLbl.textColor = UIColor.init(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
         self.DirectionsLbl.textColor = UIColor.init(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
-         
-      
+        
+        
         self.IngredientBgV.isHidden = false
         self.IngredientBtnsBgV.isHidden = false
         
@@ -149,10 +141,10 @@ class RecipeDetailsVC: UIViewController {
         
         calendar.firstWeekday = 2 // Start the week on Monday
         setupInitialWeek()
-     
+        
         setupTableView()
-       
-         
+        
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         ChoosedaysBgV.addGestureRecognizer(tapGesture)
         
@@ -162,29 +154,29 @@ class RecipeDetailsVC: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(listnerFunctionReloadDetails(_:)), name: NSNotification.Name(rawValue: "notificationNameReloadDetails"), object: nil)
         
         self.Api_To_Recipe_Details(uri: uri)
-       }
-  //
-     
-     @objc func listnerFunctionReloadDetails(_ notification: NSNotification) {
-         if let data = notification.userInfo?["data"] as? String {
-             self.Api_To_Recipe_Details(uri: uri)
-             }
-         }
-
-     
-       // Action method called when the view is tapped
-       @objc func handleTap(_ sender: UITapGestureRecognizer) {
-           print("View was tapped!")
-           ChoosedaysPopupV.isHidden = true
-           for indx in 0..<ChooseDayData.count{
-               ChooseDayData[indx].isSelected = false
-           }
-           
-           for indx in 0..<ChooseMealTypeyData.count{
-               ChooseMealTypeyData[indx].isSelected = false
-           }
-           
-       }
+    }
+    
+    
+    @objc func listnerFunctionReloadDetails(_ notification: NSNotification) {
+        if let data = notification.userInfo?["data"] as? String {
+            self.Api_To_Recipe_Details(uri: uri)
+        }
+    }
+    
+    
+    // Action method called when the view is tapped
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
+        print("View was tapped!")
+        ChoosedaysPopupV.isHidden = true
+        for indx in 0..<ChooseDayData.count{
+            ChooseDayData[indx].isSelected = false
+        }
+        
+        for indx in 0..<ChooseMealTypeyData.count{
+            ChooseMealTypeyData[indx].isSelected = false
+        }
+        
+    }
     
     @objc func handleTap1(_ sender: UITapGestureRecognizer) {
         print("View1 was tapped!")
@@ -202,6 +194,7 @@ class RecipeDetailsVC: UIViewController {
     private func setupTableView() {
         self.ChoosedaysTblV.register(UINib(nibName: "ChooseDaysTblVCell", bundle: nil), forCellReuseIdentifier: "ChooseDaysTblVCell")
         self.ChoosedaysTblV.delegate = self
+        
         self.ChoosedaysTblV.dataSource = self
         self.ChoosedaysTblV.separatorStyle = .none
         
@@ -211,44 +204,44 @@ class RecipeDetailsVC: UIViewController {
         self.ChooseMealTypeTblV.separatorStyle = .none
         
         // Add observers for table views
-               TblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
-               CookTblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
-               DirectionsTblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
+        TblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
+        CookTblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
+        DirectionsTblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         ChooseMealTypeTblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         
     }
     
     // KVO observation
-        override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-            if keyPath == "contentSize" {
-                if let tableView = object as? UITableView {
-                    if tableView == TblV {
-                        TblVH.constant = tableView.contentSize.height
-                    } else if tableView == CookTblV {
-                        CookTblVH.constant = tableView.contentSize.height
-                    } else if tableView == DirectionsTblV {
-                        DirectionsTblVH.constant = tableView.contentSize.height
-                    } else if tableView == ChooseMealTypeTblV {
-                        ChooseMealTypeTblVH.constant = tableView.contentSize.height
-                    }
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "contentSize" {
+            if let tableView = object as? UITableView {
+                if tableView == TblV {
+                    TblVH.constant = tableView.contentSize.height
+                } else if tableView == CookTblV {
+                    CookTblVH.constant = tableView.contentSize.height
+                } else if tableView == DirectionsTblV {
+                    DirectionsTblVH.constant = tableView.contentSize.height
+                } else if tableView == ChooseMealTypeTblV {
+                    ChooseMealTypeTblVH.constant = tableView.contentSize.height
                 }
             }
         }
-        
-        deinit {
-            // Remove observers
-            TblV.removeObserver(self, forKeyPath: "contentSize")
-            CookTblV.removeObserver(self, forKeyPath: "contentSize")
-            DirectionsTblV.removeObserver(self, forKeyPath: "contentSize")
-        }
+    }
     
-  
+    deinit {
+        // Remove observers
+        TblV.removeObserver(self, forKeyPath: "contentSize")
+        CookTblV.removeObserver(self, forKeyPath: "contentSize")
+        DirectionsTblV.removeObserver(self, forKeyPath: "contentSize")
+    }
+    
+    
     
     private func setupInitialWeek() {
-            let today = Date()
-            currentWeekDates = calculateWeekDates(for: today)
-            updateWeekLabel()
-        }
+        let today = Date()
+        currentWeekDates = calculateWeekDates(for: today)
+        updateWeekLabel()
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -258,7 +251,7 @@ class RecipeDetailsVC: UIViewController {
     @IBAction func BackBtn(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
-     
+    
     
     @IBAction func IngredientBtn(_ sender: UIButton) {
         self.IngredientLbl.backgroundColor = UIColor.init(red: 254/255, green: 159/255, blue: 69/255, alpha: 1)
@@ -277,8 +270,6 @@ class RecipeDetailsVC: UIViewController {
         self.DirectionsTblVBgV.isHidden = true
         self.DirectionsBtnsBgV.isHidden = true
     }
-    
-    
     
     @IBAction func CookBtn(_ sender: UIButton) {
         self.IngredientLbl.backgroundColor = UIColor.init(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
@@ -327,16 +318,13 @@ class RecipeDetailsVC: UIViewController {
             }
         }
         self.TblV.reloadData()
-     }
-    
+    }
     
     @IBAction func ServCountMinusBtn(_ sender: UIButton) {
         guard ServCount != 1 else{
             return
         }
-        
         self.ServCount -= 1
-        
         self.ServCountLbl.text = "\(ServCount)"
     }
     
@@ -351,11 +339,11 @@ class RecipeDetailsVC: UIViewController {
     }
     
     @IBAction func AddToBasketBtn(_ sender: UIButton) {
-       guard selectedIndex.count > 0 else{
-        AlertControllerOnr(title: "", message: "Please select atleast one ingredients.")
-          return
+        guard selectedIndex.count > 0 else{
+            AlertControllerOnr(title: "", message: "Please select atleast one ingredients.")
+            return
         }
-     
+        
         self.Api_To_AddToBasket_Recipe()
     }
     
@@ -369,7 +357,6 @@ class RecipeDetailsVC: UIViewController {
         vc.RecipeListArr = self.RecipeInstArr
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
     
     // for popups
     @IBAction func ChoosedaysDoneBtn(_ sender: UIButton) {
@@ -398,7 +385,6 @@ class RecipeDetailsVC: UIViewController {
         self.Api_For_AddToPlan()
         
     }
- 
     
     func SubscriptionPopUp()  {
         let storyboard = UIStoryboard(name: "Subscription", bundle: nil)
@@ -420,28 +406,28 @@ class RecipeDetailsVC: UIViewController {
     }
     
     @IBAction func previousWeekTapped(_ sender: UIButton) {
-//        if let firstDate = currentWeekDates.first {
-//                currentWeekDates = calculateWeekDates(for: calendar.date(byAdding: .day, value: -7, to: firstDate)!)
-//                updateWeekLabel()
-//            }
+        //        if let firstDate = currentWeekDates.first {
+        //                currentWeekDates = calculateWeekDates(for:  calendar.date(byAdding: .day, value: -7, to: firstDate)!)
+        //                updateWeekLabel()
+        //            }
         let today = Date()
         let VfirstDate = currentWeekDates.first ?? Date()
         guard VfirstDate >= today else{
-                 return // Exit if the previous week's start date is earlier than today
-             }
+            return // Exit if the previous week's start date is earlier than today
+        }
         
         if let firstDate = currentWeekDates.first {
-                currentWeekDates = calculateWeekDates(for: calendar.date(byAdding: .day, value: -7, to: firstDate)!)
-                updateWeekLabel()
-            }
-       }
-
-       @IBAction func nextWeekTapped(_ sender: UIButton) {
-           if let lastDate = currentWeekDates.last {
-                 currentWeekDates = calculateWeekDates(for: calendar.date(byAdding: .day, value: 7, to: lastDate)!)
-                 updateWeekLabel()
-             }
-       }
+            currentWeekDates = calculateWeekDates(for: calendar.date(byAdding: .day, value: -7, to: firstDate)!)
+            updateWeekLabel()
+        }
+    }
+       
+    @IBAction func nextWeekTapped(_ sender: UIButton) {
+        if let lastDate = currentWeekDates.last {
+            currentWeekDates = calculateWeekDates(for: calendar.date(byAdding: .day, value: 7, to: lastDate)!)
+            updateWeekLabel()
+        }
+    }
 }
 
 
@@ -483,22 +469,21 @@ extension RecipeDetailsVC: UITableViewDelegate, UITableViewDataSource {
             
             cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
             cell.Img.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
-             
-            let quantityString = recipesArray[indexPath.row].Quantity
-
-              let quantity = Double(quantityString) ?? 0
-               let formatter = NumberFormatter()
-               formatter.minimumFractionDigits = 0  // Show no fractional digits if not needed
-               formatter.maximumFractionDigits = 2  // Limit to 2 fractional digits
-               formatter.numberStyle = .decimal
-
-               if let formattedQuantity = formatter.string(from: NSNumber(value: quantity)) {
-                   print(formattedQuantity) // This will give "2" for 2.00 and "2.05" for 2.05
-                   cell.QuentityLbl.text = "\(formattedQuantity) \(recipesArray[indexPath.row].measure)"
-               }else{
-                   cell.QuentityLbl.text = "\(quantityString) \(recipesArray[indexPath.row].measure)"
-               }
             
+            let quantityString = recipesArray[indexPath.row].Quantity
+            
+            let quantity = Double(quantityString) ?? 0
+            let formatter = NumberFormatter()
+            formatter.minimumFractionDigits = 0  // Show no fractional digits if not needed
+            formatter.maximumFractionDigits = 2  // Limit to 2 fractional digits
+            formatter.numberStyle = .decimal
+            
+            if let formattedQuantity = formatter.string(from: NSNumber(value: quantity)) {
+                print(formattedQuantity) // This will give "2" for 2.00 and "2.05" for 2.05
+                cell.QuentityLbl.text = "\(formattedQuantity) \(recipesArray[indexPath.row].measure)"
+            }else{
+                cell.QuentityLbl.text = "\(quantityString) \(recipesArray[indexPath.row].measure)"
+            }
             
             if selectedIndex.contains(indexPath.row){
                 cell.CheckBtn.setImage(UIImage(named: "YellowCheck"), for: .normal)
@@ -512,7 +497,10 @@ extension RecipeDetailsVC: UITableViewDelegate, UITableViewDataSource {
         }else if tableView == self.CookTblV {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CookwareTblVCell", for: indexPath) as! CookwareTblVCell
             cell.NameLbl.text = CookWareArray[indexPath.row].name
-            cell.Img.image = CookWareArray[indexPath.row].image
+            let img = CookWareArray[indexPath.row].imageURL
+            
+            cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
+            cell.Img.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
             return cell
             
         }else{
@@ -523,46 +511,40 @@ extension RecipeDetailsVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    
-    
-      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-          if tableView == ChoosedaysTblV {
-              if ChooseDayData[indexPath.row].isSelected {
-                  ChooseDayData[indexPath.row].isSelected = false
-              }else{
-                  
-                  let dateformatter = DateFormatter()
-                      let date = self.currentWeekDates[indexPath.row]
-                      dateformatter.dateFormat = "yyyy-MM-dd"
-                      let Sdate = dateformatter.string(from: date)
-                  dateformatter.dateFormat = "yyyy-MM-dd"
-                  let ReconvertDate = dateformatter.date(from: Sdate)!
-                      
-                      dateformatter.dateFormat = "EEEE" // Full day name, e.g., "Monday"
-                      let dayOfWeek = dateformatter.string(from: date)
-                  let selDay = ChooseDayData[indexPath.row].Name
-                  
-                  guard selDay == dayOfWeek else { return }
-                  
-                  dateformatter.dateFormat = "yyyy-MM-dd"
-                  let Cdate = dateformatter.string(from: Date())
-                  dateformatter.dateFormat = "yyyy-MM-dd"
-                  let cReconvertDate = dateformatter.date(from: Cdate)!
-                  
-                  guard ReconvertDate >= cReconvertDate else { return }
-                  
-                  ChooseDayData[indexPath.row].isSelected = true
-              }
-              ChoosedaysTblV.reloadData()
-          }else if tableView == ChooseMealTypeTblV{
-              for i in 0..<ChooseMealTypeyData.count{
-                  ChooseMealTypeyData[i].isSelected = false
-              }
-              ChooseMealTypeyData[indexPath.row].isSelected = true
-              ChooseMealTypeTblV.reloadData()
-          }
-      }
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView == ChoosedaysTblV {
+            if ChooseDayData[indexPath.row].isSelected {
+                ChooseDayData[indexPath.row].isSelected = false
+            }else{
+                let dateformatter = DateFormatter()
+                let date = self.currentWeekDates[indexPath.row]
+                dateformatter.dateFormat = "yyyy-MM-dd"
+                let Sdate = dateformatter.string(from: date)
+                dateformatter.dateFormat = "yyyy-MM-dd"
+                let ReconvertDate = dateformatter.date(from: Sdate)!
+                
+                dateformatter.dateFormat = "EEEE" // Full day name, e.g., "Monday"
+                let dayOfWeek = dateformatter.string(from: date)
+                let selDay = ChooseDayData[indexPath.row].Name
+                guard selDay == dayOfWeek else { return }
+                dateformatter.dateFormat = "yyyy-MM-dd"
+                let Cdate = dateformatter.string(from: Date())
+                dateformatter.dateFormat = "yyyy-MM-dd"
+                let cReconvertDate = dateformatter.date(from: Cdate)!
+                
+                guard ReconvertDate >= cReconvertDate else { return }
+                
+                ChooseDayData[indexPath.row].isSelected = true
+            }
+            ChoosedaysTblV.reloadData()
+        }else if tableView == ChooseMealTypeTblV{
+            for i in 0..<ChooseMealTypeyData.count{
+                ChooseMealTypeyData[i].isSelected = false
+            }
+            ChooseMealTypeyData[indexPath.row].isSelected = true
+            ChooseMealTypeTblV.reloadData()
+        }
+    }
     
     @objc func AddIngredientBtnTapped(sender: UIButton){
         let index = sender.tag
@@ -593,15 +575,15 @@ extension RecipeDetailsVC: UITableViewDelegate, UITableViewDataSource {
         }else{
             return UITableView.automaticDimension
         }
-    }
-}
-  
+     }
+  }
+
 extension RecipeDetailsVC {
     func calculateWeekDates(for date: Date) -> [Date] {
         // Ensure the first day of the week is Monday
         guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: date) else { return [] }
         let startOfWeek = calendar.date(byAdding: .day, value: -(calendar.component(.weekday, from: weekInterval.start) - 2), to: weekInterval.start)!
-
+        
         // Return all dates from Monday to Sunday
         return (0..<7).compactMap { calendar.date(byAdding: .day, value: $0, to: startOfWeek) }
     }
@@ -617,11 +599,11 @@ extension RecipeDetailsVC {
             formatter1.dateFormat = "d" // For the day number
             let startDay = formatter1.string(from: start)
             let endDay = formatter1.string(from: end)
-
+            
             formatter1.dateFormat = "MMM" // For the month abbreviation (e.g., Dec)
             let month = formatter1.string(from: start)
-
-//            FromDateToLbl.text = "\(startDay) - \(endDay) \(month)"
+            
+            //            FromDateToLbl.text = "\(startDay) - \(endDay) \(month)"
             for j in 0..<ChooseDayData.count {
                 ChooseDayData[j].isSelected = false
             }
@@ -636,9 +618,11 @@ extension RecipeDetailsVC{
     func Api_To_Recipe_Details(uri: String){
         var params = [String: Any]()
         
-            params["uri"] = uri
-           
-      
+        params["uri"] = uri
+        
+        params["id"] = Id
+        params["type"] = type
+        params["servings"] = "\(ServCount)"
         
         showIndicator(withTitle: "", and: "")
         
@@ -662,7 +646,8 @@ extension RecipeDetailsVC{
                         let review = self.RecipeDetailsData.first?.review ?? 0
                         let reviewNum = self.RecipeDetailsData.first?.review_number ?? 0
                         
-                        self.RatingLbl.text = "\(review)(\(reviewNum))"
+                        let roundedReview = Double(round(10 * review) / 10.0)
+                        self.RatingView.rating = roundedReview
                         
                         let img  = val?.images?.large?.url
                         let imgUrl = URL(string: img ?? "")
@@ -670,7 +655,7 @@ extension RecipeDetailsVC{
                         self.ImgV.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "No_Image"))
                         
                         self.ImgDesc.text = val?.label ?? ""
-                       // self.ImgDesc1Lbl.text = "By \(val?.source ?? "")"
+                        // self.ImgDesc1Lbl.text = "By \(val?.source ?? "")"
                         
                         let carbs = val?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
                         self.CarbsLbl.text = "\(Int(carbs?.value.quantity ?? 0))"
@@ -680,27 +665,28 @@ extension RecipeDetailsVC{
                         
                         let Protine = val?.totalNutrients?.first(where: {$0.key == "PROCNT"})
                         self.ProtienLbl.text = "\(Int(Protine?.value.quantity ?? 0))"
-                         
+                        
                         let calories = val?.calories ?? 0
                         self.Calorieslbl.text = "\(Int(calories))"
                         
                         self.TotalTimeLbl.text = "\(val?.totalTime ?? 0) min"
-                        
+                        self.PrepTimeLbl.text = "\(val?.prep_time ?? 0) min"
                         let ingredients = val?.ingredients
                         
                         for item in ingredients ?? [] {
                             let name = item.food ?? ""
-                            let quantity = item.quantity ?? 0
+                            let quantity = item.quantity ?? ""
                             let measure = item.measure ?? ""
                             let img = item.image ?? ""
                             let food = item.food ?? ""
                             let foodCat = item.foodCategory ?? ""
                             let FoodId = item.foodID ?? ""
+                            let ingredient_cost = item.ingredientCost ?? ""
                             print("name: \(name)")
                             print("quantity: \(quantity)")
                             print("measure: \(measure)")
                             
-                            self.recipesArray.append(contentsOf: [RecipeDetailsIngredientModel(name: name, image: img, Quantity: "\(quantity)", food: food, foodCategory: foodCat, measure: "\(measure)", foodID: FoodId)])
+                            self.recipesArray.append(contentsOf: [RecipeDetailsIngredientModel(name: name, image: img, Quantity: quantity, food: food, foodCategory: foodCat, measure: "\(measure)", foodID: FoodId, ingredient_cost: ingredient_cost)])
                         }
                         
                         let ingredientList = val?.instructionLines
@@ -716,12 +702,12 @@ extension RecipeDetailsVC{
                         }
                         
                         self.SelectAllBtnO.isSelected = true
-                         
-                         
+                        
+                        self.CookWareArray = self.RecipeDetailsData.first?.recipe?.cookware ?? []
                         self.TblV.reloadData()
                         self.CookTblV.reloadData()
                         self.DirectionsTblV.reloadData()
-  
+                        
                     }
                 }else{
                     let msg = d.message ?? ""
@@ -731,10 +717,10 @@ extension RecipeDetailsVC{
                 print(error)
             }
         })
-    }
+     }
     
     func Api_For_AddToPlan() {
-       
+        
         let dateformatter = DateFormatter()
         
         var SerArray = [[String: String]]()
@@ -756,18 +742,14 @@ extension RecipeDetailsVC{
         }
         
         print(SerArray)
-        
         let uri = self.uri
-        
         let MealType = ChooseMealTypeyData.first(where: {$0.isSelected == true})?.Name ?? ""
-        
-            let paramsDict: [String: Any] = [
-                "type": MealType,
-                "uri": uri,
-                "slot": SerArray,
-                "serving": self.ServCount
-            ]
-      
+        let paramsDict: [String: Any] = [
+            "type": MealType,
+            "uri": uri,
+            "slot": SerArray,
+            "serving": self.ServCount
+        ]
         
         showIndicator(withTitle: "", and: "")
         
@@ -799,7 +781,7 @@ extension RecipeDetailsVC{
                     
                     self.ChoosedaysTblV.reloadData()
                     self.ChooseMealTypeTblV.reloadData()
-                     
+                    
                     self.showToast(Msg)
                 } else {
                     self.showToast(Msg)
@@ -814,23 +796,21 @@ extension RecipeDetailsVC{
     
     
     func Api_To_AddToBasket_Recipe() {
-        
         var jsonArray: [[String: Any]] = []
         for i in 0..<recipesArray.count{
             if selectedIndex.contains(i){
-                let dictionary1: [String: String] = ["name": recipesArray[i].name, "image": recipesArray[i].image, "food": recipesArray[i].food, "quantity": recipesArray[i].Quantity, "foodCategory": recipesArray[i].foodCategory, "measure": recipesArray[i].measure, "food_id": recipesArray[i].foodID, "status": "0"]
+                let dictionary1: [String: String] = ["name": recipesArray[i].name, "image": recipesArray[i].image, "food": recipesArray[i].food, "quantity": recipesArray[i].Quantity,"ingredient_cost": recipesArray[i].ingredient_cost, "foodCategory": recipesArray[i].foodCategory, "measure": recipesArray[i].measure, "food_id": recipesArray[i].foodID, "status": "0"]
                 jsonArray.append(dictionary1)
             }
         }
         print(jsonArray)
         
-            let paramsDict: [String: Any] = [
-                "ingredients": jsonArray,
-                "serving": self.ServCount,
-                "uri": self.uri,
-                "type": self.MealType
-            ]
-      
+        let paramsDict: [String: Any] = [
+            "ingredients": jsonArray,
+            "serving": self.ServCount,
+            "uri": self.uri,
+            "type": self.MealType
+        ]
         
         showIndicator(withTitle: "", and: "")
         
@@ -853,7 +833,7 @@ extension RecipeDetailsVC{
                     self.backAction()
                     self.navigationController?.popViewController(animated: true)
                     self.navigationController?.showToast("Added to basket.")
-    
+                    
                 } else {
                     self.showToast(Msg)
                 }

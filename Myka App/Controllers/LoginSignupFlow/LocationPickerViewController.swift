@@ -48,7 +48,6 @@ extension LocationPickerViewController: GMSAutocompleteViewControllerDelegate {
         self.reverseGeocodeCoordinate(CLLocationCoordinate2D(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude), comlition: ({ adress,city,state,zipCode in
             self.locviewModel.didSelectPlace?(adress, "\(place.coordinate.latitude)","\(place.coordinate.longitude)",city,state,zipCode)
         }))
-                                      
        
         viewController.dismiss(animated: true, completion: nil)
     }
@@ -214,6 +213,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     }
     
 }
+
 class GeocoderManager {
     static let shared = GeocoderManager()
     private let geocoder = GMSGeocoder()

@@ -15,6 +15,7 @@ struct Innstructions {
 }
 
 struct Ingredients {
+    var header: String?
     var txt: String
     var food: String
     var Quantity: String
@@ -57,7 +58,6 @@ class CreateRecipeVC: UIViewController, UITextFieldDelegate, UITextViewDelegate{
     
     var imagePicker1: ImagePicker1!
     
-    
     var count = 1
     
     var IngredientsArr = [Ingredients(txt: "", food: "", Quantity: "", Unit: "pounds", img: "")]
@@ -71,7 +71,6 @@ class CreateRecipeVC: UIViewController, UITextFieldDelegate, UITextViewDelegate{
      
     var ImgItemName = ""
  
-    
     var AllDataList = [CreateRecipeModel]()
     
     var cookBooksData = [FavDropDownModel]()
@@ -769,10 +768,7 @@ extension CreateRecipeVC {
         self.convertURLToBase64(urlString: urlString) { base64String in
             if let base64String = base64String {
                 print("Base64 Encoded String: \(base64String)")
-                self.IngredientsArr.append(Ingredients(txt: itm.food ?? "", food: itm.food ?? "",
-                                                       Quantity: "\(itm.quantity ?? 0)",
-                                                       Unit: UnitString,
-                                                       img: base64String))
+                self.IngredientsArr.append(Ingredients(txt: itm.food ?? "", food: itm.food ?? "",Quantity: itm.quantity ?? "",Unit: UnitString,img: base64String))
             } else {
                 print("Failed to encode URL to Base64")
             }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Map view configurations" minToolsVersion="14.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -45,14 +45,14 @@
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="g12 1" translatesAutoresizingMaskIntoConstraints="NO" id="SDD-zh-rpy">
-                                <rect key="frame" x="86.666666666666686" y="129" width="220" height="250"/>
+                                <rect key="frame" x="86.666666666666686" y="188" width="220" height="250"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="250" id="Eds-uK-KZR"/>
                                     <constraint firstAttribute="width" constant="220" id="Vja-Js-z5c"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f95-rm-5tD">
-                                <rect key="frame" x="30" y="404" width="333" height="42"/>
+                                <rect key="frame" x="30" y="463" width="333" height="42"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="42" id="pFA-H6-nmJ"/>
                                 </constraints>
@@ -60,21 +60,21 @@
                                     <fragment content="My Kai">
                                         <attributes>
                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
+                                            <font key="NSFont" metaFont="system" size="30"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
                                     <fragment content=" ">
                                         <attributes>
                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
+                                            <font key="NSFont" metaFont="system" size="30"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
                                     <fragment content="Meal Planner">
                                         <attributes>
                                             <color key="NSColor" red="0.99607843137254903" green="0.62352941176470589" blue="0.27058823529411763" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
+                                            <font key="NSFont" metaFont="system" size="30"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
@@ -82,7 +82,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign in to create, plan, and  enjoy delicious meals!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MZX-g8-jBN">
-                                <rect key="frame" x="30" y="454" width="333" height="45"/>
+                                <rect key="frame" x="30" y="513" width="333" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="SUk-4D-1hI"/>
                                 </constraints>
@@ -91,7 +91,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="III-YC-SrW">
-                                <rect key="frame" x="30" y="679" width="333" height="50"/>
+                                <rect key="frame" x="30" y="645" width="333" height="50"/>
                                 <color key="backgroundColor" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="ysk-YO-ZZo"/>
@@ -111,7 +111,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m7b-6y-dun">
-                                <rect key="frame" x="68.666666666666671" y="769" width="255.66666666666663" height="20"/>
+                                <rect key="frame" x="68.666666666666671" y="735" width="255.66666666666663" height="20"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Already have an account," textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xZs-Hf-a50">
                                         <rect key="frame" x="0.0" y="0.0" width="205.33333333333334" height="20"/>
@@ -182,7 +182,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bW0-Yg-pDs">
-                                <rect key="frame" x="0.0" y="79" width="393" height="739"/>
+                                <rect key="frame" x="0.0" y="138" width="393" height="646"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6xs-4h-tbG">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="791"/>
@@ -195,7 +195,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sUd-ye-f26">
-                                                <rect key="frame" x="42.666666666666657" y="178" width="319.33333333333337" height="42"/>
+                                                <rect key="frame" x="72" y="178" width="260.66666666666663" height="42"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="42" id="hNo-bW-qvn"/>
                                                 </constraints>
@@ -203,21 +203,21 @@
                                                     <fragment content="My Kai">
                                                         <attributes>
                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="30"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content=" ">
                                                         <attributes>
                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="30"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content="Meal Planner">
                                                         <attributes>
                                                             <color key="NSColor" red="0.99607843137254903" green="0.62352941176470589" blue="0.27058823529411763" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="30"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
@@ -286,13 +286,13 @@
                                                     <fragment content="Login to your ">
                                                         <attributes>
                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="18" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="18"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content="Account">
                                                         <attributes>
                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="18" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="18"/>
                                                         </attributes>
                                                     </fragment>
                                                 </attributedString>
@@ -342,7 +342,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ggk-YH-7Pd">
-                                                        <rect key="frame" x="0.0" y="71" width="333" height="51"/>
+                                                        <rect key="frame" x="0.0" y="71.000000000000057" width="333" height="51"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Rectangle 4475" translatesAutoresizingMaskIntoConstraints="NO" id="pND-Ai-9JD">
                                                                 <rect key="frame" x="0.0" y="0.0" width="333" height="51"/>
@@ -355,7 +355,7 @@
                                                                 </constraints>
                                                             </imageView>
                                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Qav-wY-DDI">
-                                                                <rect key="frame" x="53" y="8.3333333333333712" width="231" height="34"/>
+                                                                <rect key="frame" x="53" y="8.3333333333332575" width="231" height="34"/>
                                                                 <color key="textColor" red="0.23529411759999999" green="0.27058823529999998" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="15"/>
                                                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
@@ -366,7 +366,7 @@
                                                                 </userDefinedRuntimeAttributes>
                                                             </textField>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IXo-J7-VUJ">
-                                                                <rect key="frame" x="294" y="10.333333333333371" width="30" height="30"/>
+                                                                <rect key="frame" x="294" y="10.333333333333258" width="30" height="30"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="30" id="IzH-sd-I83"/>
                                                                     <constraint firstAttribute="width" constant="30" id="Jyw-iw-hXS"/>
@@ -554,7 +554,7 @@
                                 </constraints>
                             </scrollView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kI3-gs-vxs">
-                                <rect key="frame" x="0.0" y="59" width="393" height="50"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="50"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ViB-ZZ-5gS">
                                         <rect key="frame" x="20" y="0.0" width="30" height="50"/>
@@ -611,7 +611,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9n4-qd-wc3">
-                                <rect key="frame" x="0.0" y="79" width="393" height="739"/>
+                                <rect key="frame" x="0.0" y="138" width="393" height="646"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FYP-XI-8Fh">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="626.66666666666663"/>
@@ -624,7 +624,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O0g-CH-YYN">
-                                                <rect key="frame" x="37" y="178" width="319.33333333333326" height="42"/>
+                                                <rect key="frame" x="66.333333333333343" y="178" width="260.66666666666663" height="42"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="42" id="99q-Gx-gzL"/>
                                                 </constraints>
@@ -632,21 +632,21 @@
                                                     <fragment content="My Kai">
                                                         <attributes>
                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="30"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content=" ">
                                                         <attributes>
                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="30"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content="Meal Planner">
                                                         <attributes>
                                                             <color key="NSColor" red="0.99607843137254903" green="0.62352941176470589" blue="0.27058823529411763" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="30"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
@@ -662,14 +662,14 @@
                                                     <fragment content="Forgot ">
                                                         <attributes>
                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="18" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="18"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content="Password">
                                                         <attributes>
                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="18" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="18"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
@@ -722,7 +722,7 @@
                                                 </subviews>
                                             </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w5j-LR-k5r">
-                                                <rect key="frame" x="30" y="386.33333333333331" width="333" height="50"/>
+                                                <rect key="frame" x="30" y="386.33333333333337" width="333" height="50"/>
                                                 <color key="backgroundColor" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="q8b-Si-qkT"/>
@@ -771,7 +771,7 @@
                                 </constraints>
                             </scrollView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bXQ-gd-dT0">
-                                <rect key="frame" x="0.0" y="59" width="393" height="50"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="50"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jkC-ey-HZR">
                                         <rect key="frame" x="20" y="0.0" width="30" height="50"/>
@@ -825,7 +825,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PCL-v4-Ezv">
-                                <rect key="frame" x="0.0" y="79" width="393" height="739"/>
+                                <rect key="frame" x="0.0" y="138" width="393" height="646"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0cx-Jx-lpL">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="737.66666666666663"/>
@@ -838,7 +838,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cg2-Qo-0Ev">
-                                                <rect key="frame" x="37" y="178" width="319.33333333333326" height="42"/>
+                                                <rect key="frame" x="66.333333333333343" y="178" width="260.66666666666663" height="42"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="42" id="Aya-WB-nVO"/>
                                                 </constraints>
@@ -846,21 +846,21 @@
                                                     <fragment content="My Kai">
                                                         <attributes>
                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="30"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content=" ">
                                                         <attributes>
                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="30"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content="Meal Planner">
                                                         <attributes>
                                                             <color key="NSColor" red="0.99607843137254903" green="0.62352941176470589" blue="0.27058823529411763" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="30"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
@@ -879,14 +879,14 @@
                                                             <fragment content="Please check your ">
                                                                 <attributes>
                                                                     <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <font key="NSFont" size="18" name="Montserrat-Bold"/>
+                                                                    <font key="NSFont" metaFont="system" size="18"/>
                                                                     <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                 </attributes>
                                                             </fragment>
                                                             <fragment content="Email">
                                                                 <attributes>
                                                                     <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <font key="NSFont" size="18" name="Montserrat-Bold"/>
+                                                                    <font key="NSFont" metaFont="system" size="18"/>
                                                                     <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                 </attributes>
                                                             </fragment>
@@ -952,7 +952,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iKj-7i-2pc">
-                                                        <rect key="frame" x="0.0" y="71" width="333" height="20"/>
+                                                        <rect key="frame" x="0.0" y="71.000000000000057" width="333" height="20"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Didn’t get a code ?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eFq-fv-vIL">
                                                                 <rect key="frame" x="0.0" y="0.0" width="149.33333333333334" height="20"/>
@@ -1063,7 +1063,7 @@
                                 </constraints>
                             </scrollView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NyK-4D-LEo">
-                                <rect key="frame" x="0.0" y="59" width="393" height="50"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="50"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6fz-zJ-eFy">
                                         <rect key="frame" x="20" y="0.0" width="30" height="50"/>
@@ -1205,7 +1205,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eSt-7k-BgO">
-                                <rect key="frame" x="0.0" y="79" width="393" height="739"/>
+                                <rect key="frame" x="0.0" y="138" width="393" height="646"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kf8-Q7-QOA">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="697.66666666666663"/>
@@ -1218,7 +1218,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e2t-Rn-WRp">
-                                                <rect key="frame" x="37" y="178" width="319.33333333333326" height="42"/>
+                                                <rect key="frame" x="66.333333333333343" y="178" width="260.66666666666663" height="42"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="42" id="Typ-Fi-pWj"/>
                                                 </constraints>
@@ -1226,21 +1226,21 @@
                                                     <fragment content="My Kai">
                                                         <attributes>
                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="30"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content=" ">
                                                         <attributes>
                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="30"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content="Meal Planner">
                                                         <attributes>
                                                             <color key="NSColor" red="0.99607843137254903" green="0.62352941176470589" blue="0.27058823529411763" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="30"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
@@ -1256,14 +1256,14 @@
                                                     <fragment content="Reset ">
                                                         <attributes>
                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="18" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="18"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content="Password">
                                                         <attributes>
                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="18" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="18"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
@@ -1314,7 +1314,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CYZ-Cu-Fj1">
-                                                        <rect key="frame" x="0.0" y="71" width="333" height="51"/>
+                                                        <rect key="frame" x="0.0" y="71.000000000000057" width="333" height="51"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Rectangle 4475" translatesAutoresizingMaskIntoConstraints="NO" id="dJ4-0g-Haz">
                                                                 <rect key="frame" x="0.0" y="0.0" width="333" height="51"/>
@@ -1327,7 +1327,7 @@
                                                                 </constraints>
                                                             </imageView>
                                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm New Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xy1-D1-TwL">
-                                                                <rect key="frame" x="53" y="8.3333333333333712" width="270" height="34"/>
+                                                                <rect key="frame" x="53" y="8.3333333333332575" width="270" height="34"/>
                                                                 <color key="textColor" red="0.23529411759999999" green="0.27058823529999998" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="15"/>
                                                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
@@ -1405,7 +1405,7 @@
                                 </constraints>
                             </scrollView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BUS-mq-Lux">
-                                <rect key="frame" x="0.0" y="59" width="393" height="50"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="50"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6zx-fS-42u">
                                         <rect key="frame" x="20" y="0.0" width="30" height="50"/>
@@ -1542,10 +1542,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="myB-Ix-VX7">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="666"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Find stores near you" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F0X-rs-gN7">
-                                        <rect key="frame" x="30" y="479.66666666666663" width="333" height="25.333333333333314"/>
+                                        <rect key="frame" x="30" y="386.66666666666669" width="333" height="25.333333333333314"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="25.329999999999998" id="1mo-fs-u2N"/>
                                         </constraints>
@@ -1554,7 +1554,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="8Vt-kO-L7K">
-                                        <rect key="frame" x="30" y="520" width="333" height="99"/>
+                                        <rect key="frame" x="30" y="427" width="333" height="99"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We need your location to find grocery stores nearby for you." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LOn-pZ-RMW">
                                                 <rect key="frame" x="0.0" y="0.0" width="333" height="42"/>
@@ -1574,7 +1574,7 @@
                                         </subviews>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Pk-im-Epw">
-                                        <rect key="frame" x="30" y="659" width="333" height="50"/>
+                                        <rect key="frame" x="30" y="566" width="333" height="50"/>
                                         <color key="backgroundColor" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="1LT-iS-Uuv"/>
@@ -1594,7 +1594,7 @@
                                         </connections>
                                     </button>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Precise Location - On" translatesAutoresizingMaskIntoConstraints="NO" id="Muh-pd-4Dp">
-                                        <rect key="frame" x="66.333333333333343" y="20" width="260.33333333333326" height="404.66666666666669"/>
+                                        <rect key="frame" x="96.333333333333329" y="20" width="200.33333333333343" height="311.66666666666669"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="Muh-pd-4Dp" secondAttribute="height" multiplier="130:202" id="1IC-ok-GqV"/>
                                         </constraints>
@@ -1640,10 +1640,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sAs-SU-RO2">
-                                <rect key="frame" x="0.0" y="79" width="393" height="739"/>
+                                <rect key="frame" x="0.0" y="138" width="393" height="646"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kKu-Am-8ee">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="611"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="607.33333333333337"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="notification" translatesAutoresizingMaskIntoConstraints="NO" id="VnD-7C-1WF">
                                                 <rect key="frame" x="121.66666666666669" y="0.0" width="150" height="150"/>
@@ -1653,16 +1653,16 @@
                                                 </constraints>
                                             </imageView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="S4i-nG-P1u">
-                                                <rect key="frame" x="30" y="200" width="333" height="140.33333333333337"/>
+                                                <rect key="frame" x="30" y="200" width="333" height="136.66666666666663"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VvE-rP-gIv">
-                                                        <rect key="frame" x="0.0" y="0.0" width="333" height="25.333333333333332"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="333" height="21.666666666666668"/>
                                                         <attributedString key="attributedText">
                                                             <fragment content="Turn on ">
                                                                 <attributes>
                                                                     <color key="NSBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <font key="NSFont" size="18" name="Poppins-Bold"/>
+                                                                    <font key="NSFont" metaFont="system" size="18"/>
                                                                     <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                 </attributes>
                                                             </fragment>
@@ -1670,7 +1670,7 @@
                                                                 <attributes>
                                                                     <color key="NSBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <font key="NSFont" size="18" name="Poppins-Bold"/>
+                                                                    <font key="NSFont" metaFont="system" size="18"/>
                                                                     <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                 </attributes>
                                                             </fragment>
@@ -1678,7 +1678,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="liw-Kv-2EQ">
-                                                        <rect key="frame" x="0.0" y="35.333333333333314" width="333" height="105"/>
+                                                        <rect key="frame" x="0.0" y="31.666666666666686" width="333" height="105"/>
                                                         <string key="text">Change to “Never miss a thing! Get reminders for missing ingredients, updates on your grocery orders, recipe tips, and exclusive deals. Enable notifications to stay organized and save time with Myka!</string>
                                                         <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="15"/>
                                                         <color key="textColor" red="0.23529411759999999" green="0.27058823529999998" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1687,7 +1687,7 @@
                                                 </subviews>
                                             </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kPj-8t-tQG">
-                                                <rect key="frame" x="30" y="370.33333333333331" width="333" height="50"/>
+                                                <rect key="frame" x="30" y="366.66666666666669" width="333" height="50"/>
                                                 <color key="backgroundColor" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="aX3-0O-QzP"/>
@@ -1754,7 +1754,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KV5-q7-z96">
-                                <rect key="frame" x="0.0" y="79" width="393" height="739"/>
+                                <rect key="frame" x="0.0" y="138" width="393" height="646"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j6l-h6-pMo">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="774.33333333333337"/>
@@ -1767,7 +1767,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OTi-EF-ji4">
-                                                <rect key="frame" x="37" y="178" width="319.33333333333326" height="42"/>
+                                                <rect key="frame" x="66.333333333333343" y="178" width="260.66666666666663" height="42"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="42" id="1dc-Ku-mAc"/>
                                                 </constraints>
@@ -1775,21 +1775,21 @@
                                                     <fragment content="My Kai">
                                                         <attributes>
                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="30"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content=" ">
                                                         <attributes>
                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="30"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content="Meal Planner">
                                                         <attributes>
                                                             <color key="NSColor" red="0.99607843137254903" green="0.62352941176470589" blue="0.27058823529411763" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="30"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
@@ -1858,14 +1858,14 @@
                                                     <fragment content="Sign-up to ">
                                                         <attributes>
                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="18" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="18"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content="My kai">
                                                         <attributes>
                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="18" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="18"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
@@ -1916,20 +1916,20 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ePw-Ic-yyQ">
-                                                        <rect key="frame" x="0.0" y="71" width="333" height="51"/>
+                                                        <rect key="frame" x="0.0" y="71.000000000000057" width="333" height="51"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Rectangle 4475" translatesAutoresizingMaskIntoConstraints="NO" id="bFZ-gj-ZrB">
                                                                 <rect key="frame" x="0.0" y="0.0" width="333" height="51"/>
                                                             </imageView>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Pass" translatesAutoresizingMaskIntoConstraints="NO" id="n4m-XN-fYn">
-                                                                <rect key="frame" x="20" y="13.000000000000057" width="25" height="25"/>
+                                                                <rect key="frame" x="20" y="13" width="25" height="25"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="25" id="dyy-qt-A78"/>
                                                                     <constraint firstAttribute="height" constant="25" id="tF8-6S-Hco"/>
                                                                 </constraints>
                                                             </imageView>
                                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8ky-wE-swR">
-                                                                <rect key="frame" x="53" y="8.3333333333333712" width="230" height="34"/>
+                                                                <rect key="frame" x="53" y="8.3333333333332575" width="230" height="34"/>
                                                                 <color key="textColor" red="0.23529411759999999" green="0.27058823529999998" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="15"/>
                                                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
@@ -1940,7 +1940,7 @@
                                                                 </userDefinedRuntimeAttributes>
                                                             </textField>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AYb-fG-kEf">
-                                                                <rect key="frame" x="293" y="10.333333333333314" width="30" height="30"/>
+                                                                <rect key="frame" x="293" y="10.333333333333258" width="30" height="30"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="30" id="KYW-so-dcc"/>
                                                                     <constraint firstAttribute="width" constant="30" id="Ot1-cX-JDz"/>
@@ -2095,7 +2095,7 @@
                                 </constraints>
                             </scrollView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="29L-fB-n5d">
-                                <rect key="frame" x="0.0" y="59" width="393" height="50"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="50"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="73M-65-qWT">
                                         <rect key="frame" x="20" y="0.0" width="30" height="50"/>
@@ -2168,7 +2168,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nzm-S8-shd">
-                                <rect key="frame" x="0.0" y="79" width="393" height="739"/>
+                                <rect key="frame" x="0.0" y="138" width="393" height="646"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EP9-Eb-QIx">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="894.66666666666663"/>
@@ -2185,21 +2185,21 @@
                                                             <fragment content="Enter your">
                                                                 <attributes>
                                                                     <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <font key="NSFont" size="26" name="Montserrat-Bold"/>
+                                                                    <font key="NSFont" metaFont="system" size="26"/>
                                                                     <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                 </attributes>
                                                             </fragment>
                                                             <fragment content=" ">
                                                                 <attributes>
                                                                     <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                    <font key="NSFont" size="26" name="Montserrat-Bold"/>
+                                                                    <font key="NSFont" metaFont="system" size="26"/>
                                                                     <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                 </attributes>
                                                             </fragment>
                                                             <fragment content="address">
                                                                 <attributes>
                                                                     <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <font key="NSFont" size="26" name="Montserrat-Bold"/>
+                                                                    <font key="NSFont" metaFont="system" size="26"/>
                                                                     <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                 </attributes>
                                                             </fragment>
@@ -2229,7 +2229,7 @@
                                                                         </constraints>
                                                                     </imageView>
                                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xae-qd-mKL">
-                                                                        <rect key="frame" x="45" y="9.6666666666666572" width="268" height="21"/>
+                                                                        <rect key="frame" x="45" y="9.6666666666666856" width="268" height="21"/>
                                                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                                         <textInputTraits key="textInputTraits"/>
@@ -2600,10 +2600,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pxx-rf-zDs">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="666"/>
                                 <subviews>
                                     <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RXc-ep-b4o" customClass="GMSMapView">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="602"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="509"/>
                                         <standardMapConfiguration key="preferredConfiguration"/>
                                     </mapView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wX2-GW-O7k">
@@ -2621,7 +2621,7 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="crJ-D9-oXT">
-                                        <rect key="frame" x="0.0" y="509" width="393" height="250"/>
+                                        <rect key="frame" x="0.0" y="416" width="393" height="250"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New York, USA" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kpD-hU-YJH">
                                                 <rect key="frame" x="30" y="95" width="333" height="22.666666666666671"/>
@@ -2791,7 +2791,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MarkerIcon" translatesAutoresizingMaskIntoConstraints="NO" id="gPj-sx-l8d">
-                                        <rect key="frame" x="176.66666666666666" y="262" width="40" height="40"/>
+                                        <rect key="frame" x="176.66666666666666" y="215.66666666666669" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="40" id="JuW-Id-js2"/>
                                             <constraint firstAttribute="height" constant="40" id="aFO-mM-qvA"/>
@@ -2849,7 +2849,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aQE-l8-XYI">
-                                <rect key="frame" x="0.0" y="79" width="393" height="739"/>
+                                <rect key="frame" x="0.0" y="138" width="393" height="646"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="reP-Pe-Vje">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="822"/>
@@ -2883,14 +2883,14 @@
                                                     <fragment content="Confirm your ">
                                                         <attributes>
                                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="25" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="25"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content="address">
                                                         <attributes>
                                                             <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="25" name="Montserrat-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="25"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
@@ -3076,7 +3076,7 @@
                                                                 <rect key="frame" x="0.0" y="0.0" width="333" height="51"/>
                                                             </imageView>
                                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="City" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GGS-4m-MIC">
-                                                                <rect key="frame" x="5" y="8.6666666666666856" width="323" height="34"/>
+                                                                <rect key="frame" x="5" y="8.6666666666666288" width="323" height="34"/>
                                                                 <color key="textColor" red="0.23529411759999999" green="0.27058823529999998" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="15"/>
                                                                 <textInputTraits key="textInputTraits"/>
@@ -3253,7 +3253,7 @@
                                                 </subviews>
                                             </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BeS-ep-nkQ">
-                                                <rect key="frame" x="350" y="7.6666666666666714" width="35" height="35"/>
+                                                <rect key="frame" x="350" y="7.6666666666666572" width="35" height="35"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="35" id="9xc-yc-wRj"/>
                                                     <constraint firstAttribute="width" constant="35" id="mbm-Hl-r2H"/>

@@ -40,7 +40,7 @@ class DinnerVc: UIViewController {
     
     var ChooseDayData = [BodyGoalsModel(Name: "Monday", isSelected: false), BodyGoalsModel(Name: "Tuesday", isSelected: false), BodyGoalsModel(Name: "Wednesday", isSelected: false), BodyGoalsModel(Name: "Thursday", isSelected: false), BodyGoalsModel(Name: "Friday", isSelected: false), BodyGoalsModel(Name: "Saturday", isSelected: false), BodyGoalsModel(Name: "Sunday", isSelected: false)]
     
-    var ChooseMealTypeyData = [BodyGoalsModel(Name: "Breakfast", isSelected: false), BodyGoalsModel(Name: "Lunch", isSelected: false), BodyGoalsModel(Name: "Dinner", isSelected: false), BodyGoalsModel(Name: "Snacks", isSelected: false), BodyGoalsModel(Name: "Brunch", isSelected: false)]
+    var ChooseMealTypeyData = [BodyGoalsModel(Name: "Breakfast", isSelected: false), BodyGoalsModel(Name: "Brunch", isSelected: false),BodyGoalsModel(Name: "Dessert", isSelected: false), BodyGoalsModel(Name: "Lunch", isSelected: false), BodyGoalsModel(Name: "Dinner", isSelected: false), BodyGoalsModel(Name: "Snacks", isSelected: false)]
     
     var currentWeekDates: [Date] = []
     var calendar = Calendar.current
@@ -79,7 +79,7 @@ class DinnerVc: UIViewController {
         self.view.addSubview(self.ChooseMealTypePopupV)
         self.ChooseMealTypePopupV.isHidden = true
         
-           self.TitleLbl.text = self.titleTxt
+        self.TitleLbl.text = self.titleTxt
         
         
         CollV.delegate = self
@@ -194,13 +194,20 @@ class DinnerVc: UIViewController {
     }
     
     @IBAction func ChooseMealDoneBtn(_ sender: UIButton) {
-        guard ChooseMealTypeyData.contains(where: { $0.isSelected }) else {
-            AlertControllerOnr(title: "", message: "Please select meal type.")
-            return
+       
+        if let selectedMeal = ChooseMealTypeyData.first(where: { $0.isSelected }) {
+            let value = selectedMeal.Name
+            print("Selected meal:", value)
+            self.ChooseMealTypePopupV.isHidden = true
+             
+            self.Api_For_AddToPlan(uri: self.SelUri, type: value)
+        }else{
+            guard ChooseMealTypeyData.contains(where: { $0.isSelected }) else {
+                AlertControllerOnr(title: "", message: "Please select meal type.")
+                return
+            }
         }
-        self.ChooseMealTypePopupV.isHidden = true
-         
-        self.Api_For_AddToPlan(uri: self.SelUri, type: self.titleTxt)
+       
     }
     
     
@@ -242,8 +249,14 @@ extension DinnerVc: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DinnerCollVCell", for: indexPath) as! DinnerCollVCell
            cell.NameLbl.text = self.SearchAllRecipeArr[indexPath.item].recipe?.label ?? ""
            
-           cell.RatingLbl.text = "\(self.SearchAllRecipeArr[indexPath.item].review ?? 0)(\(self.SearchAllRecipeArr[indexPath.item].review_number ?? 0))"
-            
+           let review = self.SearchAllRecipeArr[indexPath.item].review ?? 0
+           
+           let roundedReview = Double(round(10 * review) / 10.0)
+           cell.ratingView.rating = roundedReview
+           
+           
+//           cell.RatingLbl.text = "\(self.SearchAllRecipeArr[indexPath.item].review ?? 0)(\(self.SearchAllRecipeArr[indexPath.item].review_number ?? 0))"
+           
           // cell.PriceLbl.text = ""
                 
            cell.TimeLbl.text = "\(self.SearchAllRecipeArr[indexPath.item].recipe?.totalTime ?? 0) min"
@@ -339,7 +352,7 @@ extension DinnerVc: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
     }
  
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//               return CGSize(width: collectionView.frame.width/2 - 5, height: collectionView.frame.height)
+               return CGSize(width: collectionView.frame.width/2 - 5, height: 285)
            
 //           let padding: CGFloat = 10
 //           let itemsPerRow: CGFloat = 2
@@ -347,7 +360,7 @@ extension DinnerVc: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
 //           let availableWidth = collectionView.frame.size.width - totalPadding
 //           let itemWidth = availableWidth / itemsPerRow
            
-           return CGSize(width: 190, height: 275)
+//          return CGSize(width: 190, height: 285)
        }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -579,22 +592,34 @@ extension DinnerVc {
         
         var mealTypeArray: [String] = []
         var healthArray: [String] = []
-        var timeArray: [String] = []
         var cuisinesArrList: [String] = []
-        var NuritionArr: [String] = []
         
         mealTypeArray = MealArray.filter { $0.Selcolor }.map { $0.name }
-        healthArray = DietArray.filter { $0.Selcolor }.map { $0.value }
-        timeArray = CookTimeArray.filter { $0.Selcolor }.map { $0.value }
+        healthArray = DietArray.filter { $0.Selcolor }.map { $0.name }
         cuisinesArrList = CuisinesArray.filter { $0.Selcolor }.map { $0.value }
-        NuritionArr = NutritionArray.filter { $0.Selcolor }.map { $0.value }
+        
+        var highestCookTime = ""
+        if let maxCookTime = self.CookTimeArray
+            .filter({ $0.Selcolor })
+            .max(by: { $0.value < $1.value }) {
+            highestCookTime = maxCookTime.value
+            print("Highest selected cook time:", highestCookTime)
+        }
+        
+        var highestNutrition = ""
+        if let maxNutrition = self.NutritionArray
+            .filter({ $0.Selcolor })
+            .max(by: { $0.value < $1.value }) {
+            highestNutrition = maxNutrition.value
+            print("Highest selected nutrition:", highestNutrition)
+        }
         
         if comesfrom == "Filter"{
             params["mealType"] = mealTypeArray
             params["health"] = healthArray
-            params["time"] = timeArray
+            params["time"] = highestCookTime
             params["cuisineType"] = cuisinesArrList
-            params["calories"] = NuritionArr
+            params["calories"] = highestNutrition
         }else if comesfrom == "Mealtype"{
             params["mealType"] = Serach
         }else if comesfrom == "PopularCat"{
@@ -603,12 +628,13 @@ extension DinnerVc {
             params["q"] = Serach
         }
       
-        
         showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.recipe
-        print(params,"Params")
-        print(loginURL,"loginURL")
+        print("*************************Params******************************")
+        print(params)
+        print("*************************loginURL****************************")
+        print(loginURL)
         
         WebService.shared.postServiceMultipart(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
             
@@ -622,16 +648,21 @@ extension DinnerVc {
                     if let list = d.data, list.recipes != nil {
  
                         let allData = list.recipes ?? []
-     
-                        let uniqueRecipes = Array(
-                            Dictionary(grouping: allData) { $0.recipe?.label ?? "" }
+                        self.SearchAllRecipeArr = allData
+//                        let uniqueRecipes = Array(
+//                            Dictionary(grouping: allData) { $0.recipe?.label ?? "" }
+//                                .values
+//                                .compactMap { $0.first }
+//                        )
+
+                        // Assign back to your array if needed
+//                        self.SearchAllRecipeArr.append(contentsOf: uniqueRecipes)
+                        
+                        self.SearchAllRecipeArr = Array(
+                            Dictionary(grouping: self.SearchAllRecipeArr) { $0.recipe?.label ?? "" }
                                 .values
                                 .compactMap { $0.first }
                         )
-
-                        // Assign back to your array if needed
-                        self.SearchAllRecipeArr.append(contentsOf: uniqueRecipes)
-                        
                         self.hasReachedEnd = false
                         
                         if self.SearchAllRecipeArr.count == 0{
@@ -659,16 +690,16 @@ extension DinnerVc {
             params["uri"] = uri
             params["type"] = type
       
-        
         showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.add_to_favorite
-        print(params,"Params")
-        print(loginURL,"loginURL")
+        print("*************************Params******************************")
+        print(params)
+        print("*************************loginURL****************************")
+        print(loginURL)
         
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
-            
-            self.hideIndicator()
+
             self.hideIndicator()
             
             guard let dictData = json.dictionaryObject else{
@@ -695,8 +726,10 @@ extension DinnerVc {
         showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.add_to_basket
-        print(params,"Params")
-        print(loginURL,"loginURL")
+        print("*************************Params******************************")
+        print(params)
+        print("*************************loginURL****************************")
+        print(loginURL)
         
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
             
@@ -754,8 +787,10 @@ extension DinnerVc {
         showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.AddMeal
-        print(paramsDict, "Params")
-        print(loginURL, "loginURL")
+        print("*************************Params******************************")
+        print(paramsDict)
+        print("*************************loginURL****************************")
+        print(loginURL)
         
         if let jsonData = JSONStringEncoder().encode(paramsDict) {
             

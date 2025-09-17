@@ -21,7 +21,7 @@ struct BasketDetailsModelData: Codable {
 }
 
 struct Product: Codable {
-    let created_at: String?
+       let created_at: String?
        let deleted_at: String?
        let food_id: String?
        let id: Int?
@@ -36,8 +36,11 @@ struct Product: Codable {
        var quantity: Double?
        var sch_id: Int?
        let status: Int?
+       let unit_size:Double?
        let updated_at: String?
        let user_id: Int?
+       let unit_of_measurement:String?
+       var is_checked:Int
 }
 
 //struct Store: Codable {

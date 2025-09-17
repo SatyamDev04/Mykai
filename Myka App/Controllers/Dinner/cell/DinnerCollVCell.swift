@@ -6,15 +6,15 @@
 //
 
 import UIKit
-
+import Cosmos
 class DinnerCollVCell: UICollectionViewCell {
     @IBOutlet weak var NameLbl: UILabel!
     @IBOutlet weak var FavBtn: UIButton!
     @IBOutlet weak var TimeLbl: UILabel!
     
     @IBOutlet weak var ImgV: UIImageView!
-    @IBOutlet weak var RatingLbl: UILabel!
-    
+//    @IBOutlet weak var RatingLbl: UILabel!
+    @IBOutlet weak var ratingView: CosmosView!
     @IBOutlet weak var AddToPlanBtn: UIButton!
     @IBOutlet weak var CartBtn: UIButton!
 

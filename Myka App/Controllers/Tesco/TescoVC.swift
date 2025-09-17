@@ -24,7 +24,7 @@ class TescoVC: UIViewController {
         if gesture.didTapAttributedTextInLabel(label: self.SiteLbl, inRange: clickableTextRange) {
             print("Tesco.com tapped")
             navigateToPolicy(type: "Tesco")
-        }
+        }  
     }
     
     private func navigateToPolicy(type: String) {
@@ -33,6 +33,7 @@ class TescoVC: UIViewController {
   
     @IBAction func BAckBtn(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
+        
     }
     
     @IBAction func AddToTescoBtn(_ sender: UIButton) {

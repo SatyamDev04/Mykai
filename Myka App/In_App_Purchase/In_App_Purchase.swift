@@ -185,7 +185,6 @@ extension IAPManager: SKPaymentTransactionObserver {
             request.start()
         }
     }
- 
 }
 
 // Utility struct to handle Apple receipt

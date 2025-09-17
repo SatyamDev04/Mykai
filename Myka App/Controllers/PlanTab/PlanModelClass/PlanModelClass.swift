@@ -29,7 +29,7 @@ struct PlanDataClass: Codable {
 
 // MARK: - Recipes
 struct Recipes: Codable {
-    var breakfast, Teatime, Snack: [Breakfast]?
+    var breakfast,Dessert, Teatime, Snack: [Breakfast]?
     var dinner, lunch: [Dinner]?
 
     enum CodingKeys: String, CodingKey {
@@ -38,6 +38,7 @@ struct Recipes: Codable {
         case lunch = "Lunch"
         case Teatime = "Brunch"
         case Snack = "Snacks"
+        case Dessert = "Dessert"
     }
 }
 
