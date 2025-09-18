@@ -587,13 +587,13 @@
                                                                                                 <rect key="frame" x="40" y="12.333333333333258" width="273" height="25"/>
                                                                                                 <subviews>
                                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cCQ-hv-BE8">
-                                                                                                        <rect key="frame" x="0.0" y="0.0" width="87" height="25"/>
+                                                                                                        <rect key="frame" x="0.0" y="0.0" width="76" height="25"/>
                                                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                                         <nil key="textColor"/>
                                                                                                         <nil key="highlightedColor"/>
                                                                                                     </label>
                                                                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="w40-Er-c5I">
-                                                                                                        <rect key="frame" x="92" y="0.0" width="71" height="25"/>
+                                                                                                        <rect key="frame" x="81" y="0.0" width="52" height="25"/>
                                                                                                         <constraints>
                                                                                                             <constraint firstAttribute="height" constant="25" id="wr3-dw-rL2"/>
                                                                                                         </constraints>
@@ -601,7 +601,7 @@
                                                                                                         <textInputTraits key="textInputTraits"/>
                                                                                                     </textField>
                                                                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="c0B-4Y-R2j">
-                                                                                                        <rect key="frame" x="168" y="0.0" width="50" height="25"/>
+                                                                                                        <rect key="frame" x="138" y="0.0" width="50" height="25"/>
                                                                                                         <constraints>
                                                                                                             <constraint firstAttribute="height" constant="25" id="A2i-Uz-y1z"/>
                                                                                                             <constraint firstAttribute="width" constant="50" id="q3y-uB-Ovf"/>
@@ -610,10 +610,10 @@
                                                                                                         <textInputTraits key="textInputTraits"/>
                                                                                                     </textField>
                                                                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="efP-5u-xzl">
-                                                                                                        <rect key="frame" x="223" y="0.0" width="50" height="25"/>
+                                                                                                        <rect key="frame" x="193" y="0.0" width="80" height="25"/>
                                                                                                         <constraints>
                                                                                                             <constraint firstAttribute="height" constant="25" id="QrA-9R-O7f"/>
-                                                                                                            <constraint firstAttribute="width" constant="50" id="aqx-HK-FAa"/>
+                                                                                                            <constraint firstAttribute="width" constant="80" id="aqx-HK-FAa"/>
                                                                                                         </constraints>
                                                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                                                         <textInputTraits key="textInputTraits"/>

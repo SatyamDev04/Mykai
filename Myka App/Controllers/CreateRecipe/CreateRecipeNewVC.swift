@@ -83,6 +83,7 @@ class CreateRecipeNewVC: UIViewController {
     private var dropDown = DropDown()
     private var searchInDropDown = DropDown()
     private var searchCookDropDown = DropDown()
+    private var ingredientUnitDropDown = DropDown()
     private var textChangedWorkItem: DispatchWorkItem?
     
     // Data
@@ -96,7 +97,9 @@ class CreateRecipeNewVC: UIViewController {
     var ingredientsArr = [RecipeDataModel]()
     var cookwareArr = [RecipeDataModel]()
     var recipeArr = [RecipeDataModel]()
-
+    var ingredentDropDownArr = [IngredientCRData]()
+    var ingredentUnitArr = [IngredientCRData]()
+    
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -149,30 +152,24 @@ class CreateRecipeNewVC: UIViewController {
         searchCookDropDown.direction = .bottom
         searchCookDropDown.setupCornerRadius(10)
         searchCookDropDown.width = addCookwareV.frame.width
+            
+        ingredientUnitDropDown.backgroundColor = .white
+        searchCookDropDown.anchorView = addCookwareV
+        searchCookDropDown.bottomOffset = CGPoint(x: 0, y: addCookwareV.frame.size.height)
+        searchCookDropDown.direction = .bottom
+        searchCookDropDown.setupCornerRadius(10)
+        searchCookDropDown.width = addCookwareV.frame.width
     }
     
+    @objc func addIngredientValueChanged(_ sender:UITextField) {
+        debouncedSearchIngredients(query: addIngredientTF.text ?? "")
+    }
     
-   @objc func debouncedSearchIngredients(query: String) {
+    func debouncedSearchIngredients(query: String) {
         // cancel previous
         textChangedWorkItem?.cancel()
         
-        guard !query.isEmpty else {
-            //dislikesIngredientArr.removeAll()
-            DispatchQueue.main.async {
-             
-                // let items =  dislikesIngredientArr.map { $0.name ?? "" }
-//                if items.isEmpty {
-//                    self.dropDown.hide()
-//                } else {
-//                    self.dropDown.dataSource = items
-//                    self.dropDown.show()
-//                    self.dropDown.selectionAction = { [weak self] (index: Int, item: String) in
-//                        self?.ItemNameTxtF.text = item
-//                    }
-//                }
-            }
-            return
-        }
+        
         
         let workItem = DispatchWorkItem { [weak self] in
             guard let self = self else { return }
@@ -451,7 +448,13 @@ extension CreateRecipeNewVC: UITextFieldDelegate{
     @objc private func doneTapped() {
         view.endEditing(true) // dismiss keyboard
     }
-
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == addIngredientTF{
+            textField.addTarget(self, action: #selector(addIngredientValueChanged(_:)), for: .editingChanged)
+        }
+    }
+    
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == addIngredientTF{
             self.addIngredientTF.isHidden = true
@@ -484,6 +487,7 @@ extension CreateRecipeNewVC: ImagePickerDelegate1{
 }
 
 // MARK: - UITableViewDelegate & DataSource
+
 extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -511,24 +515,91 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+
 extension CreateRecipeNewVC {
     private func apiToGetDropDownData(query: String,type:String) {
-      
+        guard !query.isEmpty else { return }
         let loginURL = baseURL.baseURL + appEndPoints.ingredientAndCookware + "/\(query)/\(type)"
-        
+        self.showIndicator(withTitle: "", and: "")
         WebService.shared.getServiceURLEncodingwithParams(loginURL, VC: self, andParameter: nil, withCompletion: { [weak self] (json, statusCode) in
-            guard let self = self else { return }
-          
-            guard let dictData = json.dictionaryObject else { return }
-            
-            if dictData["success"] as? Bool == true {
-                let responseArray = dictData["data"] as? [[String: Any]] ?? [[String: Any]]()
-             
-              //  self.onDislikesChanged?()
-            } else {
-                let responseMessage = dictData["message"] as? String ?? "Something went wrong"
-              
-            }
-        })
+            let jsonString = "\(json)"
+            if let data = jsonString.data(using: .utf8) {
+              do {
+                    let response = try JSONDecoder().decode(IngredientCRModel.self, from: data)
+                  guard let self else {return}
+                    if response.success ?? false{
+                        self.ingredentDropDownArr = response.data ?? []
+                        
+                       
+                            DispatchQueue.main.async {
+                             
+                                let items = self.ingredentDropDownArr.map { $0.name ?? "" }
+                                let units = self.ingredentDropDownArr.map { $0.unitName ?? "" }
+                                
+                            if items.isEmpty {
+                              self.searchInDropDown.hide()
+                                } else {
+                                    self.searchInDropDown.dataSource = items
+                                    self.searchInDropDown.show()
+                                    self.searchInDropDown.width = self.addIngredientTF.frame.width
+                                    self.searchInDropDown.selectionAction = { [weak self] (index: Int, item: String) in
+                                        self?.ingredientFinalLbl.text = item
+                                        self?.addIngredientTF.text = item
+                                        self?.addIngredientMesurementTF.text = units[index]
+                                    }
+                                }
+                            }
+                            return
+                        
+                    }else{
+                        self.ingredentDropDownArr.removeAll()
+                    }
+                 
+                } catch {
+                    print("Decoding error: \(error)")
+                }
+            }})
+    }
+    
+   func getImpirialUnitApi(){
+       
+       let loginURL = baseURL.baseURL + appEndPoints.imperialUnitList
+       WebService.shared.getServiceURLEncodingwithParams(loginURL, VC: self, andParameter: nil, withCompletion: { [weak self] (json, statusCode) in
+           let jsonString = "\(json)"
+           if let data = jsonString.data(using: .utf8) {
+             do {
+                   let response = try JSONDecoder().decode(IngredientCRModel.self, from: data)
+                 guard let self else {return}
+                   if response.success ?? false{
+                       self.ingredentDropDownArr = response.data ?? []
+                       
+                      
+                           DispatchQueue.main.async {
+                            
+                               let items = self.ingredentDropDownArr.map { $0.name ?? "" }
+                               let units = self.ingredentDropDownArr.map { $0.unitName ?? "" }
+                               
+                           if items.isEmpty {
+                             self.searchInDropDown.hide()
+                               } else {
+                                   self.ingredientUnitDropDown.dataSource = items
+                                   self.ingredientUnitDropDown.show()
+                                   self.ingredientUnitDropDown.width = self.addIngredientMesurementTF.frame.width
+                                   self.searchInDropDown.selectionAction = { [weak self] (index: Int, item: String) in
+                                       self?.addIngredientMesurementTF.text = item
+                                   }
+                               }
+                           }
+                           return
+                       
+                   }else{
+                       self.ingredentDropDownArr.removeAll()
+                   }
+                
+               } catch {
+                   print("Decoding error: \(error)")
+               }
+           }})
+
     }
 }

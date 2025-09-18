@@ -84,7 +84,7 @@ enum appEndPoints{
     static let Updateprefrence = "update-user-prefrence"
     
     static let get_wallet = "get-wallet"
-    
+    static let imperialUnitList = "imperialUnitList"
     static let transfer_To_Account = "transfer-To-Account"
     
     static let update_notification = "update-notification"
@@ -254,3 +254,4 @@ struct AppLocation {
 }
 
 var userType = ""
+      

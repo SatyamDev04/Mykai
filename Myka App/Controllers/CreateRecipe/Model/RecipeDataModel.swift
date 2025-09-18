@@ -23,3 +23,25 @@ struct CookwareDataModel{
 struct StepsDataModel{
     var instruction:String?
 }
+
+
+struct IngredientCRModel: Codable {
+    let data: [IngredientCRData]?
+    let code: Int?
+    let message: String?
+    let success: Bool?
+}
+
+// MARK: - Datum
+struct IngredientCRData: Codable {
+    let imageURL: String?
+    let id: Int?
+    let unitName, name: String?
+
+    enum CodingKeys: String, CodingKey {
+        case imageURL = "image_url"
+        case id
+        case unitName = "unit_name"
+        case name
+    }
+}

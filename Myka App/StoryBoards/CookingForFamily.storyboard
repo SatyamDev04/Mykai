@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="TqZ-zV-A3x">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="TqZ-zV-A3x">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -26,13 +26,13 @@
         <!--Cookingfor FamilyVC-->
         <scene sceneID="kxu-tp-cNf">
             <objects>
-                <viewController storyboardIdentifier="CookingforFamilyVC" id="Z9q-NZ-iv3" customClass="CookingforFamilyVC" customModule="Myka_App" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CookingforFamilyVC" id="Z9q-NZ-iv3" customClass="CookingforFamilyVC" customModule="My_Kai" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="N1z-dx-g9b">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yq2-R9-WqV">
-                                <rect key="frame" x="0.0" y="59" width="393" height="50"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="50"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iUO-D8-xCy">
                                         <rect key="frame" x="20" y="0.0" width="30" height="50"/>
@@ -57,7 +57,7 @@
                                 </constraints>
                             </view>
                             <progressView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.10000000149011612" translatesAutoresizingMaskIntoConstraints="NO" id="dQP-1h-rZd">
-                                <rect key="frame" x="30" y="114" width="289.33333333333331" height="20"/>
+                                <rect key="frame" x="30" y="173" width="289.33333333333331" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="oiQ-9Q-jLR"/>
                                 </constraints>
@@ -76,7 +76,7 @@
                                 </userDefinedRuntimeAttributes>
                             </progressView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1/11" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ag3-sA-vtI">
-                                <rect key="frame" x="333.33333333333331" y="116.66666666666667" width="29.666666666666686" height="15.000000000000014"/>
+                                <rect key="frame" x="333.33333333333331" y="175.66666666666666" width="29.666666666666686" height="15"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="15" id="8Qx-Cl-7uf"/>
                                 </constraints>
@@ -85,12 +85,12 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ew-GO-Kp1">
-                                <rect key="frame" x="30" y="159" width="333" height="34.333333333333343"/>
+                                <rect key="frame" x="30" y="218" width="333" height="33.666666666666657"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Family Members">
                                         <attributes>
                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" size="28" name="Montserrat-Bold"/>
+                                            <font key="NSFont" metaFont="system" size="28"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
@@ -98,13 +98,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Let’s get to know your family! Enter their names and ages." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H8F-p1-ZzJ">
-                                <rect key="frame" x="30" y="213.33333333333334" width="363" height="42"/>
+                                <rect key="frame" x="30" y="271.66666666666669" width="363" height="42"/>
                                 <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="15"/>
                                 <color key="textColor" red="0.23529411759999999" green="0.27058823529999998" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="udB-dW-WsV">
-                                <rect key="frame" x="30" y="285.33333333333331" width="333" height="122"/>
+                                <rect key="frame" x="30" y="343.66666666666669" width="333" height="122"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hhE-ss-ijB">
                                         <rect key="frame" x="0.0" y="0.0" width="333" height="51"/>
@@ -193,7 +193,7 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="fcv-Jn-Bkt">
-                                <rect key="frame" x="30" y="698" width="333" height="100"/>
+                                <rect key="frame" x="30" y="664" width="333" height="100"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="mbJ-nE-Zf0">
                                         <rect key="frame" x="0.0" y="0.0" width="333" height="50"/>
@@ -257,7 +257,7 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H77-uQ-IEi">
-                                <rect key="frame" x="30" y="427.33333333333331" width="25" height="25"/>
+                                <rect key="frame" x="30" y="485.66666666666669" width="25" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="25" id="1xy-6e-PBH"/>
                                     <constraint firstAttribute="height" constant="25" id="n28-oM-Oyd"/>
@@ -270,7 +270,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Child Friendly Meals." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BqM-IK-pMu">
-                                <rect key="frame" x="60" y="430" width="305" height="19.666666666666686"/>
+                                <rect key="frame" x="60" y="488.33333333333331" width="305" height="19.666666666666686"/>
                                 <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="14"/>
                                 <color key="textColor" red="0.23529411759999999" green="0.27058823529999998" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>

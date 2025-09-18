@@ -537,9 +537,18 @@ class WebService {
 //            //"Content-Type": "application/json"
 //           "Content-Type": "application/x-www-form-urlencoded"
 //        ]
+        
+        print("===============URL===============")
+        print(reuestUrl)
+        print("===============parameters===============")
+        print(parameters ?? [:])
+        print("=========================headers===========================")
+        print(headers)
+        
         guard VC.isConnectedToNetwork() == true else{
             VC.hideIndicator()
             AlertController.alert(title: "Message", message: "Could not connect to the server, Please check your internet connection.")
+            VC.hideIndicator()
             return
         }
         
@@ -548,9 +557,9 @@ class WebService {
         parameters: parameters,
         encoding: encodingFormat,
         headers: headers).responseJSON{ (responseData) in
-            
+            VC.hideIndicator()
             if let data = responseData.data, let utf8Text = String(data: data, encoding: .utf8) {
-                print("Data: \(utf8Text)") // original server data as UTF8 string
+               // print("Data: \(utf8Text)") // original server data as UTF8 string
                 do{
                     let statusCode = responseData.response?.statusCode
                     if statusCode == 401{
@@ -559,6 +568,8 @@ class WebService {
                     
                     // Get json data
                     let json = try JSON(data: data)
+                    print("=========================Response===========================")
+                   
                     print(json)
                    // success(json, statusCode!)
                     if((responseData.result) != nil) {
