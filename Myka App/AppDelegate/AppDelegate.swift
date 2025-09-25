@@ -3,7 +3,6 @@
 //  Myka App
 //
 //  Created by YES IT Labs on 26/11/24.
-//
 
 import UIKit
 import IQKeyboardManager
@@ -20,7 +19,6 @@ import StripeApplePay
 import AppsFlyerLib
 import AppTrackingTransparency
 
-
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
     
@@ -35,7 +33,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
         // Override point for customization after application launch.
         IQKeyboardManager.shared().isEnabled = true
         IQKeyboardManager.shared().shouldResignOnTouchOutside = true
-//        IQKeyboardManager.shared().disabledToolbarClasses.add(CreateRecipeNewVC.self)
+   for family in UIFont.familyNames.sorted() {
+        print("Family: \(family)")
+        for name in UIFont.fontNames(forFamilyName: family).sorted() {
+            print("    \(name)")
+        }
+    }
         Thread.sleep(forTimeInterval: 3)
         
         AppsFlyerLib.shared().appsFlyerDevKey = "<M57zyjkFgb7nSQwHWN6isW>" //YOUR_DEV_KEY

@@ -272,8 +272,8 @@ extension Shopping_ListVC: UICollectionViewDelegate, UICollectionViewDataSource,
     
   
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
+        let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
         vc.uri = ShoppingListArr?.recipe?[indexPath.item].uri ?? ""
         
         let string = ShoppingListArr?.recipe?[indexPath.item].type ?? ""

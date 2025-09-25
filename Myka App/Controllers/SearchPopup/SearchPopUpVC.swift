@@ -16,7 +16,7 @@ class SearchPopUpVC: UIViewController {
     
     var SelItem = ""
     
-    var SearchRecipeData = [BodyGoalsModel(Name: "Recipe search", isSelected: false), BodyGoalsModel(Name: "Favorite Recipes", isSelected: false), BodyGoalsModel(Name: "Add Recipe From Web", isSelected: false), BodyGoalsModel(Name: "Add your own recipe", isSelected: false), BodyGoalsModel(Name: "Taking a picture", isSelected: false)]
+    var SearchRecipeData = [BodyGoalsModel(Name: "Recipe search", isSelected: false), BodyGoalsModel(Name: "Favorite Recipes", isSelected: false), BodyGoalsModel(Name: "Add Recipe From Web", isSelected: false), BodyGoalsModel(Name: "Add your own recipe", isSelected: false)/*, BodyGoalsModel(Name: "Taking a picture", isSelected: false)*/]
     //
     
     var SearchbyUrlList = ByUrl_IngredientsModel()
@@ -98,16 +98,16 @@ class SearchPopUpVC: UIViewController {
             vc.didMove(toParent: self)
         }else if SelItem == "Add your own recipe" {
             StateMangerModelClass.shared.SearchClickFromPopup = false
-            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeVC") as! CreateRecipeVC
-            vc.comesfrom = "Search"
-            vc.backAction = {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3){
-                    self.willMove(toParent: nil)
-                    self.view.removeFromSuperview()
-                    self.removeFromParent()
-              }
-            }
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeNewVC") as! CreateRecipeNewVC
+//            vc.comesfrom = "Search"
+//            vc.backAction = {
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3){
+//                    self.willMove(toParent: nil)
+//                    self.view.removeFromSuperview()
+//                    self.removeFromParent()
+//              }
+//            }
             self.navigationController?.pushViewController(vc, animated: true)
             
         }else if SelItem == "Taking a picture" {
@@ -336,15 +336,15 @@ extension SearchPopUpVC{
                             
                             self.showToast(bundle)
                             
-                            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-                            let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeVC") as! CreateRecipeVC
-                            vc.comesfrom = "AddRecipeImage"
-                            vc.ImgItemName = "\(bundle)"
-                            vc.backAction = {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3){
-                                    //  self.SearchRecipePopUpV.isHidden = true
-                                }
-                            }
+                            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+                            let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeNewVC") as! CreateRecipeNewVC
+//                            vc.comesfrom = "AddRecipeImage"
+//                            vc.ImgItemName = "\(bundle)"
+//                            vc.backAction = {
+//                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3){
+//                                    //  self.SearchRecipePopUpV.isHidden = true
+//                                }
+//                            }
                             self.navigationController?.pushViewController(vc, animated: true)
                             
                             

@@ -174,23 +174,39 @@ struct Large: Codable {
 
 // MARK: - Ingredient
 struct Ingredient: Codable {
-    var text: String?
-    var quantity: String?
-    var measure: String?
-    var food: String?
-    var weight: Double?
-    var foodCategory, foodID: String?
-    var image: String?
-    var ingredientCost:String?
+    let image: String?
+    let unit, createdAt, text, createdOn: String?
+    let imageURL: String?
+    let header: String?
+    let ingredientID: Int?
+    let updatedAt, name, quantity: String?
+    let orderIndex: Int?
+    let ingredientCost, searchKey, id, measureImperial: String?
+    let food, recipeID: String?
+    let measurementUnitsImperialID: Int?
+    let measure, category: String?
 
     enum CodingKeys: String, CodingKey {
-        case text, quantity, measure, food, weight, foodCategory
-        case foodID = "foodId"
-        case image
+        case image, unit
+        case createdAt = "created_at"
+        case text
+        case createdOn = "created_on"
+        case imageURL = "image_url"
+        case header
+        case ingredientID = "ingredient_id"
+        case updatedAt = "updated_at"
+        case name, quantity
+        case orderIndex = "order_index"
         case ingredientCost = "ingredient_cost"
+        case searchKey = "search_key"
+        case id
+        case measureImperial = "measure_imperial"
+        case food
+        case recipeID = "recipe_id"
+        case measurementUnitsImperialID = "measurement_units_imperial_id"
+        case measure, category
     }
 }
-
 // MARK: - Total
 struct Total: Codable {
     var label: String?

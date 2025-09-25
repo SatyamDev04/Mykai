@@ -23,7 +23,7 @@ class TabbarVC: UITabBarController, UITabBarControllerDelegate {
         //
         
         NotificationCenter.default.addObserver(self, selector: #selector(listnerFunctionuser(_:)), name: NSNotification.Name(rawValue: "notificationNameUser"), object: nil)
-        
+//        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1){
             self.addGreenDotToTabBarItem(at: 0)
         }
@@ -156,7 +156,7 @@ class TabbarVC: UITabBarController, UITabBarControllerDelegate {
                return true
            }
 
-           // Allow switching only if the target tab is not the second tab
+//            Allow switching only if the target tab is not the second tab
         if targetIndex == 1 && currentIndex == 3 {
                let data:[String: String] = ["data": "SearchPopup"]
                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationName"), object: nil, userInfo: data)

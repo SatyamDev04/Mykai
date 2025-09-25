@@ -1363,8 +1363,8 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
                 uri = self.AllDataList.freezerData?.breakfast?[indexPath.item].recipe?.uri ?? ""
             }
             
-            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
             vc.uri = uri
             vc.MealType = "Breakfast"
             vc.Id = "\(self.AllDataList.fridgeData?.breakfast?[indexPath.item].id ?? 0)"
@@ -1381,8 +1381,8 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
                 uri = self.AllDataList.freezerData?.dessert?[indexPath.item].recipe?.uri ?? ""
             }
             
-            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
             vc.uri = uri
             vc.MealType = "Dessert"
             vc.Id = "\(self.AllDataList.fridgeData?.dessert?[indexPath.item].id ?? 0)"
@@ -1399,8 +1399,8 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
                 uri = self.AllDataList.freezerData?.lunch?[indexPath.item].recipe?.uri ?? ""
             }
             
-            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
             vc.uri = uri
             vc.MealType = "Lunch"
             vc.Id = "\(self.AllDataList.fridgeData?.lunch?[indexPath.item].id ?? 0)"
@@ -1417,8 +1417,8 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
                 uri = self.AllDataList.freezerData?.dinner?[indexPath.item].recipe?.uri ?? ""
             }
             
-            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
             vc.uri = uri
             vc.MealType = "Dinner"
             vc.Id = "\(self.AllDataList.fridgeData?.dinner?[indexPath.item].id ?? 0)"
@@ -1435,8 +1435,8 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
                 uri = self.AllDataList.freezerData?.snacks?[indexPath.item].recipe?.uri ?? ""
             }
             
-            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
             vc.uri = uri
             vc.MealType = "Snacks"
             vc.Id = "\(self.AllDataList.fridgeData?.snacks?[indexPath.item].id ?? 0)"
@@ -1453,8 +1453,8 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
                 uri = self.AllDataList.freezerData?.teatime?[indexPath.item].recipe?.uri ?? ""
             }
             
-            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
             vc.uri = uri
             vc.MealType = "Brunch"
             vc.Id = "\(self.AllDataList.fridgeData?.teatime?[indexPath.item].id ?? 0)"

@@ -280,14 +280,13 @@ startSubscriptionTimer()
             }
         }
     }
-    //
     
     @IBAction func FavBtn(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "RestScreens", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "CookBooksVC") as! CookBooksVC
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
+                                            
     @IBAction func CartBtn(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Basket", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "BasketNewVC") as! BasketNewVC
@@ -480,8 +479,8 @@ extension HomeVC: UICollectionViewDelegate,UICollectionViewDataSource,UICollecti
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == RecipesCollV{
-            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
             vc.uri = recipeCookedData[indexPath.row].recipe?.uri ?? ""
             
             let string = recipeCookedData[indexPath.row].recipe?.mealType?.first ?? ""

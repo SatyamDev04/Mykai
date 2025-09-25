@@ -63,7 +63,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		E99AA0732CF5B0D1000A5D6D /* Exceptions for "Myka App" folder in "My Kai" target */ = {
+		DD82D5212E7D8FDF00A8622A /* Exceptions for "Myka App" folder in "My Kai" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -76,22 +76,18 @@
 		E99AA04D2CF5B0D0000A5D6D /* Myka App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				E99AA0732CF5B0D1000A5D6D /* Exceptions for "Myka App" folder in "My Kai" target */,
+				DD82D5212E7D8FDF00A8622A /* Exceptions for "Myka App" folder in "My Kai" target */,
 			);
 			path = "Myka App";
 			sourceTree = "<group>";
 		};
 		E99AA0642CF5B0D1000A5D6D /* Myka AppTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = "Myka AppTests";
 			sourceTree = "<group>";
 		};
 		E99AA06E2CF5B0D1000A5D6D /* Myka AppUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = "Myka AppUITests";
 			sourceTree = "<group>";
 		};
@@ -342,9 +338,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-My Kai-My KaiUITests/Pods-My Kai-My KaiUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-My Kai-My KaiUITests/Pods-My Kai-My KaiUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -359,9 +359,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-My Kai/Pods-My Kai-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-My Kai/Pods-My Kai-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -376,9 +380,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-My Kai/Pods-My Kai-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-My Kai/Pods-My Kai-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -415,9 +423,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-My Kai-My KaiUITests/Pods-My Kai-My KaiUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-My Kai-My KaiUITests/Pods-My Kai-My KaiUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

@@ -442,12 +442,10 @@ extension Credit_Debit_cardVC{
          self.EditedCardData = true
          self.getGetCardsList()
         }else{
-            
             let responseMessage = dictData["message"] as! String
             self.showToast(responseMessage)
         }
  })
-
  }
     
     func getGetCardsList() {
@@ -546,7 +544,6 @@ extension Credit_Debit_cardVC{
  })
 
  }
-    
     
     func API_TO_Set_Preffered_Card(ID: String){
     var params = [String: Any]()

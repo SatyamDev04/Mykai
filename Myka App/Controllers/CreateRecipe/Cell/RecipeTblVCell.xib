@@ -18,66 +18,95 @@
                 <rect key="frame" x="0.0" y="0.0" width="348" height="90"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QbS-ZD-Mhm">
+                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P0J-uh-mLz">
                         <rect key="frame" x="0.0" y="0.0" width="348" height="90"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JTx-Om-IWu">
-                                <rect key="frame" x="0.0" y="30" width="348" height="50"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QbS-ZD-Mhm">
+                                <rect key="frame" x="0.0" y="0.0" width="348" height="90"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C19-LE-Ei6">
-                                        <rect key="frame" x="10" y="10" width="328" height="30"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gpR-Cd-TdN">
+                                        <rect key="frame" x="0.0" y="30" width="348" height="50"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gPE-Nf-BD3">
+                                                <rect key="frame" x="0.0" y="0.0" width="10" height="50"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="10" id="VN2-Mc-GDe"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JTx-Om-IWu">
+                                                <rect key="frame" x="10" y="0.0" width="338" height="50"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C19-LE-Ei6">
+                                                        <rect key="frame" x="10" y="10" width="318" height="30"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="fontName" value="Poppins-Regular"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="fontSize">
+                                                                <real key="value" value="14"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" red="1" green="0.96862745100000003" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="C19-LE-Ei6" secondAttribute="trailing" constant="10" id="KCL-CV-Iqy"/>
+                                                    <constraint firstAttribute="bottom" secondItem="C19-LE-Ei6" secondAttribute="bottom" constant="10" id="XfR-Xm-xYq"/>
+                                                    <constraint firstItem="C19-LE-Ei6" firstAttribute="leading" secondItem="JTx-Om-IWu" secondAttribute="leading" constant="10" id="iEq-Zr-7WA"/>
+                                                    <constraint firstItem="C19-LE-Ei6" firstAttribute="top" secondItem="JTx-Om-IWu" secondAttribute="top" constant="10" id="lq4-0P-wyc"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                        <real key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" red="0.99607843139999996" green="0.62352941179999999" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
+                                        </subviews>
+                                    </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Step-1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S4c-dG-P40">
+                                        <rect key="frame" x="0.0" y="0.0" width="42.666666666666664" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="PDE-lS-52C"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="fontName" value="Poppins-Medium"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="fontSize">
+                                                <real key="value" value="14"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="1" green="0.96862745100000003" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="C19-LE-Ei6" secondAttribute="trailing" constant="10" id="KCL-CV-Iqy"/>
-                                    <constraint firstAttribute="bottom" secondItem="C19-LE-Ei6" secondAttribute="bottom" constant="10" id="XfR-Xm-xYq"/>
-                                    <constraint firstItem="C19-LE-Ei6" firstAttribute="leading" secondItem="JTx-Om-IWu" secondAttribute="leading" constant="10" id="iEq-Zr-7WA"/>
-                                    <constraint firstAttribute="height" constant="50" id="lgt-7l-1UC"/>
-                                    <constraint firstItem="C19-LE-Ei6" firstAttribute="top" secondItem="JTx-Om-IWu" secondAttribute="top" constant="10" id="lq4-0P-wyc"/>
+                                    <constraint firstItem="gpR-Cd-TdN" firstAttribute="leading" secondItem="QbS-ZD-Mhm" secondAttribute="leading" id="4K2-Aq-KPA"/>
+                                    <constraint firstAttribute="trailing" secondItem="gpR-Cd-TdN" secondAttribute="trailing" id="AdT-p0-8pe"/>
+                                    <constraint firstItem="gpR-Cd-TdN" firstAttribute="top" secondItem="S4c-dG-P40" secondAttribute="bottom" constant="10" id="P6H-eO-s6T"/>
+                                    <constraint firstItem="S4c-dG-P40" firstAttribute="leading" secondItem="QbS-ZD-Mhm" secondAttribute="leading" id="xfI-vo-icY"/>
+                                    <constraint firstItem="S4c-dG-P40" firstAttribute="top" secondItem="QbS-ZD-Mhm" secondAttribute="top" id="yje-U1-lhD"/>
+                                    <constraint firstAttribute="bottom" secondItem="gpR-Cd-TdN" secondAttribute="bottom" constant="10" id="zTy-r8-vso"/>
                                 </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                        <real key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                        <color key="value" red="0.99607843139999996" green="0.62352941179999999" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Step-1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S4c-dG-P40">
-                                <rect key="frame" x="0.0" y="0.0" width="42.666666666666664" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="20" id="PDE-lS-52C"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="JTx-Om-IWu" firstAttribute="top" secondItem="S4c-dG-P40" secondAttribute="bottom" constant="10" id="VhR-0f-h6f"/>
-                            <constraint firstAttribute="trailing" secondItem="JTx-Om-IWu" secondAttribute="trailing" id="phR-ar-GsA"/>
-                            <constraint firstAttribute="bottom" secondItem="JTx-Om-IWu" secondAttribute="bottom" constant="10" id="txe-Ha-p1h"/>
-                            <constraint firstItem="JTx-Om-IWu" firstAttribute="leading" secondItem="QbS-ZD-Mhm" secondAttribute="leading" id="xRB-Dv-6ZQ"/>
-                            <constraint firstItem="S4c-dG-P40" firstAttribute="leading" secondItem="QbS-ZD-Mhm" secondAttribute="leading" id="xfI-vo-icY"/>
-                            <constraint firstItem="S4c-dG-P40" firstAttribute="top" secondItem="QbS-ZD-Mhm" secondAttribute="top" id="yje-U1-lhD"/>
-                        </constraints>
-                    </view>
+                    </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="QbS-ZD-Mhm" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="8sj-4I-U57"/>
-                    <constraint firstAttribute="bottom" secondItem="QbS-ZD-Mhm" secondAttribute="bottom" id="L2K-v4-Sur"/>
-                    <constraint firstAttribute="trailing" secondItem="QbS-ZD-Mhm" secondAttribute="trailing" id="fpD-US-NcP"/>
-                    <constraint firstItem="QbS-ZD-Mhm" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="zsC-jh-slG"/>
+                    <constraint firstItem="P0J-uh-mLz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="A9a-FD-6SB"/>
+                    <constraint firstAttribute="bottom" secondItem="P0J-uh-mLz" secondAttribute="bottom" id="LYJ-T2-wCH"/>
+                    <constraint firstAttribute="trailing" secondItem="P0J-uh-mLz" secondAttribute="trailing" id="Ne9-HD-4CZ"/>
+                    <constraint firstItem="P0J-uh-mLz" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="sI6-xK-8Zg"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="paddingView" destination="gPE-Nf-BD3" id="fXe-aK-JpG"/>
                 <outlet property="recipeLbl" destination="C19-LE-Ei6" id="k0v-53-HOA"/>
                 <outlet property="stepLbl" destination="S4c-dG-P40" id="jLe-us-T7n"/>
             </connections>

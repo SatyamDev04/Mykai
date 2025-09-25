@@ -37,7 +37,7 @@ class RateYourMealVC: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func BackBtn(_ sender: UIButton) {
-        self.navigationController?.popToViewController(ofClass: RecipeDetailsVC.self)
+        self.navigationController?.popToViewController(ofClass: RecipeDetailNewVC.self)
     }
     
     @IBAction func PublishReview(_ sender: UIButton) {
@@ -81,7 +81,7 @@ extension RateYourMealVC {
                 self.showToast(Msg)
                 let data:[String: String] = ["data": ""]
                         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationNameReloadDetails"), object: nil, userInfo: data)
-                self.navigationController?.popToViewController(ofClass: RecipeDetailsVC.self)
+                self.navigationController?.popToViewController(ofClass: RecipeDetailNewVC.self)
             }else{
                 self.showToast(Msg)
             }

@@ -2497,43 +2497,43 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             }
         }
         else if collectionView == BreakFastCollV{
-            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
             vc.MealType = "Breakfast"
             vc.uri = self.AllRecipeSelItem.recipes?.breakfast?[indexPath.item].recipe?.uri ?? ""
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }else if collectionView == dessertCollV{
-            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
             vc.MealType = "Dessert"
             vc.uri = self.AllRecipeSelItem.recipes?.Dessert?[indexPath.item].recipe?.uri ?? ""
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }else if collectionView == LunchCollV{
-            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
             vc.MealType = "Lunch"
             vc.uri = self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].recipe?.uri ?? ""
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }else if collectionView == DinnerCollV{
-            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
             vc.MealType = "Dinner"
             vc.uri = self.AllRecipeSelItem.recipes?.dinner?[indexPath.item].recipe?.uri ?? ""
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }else if collectionView == SnacksCollV{
-            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
             vc.MealType = "Snacks"
             vc.uri = self.AllRecipeSelItem.recipes?.Snack?[indexPath.item].recipe?.uri ?? ""
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }else if collectionView == TeaTimeCollV{
-            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
             vc.MealType = "Brunch"
             vc.uri = self.AllRecipeSelItem.recipes?.Teatime?[indexPath.item].recipe?.uri ?? ""
             vc.hidesBottomBarWhenPushed = true

@@ -306,8 +306,8 @@ extension SearchPrefVC: UICollectionViewDelegate, UICollectionViewDataSource ,UI
             }else if collectionView == SearchByRecipeCollV{
                 let string = SearchRecipeSelItem.recipes?[indexPath.item].recipe?.mealType?.first ?? ""
          
-                let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-                let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
+                let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+                let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
                 if let result = string.components(separatedBy: "/").first {
                     vc.MealType = result
                 }

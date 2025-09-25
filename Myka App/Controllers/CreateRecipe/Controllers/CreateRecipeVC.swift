@@ -482,7 +482,6 @@ extension CreateRecipeVC:ImagePickerDelegate1{
  
 }
 
-
 extension CreateRecipeVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == self.IngredientsTblV{
@@ -681,9 +680,7 @@ extension CreateRecipeVC: CreateRecipeDelegate {
                     self.CookingInsTblV.reloadData()
                 }
             }
-        }
-        
-        
+        }        
     }
 }
 
@@ -944,4 +941,4 @@ extension CreateRecipeVC {
     }
 
 }
- 
+

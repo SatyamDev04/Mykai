@@ -6,7 +6,10 @@
 //
 
 import UIKit
-
+enum IngredientCellType{
+    case withHeader
+    case normal
+}
 class IngredientsTblVCell: UITableViewCell {
 
     @IBOutlet weak var headerLbl: UILabel!
@@ -14,9 +17,19 @@ class IngredientsTblVCell: UITableViewCell {
     @IBOutlet weak var upperlblV:UIView!
     @IBOutlet weak var amout_MeasurmentLbl:UILabel!
     @IBOutlet weak var ingredientlbl:UILabel!
-    @IBOutlet weak var lowerlblV:UIView!
-    @IBOutlet weak var lowerLbl:UILabel!
+    @IBOutlet weak var checkBoxView:UIView!
+    @IBOutlet weak var checkBoxBtn:UIButton!
+    @IBOutlet weak var paddingView:UIView!
     
+    var type: IngredientCellType = .normal {
+        didSet {
+          if  type == .withHeader{
+              paddingView.isHidden = false
+          }else{
+              paddingView.isHidden = true
+          }
+        }
+    }
     override func awakeFromNib() {
         super.awakeFromNib()
         

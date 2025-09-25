@@ -50,13 +50,13 @@
 		<string>Montserrat-Regular.ttf</string>
 		<string>Montserrat-SemiBold.ttf</string>
 		<string>Poppins-Bold.otf</string>
-		<string>Poppins-ExtraBold.otf</string>
 		<string>Poppins-ExtraLight.otf</string>
-		<string>Poppins-Light.otf</string>
+		<string>Poppins-ExtraBold.otf</string>
+		<string> Poppins-Light.otf</string>
 		<string>Poppins-Medium.otf</string>
 		<string>Poppins-Regular.otf</string>
-		<string>Poppins-SemiBold.otf</string>
-		<string>Poppins-Thin.otf</string>
+		<string> Poppins-SemiBold.otf</string>
+		<string> Poppins-Thin.otf</string>
 		<string>Roboto-Black.ttf</string>
 		<string>Roboto-Bold.ttf</string>
 		<string>Roboto-Medium.ttf</string>
@@ -90,7 +90,7 @@
 					<key>UISceneDelegateClassName</key>
 					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
 					<key>UISceneStoryboardFile</key>
-					<string>CreateRecipeSB</string>
+					<string>Main</string>
 				</dict>
 			</array>
 		</dict>

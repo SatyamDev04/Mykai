@@ -385,8 +385,8 @@ extension YourrecipeVC: UICollectionViewDelegate, UICollectionViewDataSource, UI
             MealType = self.AllRecipeSelItem.Teatime?[indexPath.row].data?.recipe?.mealType?.first ?? ""
         }
         
-        let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
+        let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
         vc.uri = URI
         let string = MealType
         if let result = string.components(separatedBy: "/").first {
@@ -500,7 +500,6 @@ extension YourrecipeVC {
                 self.LunchBgV.isHidden = false
             }
             
-          
             if self.AllRecipeSelItem.dinner?.count ?? 0 == 0{
                 self.DinnerBgV.isHidden = true
             }else{
@@ -554,7 +553,6 @@ extension YourrecipeVC {
                 
                 return
             }
-            
             if dictData["success"] as? Bool == true{
                 self.Api_To_GetYourRecipe()
             }else{

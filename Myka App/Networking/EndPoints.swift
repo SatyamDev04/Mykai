@@ -242,6 +242,8 @@ enum appEndPoints{
     static let schedule_time = "schedule-time"
     
     static let set_schedule = "set-schedule"
+    
+    static let convert_units = "convert_units"
 }
 
 struct AppLocation {

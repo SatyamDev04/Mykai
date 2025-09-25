@@ -111,15 +111,15 @@ extension AddRecipePopUpVC: UITableViewDelegate, UITableViewDataSource {
             vc.didMove(toParent: self)
         }else if SearchRecipeData[indexPath.row].name == "Create New Recipe" {
             
-            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeVC") as! CreateRecipeVC
-            vc.comesfrom = "AddRecipe"
-            vc.backAction = {
-                self.tabBarController?.tabBar.isHidden = false
-                self.ToDismissPopUp()
-                //                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3){
-                //                        self.SearchRecipePopUpV.isHidden = true
-            }
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeNewVC") as! CreateRecipeNewVC
+//            vc.comesfrom = "AddRecipe"
+//            vc.backAction = {
+//                self.tabBarController?.tabBar.isHidden = false
+//                self.ToDismissPopUp()
+//                //                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3){
+//                //                        self.SearchRecipePopUpV.isHidden = true
+//            }
             //                }
             
             self.navigationController?.pushViewController(vc, animated: true)
@@ -241,19 +241,19 @@ extension AddRecipePopUpVC{
                         
                         self.showToast(bundle)
                         
-                        let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-                        let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeVC") as! CreateRecipeVC
+                        let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+                        let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeNewVC") as! CreateRecipeNewVC
                         
-                        vc.comesfrom = "AddRecipeImage"
-                        vc.ImgItemName = "\(bundle)"
-                        vc.backAction = {
-                            
-                            self.tabBarController?.tabBar.isHidden = false
-                            self.ToDismissPopUp()
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3){
-                                //  self.SearchRecipePopUpV.isHidden = true
-                            }
-                        }
+//                        vc.comesfrom = "AddRecipeImage"
+//                        vc.ImgItemName = "\(bundle)"
+//                        vc.backAction = {
+//                            
+//                            self.tabBarController?.tabBar.isHidden = false
+//                            self.ToDismissPopUp()
+//                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3){
+//                                //  self.SearchRecipePopUpV.isHidden = true
+//                            }
+//                        }
                         
                         
                         self.navigationController?.pushViewController(vc, animated: true)

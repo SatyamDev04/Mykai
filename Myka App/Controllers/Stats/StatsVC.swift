@@ -22,10 +22,7 @@ class StatsVC: UIViewController, ChartViewDelegate {
     @IBOutlet weak var ProfDescLbl: UILabel!
     @IBOutlet weak var YourSavingLbl: UILabel!
     @IBOutlet weak var TotalSpentLbl: UILabel!
-    
     @IBOutlet weak var ScrollV: UIScrollView!
-    
-    
     @IBOutlet weak var barChartView: BarChartView!
     @IBOutlet weak var ChartScrollView: UIView!
     @IBOutlet weak var DateLbl: UILabel!
@@ -43,9 +40,7 @@ class StatsVC: UIViewController, ChartViewDelegate {
      
     override func viewDidLoad() {
         super.viewDidLoad()
-//        setupBarChart()
-//               setData()
-        // Set the delegate
+
          barChartView.delegate = self
        
         planService.shared.Api_To_Get_ProfileData(vc: self) { result in
@@ -249,6 +244,7 @@ class StatsVC: UIViewController, ChartViewDelegate {
             print("Generated OneLink URL: \(referLink)")
         }
     }
+    
     
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
             guard let barEntry = entry as? BarChartDataEntry else { return }

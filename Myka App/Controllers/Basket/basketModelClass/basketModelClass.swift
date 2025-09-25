@@ -184,23 +184,25 @@ struct PurpleRecipe: Codable {
 
 // MARK: - Instruction
 struct Instruction: Codable {
+    let stepsHeaders: String?
+    let createdOn, id: String?
+    let updatedAt: String?
     let timerMin: Int?
-    let id, sectionID: String?
-    let createdAt: String?
     let text: String?
     let stepOrder: Int?
-    let updatedAt: String?
-    let createdOn: String?
+    let createdAt: String?
+    let sectionID: String?
 
     enum CodingKeys: String, CodingKey {
-        case timerMin = "timer_min"
+        case stepsHeaders = "steps_headers"
+        case createdOn = "created_on"
         case id
-        case sectionID = "section_id"
-        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        case timerMin = "timer_min"
         case text
         case stepOrder = "step_order"
-        case updatedAt = "updated_at"
-        case createdOn = "created_on"
+        case createdAt = "created_at"
+        case sectionID = "section_id"
     }
 }
 

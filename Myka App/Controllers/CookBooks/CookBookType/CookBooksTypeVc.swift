@@ -116,8 +116,8 @@ class CookBooksTypeVc: UIViewController {
     }
     
     @IBAction func AddRecipeBtn(_ sender: UIButton) {
-        let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeVC") as! CreateRecipeVC
+        let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeNewVC") as! CreateRecipeNewVC
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -353,8 +353,8 @@ extension CookBooksTypeVc: UICollectionViewDelegate, UICollectionViewDataSource 
             return
         }
         
-        let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
+        let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
         let Type = cookBookDataArr[indexPath.item].data?.recipe?.mealType?[0] ?? ""
         let type = Type.prefix(while: { $0 != "/" })
         vc.MealType = "\(type)"

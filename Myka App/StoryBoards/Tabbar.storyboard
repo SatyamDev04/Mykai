@@ -30,7 +30,7 @@
         <array key="Poppins-Regular.otf">
             <string>Poppins-Regular</string>
         </array>
-        <array key="Poppins-SemiBold.ttf">
+        <array key="Poppins-SemiBold.otf">
             <string>Poppins-SemiBold</string>
         </array>
         <array key="Sarabun-Medium.ttf">
@@ -4045,7 +4045,7 @@ OFF My-Kai. </string>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recipe Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Xo-5g-E5k">
-                                        <rect key="frame" x="70" y="15.333333333333343" width="263" height="19.666666666666671"/>
+                                        <rect key="frame" x="70" y="15.333333333333345" width="263" height="19.666666666666671"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="16"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -13730,10 +13730,10 @@ to discard changes.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TcI-Yy-t4S">
-                                <rect key="frame" x="0.0" y="717" width="393" height="135"/>
+                                <rect key="frame" x="0.0" y="752" width="393" height="100"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="135" id="wRr-pi-qyA"/>
+                                    <constraint firstAttribute="height" constant="100" id="wRr-pi-qyA"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y27-V1-H0k">
@@ -13741,7 +13741,7 @@ to discard changes.</string>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vhS-3W-cMg">
-                                <rect key="frame" x="0.0" y="664" width="393" height="120"/>
+                                <rect key="frame" x="0.0" y="687" width="393" height="120"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="xMU-lB-4bn">
                                         <rect key="frame" x="20" y="10" width="353" height="100"/>
@@ -13777,7 +13777,7 @@ to discard changes.</string>
                             <constraint firstItem="y27-V1-H0k" firstAttribute="top" secondItem="Eov-8H-pG7" secondAttribute="top" id="UjA-ln-TUZ"/>
                             <constraint firstItem="Eov-8H-pG7" firstAttribute="trailing" secondItem="vhS-3W-cMg" secondAttribute="trailing" id="VId-2I-SyF"/>
                             <constraint firstAttribute="bottom" secondItem="TcI-Yy-t4S" secondAttribute="bottom" id="gq2-rT-uwo"/>
-                            <constraint firstItem="Eov-8H-pG7" firstAttribute="bottom" secondItem="vhS-3W-cMg" secondAttribute="bottom" id="urW-Kj-Qsd"/>
+                            <constraint firstItem="Eov-8H-pG7" firstAttribute="bottom" secondItem="vhS-3W-cMg" secondAttribute="bottom" constant="-23" id="urW-Kj-Qsd"/>
                         </constraints>
                     </view>
                     <connections>

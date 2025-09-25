@@ -1,34 +1,22 @@
 //
-//  RecipeDetailsVC.swift
-//  Myka App
+//  RecipeDetailNewVC.swift
+//  My Kai
 //
-//  Created by Sumit on 10/12/24.
+//  Created by YATIN  KALRA on 23/09/25.
 //
 
 import UIKit
-import SDWebImage
-import Alamofire
 import Cosmos
+import SDWebImage
 
-struct RecipeDetailsIngredientModel{
-    var name: String = ""
-    var image : String = ""
-    var Quantity: String = ""
-    var food: String = ""
-    var foodCategory: String = ""
-    var measure: String = ""
-    var foodID: String = ""
-    var ingredient_cost:String = ""
-}
+class RecipeDetailNewVC: UIViewController {
 
-class RecipeDetailsVC: UIViewController {
-    
     @IBOutlet weak var ImgbottomBorder: UIView!
     @IBOutlet weak var ImgV: UIImageView!
     
     @IBOutlet weak var RatingLbl: UILabel!
-    @IBOutlet weak var RatingView: CosmosView!
-    @IBOutlet weak var ImgDesc: UILabel!
+    @IBOutlet weak var recipeNameLbl: UILabel!
+    @IBOutlet weak var recipeDesLbl: UILabel!
     
     
     @IBOutlet weak var Calorieslbl: UILabel!
@@ -53,14 +41,14 @@ class RecipeDetailsVC: UIViewController {
     @IBOutlet weak var IngredientBgV: UIView!
     @IBOutlet weak var IngredientBtnsBgV: UIView!
     
-    @IBOutlet weak var CookTblV: UITableView!
-    @IBOutlet weak var CookTblVH: NSLayoutConstraint!
-    @IBOutlet weak var CookTblVBgV: UIView!
+    @IBOutlet weak var CookwareTblV: UITableView!
+    @IBOutlet weak var CookwareTblVH: NSLayoutConstraint!
+    @IBOutlet weak var CookwareTblVBgV: UIView!
     
-    @IBOutlet weak var DirectionsTblV: UITableView!
-    @IBOutlet weak var DirectionsTblVH: NSLayoutConstraint!
-    @IBOutlet weak var DirectionsTblVBgV: UIView!
-    @IBOutlet weak var DirectionsBtnsBgV: UIView!
+    @IBOutlet weak var recipeTblV: UITableView!
+    @IBOutlet weak var recipeTblVH: NSLayoutConstraint!
+    @IBOutlet weak var recipeTblVBgV: UIView!
+    @IBOutlet weak var recipeBtnsBgV: UIView!
     
     // for Choosedays popup
     @IBOutlet var ChoosedaysPopupV: UIView!
@@ -77,7 +65,6 @@ class RecipeDetailsVC: UIViewController {
     
     @IBOutlet weak var ScrollV: UIScrollView!
     //
-    
     var ServCount = 1
     var ChooseDayData = [BodyGoalsModel(Name: "Monday", isSelected: false), BodyGoalsModel(Name: "Tuesday", isSelected: false), BodyGoalsModel(Name: "Wednesday", isSelected: false), BodyGoalsModel(Name: "Thursday", isSelected: false), BodyGoalsModel(Name: "Friday", isSelected: false), BodyGoalsModel(Name: "Saturday", isSelected: false), BodyGoalsModel(Name: "Sunday", isSelected: false)]
     
@@ -95,10 +82,16 @@ class RecipeDetailsVC: UIViewController {
     var RecipeDetailsData = [RecipeDetailModel]()
     var MealType = ""
     var backAction:()->() = {}
-    
+    var tblVIngredientData : [RecipeDataModel] = []
+    var cookwareArr = [RecipeDataModel]()
+    var recipeArr = [RecipeDataModel]()
+    var recipeFrom = ""
+    var sourceUrl = ""
+    var conevertType = "O"
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.ServCountLbl.text = "\(ServCount)"
+
+        self.ServCountLbl.text = "\(ServCount) servings"
         //  ImgbottomBorder.roundCorners([.bottomLeft, .bottomRight], radius: 22.0)
         self.ChoosedaysPopupV.frame = self.view.bounds
         self.view.addSubview(self.ChoosedaysPopupV)
@@ -122,22 +115,22 @@ class RecipeDetailsVC: UIViewController {
         self.IngredientBgV.isHidden = false
         self.IngredientBtnsBgV.isHidden = false
         
-        self.CookTblVBgV.isHidden = true
+        self.CookwareTblVBgV.isHidden = true
         
-        self.DirectionsTblVBgV.isHidden = true
-        self.DirectionsBtnsBgV.isHidden = true
+        self.recipeTblVBgV.isHidden = true
+        self.recipeBtnsBgV.isHidden = true
         
-        self.TblV.register(UINib(nibName: "MissingIngredientsTblVCell", bundle: nil), forCellReuseIdentifier: "MissingIngredientsTblVCell")
+        self.TblV.register(UINib(nibName: "IngredientsTblVCell", bundle: nil), forCellReuseIdentifier: "IngredientsTblVCell")
         self.TblV.delegate = self
         self.TblV.dataSource = self
         
-        self.CookTblV.register(UINib(nibName: "CookwareTblVCell", bundle: nil), forCellReuseIdentifier: "CookwareTblVCell")
-        self.CookTblV.delegate = self
-        self.CookTblV.dataSource = self
+        self.CookwareTblV.register(UINib(nibName: "IngredientsTblVCell", bundle: nil), forCellReuseIdentifier: "IngredientsTblVCell")
+        self.CookwareTblV.delegate = self
+        self.CookwareTblV.dataSource = self
         
-        self.DirectionsTblV.register(UINib(nibName: "DirectionsTblVCell", bundle: nil), forCellReuseIdentifier: "DirectionsTblVCell")
-        self.DirectionsTblV.delegate = self
-        self.DirectionsTblV.dataSource = self
+        self.recipeTblV.register(UINib(nibName: "RecipeTblVCell", bundle: nil), forCellReuseIdentifier: "RecipeTblVCell")
+        self.recipeTblV.delegate = self
+        self.recipeTblV.dataSource = self
         
         calendar.firstWeekday = 2 // Start the week on Monday
         setupInitialWeek()
@@ -156,7 +149,7 @@ class RecipeDetailsVC: UIViewController {
         self.Api_To_Recipe_Details(uri: uri)
     }
     
-    
+
     @objc func listnerFunctionReloadDetails(_ notification: NSNotification) {
         if let data = notification.userInfo?["data"] as? String {
             self.Api_To_Recipe_Details(uri: uri)
@@ -205,8 +198,8 @@ class RecipeDetailsVC: UIViewController {
         
         // Add observers for table views
         TblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
-        CookTblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
-        DirectionsTblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
+        CookwareTblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
+        recipeTblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         ChooseMealTypeTblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         
     }
@@ -217,10 +210,10 @@ class RecipeDetailsVC: UIViewController {
             if let tableView = object as? UITableView {
                 if tableView == TblV {
                     TblVH.constant = tableView.contentSize.height
-                } else if tableView == CookTblV {
-                    CookTblVH.constant = tableView.contentSize.height
-                } else if tableView == DirectionsTblV {
-                    DirectionsTblVH.constant = tableView.contentSize.height
+                } else if tableView == CookwareTblV {
+                    CookwareTblVH.constant = tableView.contentSize.height
+                } else if tableView == recipeTblV {
+                    recipeTblVH.constant = tableView.contentSize.height
                 } else if tableView == ChooseMealTypeTblV {
                     ChooseMealTypeTblVH.constant = tableView.contentSize.height
                 }
@@ -231,8 +224,8 @@ class RecipeDetailsVC: UIViewController {
     deinit {
         // Remove observers
         TblV.removeObserver(self, forKeyPath: "contentSize")
-        CookTblV.removeObserver(self, forKeyPath: "contentSize")
-        DirectionsTblV.removeObserver(self, forKeyPath: "contentSize")
+        CookwareTblV.removeObserver(self, forKeyPath: "contentSize")
+        recipeTblV.removeObserver(self, forKeyPath: "contentSize")
     }
     
     
@@ -265,10 +258,10 @@ class RecipeDetailsVC: UIViewController {
         self.IngredientBgV.isHidden = false
         self.IngredientBtnsBgV.isHidden = false
         
-        self.CookTblVBgV.isHidden = true
+        self.CookwareTblVBgV.isHidden = true
         
-        self.DirectionsTblVBgV.isHidden = true
-        self.DirectionsBtnsBgV.isHidden = true
+        self.recipeTblVBgV.isHidden = true
+        self.recipeBtnsBgV.isHidden = true
     }
     
     @IBAction func CookBtn(_ sender: UIButton) {
@@ -283,28 +276,73 @@ class RecipeDetailsVC: UIViewController {
         self.IngredientBgV.isHidden = true
         self.IngredientBtnsBgV.isHidden = true
         
-        self.CookTblVBgV.isHidden = false
+        self.CookwareTblVBgV.isHidden = false
         
-        self.DirectionsTblVBgV.isHidden = true
-        self.DirectionsBtnsBgV.isHidden = true
+        self.recipeTblVBgV.isHidden = true
+        self.recipeBtnsBgV.isHidden = true
     }
     
     @IBAction func DirectionsBtn(_ sender: UIButton) {
-        self.IngredientLbl.backgroundColor = UIColor.init(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
-        self.CookwareLbl.backgroundColor = UIColor.init(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
-        self.DirectionsLbl.backgroundColor = UIColor.init(red: 254/255, green: 159/255, blue: 69/255, alpha: 1)
-        
-        self.IngredientLbl.textColor = UIColor.init(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
-        self.CookwareLbl.textColor = UIColor.init(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
-        self.DirectionsLbl.textColor = UIColor.white
-        
-        self.IngredientBgV.isHidden = true
-        self.IngredientBtnsBgV.isHidden = true
-        
-        self.CookTblVBgV.isHidden = true
-        
-        self.DirectionsTblVBgV.isHidden = false
-        self.DirectionsBtnsBgV.isHidden = false
+        if recipeFrom == "Import"{
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "ImportedRecipeWebViewVC") as! ImportedRecipeWebViewVC
+            vc.WebUrl = sourceUrl
+            vc.backAction = { tabTapped in
+                if tabTapped == "Ing"{
+                    self.IngredientBtn(UIButton())
+                }else{
+                    self.CookBtn(UIButton())
+                }
+            }
+            vc.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(vc, animated: true)
+            
+        }else{
+            self.IngredientLbl.backgroundColor = UIColor.init(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
+            self.CookwareLbl.backgroundColor = UIColor.init(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
+            self.DirectionsLbl.backgroundColor = UIColor.init(red: 254/255, green: 159/255, blue: 69/255, alpha: 1)
+            
+            self.IngredientLbl.textColor = UIColor.init(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
+            self.CookwareLbl.textColor = UIColor.init(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
+            self.DirectionsLbl.textColor = UIColor.white
+            
+            self.IngredientBgV.isHidden = true
+            self.IngredientBtnsBgV.isHidden = true
+            
+            self.CookwareTblVBgV.isHidden = true
+            
+            self.recipeTblVBgV.isHidden = false
+            self.recipeBtnsBgV.isHidden = false
+        }
+    }
+    
+    @IBAction func convertUntiBtn(_ sender: UIButton){
+        let sb = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+        let vc = sb.instantiateViewController(withIdentifier: "ConvertUnitPopVC") as! ConvertUnitPopVC
+        vc.ingredientData = self.tblVIngredientData
+        vc.type = self.conevertType
+        vc.backAction = { type, convertedData in
+            self.conevertType = type
+            let data = convertedData
+            var index = 0
+
+            for recipeIndex in self.tblVIngredientData.indices {
+                if var ingredients = self.tblVIngredientData[recipeIndex].ingredients {
+                    for i in ingredients.indices {
+                        if index < data.count {
+                            ingredients[i].quantity = data[index].converted
+                            ingredients[i].unit = data[index].targetUnit
+                            index += 1
+                        }
+                    }
+                    self.tblVIngredientData[recipeIndex].ingredients = ingredients
+                    self.TblV.reloadData()
+                }
+            }
+            
+        }
+        vc.modalPresentationStyle = .overCurrentContext
+        self.present(vc, animated: true, completion: nil)
     }
     
     @IBAction func SelectAllBtn(_ sender: UIButton) {
@@ -325,13 +363,13 @@ class RecipeDetailsVC: UIViewController {
             return
         }
         self.ServCount -= 1
-        self.ServCountLbl.text = "\(ServCount)"
+        self.ServCountLbl.text = "\(ServCount) servings"
     }
     
     @IBAction func ServCountPlusBtn(_ sender: UIButton) {
         self.ServCount += 1
         
-        self.ServCountLbl.text = "\(ServCount)"
+        self.ServCountLbl.text = "\(ServCount) servings"
     }
     
     @IBAction func AddToPlanBtn(_ sender: UIButton) {
@@ -343,7 +381,6 @@ class RecipeDetailsVC: UIViewController {
             AlertControllerOnr(title: "", message: "Please select atleast one ingredients.")
             return
         }
-        
         self.Api_To_AddToBasket_Recipe()
     }
     
@@ -428,157 +465,201 @@ class RecipeDetailsVC: UIViewController {
             updateWeekLabel()
         }
     }
+
 }
+// MARK: - UITableViewDelegate & DataSource
 
-
-extension RecipeDetailsVC: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if tableView == ChoosedaysTblV {
-            return ChooseDayData.count
-        }else if tableView == ChooseMealTypeTblV{
-            return ChooseMealTypeyData.count
-        }else
+extension RecipeDetailNewVC: UITableViewDelegate, UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
         if tableView == self.TblV {
-            return recipesArray.count
-        }else if tableView == self.CookTblV {
-            return CookWareArray.count
-        }else{
-            return self.RecipeInstArr.count
+            return tblVIngredientData.count
+        } else if tableView == self.CookwareTblV {
+            return cookwareArr.count
+        } else {
+            return recipeArr.count
+        }
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if tableView == self.TblV {
+            guard section < tblVIngredientData.count else { return 0 }
+            return tblVIngredientData[section].ingredients?.count ?? 0
+        } else if tableView == self.CookwareTblV {
+            guard section < cookwareArr.count else { return 0 }
+            return cookwareArr[section].cookware?.count ?? 0
+        } else {
+            guard section < recipeArr.count else { return 0 }
+            return recipeArr[section].recipe?.count ?? 0
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if tableView == ChoosedaysTblV {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ChooseDaysTblVCell", for: indexPath) as! ChooseDaysTblVCell
-            cell.NameLbl.text = ChooseDayData[indexPath.row].Name
-            cell.TickImg.image = ChooseDayData[indexPath.row].isSelected ? UIImage(named: "chck") : UIImage(named: "Unchck")
-            cell.selectedBgImg.image = ChooseDayData[indexPath.row].isSelected ? UIImage(named: "Yelloborder") : UIImage(named: "Group 1171276489")
-            cell.selectionStyle = .none
-            return cell
-        }else if tableView == ChooseMealTypeTblV{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ChooseDaysTblVCell", for: indexPath) as! ChooseDaysTblVCell
-            cell.NameLbl.text = ChooseMealTypeyData[indexPath.row].Name
-            cell.TickImg.image = ChooseMealTypeyData[indexPath.row].isSelected ? UIImage(named: "RadioOn") : UIImage(named: "RadioOff")
-            cell.selectionStyle = .none
-            return cell
-        }else
         if tableView == self.TblV {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "MissingIngredientsTblVCell", for: indexPath) as! MissingIngredientsTblVCell
-            cell.NameLbl.text = recipesArray[indexPath.row].name
-            let img = recipesArray[indexPath.row].image
+            let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientsTblVCell", for: indexPath) as! IngredientsTblVCell
             
-            cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-            cell.Img.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
+            let section = indexPath.section
+            let row = indexPath.row
             
-            let quantityString = recipesArray[indexPath.row].Quantity
-            
-            let quantity = Double(quantityString) ?? 0
-            let formatter = NumberFormatter()
-            formatter.minimumFractionDigits = 0  // Show no fractional digits if not needed
-            formatter.maximumFractionDigits = 2  // Limit to 2 fractional digits
-            formatter.numberStyle = .decimal
-            
-            if let formattedQuantity = formatter.string(from: NSNumber(value: quantity)) {
-                print(formattedQuantity) // This will give "2" for 2.00 and "2.05" for 2.05
-                cell.QuentityLbl.text = "\(formattedQuantity) \(recipesArray[indexPath.row].measure)"
+            cell.checkBoxView.isHidden = false
+        
+            let header = tblVIngredientData[section].hearder ?? ""
+            if header.isEmpty{
+                cell.type = .normal
             }else{
-                cell.QuentityLbl.text = "\(quantityString) \(recipesArray[indexPath.row].measure)"
+                cell.type = .withHeader
+            }
+            if section < tblVIngredientData.count,
+               let ingredients = tblVIngredientData[section].ingredients,
+               row < ingredients.count {
+                let ingredient = ingredients[row]
+                cell.ingredientlbl?.text = ingredient.name
+                cell.amout_MeasurmentLbl?.text = "\(ingredient.quantity ?? "") \(ingredient.unit ?? "")"
+                cell.img.sd_setImage(with: URL(string: ingredient.img ?? ""), placeholderImage: UIImage(named: "No_Image"))
+            } else {
+                cell.ingredientlbl?.text = ""
+                cell.amout_MeasurmentLbl?.text = ""
+                cell.img.image = UIImage(named: "No_Image")
             }
             
-            if selectedIndex.contains(indexPath.row){
-                cell.CheckBtn.setImage(UIImage(named: "YellowCheck"), for: .normal)
+            cell.checkBoxBtn.tag = row
+            cell.checkBoxBtn.addTarget(self, action: #selector(checkIngredientBtn(_:)), for: .touchUpInside)
+            if tblVIngredientData[section].ingredients?[row].isSelected == true{
+                cell.checkBoxBtn.setImage(UIImage(named: "YellowCheck"), for: .normal)
             }else{
-                cell.CheckBtn.setImage(UIImage(named: "YelloUncheck"), for: .normal)
+                cell.checkBoxBtn.setImage(UIImage(named: "YelloUncheck"), for: .normal)
             }
-            
-            cell.CheckBtn.tag = indexPath.item
-            cell.CheckBtn.addTarget(self, action: #selector(AddIngredientBtnTapped(sender: )), for: .touchUpInside)
+            cell.selectionStyle = .none
             return cell
-        }else if tableView == self.CookTblV {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "CookwareTblVCell", for: indexPath) as! CookwareTblVCell
-            cell.NameLbl.text = CookWareArray[indexPath.row].name
-            let img = CookWareArray[indexPath.row].imageURL ?? ""
-            
-            cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-            cell.Img.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
+        }else if tableView == CookwareTblV{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientsTblVCell", for: indexPath) as! IngredientsTblVCell
+            cell.type = .normal
+            cell.checkBoxView.isHidden = true
+            let section = indexPath.section
+            let row = indexPath.row
+            if section < cookwareArr.count,
+               let ingredients = cookwareArr[section].cookware,
+               row < ingredients.count {
+                let ingredient = ingredients[row]
+                cell.ingredientlbl?.text = ingredient.name
+                cell.img.sd_setImage(with: URL(string: ingredient.img ?? ""), placeholderImage: UIImage(named: "No_Image"))
+            } else {
+                cell.ingredientlbl?.text = ""
+                cell.img.image = UIImage(named: "No_Image")
+            }
+            cell.selectionStyle = .none
             return cell
-            
         }else{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DirectionsTblVCell", for: indexPath) as! DirectionsTblVCell
-            cell.StepLbl.text = "Step \(indexPath.row + 1):"
-            cell.DescLbl.text = self.RecipeInstArr[indexPath.row]
+            let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeTblVCell", for: indexPath) as! RecipeTblVCell
+            let section = indexPath.section
+            let row = indexPath.row
+            let header = recipeArr[section].hearder ?? ""
+            if header.isEmpty{
+                cell.type = .normal
+                cell.stepLbl.text = "Step - \(section+1)"
+            }else{
+                cell.type = .withHeader
+                cell.stepLbl.text = "Step - \(row+1)"
+            }
+            
+            if section < recipeArr.count,
+               let recipes = recipeArr[section].recipe,
+               row < recipes.count {
+                let recipe = recipes[row]
+                cell.recipeLbl?.text = recipe.instruction
+               
+            } else {
+                cell.recipeLbl?.text = ""
+                
+            }
+            cell.selectionStyle = .none
+
             return cell
         }
+//        return UITableViewCell()
     }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if tableView == ChoosedaysTblV {
-            if ChooseDayData[indexPath.row].isSelected {
-                ChooseDayData[indexPath.row].isSelected = false
-            }else{
-                let dateformatter = DateFormatter()
-                let date = self.currentWeekDates[indexPath.row]
-                dateformatter.dateFormat = "yyyy-MM-dd"
-                let Sdate = dateformatter.string(from: date)
-                dateformatter.dateFormat = "yyyy-MM-dd"
-                let ReconvertDate = dateformatter.date(from: Sdate)!
-                
-                dateformatter.dateFormat = "EEEE" // Full day name, e.g., "Monday"
-                let dayOfWeek = dateformatter.string(from: date)
-                let selDay = ChooseDayData[indexPath.row].Name
-                guard selDay == dayOfWeek else { return }
-                dateformatter.dateFormat = "yyyy-MM-dd"
-                let Cdate = dateformatter.string(from: Date())
-                dateformatter.dateFormat = "yyyy-MM-dd"
-                let cReconvertDate = dateformatter.date(from: Cdate)!
-                
-                guard ReconvertDate >= cReconvertDate else { return }
-                
-                ChooseDayData[indexPath.row].isSelected = true
-            }
-            ChoosedaysTblV.reloadData()
-        }else if tableView == ChooseMealTypeTblV{
-            for i in 0..<ChooseMealTypeyData.count{
-                ChooseMealTypeyData[i].isSelected = false
-            }
-            ChooseMealTypeyData[indexPath.row].isSelected = true
-            ChooseMealTypeTblV.reloadData()
-        }
-    }
-    
-    @objc func AddIngredientBtnTapped(sender: UIButton){
-        let index = sender.tag
-        if selectedIndex.contains(index){
-            selectedIndex.remove(at: selectedIndex.firstIndex(of: index)!)
-        }else{
-            selectedIndex.append(index)
-        }
         
-        if selectedIndex.count == recipesArray.count{
-            self.SelectAllBtnO.isSelected = true
-        }else {
-            self.SelectAllBtnO.isSelected = false
-        }
-        
-        self.TblV.reloadData()
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return 75
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if tableView == ChoosedaysTblV {
-            return 50
-        }else if tableView == ChooseMealTypeTblV{
-            return 50
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if tableView == self.TblV {
+            guard section < tblVIngredientData.count else { return nil }
+            let title = tblVIngredientData[section].hearder?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            guard !title.isEmpty else { return nil }
+            
+            let label = UILabel()
+            label.text = "   \(title)"
+            label.font = UIFont(name: "Poppins-SemiBold", size: 16)
+            label.textColor = #colorLiteral(red: 0.2352941176, green: 0.2705882353, blue: 0.2549019608, alpha: 1)
+          
+            return label
+        }else if tableView == recipeTblV{
+            guard section < recipeArr.count else { return nil }
+            let title = recipeArr[section].hearder?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            guard !title.isEmpty else { return nil }
+            
+            let label = UILabel()
+            label.text = "   \(title)"
+            label.font = UIFont.boldSystemFont(ofSize: 18)
+            label.textColor = #colorLiteral(red: 0.2352941176, green: 0.2705882353, blue: 0.2549019608, alpha: 1)
+          
+            return label
         }else{
-            return UITableView.automaticDimension
+            guard section < cookwareArr.count else { return nil }
+            let title = cookwareArr[section].hearder?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            guard !title.isEmpty else { return nil }
+            
+            let label = UILabel()
+            label.text = "   \(title)"
+            label.font = UIFont.boldSystemFont(ofSize: 18)
+            label.textColor = #colorLiteral(red: 0.2352941176, green: 0.2705882353, blue: 0.2549019608, alpha: 1)
+          
+            return label
         }
-     }
-  }
-
-extension RecipeDetailsVC {
+//        return nil
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if tableView == self.TblV {
+            guard section < tblVIngredientData.count else { return 0 }
+            let title = tblVIngredientData[section].hearder?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            return title.isEmpty ? 0 : 40
+        }else if tableView == self.recipeTblV{
+            guard section < recipeArr.count else { return 0 }
+            let title = recipeArr[section].hearder?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            return title.isEmpty ? 0 : 40
+        }
+        return 0
+    }
+    
+    // After user taps a row's checkbox
+    @objc func checkIngredientBtn(_ sender: UIButton) {
+        let point = sender.convert(CGPoint.zero, to: TblV)
+        
+        if let indexPath = TblV.indexPathForRow(at: point) {
+            // Toggle selection
+            if let isSelected = tblVIngredientData[indexPath.section].ingredients?[indexPath.row].isSelected {
+                tblVIngredientData[indexPath.section].ingredients?[indexPath.row].isSelected = !isSelected
+            }
+            
+            // Reload only that row (not the whole table)
+            TblV.reloadRows(at: [indexPath], with: .none)
+            
+            // Now check if all rows in this section are selected
+            let allSelected = tblVIngredientData[indexPath.section].ingredients?.allSatisfy { $0.isSelected ?? false } ?? false
+            
+            // Update your "Select All" button state
+            SelectAllBtnO.isSelected = allSelected
+        }
+    }
+    
+}
+extension RecipeDetailNewVC {
     func calculateWeekDates(for date: Date) -> [Date] {
         // Ensure the first day of the week is Monday
         guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: date) else { return [] }
@@ -614,12 +695,11 @@ extension RecipeDetailsVC {
 }
 
 
-extension RecipeDetailsVC{
+extension RecipeDetailNewVC{
     func Api_To_Recipe_Details(uri: String){
         var params = [String: Any]()
         
         params["uri"] = uri
-        
         params["id"] = Id
         params["type"] = type
         params["servings"] = "\(ServCount)"
@@ -643,18 +723,23 @@ extension RecipeDetailsVC{
                         
                         let val = self.RecipeDetailsData.first?.recipe
                         
+                        self.recipeFrom = val?.createdType ?? ""
+                        self.sourceUrl = val?.source_url ?? ""
+                        
+                        self.recipeNameLbl.text = val?.label ?? ""
+                        self.recipeDesLbl.text = val?.source ?? ""
                         let review = self.RecipeDetailsData.first?.review ?? 0
                         let reviewNum = self.RecipeDetailsData.first?.review_number ?? 0
-                        
+                        self.RatingLbl.text = "\(review)(\(reviewNum))"
                         let roundedReview = Double(round(10 * review) / 10.0)
-                        self.RatingView.rating = roundedReview
+//                        self.RatingView.rating = roundedReview
                         
                         let img  = val?.images?.large?.url
                         let imgUrl = URL(string: img ?? "")
                         self.ImgV.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
                         self.ImgV.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "No_Image"))
                         
-                        self.ImgDesc.text = val?.label ?? ""
+//                        self.ImgDesc.text = val?.label ?? ""
                         // self.ImgDesc1Lbl.text = "By \(val?.source ?? "")"
                         
                         let carbs = val?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
@@ -673,6 +758,33 @@ extension RecipeDetailsVC{
                         self.PrepTimeLbl.text = "\(val?.prep_time ?? 0) min"
                         let ingredients = val?.ingredients
                         
+                        if let ingredients = val?.ingredients {
+                            for ingredient in ingredients {
+                                var header = ingredient.header
+                                if header == "Recipe"{
+                                    header = ""
+                                }
+                                self.addIngredient(Header: header, data: IngredientDataModel(name: ingredient.name, quantity: ingredient.quantity, unit: ingredient.measure, img: ingredient.image,isSelected: true))
+                            }
+                        }
+                        
+                        if let cookwares = val?.cookware {
+                            for cookware in cookwares {
+                                self.addCookware(data: CookwareDataModel(name: cookware.name,img: cookware.imageURL))
+                            }
+                        }
+                        
+                        
+                        if let instructions = val?.instructions {
+                            for instruction in instructions {
+                                var header = instruction.stepsHeaders
+                                if header == "Recipe"{
+                                    header = ""
+                                }
+                                self.addRecipe(Header: header, data: StepsDataModel(instruction: instruction.text))
+                            }
+                        }
+                        
 //                        for item in ingredients ?? [] {
 //                            let name = item.food ?? ""
 //                            let quantity = item.quantity ?? ""
@@ -689,24 +801,24 @@ extension RecipeDetailsVC{
 //                            self.recipesArray.append(contentsOf: [RecipeDetailsIngredientModel(name: name, image: img, Quantity: quantity, food: food, foodCategory: foodCat, measure: "\(measure)", foodID: FoodId, ingredient_cost: ingredient_cost)])
 //                        }
                         
-                        let ingredientList = val?.instructionLines
-                        self.RecipeInstArr.removeAll()
+//                        let ingredientList = val?.instructionLines
+//                        self.RecipeInstArr.removeAll()
+//                        
+//                        for item in ingredientList ?? [] {
+//                            print("item: \(item)")
+//                            self.RecipeInstArr.append(item)
+//                        }
                         
-                        for item in ingredientList ?? [] {
-                            print("item: \(item)")
-                            self.RecipeInstArr.append(item)
-                        }
-                        
-                        for i in 0..<self.recipesArray.count{
-                            self.selectedIndex.append(i)
-                        }
+//                        for i in 0..<self.recipesArray.count{
+//                            self.selectedIndex.append(i)
+//                        }
                         
                         self.SelectAllBtnO.isSelected = true
                         
-                        self.CookWareArray = self.RecipeDetailsData.first?.recipe?.cookware ?? []
-                        self.TblV.reloadData()
-                        self.CookTblV.reloadData()
-                        self.DirectionsTblV.reloadData()
+//                        self.CookWareArray = self.RecipeDetailsData.first?.recipe?.cookware ?? []
+//                        self.TblV.reloadData()
+//                        self.CookwareTblV.reloadData()
+//                        self.recipeTblV.reloadData()
                         
                     }
                 }else{
@@ -842,6 +954,134 @@ extension RecipeDetailsVC{
             print("Failed to encode JSON.")
             self.hideIndicator()
             self.showToast("An error occurred while preparing the request.")
+        }
+    }
+}
+extension RecipeDetailNewVC{
+    func addIngredient(Header:String?,data:IngredientDataModel) {
+       
+        let ingredientName = data.name?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        var amountText = ""
+        if let amountValue = Double(data.quantity ?? "") {
+            let truncated = floor(amountValue * 10) / 10
+            let formattedAmount = String(format: "%.1f", truncated)
+            amountText = formattedAmount.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        let unitText = data.unit?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let imgStr = data.img?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let headerText = Header?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+     
+
+        if  ingredientName.isEmpty || amountText.isEmpty || unitText.isEmpty {
+            return
+        }
+        
+        let ingredient = IngredientDataModel(
+            name: ingredientName,
+            quantity: amountText,
+            unit: unitText,
+            img: imgStr,
+            isSelected: true
+        )
+
+        DispatchQueue.main.async {
+            if headerText.isEmpty {
+                let data = RecipeDataModel(hearder: "", ingredients: [ingredient])
+                self.tblVIngredientData.append(data)
+            } else {
+                if let existingIndex = self.tblVIngredientData.firstIndex(where: {
+                    ($0.hearder ?? "").trimmingCharacters(in: .whitespacesAndNewlines).caseInsensitiveCompare(headerText) == .orderedSame
+                }) {
+                    if self.tblVIngredientData[existingIndex].ingredients == nil {
+                        self.tblVIngredientData[existingIndex].ingredients = [ingredient]
+                    } else {
+                        self.tblVIngredientData[existingIndex].ingredients?.append(ingredient)
+                    }
+                } else {
+                    let data = RecipeDataModel(hearder: headerText, ingredients: [ingredient])
+                    self.tblVIngredientData.append(data)
+                }
+            }
+          
+            self.TblV.reloadData()
+        }
+    }
+    
+    func addCookware(data:CookwareDataModel) {
+       
+        let cookwareName =  data.name?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+//        let amountText = addIngredientAmoutTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+//        let unitText = addIngredientMesurementTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let imgStr = data.img?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let headerText = ""
+     
+        if  cookwareName.isEmpty {
+            return
+        }
+        
+        let ingredient = IngredientDataModel(
+            name: cookwareName,
+            unit: "",
+            img: imgStr
+        )
+
+        DispatchQueue.main.async {
+            if headerText.isEmpty {
+                let data = RecipeDataModel(hearder: "", cookware: [ingredient])
+                self.cookwareArr.append(data)
+            } else {
+                if let existingIndex = self.cookwareArr.firstIndex(where: {
+                    ($0.hearder ?? "").trimmingCharacters(in: .whitespacesAndNewlines).caseInsensitiveCompare(headerText) == .orderedSame
+                }) {
+                    if self.cookwareArr[existingIndex].cookware == nil {
+                        self.cookwareArr[existingIndex].cookware = [ingredient]
+                    } else {
+                        self.cookwareArr[existingIndex].cookware?.append(ingredient)
+                    }
+                } else {
+                    let data = RecipeDataModel(hearder: headerText, cookware: [ingredient])
+                    self.cookwareArr.append(data)
+                }
+            }
+            print("cookwareArr count: \(self.cookwareArr.count)")
+           
+            self.CookwareTblV.reloadData()
+        }
+    }
+    
+    func addRecipe(Header: String?,data:StepsDataModel) {
+        
+        let recipeName = data.instruction?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+     
+        let headerText = Header?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+     
+        if  recipeName.isEmpty  {
+            return
+        }
+        
+        let recipe = StepsDataModel(instruction: recipeName)
+
+        DispatchQueue.main.async {
+            if headerText.isEmpty {
+                let data = RecipeDataModel(hearder: "", recipe: [recipe])
+                self.recipeArr.append(data)
+            } else {
+                if let existingIndex = self.recipeArr.firstIndex(where: {
+                    ($0.hearder ?? "").trimmingCharacters(in: .whitespacesAndNewlines).caseInsensitiveCompare(headerText) == .orderedSame
+                }) {
+                    if self.recipeArr[existingIndex].recipe == nil {
+                        self.recipeArr[existingIndex].recipe = [recipe]
+                    } else {
+                        self.recipeArr[existingIndex].recipe?.append(recipe)
+                    }
+                } else {
+                    let data = RecipeDataModel(hearder: headerText, recipe: [recipe])
+                    self.recipeArr.append(data)
+                }
+            }
+            print("recipeArr count: \(self.recipeArr.count)")
+           
+            self.recipeTblV.reloadData()
         }
     }
 }

@@ -12,31 +12,7 @@ import QuartzCore
 import AVFoundation
 
 
-@IBDesignable
-extension UILabel {
-    
-    @IBInspectable var fontName: String {
-        get { self.font.fontName }
-        set {
-            updateFont(name: newValue, size: self.font.pointSize)
-        }
-    }
-    
-    @IBInspectable var fontSize: CGFloat {
-        get { self.font.pointSize }
-        set {
-            updateFont(name: self.font.fontName, size: newValue)
-        }
-    }
-    
-    private func updateFont(name: String, size: CGFloat) {
-        if let newFont = UIFont(name: name, size: size) {
-            self.font = newFont
-        } else {
-            print("⚠️ UILabel: Font '\(name)' not found.")
-        }
-    }
-}
+
 
 // MARK: - UIImage Extension
 extension UIImage {
@@ -1115,5 +1091,114 @@ extension UIImage{
         let context = CIContext()
         guard let cgImage = context.createCGImage(outputCIImage, from: outputCIImage.extent) else { return nil }
         return UIImage(cgImage: cgImage)
+    }
+}
+extension UITextField {
+    func addDoneButton(onDone: (()->Void)? = nil) {
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: nil, action: #selector(doneTapped))
+        
+        toolbar.items = [flexSpace, doneButton]
+        self.inputAccessoryView = toolbar
+        
+        // Store closure in associated object
+        objc_setAssociatedObject(self, &AssociatedKeys.doneButtonHandler, onDone, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+    }
+    
+    @objc private func doneTapped() {
+        self.resignFirstResponder()
+        if let action = objc_getAssociatedObject(self, &AssociatedKeys.doneButtonHandler) as? ()->Void {
+            action()
+        }
+    }
+}
+
+private struct AssociatedKeys {
+    static var doneButtonHandler = "doneButtonHandler"
+}
+
+extension UILabel {
+    @IBInspectable var fontName: String {
+        get { return self.font.fontName }
+        set {
+            if let customFont = UIFont(name: newValue, size: self.font.pointSize) {
+                self.font = customFont
+            } else {
+                print("⚠️ Font '\(newValue)' not found. Make sure it's added in project & Info.plist")
+            }
+        }
+    }
+
+    @IBInspectable var fontSize: CGFloat {
+        get { return self.font.pointSize }
+        set {
+            self.font = self.font.withSize(newValue)
+        }
+    }
+}
+
+extension UIButton {
+    @IBInspectable var fontName: String {
+        get { return self.titleLabel?.font.fontName ?? "" }
+        set {
+            if let size = self.titleLabel?.font.pointSize,
+               let customFont = UIFont(name: newValue, size: size) {
+                self.titleLabel?.font = customFont
+            }
+        }
+    }
+
+    @IBInspectable var fontSize: CGFloat {
+        get { return self.titleLabel?.font.pointSize ?? 0 }
+        set {
+            if let name = self.titleLabel?.font.fontName {
+                self.titleLabel?.font = UIFont(name: name, size: newValue)
+            }
+        }
+    }
+}
+
+extension UITextField {
+    @IBInspectable var fontName: String {
+        get { return self.font?.fontName ?? "" }
+        set {
+            if let size = self.font?.pointSize,
+               let customFont = UIFont(name: newValue, size: size) {
+                self.font = customFont
+            }
+        }
+    }
+
+    @IBInspectable var fontSize: CGFloat {
+        get { return self.font?.pointSize ?? 0 }
+        set {
+            if let name = self.font?.fontName {
+                self.font = UIFont(name: name, size: newValue)
+            }
+        }
+    }
+}
+
+extension UITextView {
+    @IBInspectable var fontName: String {
+        get { return self.font?.fontName ?? "" }
+        set {
+            if let size = self.font?.pointSize,
+               let customFont = UIFont(name: newValue, size: size) {
+                self.font = customFont
+            }
+        }
+    }
+
+    @IBInspectable var fontSize: CGFloat {
+        get { return self.font?.pointSize ?? 0 }
+        set {
+            if let name = self.font?.fontName {
+                self.font = UIFont(name: name, size: newValue)
+            }
+        }
     }
 }
