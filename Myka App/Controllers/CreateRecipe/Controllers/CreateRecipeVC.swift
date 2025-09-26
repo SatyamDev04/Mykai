@@ -894,7 +894,7 @@ extension CreateRecipeVC {
             "title": self.RecipeTitleTxtF.text!,
             "ingr": ingredientsArray,
             "summary": notes,
-            "yield": String(self.count), // Ensure yield is a string
+            "yield": String(self.count),
             "totalTime": TotalTimeTxtF.text!,
             "prep": cookingInstructionsArray,
             "img": base64String

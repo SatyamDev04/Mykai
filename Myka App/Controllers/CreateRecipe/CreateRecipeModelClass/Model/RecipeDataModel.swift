@@ -18,6 +18,15 @@ struct IngredientDataModel:Encodable{
     var unit:String?
     var img:String? = ""
     var isSelected:Bool?
+    var text: String?
+    var image: String?
+    var food: String?
+    var ingredient_cost: String?
+    var foodCategory: String?
+    var measure: String?
+    var id: String?
+    var status: Bool?
+    var header: String?
 }
 struct CookwareDataModel:Encodable{
     var name:String?
@@ -88,4 +97,23 @@ struct UnitINData: Codable {
         case toMetricFactor = "to_metric_factor"
         case unitName = "unit_name"
     }
+}
+
+struct RecipePayload: Codable {
+    let summary: String
+    let recipe_key: String
+    let cook_book: String
+    let title: String
+    let yield: String
+    let prep_time: String
+    let cook_time: String
+    let is_public: String
+    let img: String
+    let createdType: String
+    let source_url: String
+    let ingr: [String]
+    let headers: [String]
+    let prep: [String]
+    let steps_headers: [String]
+    let cookware: [String]
 }
