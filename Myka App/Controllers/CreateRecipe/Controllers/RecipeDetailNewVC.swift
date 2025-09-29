@@ -11,7 +11,6 @@ import SDWebImage
 
 class RecipeDetailNewVC: UIViewController {
 
-    @IBOutlet weak var ImgbottomBorder: UIView!
     @IBOutlet weak var ImgV: UIImageView!
     
     @IBOutlet weak var RatingLbl: UILabel!
@@ -49,7 +48,8 @@ class RecipeDetailNewVC: UIViewController {
     @IBOutlet weak var recipeTblVH: NSLayoutConstraint!
     @IBOutlet weak var recipeTblVBgV: UIView!
     @IBOutlet weak var recipeBtnsBgV: UIView!
-    
+    @IBOutlet weak var authorNoteBgV: UIView!
+    @IBOutlet weak var notesTxtV: UITextView!
     // for Choosedays popup
     @IBOutlet var ChoosedaysPopupV: UIView!
     @IBOutlet weak var ChoosedaysTblV: UITableView!
@@ -111,7 +111,7 @@ class RecipeDetailNewVC: UIViewController {
         self.CookwareLbl.textColor = UIColor.init(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
         self.DirectionsLbl.textColor = UIColor.init(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
         
-        
+        self.notesTxtV.isUserInteractionEnabled = false
         self.IngredientBgV.isHidden = false
         self.IngredientBtnsBgV.isHidden = false
         
@@ -262,6 +262,7 @@ class RecipeDetailNewVC: UIViewController {
         
         self.recipeTblVBgV.isHidden = true
         self.recipeBtnsBgV.isHidden = true
+        self.authorNoteBgV.isHidden = false
     }
     
     @IBAction func CookBtn(_ sender: UIButton) {
@@ -280,6 +281,8 @@ class RecipeDetailNewVC: UIViewController {
         
         self.recipeTblVBgV.isHidden = true
         self.recipeBtnsBgV.isHidden = true
+        
+        self.authorNoteBgV.isHidden = false
     }
     
     @IBAction func DirectionsBtn(_ sender: UIButton) {
@@ -313,6 +316,7 @@ class RecipeDetailNewVC: UIViewController {
             
             self.recipeTblVBgV.isHidden = false
             self.recipeBtnsBgV.isHidden = false
+            self.authorNoteBgV.isHidden = true
         }
     }
     
@@ -388,10 +392,10 @@ class RecipeDetailNewVC: UIViewController {
         let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetail1VC") as! RecipeDetail1VC
         //let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetail2VC") as! RecipeDetail2VC
-        vc.recipesArray = self.recipesArray
+//        vc.recipesArray = self.recipesArray
         vc.MealType = self.MealType
-        vc.RecipeDetailsData = self.RecipeDetailsData
-        vc.RecipeListArr = self.RecipeInstArr
+        vc.RecipeDetailsData = self.RecipeDetailsData 
+        vc.RecipeListArr = self.recipeArr
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -515,11 +519,11 @@ extension RecipeDetailNewVC: UITableViewDelegate, UITableViewDataSource {
                 let ingredient = ingredients[row]
                 cell.ingredientlbl?.text = ingredient.name
                 cell.amout_MeasurmentLbl?.text = "\(ingredient.quantity ?? "") \(ingredient.unit ?? "")"
-                cell.img.sd_setImage(with: URL(string: ingredient.img ?? ""), placeholderImage: UIImage(named: "No_Image"))
+                cell.img.sd_setImage(with: URL(string: ingredient.img ?? ""), placeholderImage: UIImage(named: "NewRec"))
             } else {
                 cell.ingredientlbl?.text = ""
                 cell.amout_MeasurmentLbl?.text = ""
-                cell.img.image = UIImage(named: "No_Image")
+                cell.img.image = UIImage(named: "NewRec")
             }
             
             cell.checkBoxBtn.tag = row
@@ -542,10 +546,10 @@ extension RecipeDetailNewVC: UITableViewDelegate, UITableViewDataSource {
                row < ingredients.count {
                 let ingredient = ingredients[row]
                 cell.ingredientlbl?.text = ingredient.name
-                cell.img.sd_setImage(with: URL(string: ingredient.img ?? ""), placeholderImage: UIImage(named: "No_Image"))
+                cell.img.sd_setImage(with: URL(string: ingredient.img ?? ""), placeholderImage: UIImage(named: "addCook"))
             } else {
                 cell.ingredientlbl?.text = ""
-                cell.img.image = UIImage(named: "No_Image")
+                cell.img.image = UIImage(named: "addCook")
             }
             cell.selectionStyle = .none
             return cell
@@ -774,7 +778,6 @@ extension RecipeDetailNewVC{
                             }
                         }
                         
-                        
                         if let instructions = val?.instructions {
                             for instruction in instructions {
                                 var header = instruction.stepsHeaders
@@ -784,42 +787,9 @@ extension RecipeDetailNewVC{
                                 self.addRecipe(Header: header, data: StepsDataModel(instruction: instruction.text))
                             }
                         }
-                        
-//                        for item in ingredients ?? [] {
-//                            let name = item.food ?? ""
-//                            let quantity = item.quantity ?? ""
-//                            let measure = item.measure ?? ""
-//                            let img = item.image ?? ""
-//                            let food = item.food ?? ""
-//                            let foodCat = item.foodCategory ?? ""
-//                            let FoodId = item.foodID ?? ""
-//                            let ingredient_cost = item.ingredientCost ?? ""
-//                            print("name: \(name)")
-//                            print("quantity: \(quantity)")
-//                            print("measure: \(measure)")
-//                            
-//                            self.recipesArray.append(contentsOf: [RecipeDetailsIngredientModel(name: name, image: img, Quantity: quantity, food: food, foodCategory: foodCat, measure: "\(measure)", foodID: FoodId, ingredient_cost: ingredient_cost)])
-//                        }
-                        
-//                        let ingredientList = val?.instructionLines
-//                        self.RecipeInstArr.removeAll()
-//                        
-//                        for item in ingredientList ?? [] {
-//                            print("item: \(item)")
-//                            self.RecipeInstArr.append(item)
-//                        }
-                        
-//                        for i in 0..<self.recipesArray.count{
-//                            self.selectedIndex.append(i)
-//                        }
-                        
                         self.SelectAllBtnO.isSelected = true
                         
-//                        self.CookWareArray = self.RecipeDetailsData.first?.recipe?.cookware ?? []
-//                        self.TblV.reloadData()
-//                        self.CookwareTblV.reloadData()
-//                        self.recipeTblV.reloadData()
-                        
+                        self.notesTxtV.text = val?.description
                     }
                 }else{
                     let msg = d.message ?? ""
@@ -1079,7 +1049,9 @@ extension RecipeDetailNewVC{
                     self.recipeArr.append(data)
                 }
             }
-            print("recipeArr count: \(self.recipeArr.count)")
+//            print("recipeArr count: \(self.recipeArr)")
+          
+
            
             self.recipeTblV.reloadData()
         }

@@ -59,7 +59,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     @IBOutlet weak var PublicBtnO: UIButton!
     @IBOutlet weak var FavoritesTxtF: UITextField!
     @IBOutlet weak var FavoritesBgV: UIView!
-    
+    @IBOutlet weak var autherNoteTxtV: UITextView!
     // popups view
     @IBOutlet var DiscardPopupV: UIView!
     @IBOutlet var SavePopUpV: UIView!
@@ -843,7 +843,7 @@ extension CreateRecipeNewVC {
         
         DispatchQueue.main.async {
             if headerText.isEmpty {
-                let data = RecipeDataModel(hearder: "Ingredients", cookware: [ingredient])
+                let data = RecipeDataModel(hearder: "", cookware: [ingredient])
                 self.cookwareArr.append(data)
             } else {
                 if let existingIndex = self.cookwareArr.firstIndex(where: {
@@ -881,7 +881,7 @@ extension CreateRecipeNewVC {
         
         DispatchQueue.main.async {
             if headerText.isEmpty {
-                let data = RecipeDataModel(hearder: "Recipe", recipe: [recipe])
+                let data = RecipeDataModel(hearder: "", recipe: [recipe])
                 self.recipeArr.append(data)
             } else {
                 if let existingIndex = self.recipeArr.firstIndex(where: {
@@ -1089,7 +1089,7 @@ extension CreateRecipeNewVC {
                     }else{
                         steps_headers.append("Recipe")
                     }
-                    steps_headers.append(headerTrimmed)
+                   
                     let instruction = step.instruction?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
                     if !instruction.isEmpty {
                         prep.append(instruction)

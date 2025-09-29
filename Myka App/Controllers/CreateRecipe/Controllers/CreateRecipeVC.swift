@@ -851,7 +851,6 @@ extension CreateRecipeVC {
         })
     }
     
-    
     func Api_CreateCookbook() {
         let img = Data()
         // Prepare Ingredients Array

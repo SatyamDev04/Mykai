@@ -351,10 +351,10 @@ class RecipeDetailsVC: UIViewController {
         let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetail1VC") as! RecipeDetail1VC
         //let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetail2VC") as! RecipeDetail2VC
-        vc.recipesArray = self.recipesArray
+//        vc.recipesArray = self.recipesArray
         vc.MealType = self.MealType
         vc.RecipeDetailsData = self.RecipeDetailsData
-        vc.RecipeListArr = self.RecipeInstArr
+//        vc.RecipeListArr = self.RecipeInstArr
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

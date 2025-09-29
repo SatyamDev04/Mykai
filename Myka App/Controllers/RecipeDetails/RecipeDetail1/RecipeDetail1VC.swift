@@ -27,11 +27,10 @@ class RecipeDetail1VC: UIViewController {
     
     var RecipeDetailsData = [RecipeDetailModel]()
     
-    var RecipeListArr = [String]()
-    
+    var RecipeListArr = [RecipeDataModel]()
     var MealType = ""
     
-    var recipesArray: [RecipeDetailsIngredientModel] = []
+//    var recipesArray: [RecipeDetailsIngredientModel] = []
     
 //    let recipesArray: [IngredientModel] = [
 //        IngredientModel(name: "Olive Oil", image: UIImage(named: "Oilimage")!, Quantity: "1 Tbsp"), IngredientModel(name: "Garlic Mayo", image: UIImage(named: "Onion")!, Quantity: "3 Tbsp"), IngredientModel(name: "Butter", image: UIImage(named: "Mayo")!, Quantity: "3 Tbsp"), IngredientModel(name: "Chicken", image: UIImage(named: "Chicken")!, Quantity: "1 kg")]
@@ -91,21 +90,23 @@ class RecipeDetail1VC: UIViewController {
 
 extension RecipeDetail1VC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return recipesArray.count
+        return self.RecipeDetailsData.first?.recipe?.ingredients?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
        
             let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeDetail1TblVCell", for: indexPath) as! RecipeDetail1TblVCell
-        cell.NameLbl.text = recipesArray[indexPath.row].name
+        let val = self.RecipeDetailsData.first?.recipe
         
-        let img = recipesArray[indexPath.row].image
+        cell.NameLbl.text = val?.ingredients?[indexPath.row].name
+        
+        let img = val?.ingredients?[indexPath.row].image ?? ""
         cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
         cell.Img.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
         
-         let quantityString = recipesArray[indexPath.row].Quantity
+         let quantityString = val?.ingredients?[indexPath.row].quantity
 
-           let quantity = Double(quantityString) ?? 0
+        let quantity = Double(quantityString ?? "") ?? 0
             let formatter = NumberFormatter()
             formatter.minimumFractionDigits = 0  // Show no fractional digits if not needed
             formatter.maximumFractionDigits = 2  // Limit to 2 fractional digits
@@ -113,12 +114,11 @@ extension RecipeDetail1VC: UITableViewDelegate, UITableViewDataSource {
 
             if let formattedQuantity = formatter.string(from: NSNumber(value: quantity)) {
                 print(formattedQuantity) // This will give "2" for 2.00 and "2.05" for 2.05
-                cell.QuentityLbl.text = "\(formattedQuantity) \(recipesArray[indexPath.row].measure)"
+                cell.QuentityLbl.text = "\(formattedQuantity) \(val?.ingredients?[indexPath.row].measure ?? "")"
             }else{
-                cell.QuentityLbl.text = "\(quantityString) \(recipesArray[indexPath.row].measure)"
+                cell.QuentityLbl.text = "\(quantityString ?? "") \(val?.ingredients?[indexPath.row].measure ?? "")"
             }
           
-             
             return cell
     }
     

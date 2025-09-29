@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="653-ds-1QL">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24128" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="653-ds-1QL">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24063"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -5483,7 +5483,7 @@ OFF My-Kai. </string>
                                                                         <rect key="frame" x="0.0" y="160" width="343" height="60"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZKf-qE-11d">
-                                                                                <rect key="frame" x="20" y="8" width="302" height="0.0"/>
+                                                                                <rect key="frame" x="20" y="30" width="302" height="0.0"/>
                                                                                 <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="16"/>
                                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                 <nil key="highlightedColor"/>
@@ -5491,9 +5491,10 @@ OFF My-Kai. </string>
                                                                         </subviews>
                                                                         <color key="backgroundColor" red="0.2274509804" green="0.2274509804" blue="0.2274509804" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <constraints>
-                                                                            <constraint firstItem="ZKf-qE-11d" firstAttribute="top" secondItem="NIf-nd-g7g" secondAttribute="top" constant="8" id="V1E-bm-238"/>
+                                                                            <constraint firstItem="ZKf-qE-11d" firstAttribute="top" relation="greaterThanOrEqual" secondItem="NIf-nd-g7g" secondAttribute="top" constant="8" id="V1E-bm-238"/>
                                                                             <constraint firstAttribute="height" constant="60" id="ga1-fT-z73"/>
                                                                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="ZKf-qE-11d" secondAttribute="bottom" constant="8" id="tzT-Be-Kd0"/>
+                                                                            <constraint firstItem="ZKf-qE-11d" firstAttribute="centerY" secondItem="NIf-nd-g7g" secondAttribute="centerY" id="vM5-3q-zCq"/>
                                                                             <constraint firstItem="ZKf-qE-11d" firstAttribute="leading" secondItem="NIf-nd-g7g" secondAttribute="leading" constant="20" id="waG-Hd-K7C"/>
                                                                             <constraint firstAttribute="trailing" secondItem="ZKf-qE-11d" secondAttribute="trailing" constant="21" id="wph-Eq-YLt"/>
                                                                         </constraints>
@@ -5711,7 +5712,7 @@ OFF My-Kai. </string>
                                                                         <rect key="frame" x="0.0" y="160" width="343" height="60"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EMj-Ft-duS">
-                                                                                <rect key="frame" x="20" y="8" width="302" height="0.0"/>
+                                                                                <rect key="frame" x="20" y="30" width="302" height="0.0"/>
                                                                                 <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="16"/>
                                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                 <nil key="highlightedColor"/>
@@ -5719,7 +5720,8 @@ OFF My-Kai. </string>
                                                                         </subviews>
                                                                         <color key="backgroundColor" red="0.2274509804" green="0.2274509804" blue="0.2274509804" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <constraints>
-                                                                            <constraint firstItem="EMj-Ft-duS" firstAttribute="top" secondItem="Nu4-Wu-1pF" secondAttribute="top" constant="8" id="T37-Zp-dkC"/>
+                                                                            <constraint firstItem="EMj-Ft-duS" firstAttribute="centerY" secondItem="Nu4-Wu-1pF" secondAttribute="centerY" id="Nsg-u5-eWM"/>
+                                                                            <constraint firstItem="EMj-Ft-duS" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Nu4-Wu-1pF" secondAttribute="top" constant="8" id="T37-Zp-dkC"/>
                                                                             <constraint firstItem="EMj-Ft-duS" firstAttribute="leading" secondItem="Nu4-Wu-1pF" secondAttribute="leading" constant="20" symbolic="YES" id="Ydu-YC-x6n"/>
                                                                             <constraint firstAttribute="height" constant="60" id="f38-Rm-KLe"/>
                                                                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="EMj-Ft-duS" secondAttribute="bottom" constant="8" id="iDY-CG-teX"/>
@@ -5766,19 +5768,16 @@ OFF My-Kai. </string>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K2Q-q3-nLW">
-                                                                <rect key="frame" x="20" y="44.333333333333307" width="353" height="109.33333333333331"/>
+                                                                <rect key="frame" x="20" y="44.333333333333314" width="353" height="105"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Prepare the Eggs:" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QGy-ea-DFr">
-                                                                        <rect key="frame" x="10" y="9.9999999999999982" width="132.66666666666666" height="25.333333333333329"/>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="height" constant="25.329999999999998" id="o5z-xF-3AG"/>
-                                                                        </constraints>
+                                                                        <rect key="frame" x="10" y="10" width="333" height="21"/>
                                                                         <fontDescription key="fontDescription" name="Poppins-SemiBold" family="Poppins" pointSize="15"/>
                                                                         <color key="textColor" red="0.99607843137254903" green="0.62352941176470589" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fill the saucepan with cold water, ensuring the eggs are covered by about 1 inch (2.5 cm) of water." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Woj-aZ-zX6">
-                                                                        <rect key="frame" x="10" y="40.333333333333314" width="333" height="59"/>
+                                                                        <rect key="frame" x="10" y="36.000000000000057" width="333" height="59"/>
                                                                         <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="14"/>
                                                                         <color key="textColor" red="0.27450980392156865" green="0.27450980392156865" blue="0.27450980392156865" alpha="1" colorSpace="calibratedRGB"/>
                                                                         <nil key="highlightedColor"/>
@@ -5790,6 +5789,7 @@ OFF My-Kai. </string>
                                                                     <constraint firstItem="Woj-aZ-zX6" firstAttribute="top" secondItem="QGy-ea-DFr" secondAttribute="bottom" constant="5" id="Q1K-Wk-EQT"/>
                                                                     <constraint firstItem="QGy-ea-DFr" firstAttribute="top" secondItem="K2Q-q3-nLW" secondAttribute="top" constant="10" id="XH5-cz-esU"/>
                                                                     <constraint firstAttribute="bottom" secondItem="Woj-aZ-zX6" secondAttribute="bottom" constant="10" id="bii-SN-yXw"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="QGy-ea-DFr" secondAttribute="trailing" constant="10" id="fa1-iM-nkV"/>
                                                                     <constraint firstItem="QGy-ea-DFr" firstAttribute="leading" secondItem="K2Q-q3-nLW" secondAttribute="leading" constant="10" id="ng6-va-2c2"/>
                                                                     <constraint firstAttribute="trailing" secondItem="Woj-aZ-zX6" secondAttribute="trailing" constant="10" id="uqD-oO-7ZV"/>
                                                                 </constraints>
@@ -5811,7 +5811,7 @@ OFF My-Kai. </string>
                                                                     </userDefinedRuntimeAttribute>
                                                                 </userDefinedRuntimeAttributes>
                                                             </view>
-                                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xnT-do-iyq">
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xnT-do-iyq">
                                                                 <rect key="frame" x="20" y="179.33333333333337" width="353" height="60"/>
                                                                 <subviews>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lfb-ue-tvf">
@@ -6050,6 +6050,7 @@ OFF My-Kai. </string>
                         <outlet property="YesBtnO" destination="UWU-Je-uwM" id="3qb-Ko-Abw"/>
                         <outlet property="YesSeletImg" destination="oMi-dl-BWS" id="unM-k3-Vnt"/>
                         <outlet property="progressView" destination="VWJ-ie-fi6" id="VCi-OG-USA"/>
+                        <outlet property="startTimeBtnO" destination="tXf-Li-Lz6" id="cR6-ta-PEq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hnY-vx-3ti" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -12929,7 +12930,7 @@ to discard changes.</string>
                     </constraints>
                 </view>
             </objects>
-            <point key="canvasLocation" x="3836" y="1139"/>
+            <point key="canvasLocation" x="3835.8778625954196" y="1138.7323943661972"/>
         </scene>
         <!--CameraVC-->
         <scene sceneID="CnU-9R-kv5">

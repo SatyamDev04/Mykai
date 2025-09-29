@@ -15,8 +15,6 @@ class RecipeDetail2VC: UIViewController {
     @IBOutlet weak var ImgbottomBorder: UIView!
     @IBOutlet weak var ImgDescLbl: UILabel!
    
-    
-    
     @IBOutlet weak var TitleLbl: UILabel!
     @IBOutlet weak var DescLbl: UILabel!
     
@@ -28,6 +26,7 @@ class RecipeDetail2VC: UIViewController {
     
     @IBOutlet weak var PreviousBtnO: UIButton!
     
+    @IBOutlet weak var startTimeBtnO: UIButton!
     //CookedMeal PopupViews
     @IBOutlet var CookedMealPopupV: UIView!
     @IBOutlet weak var CookedMealPopupBGV: UIView!
@@ -36,6 +35,7 @@ class RecipeDetail2VC: UIViewController {
     @IBOutlet weak var YesBtnO: UIButton!
     @IBOutlet weak var NoBtnO: UIButton!
     @IBOutlet weak var CookedMealBgV: UIView!
+    
     //
     
     //Fridge PopupViews
@@ -53,16 +53,27 @@ class RecipeDetail2VC: UIViewController {
     
     var RecipeDetailsData = [RecipeDetailModel]()
     
-    var RecipeListArr = [String]()
-    
+    var RecipeListArr = [RecipeDataModel]()
+    var showingRecipes: [RecipeDataModel] = []
     var MealType = ""
     
     var ProgressCount = 1
-    
+    var stepsCount = 0
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.ProgressLbl.text = "\(ProgressCount)/\(RecipeListArr.count)"
-        let progressVw = Float(ProgressCount) / Float(RecipeListArr.count)
+        self.showingRecipes = self.RecipeListArr.flatMap { recipeData in
+           (recipeData.recipe ?? []).map { step in
+               RecipeDataModel(
+                   hearder: recipeData.hearder,
+                   ingredients: recipeData.ingredients,
+                   cookware: recipeData.cookware,
+                   recipe: [step]
+               )
+           }
+       }
+        
+        self.ProgressLbl.text = "\(ProgressCount)/\(showingRecipes.count)"
+        let progressVw = Float(ProgressCount) / Float(showingRecipes.count)
         progressView.progress = Float(progressVw)
         
         if ProgressCount == 1{
@@ -76,9 +87,12 @@ class RecipeDetail2VC: UIViewController {
         self.Img.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "No_Image"))
         
         self.ImgDescLbl.text = val?.label ?? ""
-        //self.ImgDesc1Lbl.text = val?.source ?? ""
+        self.TitleLbl.text = showingRecipes[stepsCount].hearder
+        if self.TitleLbl.text == "Recipe"{
+            self.TitleLbl.text = ""
+        }
         
-        self.TitleLbl.text = "Prepare the \(val?.label ?? ""):"
+        self.DescLbl.text = showingRecipes[stepsCount].recipe?.first?.instruction ?? ""
         
         self.CookedMealPopupV.frame = self.view.bounds
         self.view.addSubview(self.CookedMealPopupV)
@@ -90,8 +104,8 @@ class RecipeDetail2VC: UIViewController {
         
        // ImgbottomBorder.roundCorners([.bottomLeft, .bottomRight], radius: 22.0)
         // Do any additional setup after loading the view.
-        let time = "\(val?.totalTime ?? 0)"//"0: 25: 21"
-                totalTimeInSeconds = parseTimeString(time)
+        let time = "\(val?.totalTime ?? 0)"//"630"
+        totalTimeInSeconds = parseTimeString(time)
         TimerLbl.text = formatTime(totalTimeInSeconds)
                  
     
@@ -129,54 +143,55 @@ class RecipeDetail2VC: UIViewController {
         self.FreezerSelectImg.image = UIImage(named: "RadioOff")
     }
     
-    func parseTimeString(_ time: String) -> Int {
-            let components = time.split(separator: ":").map { $0.trimmingCharacters(in: .whitespaces) }
-            guard components.count == 3,
-                  let hours = Int(components[0]),
-                  let minutes = Int(components[1]),
-                  let seconds = Int(components[2]) else {
-                print("Invalid time format")
-                return 0
-            }
-            return hours * 3600 + minutes * 60 + seconds
+    /// Convert total minutes (or seconds string) into Int seconds
+    func parseTimeString(_ timeString: String) -> Int {
+        if let minutes = Int(timeString) {
+            return minutes * 60 // assume value is in minutes
+        }
+        return 0
+    }
+
+    /// Format seconds into HH:mm:ss
+    func formatTime(_ totalSeconds: Int) -> String {
+        let hours = totalSeconds / 3600
+        let minutes = (totalSeconds % 3600) / 60
+        let seconds = totalSeconds % 60
+        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+    }
+
+    func startCountdown() {
+        guard totalTimeInSeconds > 0 else {
+            print("Time is already zero")
+            return
         }
 
-        func startCountdown() {
-            guard totalTimeInSeconds > 0 else {
-                print("Time is already zero")
-                return
-            }
+        startTimeBtnO.isUserInteractionEnabled = false
+
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            self.totalTimeInSeconds -= 1
+            self.TimerLbl.text = self.formatTime(self.totalTimeInSeconds)
             
-            timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-                guard let self = self else { return }
-                self.totalTimeInSeconds -= 1
-                self.TimerLbl.text = self.formatTime(self.totalTimeInSeconds)
+            if self.totalTimeInSeconds <= 0 {
+                self.timer?.invalidate()
+                self.timer = nil
                 
-                if self.totalTimeInSeconds <= 0 {
-                    self.timer?.invalidate()
-                    self.timer = nil
-                    self.showCountdownFinishedAlert()
-                }
+                self.startTimeBtnO.isUserInteractionEnabled = true
+                self.showCountdownFinishedAlert()
             }
         }
+    }
 
-        func formatTime(_ seconds: Int) -> String {
-            let hours = seconds / 3600
-            let minutes = (seconds % 3600) / 60
-            let seconds = (seconds % 3600) % 60
-            return String(format: "%02d: %02d: %02d", hours, minutes, seconds)
-        }
+    func showCountdownFinishedAlert() {
+        let alert = UIAlertController(title: "Countdown Finished", message: "The countdown has reached zero.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
 
-        func showCountdownFinishedAlert() {
-            let alert = UIAlertController(title: "Countdown Finished", message: "The countdown has reached zero.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            present(alert, animated: true, completion: nil)
-        }
-
-        override func viewWillDisappear(_ animated: Bool) {
-            super.viewWillDisappear(animated)
-            timer?.invalidate() // Stop timer when the view is no longer visible
-        }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        timer?.invalidate() // Stop timer when the view is no longer visible
+    }
     
     @IBAction func BackBtn(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
@@ -187,30 +202,39 @@ class RecipeDetail2VC: UIViewController {
         startCountdown()
     }
     
-    
     @IBAction func PrevStepBtn(_ sender: UIButton) {
-        guard RecipeListArr.count > 0 else{ return}
+        guard showingRecipes.count > 0 else{ return}
         guard ProgressCount != 1 else{ return}
         ProgressCount -= 1
-        self.ProgressLbl.text = "\(ProgressCount)/\(RecipeListArr.count)"
-        let progressVw = Float(ProgressCount) / Float(RecipeListArr.count)
+        self.ProgressLbl.text = "\(ProgressCount)/\(showingRecipes.count)"
+        let progressVw = Float(ProgressCount) / Float(showingRecipes.count)
         progressView.progress = Float(progressVw)
         if ProgressCount == 1{
             self.PreviousBtnO.isHidden = true
         }
-        self.DescLbl.text = RecipeListArr[ProgressCount-1]
+        stepsCount = stepsCount - 1
+        self.TitleLbl.text = showingRecipes[stepsCount].hearder
+        if self.TitleLbl.text == "Recipe"{
+            self.TitleLbl.text = ""
+        }
+        
+        self.DescLbl.text = showingRecipes[stepsCount].recipe?.first?.instruction ?? ""
     }
     
-    
     @IBAction func NextStepBtn(_ sender: UIButton) {
-        guard RecipeListArr.count > 0 else{ return}
+        guard showingRecipes.count > 0 else{ return}
         self.PreviousBtnO.isHidden = false
-        if ProgressCount != RecipeListArr.count{
+        if ProgressCount != showingRecipes.count{
             ProgressCount += 1
-            self.ProgressLbl.text = "\(ProgressCount)/\(RecipeListArr.count)"
-            let progressVw = Float(ProgressCount) / Float(RecipeListArr.count)
+            self.ProgressLbl.text = "\(ProgressCount)/\(showingRecipes.count)"
+            let progressVw = Float(ProgressCount) / Float(showingRecipes.count)
             progressView.progress = Float(progressVw)
-            self.DescLbl.text = RecipeListArr[ProgressCount-1]
+            stepsCount = stepsCount + 1
+            self.TitleLbl.text = showingRecipes[stepsCount].hearder
+            if self.TitleLbl.text == "Recipe"{
+                self.TitleLbl.text = ""
+            }
+            self.DescLbl.text = showingRecipes[stepsCount].recipe?.first?.instruction ?? ""
         }else{
             self.CookedMealPopupV.isHidden = false
         } 
@@ -384,3 +408,4 @@ extension RecipeDetail2VC {
 //    }
     
 }
+

@@ -39,6 +39,7 @@ struct RecipeDetail: Codable {
     var image: String?
     var images: Images?
     var source: String?
+    var description: String?
     var url, shareAs: String?
     var yield: Double?
     var dietLabels, healthLabels, cautions, ingredientLines: [String]? 
