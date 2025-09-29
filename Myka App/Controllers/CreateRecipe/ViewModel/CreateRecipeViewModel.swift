@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SwiftyJSON
 
 final class CreateRecipeViewModel {
 
@@ -141,5 +142,18 @@ final class CreateRecipeViewModel {
             return true
         }
         return false
+    }
+    
+    /// Uploads a recipe payload to the API via WebService
+    func uploadRecipe(_ payload: RecipePayload, completion: @escaping (JSON, Int) -> Void) {
+        let apiURL = baseURL.baseURL + appEndPoints.create_meal // Change this endpoint if needed
+        guard let vc = viewController else { return }
+        vc.showIndicator(withTitle: "Uploading...", and: "Please wait")
+        WebService.shared.uploadModel(apiURL, VC: vc, model: payload) { json, statusCode in
+            DispatchQueue.main.async {
+                vc.hideIndicator()
+                completion(json, statusCode)
+            }
+        }
     }
 }

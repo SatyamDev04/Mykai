@@ -110,7 +110,7 @@ struct RecipePayload: Codable {
     let is_public: String
     let img: String
     let createdType: String
-    let source_url: String
+    var source_url: String?
     let ingr: [String]
     let headers: [String]
     let prep: [String]

@@ -1,5 +1,3 @@
- 
-
 import Foundation
 import Alamofire
 import SwiftyJSON
@@ -1741,6 +1739,70 @@ class WebService {
                
            }
        }
+
+    /// Uploads a generic model (Encodable or [String:Any]) as JSON using POST
+    /// - Parameters:
+    ///   - request: URL string to upload to
+    ///   - VC: The UIViewController for network/error handling
+    ///   - model: The model to upload (must be Encodable)
+    ///   - completionHandler: Completion closure
+    func uploadModel<T: Encodable>(_ request: String, VC: UIViewController, model: T, withCompletion completionHandler: @escaping webServiceResponse) {
+        let token = UserDetail.shared.getTokenWith()
+        var headers: HTTPHeaders = ["Content-Type": "application/json"]
+        if token != "" {
+            headers["Authorization"] = "Bearer \(token)"
+        }
+        
+        print("================header=============")
+        print(headers)
+        guard VC.isConnectedToNetwork() else {
+            VC.hideIndicator()
+            AlertController.alert(title: "Message", message: "Could not connect to the server, Please check your internet connection.")
+            return
+        }
+        
+        print("================Parameter=============")
+        print(model)
+        let encoder = JSONEncoder()
+        guard let data = try? encoder.encode(model) else {
+            print("Failed to encode model to JSON.")
+            VC.hideIndicator()
+            AlertController.alert(title: "Error", message: "Could not encode model data.")
+            return
+        }
+        var urlRequest = URLRequest(url: URL(string: request)!, timeoutInterval: Double.infinity)
+        urlRequest.httpMethod = "POST"
+        urlRequest.headers = headers
+        urlRequest.httpBody = data
+        
+        AF.request(urlRequest).responseJSON { responseData in
+            if let data = responseData.data, let _ = String(data: data, encoding: .utf8) {
+                do {
+                    let statusCode = responseData.response?.statusCode ?? 0
+                    if statusCode == 401 {
+                        WebService.logout()
+                    }
+                    let json = try JSON(data: data)
+                    print("=========response==========")
+                    print(json)
+                    if responseData.result != nil {
+                        completionHandler(json, statusCode)
+                    } else {
+                        VC.hideIndicator()
+                        print(responseData.result)
+                        completionHandler([:], statusCode)
+                    }
+                } catch {
+                    print("Unexpected error: \(error).")
+                    VC.hideIndicator()
+                    AlertController.alert(title: "Message", message: "Could not connect to the server.")
+                }
+            } else {
+                VC.hideIndicator()
+                AlertController.alert(title: "Message", message: "Could not connect to the server.")
+            }
+        }
+    }
 }
 
 struct JSONStringEncoder {

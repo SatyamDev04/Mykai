@@ -36,7 +36,7 @@ class planService {
                     if d.success == true {
                         completion(.success(d.data))
                     }else{
-                        completion(.failure("failed" as! Error))
+                        //completion(.failure("failed" as? Error ?? Error()))
                         let msg = d.message ?? ""
                         vc.showToast(msg)
                     }

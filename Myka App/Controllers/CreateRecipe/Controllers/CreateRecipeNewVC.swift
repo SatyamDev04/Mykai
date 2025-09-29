@@ -76,7 +76,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     
     // Data
     var cookBooksData = [FavDropDownModel]()
-    var SelCookBookId = ""
+    var SelCookBookId = "0"
     var addIngredientImgStr: String = ""
     var addCookwareImgStr: String = ""
     // for use on this screen only
@@ -322,7 +322,26 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     
     @IBAction func saveRacipeBtn(_ sender: UIButton) {
         let isPublicStr = self.PublicBtnO.isSelected ? "0" : "1"
-        generateRecipeJSON(summary: "eghvfewf", recipe_key: isPublicStr, cook_book: self.SelCookBookId, title: self.recipeTitleTF.text ?? "", yield: "", prep_time: self.prepTimeLbl.text ?? "", cook_time: self.cookTimeLbl.text ?? "", is_public: isPublicStr, img: self.recipeImageBase64 ?? "", createdType: "Created", source_url: "rrr")
+        let yeild =  self.servingCountLbl.text?.removeSpaces.replace(string: "servings", withString: "") ?? ""
+        let prepTime = (self.prepTimeLbl.text ?? "").removeSpaces.replace(string: "min", withString: "")
+        let cookTime = (self.cookTimeLbl.text ?? "").removeSpaces.replace(string: "min", withString: "")
+        
+        guard let jsonString = generateRecipeJSON(summary: "eghvfewf", recipe_key: isPublicStr, cook_book: self.SelCookBookId, title: self.recipeTitleTF.text ?? "", yield: yeild, prep_time: prepTime, cook_time: cookTime, is_public: isPublicStr, img: self.recipeImageBase64 ?? "", createdType: "Created") else {
+            showAlert(for: "Failed to generate recipe JSON")
+            return
+        }
+        guard let jsonData = jsonString.data(using: .utf8), let payload = try? JSONDecoder().decode(RecipePayload.self, from: jsonData) else {
+            showAlert(for: "Failed to decode recipe payload")
+            return
+        }
+        viewModel.uploadRecipe(payload) { [weak self] json, statusCode in
+            guard let self = self else { return }
+            if statusCode == 200 || statusCode == 201 {
+                self.showAlert(for: "Recipe uploaded successfully!")
+            } else {
+                self.showAlert(for: "Failed to upload recipe. Status: \(statusCode)")
+            }
+        }
     }
     
     @IBAction func IngredientBtn(_ sender: UIButton) {
@@ -1032,8 +1051,7 @@ extension CreateRecipeNewVC {
         cook_time: String,
         is_public: String,
         img: String,
-        createdType: String,
-        source_url: String
+        createdType: String
     ) -> String? {
         
         // Prepare ingr (ingredients)
@@ -1123,7 +1141,6 @@ extension CreateRecipeNewVC {
             is_public: is_public,
             img: img,
             createdType: createdType,
-            source_url: source_url,
             ingr: ingr,
             headers: headers,
             prep: prep,
