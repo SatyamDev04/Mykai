@@ -229,16 +229,16 @@ extension UIViewController {
     
     
     func showIndicator2(withTitle title: String, and Description:String) {
-        ProgressHUD.animationType = .circleRotateChase
-        ProgressHUD.colorAnimation = #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1) // Animation color
-        ProgressHUD.colorBackground = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
-        ProgressHUD.colorHUD = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
-        ProgressHUD.mediaSize = 100 // Adjust size as needed
-        ProgressHUD.animate() // Show the HUD
+//        ProgressHUD.animationType = .circleRotateChase
+//        ProgressHUD.colorAnimation = #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1) // Animation color
+//        ProgressHUD.colorBackground = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+//        ProgressHUD.colorHUD = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+//        ProgressHUD.mediaSize = 100 // Adjust size as needed
+//        ProgressHUD.animate() // Show the HUD
     }
      // To call.
     func hideIndicator2() {
-        ProgressHUD.dismiss()
+//        ProgressHUD.dismiss()
     }
     
     // for image loader.

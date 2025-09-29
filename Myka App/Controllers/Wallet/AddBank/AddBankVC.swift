@@ -12,6 +12,7 @@ import DropDown
 import AVFoundation
 import ProgressHUD
 
+
 class AddBankVC: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate, DocumentDelegate {
  
     
