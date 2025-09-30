@@ -681,14 +681,17 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeTblVCell", for: indexPath) as! RecipeTblVCell
             
-            guard let model = viewModel.modelForRow(at: indexPath, for: .ingredient) as? StepsDataModel else {return cell}
+            guard let model = viewModel.modelForRow(at: indexPath, for: .recipe) as? StepsDataModel else {return cell}
+            print(model)
             let title = viewModel.headerTitle(for: indexPath.section, in: .ingredient) ?? ""
+            
              if title == "Recipe" || !title.isEmpty{
-                 cell.type = .normal
-                 cell.stepLbl.text = "Step - \(indexPath.section + 1)"
-             }else{
                  cell.type = .withHeader
                  cell.stepLbl.text = "Step - \(indexPath.row + 1)"
+             }else{
+                 cell.type = .normal
+                 cell.stepLbl.text = "Step - \(indexPath.section + 1)"
+                 
              }
             
             cell.recipeLbl?.text = model.instruction ?? ""
@@ -884,7 +887,7 @@ extension CreateRecipeNewVC {
                             DispatchQueue.main.async {
                                 self.addCookwareImgStr = imageURL
                                 self.addCookWareTF.text = item
-                                self.viewModel.addCookware(name: item, imageUrl: imageURL)
+                                self.viewModel.addCookware(name: item, img: imageURL,header: "")
                                 self.searchCookDropDown.hide()
                                 self.addCookWareTF.text = ""
                             }
