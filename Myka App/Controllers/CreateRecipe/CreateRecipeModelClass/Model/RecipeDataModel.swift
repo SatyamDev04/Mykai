@@ -27,6 +27,8 @@ struct IngredientDataModel:Encodable{
     var id: String?
     var status: Bool?
     var header: String?
+   
+    
 }
 struct CookwareDataModel:Encodable{
     var name:String?
@@ -34,6 +36,7 @@ struct CookwareDataModel:Encodable{
 }
 struct StepsDataModel:Encodable{
     var instruction:String?
+    var index: Int?
 }
 
 

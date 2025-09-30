@@ -74,12 +74,12 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     private var ingredientUnitDropDown = DropDown()
     private var textChangedWorkItem: DispatchWorkItem?
     
-    // Data
+
     var cookBooksData = [FavDropDownModel]()
     var SelCookBookId = "0"
     var addIngredientImgStr: String = ""
     var addCookwareImgStr: String = ""
-    // for use on this screen only
+ 
     var isIngredientPickImg = false
     var imgIndex = 0
     
@@ -87,7 +87,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     
     // MARK: - ViewModel
     
-    private var viewModel :CreateRecipeViewModel!
+    private var viewModel:CreateRecipeViewModel!
     
     // MARK: Lifecycle
     override func viewDidLoad() {
@@ -330,7 +330,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         let prepTime = (self.prepTimeLbl.text ?? "").removeSpaces.replace(string: "min", withString: "")
         let cookTime = (self.cookTimeLbl.text ?? "").removeSpaces.replace(string: "min", withString: "")
         
-        guard let jsonString = generateRecipeJSON(summary: "eghvfewf", recipe_key: isPublicStr, cook_book: self.SelCookBookId, title: self.recipeTitleTF.text ?? "", yield: yeild, prep_time: prepTime, cook_time: cookTime, is_public: isPublicStr, img: self.recipeImageBase64 ?? "", createdType: "Created") else {
+        guard let jsonString = viewModel.generateRecipeJSON(summary: "eghvfewf", recipe_key: isPublicStr, cook_book: self.SelCookBookId, title: self.recipeTitleTF.text ?? "", yield: yeild, prep_time: prepTime, cook_time: cookTime, is_public: isPublicStr, img: self.recipeImageBase64 ?? "", createdType: "Created") else {
             showAlert(for: "Failed to generate recipe JSON")
             return
         }
@@ -491,7 +491,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     
     @objc func cookwareDoneClicked(_ sender: Any) {
         if addCookWareTF.text != "" {
-           // self.viewModel.addCookware(name: addCookWareTF.text ?? "", imageUrl: addCookwareImgStr)
+            // self.viewModel.addCookware(name: addCookWareTF.text ?? "", imageUrl: addCookwareImgStr)
             viewModel.addCookware(name: addCookWareTF.text ?? "", img: addCookwareImgStr, header: "")
             self.searchCookDropDown.isHidden = true
             self.addCookWareTF.text = ""
@@ -652,11 +652,11 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
             
             guard let model = viewModel.modelForRow(at: indexPath, for: .ingredient) as? IngredientDataModel else {return cell}
             
-           let title = viewModel.headerTitle(for: indexPath.section, in: .ingredient) ?? ""
+            let title = viewModel.headerTitle(for: indexPath.section, in: .ingredient) ?? ""
             if title == "Ingredients" || !title.isEmpty{
-                cell.type = .normal
-            }else{
                 cell.type = .withHeader
+            }else{
+                cell.type = .normal
             }
             
             cell.ingredientlbl?.text = model.name
@@ -673,7 +673,7 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
             cell.type = .normal
             cell.checkBoxView.isHidden = true
             
-            guard let model = viewModel.modelForRow(at: indexPath, for: .ingredient) as? IngredientDataModel else {return cell}
+            guard let model = viewModel.modelForRow(at: indexPath, for: .cookware) as? IngredientDataModel else {return cell}
             cell.ingredientlbl?.text = model.name
             cell.img.sd_setImage(with: URL(string: model.img ?? ""), placeholderImage: UIImage(named: "No_Image"))
             cell.selectionStyle = .none
@@ -683,16 +683,17 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
             
             guard let model = viewModel.modelForRow(at: indexPath, for: .recipe) as? StepsDataModel else {return cell}
             print(model)
-            let title = viewModel.headerTitle(for: indexPath.section, in: .ingredient) ?? ""
-            
-             if title == "Recipe" || !title.isEmpty{
-                 cell.type = .withHeader
-                 cell.stepLbl.text = "Step - \(indexPath.row + 1)"
-             }else{
-                 cell.type = .normal
-                 cell.stepLbl.text = "Step - \(indexPath.section + 1)"
-                 
-             }
+            let title = viewModel.headerTitle(for: indexPath.section, in: .recipe) ?? ""
+         
+            if title == "Recipe" || title.isEmpty{
+                cell.type = .normal
+                cell.stepLbl.text = "Step - \(indexPath.section + 1)"
+                
+            }else{
+                cell.type = .withHeader
+                cell.stepLbl.text = "Step - \(indexPath.row + 1)"
+                
+            }
             
             cell.recipeLbl?.text = model.instruction ?? ""
             cell.selectionStyle = .none
@@ -780,15 +781,12 @@ extension CreateRecipeNewVC {
         let unitText = addIngredientMesurementTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         let imgStr = addIngredientImgStr.trimmingCharacters(in: .whitespacesAndNewlines)
         let headerText = ingredientHeaderTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        
-        
         if  ingredientName.isEmpty || amountText.isEmpty || !viewModel.isValidAmount(amountText) || unitText.isEmpty {
-            
             return
         }
         
-        
         viewModel.addIngredient(name: ingredientName, quantity: amountText, unit: unitText, img: imgStr, header: headerText)
+        
         DispatchQueue.main.async {
             self.addIngredientAmoutTF.text = ""
             self.addIngredientMesurementTF.text = ""
@@ -835,10 +833,10 @@ extension CreateRecipeNewVC {
             guard let self = self else { return }
             if type == "1"{
                 self.viewModel.ingredentDropDownArr = dropDownItems
-             
+                
                 DispatchQueue.main.async {
                     let items = self.viewModel.ingredentDropDownArr.map { $0.name ?? "" }
-                    let units = self.viewModel.ingredentDropDownArr.map { $0.unitName ?? "" }
+                    let units = self.viewModel.ingredentDropDownArr.map {$0.unitName ?? "" }
                     
                     if items.isEmpty {
                         self.searchInDropDown.hide()
@@ -928,64 +926,11 @@ extension CreateRecipeNewVC {
         }
         
     }
-
-   
+    
+    
     
 }
 
 extension CreateRecipeNewVC {
-    @discardableResult
-    func generateRecipeJSON(
-        summary: String,
-        recipe_key: String,
-        cook_book: String,
-        title: String,
-        yield: String,
-        prep_time: String,
-        cook_time: String,
-        is_public: String,
-        img: String,
-        createdType: String
-    ) -> String? {
-        // Use viewModel to get all current data arrays for JSON generation
-        
-        let ingr = viewModel.flatIngredients()
-        let headers = viewModel.ingredientHeaders()
-        let prep = viewModel.flatRecipeSteps()
-        let steps_headers = viewModel.recipeHeaders()
-        let cookware = viewModel.flatCookware()
-        
-        // Build payload model and encode to pretty JSON
-        let payload = RecipePayload(
-            summary: summary,
-            recipe_key: recipe_key,
-            cook_book: cook_book,
-            title: title,
-            yield: yield,
-            prep_time: prep_time,
-            cook_time: cook_time,
-            is_public: is_public,
-            img: img,
-            createdType: createdType,
-            ingr: ingr,
-            headers: headers,
-            prep: prep,
-            steps_headers: steps_headers,
-            cookware: cookware
-        )
-        do {
-            let encoder = JSONEncoder()
-            encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-            let jsonData = try encoder.encode(payload)
-            if let jsonStr = String(data: jsonData, encoding: .utf8) {
-                print(jsonStr)
-                return jsonStr
-            }
-        } catch {
-            print("❌ Failed to create recipe JSON:", error)
-        }
-        
-        return nil
-    }
 }
 

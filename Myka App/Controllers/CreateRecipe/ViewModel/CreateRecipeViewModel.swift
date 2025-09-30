@@ -33,12 +33,9 @@ final class CreateRecipeViewModel {
    var cookwareDropDownArr = [IngredientCRData] ()
     var ingredentUnitArr = [UnitINData]()
     // Callbacks
-    
-    var cookwareDropDownArr = [IngredientCRData]()
-    var ingredentUnitArr = [UnitINData]()
-    var onIngredientsChanged: (() -> Void)?
-    var onCookwareChanged: (() -> Void)?
-    var onRecipeStepsChanged: (() -> Void)?
+   var onIngredientsChanged: (() -> Void)?
+   var onCookwareChanged: (() -> Void)?
+   var onRecipeStepsChanged: (() -> Void)?
     
     init(viewController:UIViewController){
         self.viewController = viewController
@@ -347,6 +344,7 @@ final class CreateRecipeViewModel {
         case .recipe:
             let section = indexPath.section
             let row = indexPath.row
+           
             guard section < recipeStepsSections.count, let arr = recipeStepsSections[section].recipe, row < arr.count else { return nil }
             return arr[row]
         }
@@ -465,4 +463,59 @@ final class CreateRecipeViewModel {
             return recipeStepsSections[section].hearder?.trimmingCharacters(in: .whitespacesAndNewlines)
         }
     }
+    
+    @discardableResult
+    func generateRecipeJSON(
+        summary: String,
+        recipe_key: String,
+        cook_book: String,
+        title: String,
+        yield: String,
+        prep_time: String,
+        cook_time: String,
+        is_public: String,
+        img: String,
+        createdType: String
+    ) -> String? {
+        // Use viewModel to get all current data arrays for JSON generation
+        
+        let ingr = flatIngredients()
+        let headers = ingredientHeaders()
+        let prep = flatRecipeSteps()
+        let steps_headers = recipeHeaders()
+        let cookware = flatCookware()
+        
+        // Build payload model and encode to pretty JSON
+        let payload = RecipePayload(
+            summary: summary,
+            recipe_key: recipe_key,
+            cook_book: cook_book,
+            title: title,
+            yield: yield,
+            prep_time: prep_time,
+            cook_time: cook_time,
+            is_public: is_public,
+            img: img,
+            createdType: createdType,
+            ingr: ingr,
+            headers: headers,
+            prep: prep,
+            steps_headers: steps_headers,
+            cookware: cookware
+        )
+        do {
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+            let jsonData = try encoder.encode(payload)
+            if let jsonStr = String(data: jsonData, encoding: .utf8) {
+                print(jsonStr)
+                return jsonStr
+            }
+        } catch {
+            print("❌ Failed to create recipe JSON:", error)
+        }
+        
+        return nil
+    }
+
 }
