@@ -30,6 +30,19 @@ class IngredientsTblVCell: UITableViewCell {
           }
         }
     }
+    
+    func configure(with model: IngredientDataModel, type: IngredientCellType) {
+        self.type = type
+        self.ingredientlbl?.text = model.name
+        if let quantity = model.quantity, let unit = model.unit {
+            self.amout_MeasurmentLbl?.text = "\(quantity) \(unit)".trimmingCharacters(in: .whitespaces)
+        } else {
+            self.amout_MeasurmentLbl?.text = ""
+        }
+        self.img.sd_setImage(with: URL(string: model.img ?? ""), placeholderImage: UIImage(named: "No_Image"))
+        self.checkBoxView.isHidden = true // always hidden as per previous code
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         

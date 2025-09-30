@@ -83,13 +83,6 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     var isIngredientPickImg = false
     var imgIndex = 0
     
-    var ingredientsArr = [RecipeDataModel]()
-    var cookwareArr = [RecipeDataModel]()
-    var recipeArr = [RecipeDataModel]()
-    var ingredentDropDownArr = [IngredientCRData]()
-    var ingredentUnitArr = [UnitINData]()
-    var tblVIngredientData : [RecipeDataModel] = []
-    var cookwareDropDownArr = [IngredientCRData]()
     private var recipeImageBase64: String?
     
     // MARK: - ViewModel
@@ -149,11 +142,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         
         //    addIngredientAmoutTF.addDoneOnKeyboard(withTarget: self, action: #selector(addIngredientAmoutDoneButtonClicked(_:)))
         ingredientUnitDropDown.backgroundColor = .white
-        //        searchCookDropDown.anchorView = addCookwareV
-        //        searchCookDropDown.bottomOffset = CGPoint(x: 0, y: addCookwareV.frame.size.height)
-        //        searchCookDropDown.direction = .bottom
-        //        searchCookDropDown.setupCornerRadius(10)
-        //        searchCookDropDown.width = addCookwareV.frame.width
+        
         prepTimeLbl.isUserInteractionEnabled = true
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(showDatePrepPicker))
         prepTimeLbl.addGestureRecognizer(tapGesture)
@@ -222,6 +211,23 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         ingredientTblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         cookwareTblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         recipeTblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
+        
+        // Bind to viewModel changes to reload tables
+        viewModel.onIngredientsChanged = { [weak self] in
+            DispatchQueue.main.async {
+                self?.ingredientTblV.reloadData()
+            }
+        }
+        viewModel.onCookwareChanged = { [weak self] in
+            DispatchQueue.main.async {
+                self?.cookwareTblV.reloadData()
+            }
+        }
+        viewModel.onRecipeStepsChanged = { [weak self] in
+            DispatchQueue.main.async {
+                self?.recipeTblV.reloadData()
+            }
+        }
     }
     
     private func setupInitialUIState() {
@@ -254,8 +260,6 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         addCookWareTF.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(cookwareDoneClicked))
         
         addrecipeTxtV.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(addRecipeDoneClicked))
-        
-        
         
         bindViewmodel()
     }
@@ -487,7 +491,11 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     
     @objc func cookwareDoneClicked(_ sender: Any) {
         if addCookWareTF.text != "" {
-            self.addCookware()
+           // self.viewModel.addCookware(name: addCookWareTF.text ?? "", imageUrl: addCookwareImgStr)
+            viewModel.addCookware(name: addCookWareTF.text ?? "", img: addCookwareImgStr, header: "")
+            self.searchCookDropDown.isHidden = true
+            self.addCookWareTF.text = ""
+            // reload triggered by viewModel closure
         }
     }
     
@@ -600,21 +608,14 @@ extension CreateRecipeNewVC: ImagePickerDelegate1{
     func didSelect1(image: UIImage?, tag: Int, info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = image else { return }
         
-        
-        
         image.resizeByByte(maxMB: 1) { (data) in
             DispatchQueue.main.async {
                 self.recipeImg.image = image
                 self.recipeImg.contentMode = .scaleToFill
+                self.recipeImageBase64 = self.viewModel.encodeImageToBase64(image)
                 self.recipeImgUploadBtnO.isUserInteractionEnabled = false
                 self.recipeImgEditBtnO.isHidden = false
-                if let imageData = image.jpegData(compressionQuality: 0.8) {
-                    self.recipeImageBase64 = imageData.base64EncodedString()
-                } else if let imageData = image.pngData() {
-                    self.recipeImageBase64 = imageData.base64EncodedString()
-                } else {
-                    self.recipeImageBase64 = nil
-                }
+                
             }
         }
     }
@@ -626,100 +627,77 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         if tableView == self.ingredientTblV {
-            return tblVIngredientData.count
+            return viewModel.numberOfSections(for: .ingredient)
         } else if tableView == self.cookwareTblV {
-            return cookwareArr.count
+            return viewModel.numberOfSections(for: .cookware)
         } else {
-            return recipeArr.count
+            return viewModel.numberOfSections(for: .recipe)
         }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == self.ingredientTblV {
-            guard section < tblVIngredientData.count else { return 0 }
-            return tblVIngredientData[section].ingredients?.count ?? 0
+            return viewModel.numberOfRows(in: section, for: .ingredient)
         } else if tableView == self.cookwareTblV {
-            guard section < cookwareArr.count else { return 0 }
-            return cookwareArr[section].cookware?.count ?? 0
+            return viewModel.numberOfRows(in: section, for: .cookware)
         } else {
-            guard section < recipeArr.count else { return 0 }
-            return recipeArr[section].recipe?.count ?? 0
+            return viewModel.numberOfRows(in: section, for: .recipe)
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == self.ingredientTblV {
             let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientsTblVCell", for: indexPath) as! IngredientsTblVCell
-            
             cell.checkBoxView.isHidden = true
-            let section = indexPath.section
-            let row = indexPath.row
             
-            let header = tblVIngredientData[section].hearder ?? ""
-            if header.isEmpty || header == "Ingrediants"{
+            guard let model = viewModel.modelForRow(at: indexPath, for: .ingredient) as? IngredientDataModel else {return cell}
+            
+           let title = viewModel.headerTitle(for: indexPath.section, in: .ingredient) ?? ""
+            if title == "Ingredients" || !title.isEmpty{
                 cell.type = .normal
-            }else {
+            }else{
                 cell.type = .withHeader
             }
-            if section < tblVIngredientData.count,
-               let ingredients = tblVIngredientData[section].ingredients,
-               row < ingredients.count {
-                let ingredient = ingredients[row]
-                cell.ingredientlbl?.text = ingredient.name
-                cell.amout_MeasurmentLbl?.text = "\(ingredient.quantity ?? "") \(ingredient.unit ?? "")"
-                cell.img.sd_setImage(with: URL(string: ingredient.img ?? ""), placeholderImage: UIImage(named: "No_Image"))
+            
+            cell.ingredientlbl?.text = model.name
+            if let quantity = model.quantity, let unit = model.unit {
+                cell.amout_MeasurmentLbl?.text = "\(quantity) \(unit)".trimmingCharacters(in: .whitespaces)
             } else {
-                cell.ingredientlbl?.text = ""
                 cell.amout_MeasurmentLbl?.text = ""
-                cell.img.image = UIImage(named: "No_Image")
             }
+            cell.img.sd_setImage(with: URL(string: model.img ?? ""), placeholderImage: UIImage(named: "No_Image"))
             cell.selectionStyle = .none
             return cell
         }else if tableView == cookwareTblV{
             let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientsTblVCell", for: indexPath) as! IngredientsTblVCell
             cell.type = .normal
             cell.checkBoxView.isHidden = true
-            let section = indexPath.section
-            let row = indexPath.row
-            if section < cookwareArr.count,
-               let ingredients = cookwareArr[section].cookware,
-               row < ingredients.count {
-                let ingredient = ingredients[row]
-                cell.ingredientlbl?.text = ingredient.name
-                cell.img.sd_setImage(with: URL(string: ingredient.img ?? ""), placeholderImage: UIImage(named: "No_Image"))
-            } else {
-                cell.ingredientlbl?.text = ""
-                cell.img.image = UIImage(named: "No_Image")
-            }
+            
+            guard let model = viewModel.modelForRow(at: indexPath, for: .ingredient) as? IngredientDataModel else {return cell}
+            cell.ingredientlbl?.text = model.name
+            cell.img.sd_setImage(with: URL(string: model.img ?? ""), placeholderImage: UIImage(named: "No_Image"))
             cell.selectionStyle = .none
             return cell
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeTblVCell", for: indexPath) as! RecipeTblVCell
-            let section = indexPath.section
-            let row = indexPath.row
-            let header = recipeArr[section].hearder ?? ""
-            if header.isEmpty || header == "Recipe"{
-                cell.type = .normal
-                cell.stepLbl.text = "Step - \(section+1)"
-            }else{
-                cell.type = .withHeader
-                cell.stepLbl.text = "Step - \(row+1)"
-            }
             
-            if section < recipeArr.count,
-               let recipes = recipeArr[section].recipe,
-               row < recipes.count {
-                let recipe = recipes[row]
-                cell.recipeLbl?.text = recipe.instruction
-            } else {
-                cell.recipeLbl?.text = ""
-            }
+            guard let model = viewModel.modelForRow(at: indexPath, for: .ingredient) as? StepsDataModel else {return cell}
+            let title = viewModel.headerTitle(for: indexPath.section, in: .ingredient) ?? ""
+             if title == "Recipe" || !title.isEmpty{
+                 cell.type = .normal
+                 cell.stepLbl.text = "Step - \(indexPath.section + 1)"
+             }else{
+                 cell.type = .withHeader
+                 cell.stepLbl.text = "Step - \(indexPath.row + 1)"
+             }
+            
+            cell.recipeLbl?.text = model.instruction ?? ""
             cell.selectionStyle = .none
             
             return cell
         }
-     
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
     }
@@ -730,9 +708,10 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if tableView == self.ingredientTblV {
-            guard section < tblVIngredientData.count else { return nil }
-            let title = tblVIngredientData[section].hearder?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-            guard !title.isEmpty || !(title == "Ingrediants") else { return nil }
+            guard let title = viewModel.headerTitle(for: section, in: .ingredient) else { return nil }
+            if title.isEmpty || title == "Ingrediants" || title == "Ingredients" {
+                return nil
+            }
             
             let label = UILabel()
             label.text = "   \(title)"
@@ -740,21 +719,23 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
             label.textColor = #colorLiteral(red: 0.2352941176, green: 0.2705882353, blue: 0.2549019608, alpha: 1)
             
             return label
-        }else if tableView == recipeTblV{
-            guard section < recipeArr.count else { return nil }
-            let title = recipeArr[section].hearder?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-            guard !title.isEmpty  || !(title == "Recipe")else { return nil }
+        }else if tableView == recipeTblV {
+            guard let title = viewModel.headerTitle(for: section, in: .recipe) else { return nil }
+            if title.isEmpty || title == "Recipe" {
+                return nil
+            }
             
             let label = UILabel()
-            label.text = "\(title)"
+            label.text = title
             label.font = UIFont(name: "Poppins-SemiBold", size: 16)
             label.textColor = #colorLiteral(red: 0.2352941176, green: 0.2705882353, blue: 0.2549019608, alpha: 1)
             
             return label
-        }else{
-            guard section < tblVIngredientData.count else { return nil }
-            let title = recipeArr[section].hearder?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-            guard !title.isEmpty else { return nil }
+        }else if tableView == cookwareTblV {
+            guard let title = viewModel.headerTitle(for: section, in: .cookware) else { return nil }
+            if title.isEmpty {
+                return nil
+            }
             
             let label = UILabel()
             label.text = "   \(title)"
@@ -763,18 +744,19 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
             
             return label
         }
-       
+        return nil
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if tableView == self.ingredientTblV {
-            guard section < tblVIngredientData.count else { return 0 }
-            let title = tblVIngredientData[section].hearder?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            guard let title = viewModel.headerTitle(for: section, in: .ingredient) else { return 0 }
             return title.isEmpty || title == "Ingredients" ? 0 : 40
-        }else if tableView == self.recipeTblV{
-            guard section < recipeArr.count else { return 0 }
-            let title = recipeArr[section].hearder?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        } else if tableView == recipeTblV {
+            guard let title = viewModel.headerTitle(for: section, in: .recipe) else { return 0 }
             return title.isEmpty || title == "Recipe" ? 0 : 40
+        } else if tableView == cookwareTblV {
+            guard let title = viewModel.headerTitle(for: section, in: .cookware) else { return 0 }
+            return title.isEmpty ? 0 : 40
         }
         return 0
     }
@@ -802,33 +784,9 @@ extension CreateRecipeNewVC {
             return
         }
         
-        let ingredient = IngredientDataModel(
-            name: ingredientName,
-            quantity: "\(amountText)",
-            unit: "\(unitText)",
-            img: imgStr
-        )
         
+        viewModel.addIngredient(name: ingredientName, quantity: amountText, unit: unitText, img: imgStr, header: headerText)
         DispatchQueue.main.async {
-            if headerText.isEmpty {
-                let data = RecipeDataModel(hearder: "", ingredients: [ingredient])
-                self.tblVIngredientData.append(data)
-            } else {
-                if let existingIndex = self.tblVIngredientData.firstIndex(where: {
-                    ($0.hearder ?? "").trimmingCharacters(in: .whitespacesAndNewlines).caseInsensitiveCompare(headerText) == .orderedSame
-                }) {
-                    if self.tblVIngredientData[existingIndex].ingredients == nil {
-                        self.tblVIngredientData[existingIndex].ingredients = [ingredient]
-                    } else {
-                        self.tblVIngredientData[existingIndex].ingredients?.append(ingredient)
-                    }
-                } else {
-                    let data = RecipeDataModel(hearder: headerText, ingredients: [ingredient])
-                    self.tblVIngredientData.append(data)
-                }
-            }
-            print("tblVIngredientData count: \(self.tblVIngredientData.count)")
-            self.printAsJSON(self.tblVIngredientData)
             self.addIngredientAmoutTF.text = ""
             self.addIngredientMesurementTF.text = ""
             self.addIngredientImgStr = ""
@@ -840,50 +798,13 @@ extension CreateRecipeNewVC {
             self.addIngredientTF.isHidden = true
             self.addIngredientAmoutTF.isHidden = true
             self.addIngredientMesurementTF.isHidden = true
-            self.ingredientTblV.reloadData()
+            // reload triggered by viewModel closure
         }
     }
     
     func addCookware() {
-        
-        let cookwareName = addCookWareTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        let imgStr = addCookwareImgStr.trimmingCharacters(in: .whitespacesAndNewlines)
-        let headerText = ""
-        
-        if  cookwareName.isEmpty {
-            return
-        }
-        
-        let ingredient = IngredientDataModel(
-            name: cookwareName,
-            unit: "",
-            img: imgStr
-        )
-        
-        DispatchQueue.main.async {
-            if headerText.isEmpty {
-                let data = RecipeDataModel(hearder: "", cookware: [ingredient])
-                self.cookwareArr.append(data)
-            } else {
-                if let existingIndex = self.cookwareArr.firstIndex(where: {
-                    ($0.hearder ?? "").trimmingCharacters(in: .whitespacesAndNewlines).caseInsensitiveCompare(headerText) == .orderedSame
-                }) {
-                    if self.cookwareArr[existingIndex].cookware == nil {
-                        self.cookwareArr[existingIndex].cookware = [ingredient]
-                    } else {
-                        self.cookwareArr[existingIndex].cookware?.append(ingredient)
-                    }
-                } else {
-                    let data = RecipeDataModel(hearder: headerText, cookware: [ingredient])
-                    self.cookwareArr.append(data)
-                }
-            }
-            print("cookwareArr count: \(self.cookwareArr.count)")
-            self.printAsJSON(self.cookwareArr)
-            self.searchCookDropDown.isHidden = true
-            self.addCookWareTF.text = ""
-            self.cookwareTblV.reloadData()
-        }
+        // This is no longer called directly, replaced by cookwareDoneClicked
+        // Kept here for compatibility if ever used differently
     }
     
     func addRecipe() {
@@ -896,34 +817,13 @@ extension CreateRecipeNewVC {
             return
         }
         
-        let recipe = StepsDataModel(instruction: recipeName)
+        viewModel.addRecipeStep(instruction: recipeName, header: headerText)
         
         DispatchQueue.main.async {
-            if headerText.isEmpty {
-                let data = RecipeDataModel(hearder: "", recipe: [recipe])
-                self.recipeArr.append(data)
-            } else {
-                if let existingIndex = self.recipeArr.firstIndex(where: {
-                    ($0.hearder ?? "").trimmingCharacters(in: .whitespacesAndNewlines).caseInsensitiveCompare(headerText) == .orderedSame
-                }) {
-                    if self.recipeArr[existingIndex].recipe == nil {
-                        self.recipeArr[existingIndex].recipe = [recipe]
-                    } else {
-                        self.recipeArr[existingIndex].recipe?.append(recipe)
-                    }
-                } else {
-                    let data = RecipeDataModel(hearder: headerText, recipe: [recipe])
-                    self.recipeArr.append(data)
-                }
-            }
-            print("recipeArr count: \(self.recipeArr.count)")
-            self.printAsJSON(self.recipeArr)
-            
             self.recipeHeaderV.isHidden = true
             self.recipeHeaderTF.text = ""
             self.addrecipeTxtV.text = ""
-            
-            self.recipeTblV.reloadData()
+            // reload triggered by viewModel closure
         }
     }
     
@@ -931,10 +831,11 @@ extension CreateRecipeNewVC {
         viewModel.didReceiveDropDownData = { [weak self] dropDownItems,type in
             guard let self = self else { return }
             if type == "1"{
-                self.ingredentDropDownArr = dropDownItems
+                self.viewModel.ingredentDropDownArr = dropDownItems
+             
                 DispatchQueue.main.async {
-                    let items = self.ingredentDropDownArr.map { $0.name ?? "" }
-                    let units = self.ingredentDropDownArr.map { $0.unitName ?? "" }
+                    let items = self.viewModel.ingredentDropDownArr.map { $0.name ?? "" }
+                    let units = self.viewModel.ingredentDropDownArr.map { $0.unitName ?? "" }
                     
                     if items.isEmpty {
                         self.searchInDropDown.hide()
@@ -944,16 +845,16 @@ extension CreateRecipeNewVC {
                         self.searchInDropDown.width = self.addIngredientTF.frame.width
                         self.searchInDropDown.selectionAction = { [weak self] (index: Int, item: String) in
                             guard let self = self else { return }
-                            guard self.ingredentDropDownArr.indices.contains(index) else {
-                                print("DropDown selection index \(index) out of range for ingredentDropDownArr (count: \(self.ingredentDropDownArr.count))")
+                            guard self.viewModel.ingredentDropDownArr.indices.contains(index) else {
+                                print("DropDown selection index \(index) out of range for ingredentDropDownArr (count: \(self.viewModel.ingredentDropDownArr.count))")
                                 return
                             }
-                            let selectedIngredient = self.ingredentDropDownArr[index]
+                            let selectedIngredient = self.viewModel.ingredentDropDownArr[index]
                             let imageURL = selectedIngredient.imageURL ?? ""
                             DispatchQueue.main.async {
                                 self.ingredientFinalLbl.text = item
                                 self.addIngredientTF.text = item
-                                self.addIngredientMesurementTF.text = self.ingredentDropDownArr[index].unitName ?? ""
+                                self.addIngredientMesurementTF.text = self.viewModel.ingredentDropDownArr[index].unitName ?? ""
                                 self.addIngredientImgStr = imageURL
                                 self.addIngredient()
                             }
@@ -961,9 +862,9 @@ extension CreateRecipeNewVC {
                     }
                 }
             }else if type == "2"{
-                self.cookwareDropDownArr = dropDownItems
+                self.viewModel.cookwareDropDownArr = dropDownItems
                 DispatchQueue.main.async {
-                    let items = self.cookwareDropDownArr.map { $0.name ?? "" }
+                    let items = self.viewModel.cookwareDropDownArr.map { $0.name ?? "" }
                     
                     if items.isEmpty {
                         self.searchCookDropDown.hide()
@@ -973,17 +874,19 @@ extension CreateRecipeNewVC {
                         self.searchCookDropDown.width = self.addCookWareTF.frame.width
                         self.searchCookDropDown.selectionAction = { [weak self] (index: Int, item: String) in
                             guard let self = self else { return }
-                            guard self.cookwareDropDownArr.indices.contains(index) else {
-                                print("DropDown selection index \(index) out of range for ingredentDropDownArr (count: \(self.cookwareDropDownArr.count))")
+                            guard self.viewModel.cookwareDropDownArr.indices.contains(index) else {
+                                print("DropDown selection index \(index) out of range for ingredentDropDownArr (count: \(self.viewModel.cookwareDropDownArr.count))")
                                 return
                             }
                             
-                            let selectedIngredient = self.cookwareDropDownArr[index]
+                            let selectedIngredient = self.viewModel.cookwareDropDownArr[index]
                             let imageURL = selectedIngredient.imageURL ?? ""
                             DispatchQueue.main.async {
                                 self.addCookwareImgStr = imageURL
                                 self.addCookWareTF.text = item
-                                self.addCookware()
+                                self.viewModel.addCookware(name: item, imageUrl: imageURL)
+                                self.searchCookDropDown.hide()
+                                self.addCookWareTF.text = ""
                             }
                         }
                     }
@@ -993,9 +896,9 @@ extension CreateRecipeNewVC {
         
         viewModel.didReceiveImperialUnits = { [weak self] unitsArr in
             guard let self = self else { return }
-            self.ingredentUnitArr = unitsArr
+            self.viewModel.ingredentUnitArr = unitsArr
             DispatchQueue.main.async {
-                let items = self.ingredentUnitArr.map { $0.unitName ?? "" }
+                let items = self.viewModel.ingredentUnitArr.map { $0.unitName ?? "" }
                 if items.isEmpty {
                     self.ingredientUnitDropDown.hide()
                 } else {
@@ -1022,20 +925,8 @@ extension CreateRecipeNewVC {
         }
         
     }
-    
-    
-    func printAsJSON<T: Encodable>(_ value: T) {
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        do {
-            let data = try encoder.encode(value)
-            if let jsonString = String(data: data, encoding: .utf8) {
-                print(jsonString)
-            }
-        } catch {
-            print("❌ Failed to encode JSON:", error)
-        }
-    }
+
+   
     
 }
 
@@ -1053,81 +944,13 @@ extension CreateRecipeNewVC {
         img: String,
         createdType: String
     ) -> String? {
+        // Use viewModel to get all current data arrays for JSON generation
         
-        // Prepare ingr (ingredients)
-        var ingr: [String] = []
-        var headers: [String] = []
-        for section in tblVIngredientData {
-            let headerTrimmed = section.hearder?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-            
-            
-            if let ingredients = section.ingredients {
-                for ingredient in ingredients {
-                    
-                    if !headerTrimmed.isEmpty {
-                        headers.append(headerTrimmed)
-                    }else{
-                        headers.append("Ingredients")
-                    }
-                    let quantity = ingredient.quantity?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-                    var unit = ingredient.unit?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-                    if unit.isEmpty || unit == "<unit>" {
-                        unit = ""
-                    }
-                    let name = ingredient.name?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-                    var ingredientStr = ""
-                    if !quantity.isEmpty {
-                        ingredientStr += quantity
-                    }
-                    if !unit.isEmpty {
-                        if !ingredientStr.isEmpty { ingredientStr += " " }
-                        ingredientStr += unit
-                    }
-                    if !name.isEmpty {
-                        if !ingredientStr.isEmpty { ingredientStr += " " }
-                        ingredientStr += name
-                    }
-                    if !ingredientStr.isEmpty {
-                        ingr.append(ingredientStr)
-                    }
-                }
-            }
-        }
-        
-        // Prepare prep (steps) and steps_headers
-        var prep: [String] = []
-        var steps_headers: [String] = []
-        for section in recipeArr {
-            let headerTrimmed = section.hearder?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-            
-            if let steps = section.recipe {
-                for step in steps {
-                    if !headerTrimmed.isEmpty {
-                        steps_headers.append(headerTrimmed)
-                    }else{
-                        steps_headers.append("Recipe")
-                    }
-                   
-                    let instruction = step.instruction?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-                    if !instruction.isEmpty {
-                        prep.append(instruction)
-                    }
-                }
-            }
-        }
-        
-        // Prepare cookware
-        var cookware: [String] = []
-        for section in cookwareArr {
-            if let items = section.cookware {
-                for item in items {
-                    let name = item.name?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-                    if !name.isEmpty {
-                        cookware.append(name)
-                    }
-                }
-            }
-        }
+        let ingr = viewModel.flatIngredients()
+        let headers = viewModel.ingredientHeaders()
+        let prep = viewModel.flatRecipeSteps()
+        let steps_headers = viewModel.recipeHeaders()
+        let cookware = viewModel.flatCookware()
         
         // Build payload model and encode to pretty JSON
         let payload = RecipePayload(
