@@ -709,7 +709,7 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if tableView == self.ingredientTblV {
             guard let title = viewModel.headerTitle(for: section, in: .ingredient) else { return nil }
-            if title.isEmpty || title == "Ingrediants" || title == "Ingredients" {
+            if title.isEmpty || title == "Ingrediants" {
                 return nil
             }
             
@@ -764,6 +764,7 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
 
 
 extension CreateRecipeNewVC {
+    
     @objc private func doneTapped() {
         view.endEditing(true)
         addIngredient()
@@ -884,7 +885,8 @@ extension CreateRecipeNewVC {
                             DispatchQueue.main.async {
                                 self.addCookwareImgStr = imageURL
                                 self.addCookWareTF.text = item
-                                self.viewModel.addCookware(name: item, imageUrl: imageURL)
+                                self.viewModel.addCookware(name: item, img:  imageURL, header: "")
+                                 
                                 self.searchCookDropDown.hide()
                                 self.addCookWareTF.text = ""
                             }
