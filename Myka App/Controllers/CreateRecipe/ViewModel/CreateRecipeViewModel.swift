@@ -33,6 +33,9 @@ final class CreateRecipeViewModel {
    var cookwareDropDownArr = [IngredientCRData] ()
     var ingredentUnitArr = [UnitINData]()
     // Callbacks
+    
+    var cookwareDropDownArr = [IngredientCRData]()
+    var ingredentUnitArr = [UnitINData]()
     var onIngredientsChanged: (() -> Void)?
     var onCookwareChanged: (() -> Void)?
     var onRecipeStepsChanged: (() -> Void)?
