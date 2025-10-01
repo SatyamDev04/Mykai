@@ -228,7 +228,7 @@ extension SearchPopUpVC{
     func Api_To_Get_MealByURL(url: String){
         var params = [String: Any]()
        
-        params["q"] = url
+        params["url"] = url
        
         showIndicator(withTitle: "", and: "")
         

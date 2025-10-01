@@ -89,7 +89,7 @@ extension AddRecipePopUpVC: UITableViewDelegate, UITableViewDataSource {
             
             let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "AddUrlVC") as! AddUrlVC
-            vc.backAction = {url in
+            vc.backAction = { url in
                 
                 let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
                 let vc = storyboard.instantiateViewController(withIdentifier: "WebViewVC") as! WebViewVC
@@ -276,10 +276,8 @@ extension AddRecipePopUpVC{
     func Api_To_Get_MealByURL(url: String){
         var params = [String: Any]()
         
-        params["q"] = url
+        params["url"] = url
         
-        let token  = UserDetail.shared.getTokenWith()
-     
         showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.get_meal_by_url
@@ -293,12 +291,10 @@ extension AddRecipePopUpVC{
             let data = try! json.rawData()
             
             do{
-                let d = try JSONDecoder().decode(ByUrl_IngredientsModelClass.self, from: data)
+                let d = try JSONDecoder().decode(URLReciepeModel.self, from: data)
                 if d.success == true {
                     let list = d.data
-                    self.SearchbyUrlList = list ?? ByUrl_IngredientsModel()
-                    
-                    let msg = d.message ?? ""
+                     let msg = d.message ?? ""
                     
                     guard msg != "Recipe Not Found." else {
                         self.tabBarController?.tabBar.isHidden = false
@@ -314,23 +310,10 @@ extension AddRecipePopUpVC{
                     }
                     
                     
-                    let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-                    let vc = storyboard.instantiateViewController(withIdentifier: "Searched_IngredientsListVC") as! Searched_IngredientsListVC
-                    vc.SearchbyUrlList = self.SearchbyUrlList
-                    vc.backaction = {
-                        self.tabBarController?.tabBar.isHidden = false
-                        self.ToDismissPopUp()
-                        
-                        //                        self.Api_To_GetAllRecipeList()
-                        //                        self.Api_To_Get_ProfileData()
-                    }
-                    self.tabBarController?.tabBar.isHidden = true
-                    self.addChild(vc)
-                    vc.view.frame = self.view.frame
-                    self.view.addSubview(vc.view)
-                    self.view.bringSubviewToFront(vc.view)
-                    vc.didMove(toParent: self)
-                    //  self.present(vc, animated: true, completion: nil)
+                    let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+                    let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeNewVC") as! CreateRecipeNewVC
+                    vc.RecipeImportedData = list?.first
+                    self.navigationController?.pushViewController(vc, animated: true)
                     
                 }else{
                     let msg = d.message ?? ""

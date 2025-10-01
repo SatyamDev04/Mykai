@@ -139,7 +139,7 @@ enum appEndPoints{
     
     static let for_preference_update = "for-preference-update"
     
-    static let get_meal_by_url = "get-meal-by-url"
+    static let get_meal_by_url = "extract-recipe-data"
     
     static let update_meal = "update-meal"
     

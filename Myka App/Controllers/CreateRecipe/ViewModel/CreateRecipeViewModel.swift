@@ -517,5 +517,84 @@ final class CreateRecipeViewModel {
         
         return nil
     }
+    
+    
+    func fillImportedData(from importedData: RecipeDataModelURL) {
+        guard let recipe = importedData.recipe else { return }
 
+        // MARK: - Ingredients
+        let importedIngredients: [IngredientDataModel] = recipe.ingredients?.map { item in
+            IngredientDataModel(
+                name: item.name,
+                quantity: item.quantity,
+                unit: item.unit ?? item.measure,
+                img: item.image ?? item.imageURL ?? "",
+                isSelected: true,
+                text: item.text,
+                image: item.image ?? "",
+                food: item.food,
+                ingredient_cost: item.ingredientCost,
+                foodCategory: item.category,
+                measure: item.measure,
+                id: item.id,
+                status: true,
+                header: item.header
+            )
+        } ?? []
+        
+        self.ingredientsSections = [
+            RecipeDataModel(
+                hearder: "Ingredients",
+                ingredients: importedIngredients,
+                cookware: nil,
+                recipe: nil
+            )
+        ]
+        
+        // MARK: - Cookware
+        let importedCookware: [IngredientDataModel] = recipe.cookware?.map { item in
+            IngredientDataModel(
+                name: item.name,
+                quantity: "",
+                unit: "",
+                img: item.image ?? "",
+                isSelected: true,
+                text: item.name,
+                image: item.image ?? "",
+                food: nil,
+                ingredient_cost: nil,
+                foodCategory: nil,
+                measure: nil,
+                id: item.id,
+                status: true,
+                header: nil
+            )
+        } ?? []
+        
+        self.cookwareSections = [
+            RecipeDataModel(
+                hearder: "Cookware",
+                ingredients: nil,
+                cookware: importedCookware,
+                recipe: nil
+            )
+        ]
+        
+        // MARK: - Recipe Steps
+        let importedSteps: [StepsDataModel] = recipe.instructions?.map { item in
+            StepsDataModel(
+                instruction: item.text,
+                index: item.stepOrder
+            )
+        } ?? []
+        
+        self.recipeStepsSections = [
+            RecipeDataModel(
+                hearder: "Steps",
+                ingredients: nil,
+                cookware: nil,
+                recipe: importedSteps
+            )
+        ]
+    }
 }

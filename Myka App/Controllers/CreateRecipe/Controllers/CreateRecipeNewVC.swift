@@ -74,7 +74,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     private var ingredientUnitDropDown = DropDown()
     private var textChangedWorkItem: DispatchWorkItem?
     
-
+    var RecipeImportedData : RecipeDataModelURL?
     var cookBooksData = [FavDropDownModel]()
     var SelCookBookId = "0"
     var addIngredientImgStr: String = ""
@@ -102,6 +102,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
         ingredientFinalLbl.isUserInteractionEnabled = true
         ingredientFinalLbl.addGestureRecognizer(tapGesture)
+      
         
     }
     
@@ -151,6 +152,10 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         let tapGesturee = UITapGestureRecognizer(target: self, action: #selector(showDateCookPicker))
         cookTimeLbl.addGestureRecognizer(tapGesturee)
         viewModel.Api_To_GetAllCookBooks()
+        
+        if let data = self.RecipeImportedData {
+            self.viewModel.fillImportedData(from: data)
+        }
     }
     
     @objc  func showDateCookPicker(){
@@ -491,11 +496,10 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     
     @objc func cookwareDoneClicked(_ sender: Any) {
         if addCookWareTF.text != "" {
-            // self.viewModel.addCookware(name: addCookWareTF.text ?? "", imageUrl: addCookwareImgStr)
-            viewModel.addCookware(name: addCookWareTF.text ?? "", img: addCookwareImgStr, header: "")
+          viewModel.addCookware(name: addCookWareTF.text ?? "", img: addCookwareImgStr, header: "")
             self.searchCookDropDown.isHidden = true
             self.addCookWareTF.text = ""
-            // reload triggered by viewModel closure
+           
         }
     }
     
@@ -531,7 +535,7 @@ extension CreateRecipeNewVC: UITextFieldDelegate{
     
     @objc private func fractionTapped(_ sender: UIBarButtonItem) {
         guard let text = sender.title else { return }
-        // If amount TF is active, replace/append fraction
+        
         if let tf = addIngredientAmoutTF {
             if tf.isFirstResponder {
                 if let range = tf.selectedTextRange {
@@ -540,7 +544,6 @@ extension CreateRecipeNewVC: UITextFieldDelegate{
                     tf.text = (tf.text ?? "") + text
                 }
             } else {
-                // If not first responder, set the text (original behaviour in file cleared previous text)
                 tf.text = text
             }
         }
@@ -578,18 +581,15 @@ extension CreateRecipeNewVC: UITextFieldDelegate{
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        // Calculate intrinsic height
+       
         let size = CGSize(width: addrecipeTxtV.frame.width, height: .infinity)
         let estimatedSize = addrecipeTxtV.sizeThatFits(size)
         
-        // Line height calculation
+      
         let lineHeight = addrecipeTxtV.font?.lineHeight ?? 0
         let maxHeight = lineHeight * 4   // 4 lines max
         
-        // Update height constraint
         addrecipeTxtVHConstraint.constant = min(estimatedSize.height, maxHeight)
-        
-        // Allow scrolling only when text exceeds 4 lines
         addrecipeTxtV.isScrollEnabled = estimatedSize.height > maxHeight
     }
     
@@ -926,11 +926,5 @@ extension CreateRecipeNewVC {
         }
         
     }
-    
-    
-    
+     
 }
-
-extension CreateRecipeNewVC {
-}
-
