@@ -7,7 +7,6 @@
 import UIKit
 import DropDown
 import IQKeyboardManager
-
 // MARK: - CreateRecipeNewVC
 class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     
@@ -155,6 +154,25 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         
         if let data = self.RecipeImportedData {
             self.viewModel.fillImportedData(from: data)
+            self.servingCountLbl.text = "\(data.recipe?.servings ?? "") servings"
+            self.count = Int(data.recipe?.servings ?? "0") ?? 0
+            self.recipeTitleTF.text = data.recipe?.label
+            self.prepTimeLbl.text =  "\(data.recipe?.prepTime ?? 0) min"
+            self.cookTimeLbl.text = "\(data.recipe?.totalTime ?? 0) min"
+            self.PrivateBtnO.isSelected = (data.recipe?.isPublic ?? 0) == 0 ? true : false
+            self.PublicBtnO.isSelected = (data.recipe?.isPublic ?? 0) == 0 ? false : true
+            self.autherNoteTxtV.text = data.recipe?.description
+            
+            if let imgStr = data.recipe?.image, !imgStr.isEmpty {
+                if imgStr.hasPrefix("http://") || imgStr.hasPrefix("https://") {
+                    self.recipeImg.sd_setImage(with: URL(string: data.recipe?.image ?? ""), placeholderImage: UIImage(named: "No_Image"))
+                } else {
+                    self.recipeImg.setImage(base64String: imgStr)
+                }
+            } else {
+                self.recipeImg.image = nil
+            }
+            
         }
     }
     
@@ -330,26 +348,10 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func saveRacipeBtn(_ sender: UIButton) {
-        let isPublicStr = self.PublicBtnO.isSelected ? "0" : "1"
-        let yeild =  self.servingCountLbl.text?.removeSpaces.replace(string: "servings", withString: "") ?? ""
-        let prepTime = (self.prepTimeLbl.text ?? "").removeSpaces.replace(string: "min", withString: "")
-        let cookTime = (self.cookTimeLbl.text ?? "").removeSpaces.replace(string: "min", withString: "")
-        
-        guard let jsonString = viewModel.generateRecipeJSON(summary: "eghvfewf", recipe_key: isPublicStr, cook_book: self.SelCookBookId, title: self.recipeTitleTF.text ?? "", yield: yeild, prep_time: prepTime, cook_time: cookTime, is_public: isPublicStr, img: self.recipeImageBase64 ?? "", createdType: "Created") else {
-            showAlert(for: "Failed to generate recipe JSON")
-            return
-        }
-        guard let jsonData = jsonString.data(using: .utf8), let payload = try? JSONDecoder().decode(RecipePayload.self, from: jsonData) else {
-            showAlert(for: "Failed to decode recipe payload")
-            return
-        }
-        viewModel.uploadRecipe(payload) { [weak self] json, statusCode in
-            guard let self = self else { return }
-            if statusCode == 200 || statusCode == 201 {
-                self.showAlert(for: "Recipe uploaded successfully!")
-            } else {
-                self.showAlert(for: "Failed to upload recipe. Status: \(statusCode)")
-            }
+        if let data = self.RecipeImportedData {
+            self.saveRecipe(type: "import", sourceUrl: data.recipe?.sourceURL)
+        }else{
+            self.saveRecipe(type: "create")
         }
     }
     
@@ -396,9 +398,11 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         }
     }
     
+    
     @IBAction func recipeHeaderBtn(_ sender: UIButton) {
         self.recipeHeaderV.isHidden = false
     }
+    
     
     @IBAction func recipeHeaderCancelBtn(_ sender: UIButton){
         self.recipeHeaderV.isHidden = true
@@ -409,15 +413,18 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         }
     }
     
+    
     @IBAction func PrivateBtn(_ sender: UIButton) {
         self.PrivateBtnO.isSelected = true
         self.PublicBtnO.isSelected = false
     }
     
+    
     @IBAction func PublicBtn(_ sender: UIButton) {
         self.PrivateBtnO.isSelected = false
         self.PublicBtnO.isSelected = true
     }
+    
     @IBAction func backBtnTap(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
@@ -825,6 +832,83 @@ extension CreateRecipeNewVC {
             self.recipeHeaderTF.text = ""
             self.addrecipeTxtV.text = ""
             // reload triggered by viewModel closure
+        }
+    }
+    
+    func saveRecipe(type: String, sourceUrl: String? = nil) {
+        // Determine public/private status
+        let isPublicStr = PublicBtnO.isSelected ? "0" : "1"
+        
+        // Prepare basic recipe data
+        let yield = servingCountLbl.text?
+            .removeSpaces
+            .replace(string: "servings", withString: "") ?? ""
+        
+        let prepTime = prepTimeLbl.text?
+            .removeSpaces
+            .replace(string: "min", withString: "") ?? ""
+        
+        let cookTime = cookTimeLbl.text?
+            .removeSpaces
+            .replace(string: "min", withString: "") ?? ""
+        
+        // Generate recipe JSON string
+        var jsonString: String = ""
+        
+        if type == "import" {
+            guard let generatedJson = viewModel.generateRecipeJSON(
+                summary: self.autherNoteTxtV.text ?? "",
+                recipe_key: isPublicStr,
+                cook_book: SelCookBookId,
+                title: recipeTitleTF.text ?? "",
+                yield: yield,
+                prep_time: prepTime,
+                cook_time: cookTime,
+                is_public: isPublicStr,
+                img: recipeImageBase64 ?? "",
+                createdType: type,
+                sourceURL: sourceUrl
+            ) else {
+                showAlert(for: "Failed to generate recipe JSON")
+                return
+            }
+            jsonString = generatedJson
+        } else {
+            guard let generatedJson = viewModel.generateRecipeJSON(
+                summary: self.autherNoteTxtV.text ?? "",
+                recipe_key: isPublicStr,
+                cook_book: SelCookBookId,
+                title: recipeTitleTF.text ?? "",
+                yield: yield,
+                prep_time: prepTime,
+                cook_time: cookTime,
+                is_public: isPublicStr,
+                img: recipeImageBase64 ?? "",
+                createdType: type
+            ) else {
+                showAlert(for: "Failed to generate recipe JSON")
+                return
+            }
+            jsonString = generatedJson
+        }
+        
+        guard
+            let jsonData = jsonString.data(using: .utf8),
+            let payload = try? JSONDecoder().decode(RecipePayload.self, from: jsonData)
+        else {
+            showAlert(for: "Failed to decode recipe payload")
+            return
+        }
+        
+    
+        viewModel.uploadRecipe(payload) { [weak self] _, statusCode in
+            guard let self = self else { return }
+            
+            if (200...201).contains(statusCode) {
+                self.showAlert(for: "Recipe uploaded successfully!")
+            } else {
+                self.showAlert(for: "Failed to upload recipe. Status: \(statusCode)")
+            }
         }
     }
     

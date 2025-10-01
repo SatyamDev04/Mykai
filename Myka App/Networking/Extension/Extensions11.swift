@@ -13,7 +13,17 @@ import AVFoundation
 
 
 
-
+extension UIImageView {
+    func setImage(base64String: String?) {
+        guard let base64String = base64String,
+              let data = Data(base64Encoded: base64String, options: .ignoreUnknownCharacters),
+              let image = UIImage(data: data) else {
+            self.image = nil
+            return
+        }
+        self.image = image
+    }
+}
 // MARK: - UIImage Extension
 extension UIImage {
     func resized(to size: CGSize) -> UIImage? {

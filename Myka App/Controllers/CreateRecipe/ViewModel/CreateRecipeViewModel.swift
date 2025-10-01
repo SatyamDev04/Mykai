@@ -475,7 +475,8 @@ final class CreateRecipeViewModel {
         cook_time: String,
         is_public: String,
         img: String,
-        createdType: String
+        createdType: String,
+        sourceURL: String? = nil
     ) -> String? {
         // Use viewModel to get all current data arrays for JSON generation
         
@@ -497,6 +498,7 @@ final class CreateRecipeViewModel {
             is_public: is_public,
             img: img,
             createdType: createdType,
+            source_url :sourceURL,
             ingr: ingr,
             headers: headers,
             prep: prep,
