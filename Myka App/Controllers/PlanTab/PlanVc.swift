@@ -583,7 +583,7 @@ class PlanVc: UIViewController {
     
     @IBAction func CartBtn(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Basket", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "BasketVC") as! BasketVC
+        let vc = storyboard.instantiateViewController(withIdentifier: "BasketNewVC") as! BasketNewVC
         vc.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(vc, animated: true)
     }

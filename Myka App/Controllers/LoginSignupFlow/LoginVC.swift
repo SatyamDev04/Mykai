@@ -112,16 +112,60 @@ class LoginVC: UIViewController {
             let familyName = user.profile?.familyName ?? ""
        
             let profilePicUrl = user.profile?.imageURL(withDimension: 320)
-          //  self.social_Prof_img = "\(profilePicUrl!)"
-            
-          //  self.Api_To_SocialLogin(email: emailAddress, Name: givenName, social_id: userId ?? "", socialType: "Google")
+         
             self.Api_To_SocialLogin(email: emailAddress, social_id: userId ?? "")
             
         }
     }
     
     @IBAction func FacebookLogiinBtn(_ sender: UIButton) {
-       // self.loginButtonClicked()
+
+        LoginManager().logOut()
+
+        LoginManager().logIn(
+            permissions: ["public_profile", "email"],
+            from: self
+        ) { result, error in
+
+            if let error = error {
+                print("FB Login Error:", error.localizedDescription)
+                return
+            }
+
+            guard let result = result else {
+                print("No result returned")
+                return
+            }
+
+            if result.isCancelled {
+                print("User cancelled login")
+                return
+            }
+
+            guard let token = AccessToken.current?.tokenString else {
+                print("Token missing")
+                return
+            }
+            print("Current permissions:", AccessToken.current?.permissions ?? [])
+            print("FB Token:", token)
+
+            let request = GraphRequest(
+                graphPath: "me",
+                parameters: ["fields": "id,name,email"],
+                tokenString: AccessToken.current?.tokenString,
+                version: "v19.0",
+                httpMethod: .get
+            )
+
+            request.start { _, result, error in
+                if let error = error {
+                    print("Graph Error:", error.localizedDescription)
+                    return
+                }
+
+                print("✅ FB USER RESULT:", result ?? "nil")
+            }
+        }
     }
     
     @IBAction func AppleLogiinBtn(_ sender: UIButton) {
@@ -206,7 +250,7 @@ extension LoginVC {
     }
     
     func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
-        // Do something after the user pressed the logout button
+      
         print("You logged out!")
     }
     
@@ -382,6 +426,7 @@ extension LoginVC {
                 //
                 
                 guard is_cooking_complete != 0 else{
+                    
                  let storyboard = UIStoryboard(name: "Main", bundle: nil)
                  let nextVc = storyboard.instantiateViewController(identifier: "EnterNameVC") as! EnterNameVC
                  self.navigationController?.pushViewController(nextVc, animated: true)

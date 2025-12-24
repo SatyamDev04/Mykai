@@ -9,11 +9,9 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.856670496660-qsailjit03lsaeen7v1e6l769no55o93</string>
+				<string>fb814407891432970</string>
 			</array>
 		</dict>
 		<dict>
@@ -21,9 +19,20 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>mykaimealplanner.onelink.me</string>
+				<string>com.googleusercontent.apps.856670496660-qsailjit03lsaeen7v1e6l769no55o93</string>
 			</array>
 		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>814407891432970</string>
+	<key>FacebookDisplayName</key>
+	<string>My Kai</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
 	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>

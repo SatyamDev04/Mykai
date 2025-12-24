@@ -88,11 +88,12 @@ class RecipeDetailNewVC: UIViewController {
     var recipeFrom = ""
     var sourceUrl = ""
     var conevertType = "O"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.ServCountLbl.text = "\(ServCount) servings"
-        //  ImgbottomBorder.roundCorners([.bottomLeft, .bottomRight], radius: 22.0)
+     
         self.ChoosedaysPopupV.frame = self.view.bounds
         self.view.addSubview(self.ChoosedaysPopupV)
         self.ChoosedaysPopupV.isHidden = true
@@ -100,9 +101,7 @@ class RecipeDetailNewVC: UIViewController {
         self.ChooseMealTypePopupV.frame = self.view.bounds
         self.view.addSubview(self.ChooseMealTypePopupV)
         self.ChooseMealTypePopupV.isHidden = true
-        
-        // Do any additional setup after loading the view.
-        
+     
         self.IngredientLbl.backgroundColor = UIColor.init(red: 254/255, green: 159/255, blue: 69/255, alpha: 1)
         self.CookwareLbl.backgroundColor = UIColor.init(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
         self.DirectionsLbl.backgroundColor = UIColor.init(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
@@ -132,7 +131,7 @@ class RecipeDetailNewVC: UIViewController {
         self.recipeTblV.delegate = self
         self.recipeTblV.dataSource = self
         
-        calendar.firstWeekday = 2 // Start the week on Monday
+        calendar.firstWeekday = 2
         setupInitialWeek()
         
         setupTableView()
@@ -156,8 +155,6 @@ class RecipeDetailNewVC: UIViewController {
         }
     }
     
-    
-    // Action method called when the view is tapped
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
         print("View was tapped!")
         ChoosedaysPopupV.isHidden = true
@@ -196,7 +193,7 @@ class RecipeDetailNewVC: UIViewController {
         self.ChooseMealTypeTblV.dataSource = self
         self.ChooseMealTypeTblV.separatorStyle = .none
         
-        // Add observers for table views
+       
         TblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         CookwareTblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         recipeTblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
@@ -204,7 +201,7 @@ class RecipeDetailNewVC: UIViewController {
         
     }
     
-    // KVO observation
+  
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "contentSize" {
             if let tableView = object as? UITableView {
@@ -222,7 +219,7 @@ class RecipeDetailNewVC: UIViewController {
     }
     
     deinit {
-        // Remove observers
+      
         TblV.removeObserver(self, forKeyPath: "contentSize")
         CookwareTblV.removeObserver(self, forKeyPath: "contentSize")
         recipeTblV.removeObserver(self, forKeyPath: "contentSize")
@@ -391,8 +388,7 @@ class RecipeDetailNewVC: UIViewController {
     @IBAction func ViewStepbyStepBtn(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetail1VC") as! RecipeDetail1VC
-        //let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetail2VC") as! RecipeDetail2VC
-//        vc.recipesArray = self.recipesArray
+     
         vc.MealType = self.MealType
         vc.RecipeDetailsData = self.RecipeDetailsData 
         vc.RecipeListArr = self.recipeArr

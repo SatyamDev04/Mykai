@@ -56,10 +56,10 @@ struct RecipeDataModelURL: Codable {
 struct RecipeURL: Codable {
     let mealType, sourceType: String?
     let ingredients: [URLIngredient]?
-    let totalTime, recipeTotalTime: Int?
+    let totalTime, recipeTotalTime: StringOrNumber?
     let url: String?
-    let userID: String?
-    let yield: String?
+    let userID: StringOrNumber?
+    let yield: StringOrNumber?
     let image: String?
     let prepTime: Int?
     let source, uri, origin, description: String?
@@ -68,15 +68,16 @@ struct RecipeURL: Codable {
     let sourceURL: String?
     let instructions: [URLInstruction]?
     let isPublic: Int?
-    let label, servings: String?
-    let ratingsAvg: Int?
-
+    let label:String
+    let servings: StringOrNumber?
+    let ratingsAvg: StringOrNumber?
+    let createdType:String?
     enum CodingKeys: String, CodingKey {
         case mealType = "meal_type"
         case sourceType = "source_type"
         case ingredients, totalTime
         case recipeTotalTime = "total_time"
-        case url
+        case url,createdType
         case userID = "user_id"
         case yield, image
         case prepTime = "prep_time"
@@ -106,7 +107,7 @@ struct URLIngredient: Codable {
     let measureImperial, id, searchKey, header: String?
     let updatedAt: String?
     let category: String?
-    let measurementUnitsImperialID: String?
+    let measurementUnitsImperialID: StringOrNumber?
     let createdOn: String?
     let ingredientCost: String?
     let ingredientID: Int?
@@ -140,7 +141,7 @@ struct URLInstruction: Codable {
     let createdAt, sectionID, text, createdOn: String?
     let updatedAt, id, header: String?
     let stepOrder: Int?
-    let timerMin: String?
+    let timerMin: StringOrNumber?
 
     enum CodingKeys: String, CodingKey {
         case createdAt = "created_at"

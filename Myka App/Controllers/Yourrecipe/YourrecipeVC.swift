@@ -370,19 +370,19 @@ extension YourrecipeVC: UICollectionViewDelegate, UICollectionViewDataSource, UI
         
         if collectionView == BreakfastCollV{
             URI = self.AllRecipeSelItem.breakfast?[indexPath.item].uri ?? ""
-            MealType = self.AllRecipeSelItem.breakfast?[indexPath.row].data?.recipe?.mealType?.first ?? ""
+            MealType = (self.AllRecipeSelItem.breakfast?[indexPath.row].data?.recipe?.mealType?.first ?? "") ?? ""
         }else if collectionView == LunchCollV{
             URI = self.AllRecipeSelItem.lunch?[indexPath.item].uri ?? ""
-            MealType = self.AllRecipeSelItem.lunch?[indexPath.row].data?.recipe?.mealType?.first ?? ""
+            MealType = (self.AllRecipeSelItem.lunch?[indexPath.row].data?.recipe?.mealType?.first ?? "") ?? ""
         }else if collectionView == DinnerCollV{
             URI = self.AllRecipeSelItem.dinner?[indexPath.item].uri ?? ""
-            MealType = self.AllRecipeSelItem.dinner?[indexPath.row].data?.recipe?.mealType?.first ?? ""
+            MealType = (self.AllRecipeSelItem.dinner?[indexPath.row].data?.recipe?.mealType?.first ?? "") ?? ""
         }else if collectionView == SnacksCollV{
             URI = self.AllRecipeSelItem.snacks?[indexPath.item].uri ?? ""
-            MealType = self.AllRecipeSelItem.snacks?[indexPath.row].data?.recipe?.mealType?.first ?? ""
+            MealType = (self.AllRecipeSelItem.snacks?[indexPath.row].data?.recipe?.mealType?.first ?? "") ?? ""
         }else{
             URI = self.AllRecipeSelItem.Teatime?[indexPath.item].uri ?? ""
-            MealType = self.AllRecipeSelItem.Teatime?[indexPath.row].data?.recipe?.mealType?.first ?? ""
+            MealType = (self.AllRecipeSelItem.Teatime?[indexPath.row].data?.recipe?.mealType?.first ?? "") ?? ""
         }
         
         let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)

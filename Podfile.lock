@@ -1174,14 +1174,14 @@ PODS:
     - SwiftAlgorithms (~> 1.0)
   - Cosmos (25.0.1)
   - DropDown (2.3.13)
-  - FBAEMKit (17.4.0):
-    - FBSDKCoreKit_Basics (= 17.4.0)
-  - FBSDKCoreKit (17.4.0):
-    - FBAEMKit (= 17.4.0)
-    - FBSDKCoreKit_Basics (= 17.4.0)
-  - FBSDKCoreKit_Basics (17.4.0)
-  - FBSDKLoginKit (17.4.0):
-    - FBSDKCoreKit (= 17.4.0)
+  - FBAEMKit (18.0.0):
+    - FBSDKCoreKit_Basics (= 18.0.0)
+  - FBSDKCoreKit (18.0.0):
+    - FBAEMKit (= 18.0.0)
+    - FBSDKCoreKit_Basics (= 18.0.0)
+  - FBSDKCoreKit_Basics (18.0.0)
+  - FBSDKLoginKit (18.0.0):
+    - FBSDKCoreKit (= 18.0.0)
   - Firebase/CoreOnly (11.5.0):
     - FirebaseCore (= 11.5.0)
   - Firebase/Crashlytics (11.5.0):
@@ -1616,10 +1616,10 @@ SPEC CHECKSUMS:
   Charts: ce0768268078eee0336f122c3c4ca248e4e204c5
   Cosmos: 02db0a1c953107049bfd2d7af19ceef55ecb7e98
   DropDown: 8a2116376c1981888557f72ec2ffc9a5e0e456ec
-  FBAEMKit: 58cb5f302cdd715a56d4c1d0dfdd2e423ac1421a
-  FBSDKCoreKit: 94d7461d0cecf441b1ba7c41acfff41daa8ccd41
-  FBSDKCoreKit_Basics: 151b43db8b834d3f0e02f95d36a44ffd36265e45
-  FBSDKLoginKit: 5c1cd53c91a2282b3a4fe6e6d3dcf2b8b0d33d55
+  FBAEMKit: e34530df538b8eb8aeb53c35867715ba6c63ef0c
+  FBSDKCoreKit: d3f479a69127acebb1c6aad91c1a33907bcf6c2f
+  FBSDKCoreKit_Basics: 017b6dc2a1862024815a8229e75661e627ac1e29
+  FBSDKLoginKit: 5875762d1fe09ddcb05d03365d4f5dc34413843d
   Firebase: 7a56fe4f56b5ab81b86a6822f5b8f909ae6fc7e2
   FirebaseAnalytics: 2f4a11eeb7a0e9c6fcf642d4e6aaca7fa4d38c28
   FirebaseAppCheckInterop: d265d9f4484e7ec1c591086408840fdd383d1213
@@ -1674,6 +1674,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: f5b1bf1cd8dd53cd25887ac0eabcfd92301c6a5a
   TTGTagCollectionView: 0d4625aaf7ee3ad755c39d549368a4ce69bd17d1
 
-PODFILE CHECKSUM: 317b3933b06a7bb16023be329c42e76511e886fd
+PODFILE CHECKSUM: 894e7b9b67a86cf07fbefb27014fdefbbbd321cf
 
 COCOAPODS: 1.16.2

@@ -1,7 +1,6 @@
 //
 //  AppDelegate.swift
 //  Myka App
-//
 //  Created by YES IT Labs on 26/11/24.
 
 import UIKit
@@ -31,55 +30,55 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        
+        ApplicationDelegate.shared.application(
+                   application,
+                   didFinishLaunchingWithOptions: launchOptions
+               )
         IQKeyboardManager.shared().isEnabled = true
         IQKeyboardManager.shared().shouldResignOnTouchOutside = true
-   for family in UIFont.familyNames.sorted() {
-        print("Family: \(family)")
-        for name in UIFont.fontNames(forFamilyName: family).sorted() {
-            print("    \(name)")
-        }
-    }
+        
+        
+        
+//   for family in UIFont.familyNames.sorted() {
+//        print("Family: \(family)")
+//        for name in UIFont.fontNames(forFamilyName: family).sorted() {
+//            print("    \(name)")
+//        }
+//    }
         Thread.sleep(forTimeInterval: 3)
         
         AppsFlyerLib.shared().appsFlyerDevKey = "<M57zyjkFgb7nSQwHWN6isW>" //YOUR_DEV_KEY
-        AppsFlyerLib.shared().appleAppID = "<6742851385>" //YOUR_APP_ID
+        AppsFlyerLib.shared().appleAppID = "<6742851385>"
         AppsFlyerLib.shared().delegate = self
-        AppsFlyerLib.shared().isDebug = true // Enable for testing; disable for production
-        // Handle deferred deep linking
+        AppsFlyerLib.shared().isDebug = true
+      
         AppsFlyerLib.shared().deepLinkDelegate = self
         
-        
-        
-        // Handle deep link if app is opened via URL (iOS 9 and above)
         if let url = launchOptions?[.url] as? URL {
-            AppsFlyerLib.shared().handleOpen(url) // Handle deep link
+            AppsFlyerLib.shared().handleOpen(url)
         }
         
         AppsFlyerLib.shared().start()
         
-        //
         
-        GMSServices.provideAPIKey("AIzaSyA7f3YXlTD-foNwy7phnJJHCsYDiWgURkQ")//("AIzaSyA-e6IRZ8axxpwrm1GEjlFOTzwb5KVQHgc")
-        GMSPlacesClient.provideAPIKey("AIzaSyA7f3YXlTD-foNwy7phnJJHCsYDiWgURkQ")// client Api key.
+        GMSServices.provideAPIKey("AIzaSyA7f3YXlTD-foNwy7phnJJHCsYDiWgURkQ")
+        GMSPlacesClient.provideAPIKey("AIzaSyA7f3YXlTD-foNwy7phnJJHCsYDiWgURkQ")
         
-        //    StripeAPI.defaultPublishableKey = "pk_live_51Qko2KEowij4RlG8jPdIDKTTaX12y4tNGgP2CWL2YAEOy4XMQx7vhEAeAtbmpaohAx7VOBPq0Z7iMBsAiygbJpAM00RcRMGU0W"//Live
+        // StripeAPI.defaultPublishableKey = "pk_live_51Qko2KEowij4RlG8jPdIDKTTaX12y4tNGgP2CWL2YAEOy4XMQx7vhEAeAtbmpaohAx7VOBPq0Z7iMBsAiygbJpAM00RcRMGU0W" //Live
         
-        //   StripeAPI.defaultPublishableKey = "pk_test_51Qko2KEowij4RlG8Ehh3tKQVhxVJUMzAPIi0rTnsX77jwtz5F8LfHfSvS9d2PTg8G7I5NQ3x19JlqdMaAihRcXAn00MvY1CI0X"//Test
+        // StripeAPI.defaultPublishableKey = "pk_test_51Qko2KEowij4RlG8Ehh3tKQVhxVJUMzAPIi0rTnsX77jwtz5F8LfHfSvS9d2PTg8G7I5NQ3x19JlqdMaAihRcXAn00MvY1CI0X" //Test
         
-        StripeAPI.defaultPublishableKey = "pk_test_51RVEe2DujJKtntDw4WHj4B11GXtevi9wGVF9bY9XoHGbD69EUNDiEYaBaBswxzwBhzFjD3Oz55LWozIVPUfzIyqr00uPgzdErF"//Test
+        StripeAPI.defaultPublishableKey = "pk_test_51RVEe2DujJKtntDw4WHj4B11GXtevi9wGVF9bY9XoHGbD69EUNDiEYaBaBswxzwBhzFjD3Oz55LWozIVPUfzIyqr00uPgzdErF" //Test
         
         
-        //        // Initialize Facebook SDK
-        FBSDKCoreKit.ApplicationDelegate.shared.application(
-            application,
-            didFinishLaunchingWithOptions: launchOptions
-        )
         
         FirebaseApp.configure()
         UIViewController.swizzleViewDidAppear
         
         if #available(iOS 10.0, *) {
-            // For iOS 10 display notification (sent via APNS)
+           
             UNUserNotificationCenter.current().delegate = self
             
             let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
@@ -113,24 +112,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
     }
     
     
-    
+
     func application(_ app: UIApplication,
                      open url: URL,
                      options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         // Google Sign-In handling
+ 
+        
         if GIDSignIn.sharedInstance.handle(url) {
             return true
         }
         
-        // Facebook Login handling
-        if ApplicationDelegate.shared.application(
-            app,
-            open: url,
-            sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
-            annotation: options[UIApplication.OpenURLOptionsKey.annotation]
-        ) {
-            return true
-        }
+        
         
         // AppsFlyer deep link handling
         AppsFlyerLib.shared().handleOpen(url, options: options)
@@ -139,8 +132,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
         // Return false if no handler explicitly returns true
         return false
     }
-    
-    
     
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
@@ -166,7 +157,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
     
     
 }
-
 
 
 
@@ -274,10 +264,7 @@ extension AppDelegate:MessagingDelegate, UNUserNotificationCenterDelegate{
         completionHandler()
     }
     
-    
-    
-    
-    
+
     func application(_ application: UIApplication,
                      open url: URL,
                      sourceApplication: String?,

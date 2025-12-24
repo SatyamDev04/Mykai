@@ -21,13 +21,16 @@ final class CreateRecipeViewModel {
     
     // MARK: - Recipe Data
     private(set) var ingredientsSections: [RecipeDataModel] = [] {
-        didSet { onIngredientsChanged?() }
+        didSet { onIngredientsChanged?()
+        saveDraft()}
     }
     private(set) var cookwareSections: [RecipeDataModel] = [] {
-        didSet { onCookwareChanged?() }
+        didSet { onCookwareChanged?()
+        saveDraft()}
     }
     private(set) var recipeStepsSections: [RecipeDataModel] = [] {
-        didSet { onRecipeStepsChanged?() }
+        didSet { onRecipeStepsChanged?()
+        saveDraft()}
     }
    var ingredentDropDownArr = [IngredientCRData] ()
    var cookwareDropDownArr = [IngredientCRData] ()
@@ -37,17 +40,51 @@ final class CreateRecipeViewModel {
    var onCookwareChanged: (() -> Void)?
    var onRecipeStepsChanged: (() -> Void)?
     
+    @Published var title = "" {
+        didSet { saveDraft() }
+    }
+    @Published var description = "" {
+        didSet { saveDraft() }
+    }
+    
+    @Published var prepTime = "15 min" {
+        didSet { saveDraft() }
+    }
+    
+    @Published var cookTime = "15 min" {
+        didSet { saveDraft() }
+    }
+    
+    @Published var isPublic = false {
+        didSet { saveDraft() }
+    }
+    
+    @Published var selectedCookbook = "" {
+        didSet { saveDraft() }
+    }
+    @Published var selectedCookbookId = "" {
+        didSet { saveDraft() }
+    }
+    
+    @Published var servings = "1 servings" {
+        didSet { saveDraft() }
+    }
+    @Published var imageData: Data = Data(){
+        didSet { saveDraft() }
+    }
+    
     init(viewController:UIViewController){
         self.viewController = viewController
-        
+        self.restoreDraft()
     }
+    
     
     // MARK: - Public API
     
     func fetchDropDown(query: String, type: String) {
         guard !query.isEmpty else { return }
         let loginURL = baseURL.baseURL + appEndPoints.ingredientAndCookware + "/\(query)/\(type)"
-        // note: caller may show / hide indicator
+      
         WebService.shared.getServiceURLEncodingwithParams(loginURL, VC: viewController, andParameter: nil, withCompletion: { [weak self] (json, statusCode) in
             guard let self = self else { return }
             let jsonString = "\(json)"
@@ -78,6 +115,39 @@ final class CreateRecipeViewModel {
         })
     }
     /// Fetch imperial units - identical behaviour to original VC implementation
+     func saveDraft() {
+         let draft = CreateRecipeDraft(
+             title: title,
+             prepTime: prepTime,
+             cookTime: cookTime,
+             description: description,
+             isPublic: isPublic,
+             selectedCookBook: selectedCookbook,
+             selectedCookBookId: selectedCookbookId,
+             servings: servings,
+             ingredients: ingredientsSections,
+             steps: recipeStepsSections,
+             cookWareData: cookwareSections,
+             imageData: imageData
+         )
+         RecipeDraftManager.save(draft)
+     }
+
+     private func restoreDraft() {
+         guard let draft = RecipeDraftManager.load() else { return }
+         title = draft.title
+         description = draft.description
+         ingredientsSections = draft.ingredients
+         prepTime = draft.prepTime
+         cookTime = draft.cookTime
+         isPublic = draft.isPublic
+         selectedCookbook = draft.selectedCookBook ?? ""
+         selectedCookbookId = draft.selectedCookBookId ?? ""
+         cookwareSections = draft.cookWareData
+         recipeStepsSections = draft.steps
+         self.servings = draft.servings
+         self.imageData = draft.imageData ?? Data()
+     }
     
     func fetchImperialUnits() {
         let loginURL = baseURL.baseURL + appEndPoints.imperialUnitList
@@ -154,7 +224,6 @@ final class CreateRecipeViewModel {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return false }
 
-        // Accept: "1", "1.5", "1/2", "2 1/2", "3/4" etc.
         let pattern = #"^(\d+(\.\d+)?|\d+\s+\d+\/\d+|\d+\/\d+)$"#
         if let _ = trimmed.range(of: pattern, options: .regularExpression) {
             return true
@@ -162,9 +231,14 @@ final class CreateRecipeViewModel {
         return false
     }
     
-    /// Uploads a recipe payload to the API via WebService
-    func uploadRecipe(_ payload: RecipePayload, completion: @escaping (JSON, Int) -> Void) {
-        let apiURL = baseURL.baseURL + appEndPoints.create_meal // Change this endpoint if needed
+  
+    func uploadRecipe(_ payload: RecipePayload,type:String, completion: @escaping (JSON, Int) -> Void) {
+        var apiURL = ""
+        if type == "edit"{
+            apiURL = baseURL.baseURL + appEndPoints.edit_recipe
+        }else{
+             apiURL = baseURL.baseURL + appEndPoints.create_meal
+        }
         guard let vc = viewController else { return }
         vc.showIndicator(withTitle: "Uploading...", and: "Please wait")
         WebService.shared.uploadModel(apiURL, VC: vc, model: payload) { json, statusCode in
@@ -207,7 +281,7 @@ final class CreateRecipeViewModel {
             items.remove(at: indexPath.row)
             section.ingredients = items
             self.ingredientsSections[indexPath.section] = section
-            // Remove section if no ingredients left
+          
             if section.ingredients?.isEmpty ?? true {
                 self.ingredientsSections.remove(at: indexPath.section)
             }
@@ -316,6 +390,7 @@ final class CreateRecipeViewModel {
         case .recipe: return recipeStepsSections.count
         }
     }
+    
     func numberOfRows(in section: Int, for type: RecipeSectionType) -> Int {
         switch type {
         case .ingredient:
@@ -329,6 +404,7 @@ final class CreateRecipeViewModel {
             return recipeStepsSections[section].recipe?.count ?? 0
         }
     }
+    
     func modelForRow(at indexPath: IndexPath, for type: RecipeSectionType) -> Any? {
         switch type {
         case .ingredient:
@@ -468,7 +544,7 @@ final class CreateRecipeViewModel {
     func generateRecipeJSON(
         summary: String,
         recipe_key: String,
-        cook_book: String,
+        cook_book: String? = "0",
         title: String,
         yield: String,
         prep_time: String,
@@ -476,7 +552,8 @@ final class CreateRecipeViewModel {
         is_public: String,
         img: String,
         createdType: String,
-        sourceURL: String? = nil
+        sourceURL: String? = nil,
+        uri: String? = nil
     ) -> String? {
         // Use viewModel to get all current data arrays for JSON generation
         
@@ -485,12 +562,21 @@ final class CreateRecipeViewModel {
         let prep = flatRecipeSteps()
         let steps_headers = recipeHeaders()
         let cookware = flatCookware()
-        
+        var cook_bookk: String = "0"
+        if cook_book == "" {
+            cook_bookk = "0"
+        }else{
+            cook_bookk = cook_book ?? "0"
+        }
+        var urii = ""
+        if let uri = uri {
+            urii = uri
+        }
         // Build payload model and encode to pretty JSON
         let payload = RecipePayload(
             summary: summary,
             recipe_key: recipe_key,
-            cook_book: cook_book,
+            cook_book: cook_bookk,
             title: title,
             yield: yield,
             prep_time: prep_time,
@@ -503,8 +589,10 @@ final class CreateRecipeViewModel {
             headers: headers,
             prep: prep,
             steps_headers: steps_headers,
-            cookware: cookware
+            cookware: cookware, uri:urii
         )
+        
+        
         do {
             let encoder = JSONEncoder()
             encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
@@ -521,9 +609,10 @@ final class CreateRecipeViewModel {
     }
     
     
-    func fillImportedData(from importedData: RecipeDataModelURL) {
-        guard let recipe = importedData.recipe else { return }
+    func fillImportedData(from importedData: RecipeURL?) {
+        guard let recipe = importedData else { return }
 
+        self.title = recipe.label ?? ""
         // MARK: - Ingredients
         let importedIngredients: [IngredientDataModel] = recipe.ingredients?.map { item in
             IngredientDataModel(

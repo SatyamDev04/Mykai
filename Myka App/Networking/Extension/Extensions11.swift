@@ -1212,3 +1212,30 @@ extension UITextView {
         }
     }
 }
+enum StringOrNumber: Codable {
+    case string(String)
+    case int(Int)
+    case double(Double)
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+
+        if let value = try? container.decode(String.self) {
+            self = .string(value)
+        } else if let value = try? container.decode(Int.self) {
+            self = .int(value)
+        } else if let value = try? container.decode(Double.self) {
+            self = .double(value)
+        } else {
+            self = .string("")
+        }
+    }
+
+    func stringValue() -> String {
+        switch self {
+        case .string(let v): return v
+        case .int(let v): return String(v)
+        case .double(let v): return String(format: "%.2f", v)
+        }
+    }
+}

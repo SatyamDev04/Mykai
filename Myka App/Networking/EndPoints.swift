@@ -142,6 +142,7 @@ enum appEndPoints{
     static let get_meal_by_url = "extract-recipe-data"
     
     static let update_meal = "update-meal"
+    static let edit_recipe = "edit-recipe"
     
     static let for_filter_search = "for-filter-search"
     

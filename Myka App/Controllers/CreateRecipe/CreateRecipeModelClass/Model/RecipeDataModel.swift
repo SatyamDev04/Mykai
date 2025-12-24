@@ -6,13 +6,13 @@
 //
 
 
-struct RecipeDataModel:Encodable{
+struct RecipeDataModel:Codable{
     var hearder:String? = ""
     var ingredients:[IngredientDataModel]?
     var cookware:[IngredientDataModel]?
     var recipe:[StepsDataModel]?
 }
-struct IngredientDataModel:Encodable{
+struct IngredientDataModel:Codable{
     var name:String?
     var quantity:String?
     var unit:String?
@@ -30,11 +30,11 @@ struct IngredientDataModel:Encodable{
    
     
 }
-struct CookwareDataModel:Encodable{
+struct CookwareDataModel:Codable{
     var name:String?
     var img:String?
 }
-struct StepsDataModel:Encodable{
+struct StepsDataModel:Codable{
     var instruction:String?
     var index: Int?
 }
@@ -119,4 +119,5 @@ struct RecipePayload: Codable {
     let prep: [String]
     let steps_headers: [String]
     let cookware: [String]
+    let uri:String
 }

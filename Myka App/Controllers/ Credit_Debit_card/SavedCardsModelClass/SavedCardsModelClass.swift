@@ -15,6 +15,7 @@ struct SavedCardsModelClass: Codable {
 }
 
 // MARK: - Datum
+
 struct SavedCardsModelData: Codable {
     var id, cardNum, status: Int?
     var paymentID: String?

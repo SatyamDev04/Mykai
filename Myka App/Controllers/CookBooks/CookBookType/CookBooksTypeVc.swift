@@ -424,7 +424,7 @@ extension CookBooksTypeVc: UICollectionViewDelegate, UICollectionViewDataSource 
         
         let mealType = self.cookBookDataArr[sender.tag].data?.recipe?.mealType?.first ?? ""
         
-        let Type = mealType.components(separatedBy: "/").first ?? ""
+        let Type = mealType?.components(separatedBy: "/").first ?? ""
         self.Api_To_AddToBasket_Recipe(uri: uri, type: Type)
     }
     
@@ -753,11 +753,7 @@ extension CookBooksTypeVc {
             if dictData["success"] as? Bool == true{
                 let id = dictData["id"] as? Int ?? 0
                 self.type = "\(id)"
-                //                "cook_book" : {
-                //                  "id" : 162,
-                //                  "user_id" : 359,
-                //                  "status" : 0,
-                //                  "shared" : 1,
+              
                 self.Api_To_GetCookBookType()
             }else{
                 self.hideIndicator()

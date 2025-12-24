@@ -4,6 +4,9 @@
 //
 //  Created by YATIN  KALRA on 24/09/25.
 //
+
+import UIKit
+
 struct ConvertedUnitsModel: Codable {
     let converted: String?
     let targetUnit, targetSystem: String?
@@ -14,8 +17,6 @@ struct ConvertedUnitsModel: Codable {
         case targetSystem = "target_system"
     }
 }
-
-import UIKit
 
 class ConvertUnitPopVC: UIViewController {
     
@@ -29,6 +30,7 @@ class ConvertUnitPopVC: UIViewController {
     var units = [String]()
     var type = ""
     var convertedData = [ConvertedUnitsModel]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

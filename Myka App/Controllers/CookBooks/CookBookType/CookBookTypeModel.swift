@@ -23,6 +23,7 @@ struct Datum: Codable {
     let updatedAt, createdAt: String?
     let deletedAt: String?
     let data: CookBookTypeData?
+    let is_created: Bool?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -32,7 +33,7 @@ struct Datum: Codable {
         case updatedAt = "updated_at"
         case createdAt = "created_at"
         case deletedAt = "deleted_at"
-        case data
+        case data,is_created
     }
 }
 

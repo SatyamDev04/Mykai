@@ -7,6 +7,7 @@
 import UIKit
 import DropDown
 import IQKeyboardManager
+
 // MARK: - CreateRecipeNewVC
 class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     
@@ -72,8 +73,8 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     private var searchCookDropDown = DropDown()
     private var ingredientUnitDropDown = DropDown()
     private var textChangedWorkItem: DispatchWorkItem?
-    
-    var RecipeImportedData : RecipeDataModelURL?
+    var comefrom = ""
+    var RecipeImportedData : RecipeURL?
     var cookBooksData = [FavDropDownModel]()
     var SelCookBookId = "0"
     var addIngredientImgStr: String = ""
@@ -105,11 +106,16 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        populateAllIfLocalDataAvailable()
+    }
+    
     deinit {
         // Remove observers safely (match what we added)
         ingredientTblV.removeObserver(self, forKeyPath: "contentSize")
         cookwareTblV.removeObserver(self, forKeyPath: "contentSize")
-        recipeTblV.removeObserver(self, forKeyPath: "contentSize")
+       recipeTblV.removeObserver(self, forKeyPath: "contentSize")
     }
     
     // MARK: Setup helpers
@@ -139,8 +145,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         searchCookDropDown.direction = .bottom
         searchCookDropDown.setupCornerRadius(10)
         searchCookDropDown.width = addCookWareTF.frame.width
-        
-        //    addIngredientAmoutTF.addDoneOnKeyboard(withTarget: self, action: #selector(addIngredientAmoutDoneButtonClicked(_:)))
+    
         ingredientUnitDropDown.backgroundColor = .white
         
         prepTimeLbl.isUserInteractionEnabled = true
@@ -154,23 +159,32 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         
         if let data = self.RecipeImportedData {
             self.viewModel.fillImportedData(from: data)
-            self.servingCountLbl.text = "\(data.recipe?.servings ?? "") servings"
-            self.count = Int(data.recipe?.servings ?? "0") ?? 0
-            self.recipeTitleTF.text = data.recipe?.label
-            self.prepTimeLbl.text =  "\(data.recipe?.prepTime ?? 0) min"
-            self.cookTimeLbl.text = "\(data.recipe?.totalTime ?? 0) min"
-            self.PrivateBtnO.isSelected = (data.recipe?.isPublic ?? 0) == 0 ? true : false
-            self.PublicBtnO.isSelected = (data.recipe?.isPublic ?? 0) == 0 ? false : true
-            self.autherNoteTxtV.text = data.recipe?.description
+            self.servingCountLbl.text = "\(data.servings?.stringValue() ?? "") servings"
             
-            if let imgStr = data.recipe?.image, !imgStr.isEmpty {
+            self.count = Int(data.servings?.stringValue() ?? "0") ?? 0
+            self.recipeTitleTF.text = data.label
+            self.prepTimeLbl.text =  "\(data.prepTime ?? 0) min"
+            viewModel.prepTime = "\(data.prepTime ?? 0) min"
+            self.cookTimeLbl.text = "\(data.totalTime?.stringValue() ?? "0") min"
+            viewModel.cookTime = "\(data.totalTime?.stringValue() ?? "0") min"
+            self.PrivateBtnO.isSelected = (data.isPublic ?? 0) == 0 ? true : false
+            
+            self.PublicBtnO.isSelected = (data.isPublic ?? 0) == 0 ? false : true
+            self.viewModel.isPublic = (data.isPublic ?? 0) == 0 ? false : true
+            self.autherNoteTxtV.text = data.description
+            viewModel.description = data.description ?? ""
+            if let imgStr = data.image, !imgStr.isEmpty {
                 if imgStr.hasPrefix("http://") || imgStr.hasPrefix("https://") {
-                    self.recipeImg.sd_setImage(with: URL(string: data.recipe?.image ?? ""), placeholderImage: UIImage(named: "No_Image"))
+                    self.recipeImg.sd_setImage(with: URL(string: data.image ?? ""), placeholderImage: UIImage(named: "No_Image"))
                 } else {
                     self.recipeImg.setImage(base64String: imgStr)
+                    
+               
+                    guard  let data = Data(base64Encoded: imgStr, options: .ignoreUnknownCharacters) else{return}
+                    viewModel.imageData = data
                 }
             } else {
-                self.recipeImg.image = nil
+                self.recipeImg.image = UIImage(named: "Camera")
             }
             
         }
@@ -190,6 +204,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         pickerVC.onSave = { hours, minutes in
             print("Selected: \(hours)h \(minutes)m")
             self.cookTimeLbl.text = "\(hours * 60 + minutes) min"
+            self.viewModel.cookTime = "\(hours * 60 + minutes) min"
             
         }
         present(pickerVC, animated: false)
@@ -212,6 +227,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         pickerVC.onSave = { hours, minutes in
             print("Selected: \(hours)h \(minutes)m")
             self.prepTimeLbl.text = "\(hours * 60 + minutes) min"
+            self.viewModel.prepTime = "\(hours * 60 + minutes) min"
         }
         present(pickerVC, animated: false)
     }
@@ -226,15 +242,19 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         textChangedWorkItem = workItem
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: workItem)
     }
+    
     private func setupImagePicker() {
         imagePicker1 = ImagePicker1(presentationController1: self, delegate1: self)
     }
+    
     
     private func setupObservers() {
         ingredientTblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         cookwareTblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         recipeTblV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
-        
+        recipeTitleTF.delegate = self
+        autherNoteTxtV.delegate = self
+        autherNoteTxtV.delegate =  self
         // Bind to viewModel changes to reload tables
         viewModel.onIngredientsChanged = { [weak self] in
             DispatchQueue.main.async {
@@ -287,6 +307,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         bindViewmodel()
     }
     
+    
     private func setupTableView() {
         ingredientTblV.register(UINib(nibName: "IngredientsTblVCell", bundle: nil), forCellReuseIdentifier: "IngredientsTblVCell")
         ingredientTblV.delegate = self
@@ -304,6 +325,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         recipeTblV.separatorStyle = .none
     }
     
+    
     // MARK: KVO for content size
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "contentSize" {
@@ -320,6 +342,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         }
     }
     
+    
     // MARK: Actions
     @objc private func labelTapped() {
         ingredientFinalLbl.isHidden = true
@@ -328,6 +351,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         self.addIngredientTF.isHidden = false
         self.addIngredientTF.becomeFirstResponder()
     }
+    
     
     @IBAction func UploadImage_Btn(_ sender: UIButton) {
         let alertController = UIAlertController(title: "Select Image", message: nil, preferredStyle: .alert)
@@ -347,13 +371,24 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         self.present(alertController, animated: true)
     }
     
+    
     @IBAction func saveRacipeBtn(_ sender: UIButton) {
         if let data = self.RecipeImportedData {
-            self.saveRecipe(type: "import", sourceUrl: data.recipe?.sourceURL)
+            if comefrom == "cookbook"{
+                if data.createdType == "create"{
+                    self.editRecipe(type: "create",uri: data.uri ?? "")
+                }else{
+                    self.editRecipe(type: "import", sourceUrl: data.sourceURL,uri: data.uri ?? "")
+                }
+            }else{
+                self.saveRecipe(type: "import", sourceUrl: data.sourceURL)
+            }
+             
         }else{
             self.saveRecipe(type: "create")
         }
     }
+    
     
     @IBAction func IngredientBtn(_ sender: UIButton) {
         setActiveTab(.ingredient)
@@ -371,6 +406,9 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     @IBAction func ServingCountMinusBtn(_ sender: UIButton) {
         if self.count > 1 { self.count -= 1 }
         self.servingCountLbl.text = "\(String(self.count)) servings"
+        viewModel.servings = servingCountLbl.text ?? ""
+        
+        
     }
     
     @IBAction func ServingCountPlusBtn(_ sender: UIButton) {
@@ -417,15 +455,30 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     @IBAction func PrivateBtn(_ sender: UIButton) {
         self.PrivateBtnO.isSelected = true
         self.PublicBtnO.isSelected = false
+        self.viewModel.isPublic = false
     }
     
     
     @IBAction func PublicBtn(_ sender: UIButton) {
         self.PrivateBtnO.isSelected = false
         self.PublicBtnO.isSelected = true
+        self.viewModel.isPublic = true
     }
     
     @IBAction func backBtnTap(_ sender: UIButton) {
+        if RecipeDraftManager.hasDraftData(){
+            self.DiscardPopupV.isHidden = false
+        }else{
+            self.navigationController?.popViewController(animated: true)
+        }
+        
+    }
+    @IBAction func disgardChangesYesBtnTap(_ sender: UIButton) {
+        RecipeDraftManager.clear()
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func disgardChangesNoBtnTap(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -451,11 +504,15 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
             guard let self = self else { return }
             self.FavoritesTxtF.text = item
             self.SelCookBookId = "\(self.cookBooksData[index].id ?? 0)"
+            self.viewModel.selectedCookbook = item
+            self.viewModel.selectedCookbookId = "\(self.cookBooksData[index].id ?? 0)"
+        
         }
         dropDown.show()
     }
     
     // MARK: - Helpers
+    
     private enum Tab { case ingredient, cookware, recipe }
     
     private func setActiveTab(_ tab: Tab) {
@@ -513,7 +570,13 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     @objc func addRecipeDoneClicked(_ sender: Any) {
         addRecipe()
     }
-    
+//    private func textFieldDidEndEditing(_ textField: UITextField) {
+//        viewModel.saveDraft()
+//    }
+//
+//    private func textViewDidChange(_ textView: UITextView) {
+//        viewModel.saveDraft()
+//    }
 }
 
 // MARK: - UITextFieldDelegate
@@ -527,6 +590,7 @@ extension CreateRecipeNewVC: UITextFieldDelegate{
         
         
         var items: [UIBarButtonItem] = []
+        
         for frac in fractions {
             let button = UIBarButtonItem(title: frac, style: .plain, target: self, action: #selector(fractionTapped(_:)))
             items.append(button)
@@ -565,6 +629,7 @@ extension CreateRecipeNewVC: UITextFieldDelegate{
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
+        didChangeTextFildsForlocalData(textField)
         if textField == addIngredientTF{
             self.addIngredientTF.isHidden = true
             self.ingredientFinalLbl.isHidden = false
@@ -588,7 +653,7 @@ extension CreateRecipeNewVC: UITextFieldDelegate{
     }
     
     func textViewDidChange(_ textView: UITextView) {
-       
+        didChangeTextviewForlocalData(textView)
         let size = CGSize(width: addrecipeTxtV.frame.width, height: .infinity)
         let estimatedSize = addrecipeTxtV.sizeThatFits(size)
         
@@ -622,6 +687,7 @@ extension CreateRecipeNewVC: ImagePickerDelegate1{
                 self.recipeImageBase64 = self.viewModel.encodeImageToBase64(image)
                 self.recipeImgUploadBtnO.isUserInteractionEnabled = false
                 self.recipeImgEditBtnO.isHidden = false
+                self.viewModel.imageData = data
                 
             }
         }
@@ -835,7 +901,7 @@ extension CreateRecipeNewVC {
         }
     }
     
-    func saveRecipe(type: String, sourceUrl: String? = nil) {
+    func saveRecipe(type: String, sourceUrl: String? = nil,uri:String? = nil) {
         // Determine public/private status
         let isPublicStr = PublicBtnO.isSelected ? "0" : "1"
         
@@ -867,7 +933,9 @@ extension CreateRecipeNewVC {
                 is_public: isPublicStr,
                 img: recipeImageBase64 ?? "",
                 createdType: type,
-                sourceURL: sourceUrl
+                sourceURL: sourceUrl,
+                uri: uri
+                
             ) else {
                 showAlert(for: "Failed to generate recipe JSON")
                 return
@@ -884,7 +952,8 @@ extension CreateRecipeNewVC {
                 cook_time: cookTime,
                 is_public: isPublicStr,
                 img: recipeImageBase64 ?? "",
-                createdType: type
+                createdType: type,
+                uri: uri
             ) else {
                 showAlert(for: "Failed to generate recipe JSON")
                 return
@@ -901,11 +970,99 @@ extension CreateRecipeNewVC {
         }
         
     
-        viewModel.uploadRecipe(payload) { [weak self] _, statusCode in
+        viewModel.uploadRecipe(payload,type: "") { [weak self] _, statusCode in
             guard let self = self else { return }
             
             if (200...201).contains(statusCode) {
-                self.showAlert(for: "Recipe uploaded successfully!")
+                self.showOkAlertWithHandler(title: "", "Recipe uploaded successfully!") {
+                    RecipeDraftManager.clear()
+                    self.tabBarController?.selectedIndex = 3
+                }
+                
+            } else {
+                self.showAlert(for: "Failed to upload recipe. Status: \(statusCode)")
+            }
+        }
+    }
+    
+    func editRecipe(type: String, sourceUrl: String? = nil,uri:String? = nil) {
+        // Determine public/private status
+        let isPublicStr = PublicBtnO.isSelected ? "0" : "1"
+        
+        // Prepare basic recipe data
+        let yield = servingCountLbl.text?
+            .removeSpaces
+            .replace(string: "servings", withString: "") ?? ""
+        
+        let prepTime = prepTimeLbl.text?
+            .removeSpaces
+            .replace(string: "min", withString: "") ?? ""
+        
+        let cookTime = cookTimeLbl.text?
+            .removeSpaces
+            .replace(string: "min", withString: "") ?? ""
+        
+        // Generate recipe JSON string
+        var jsonString: String = ""
+        
+        if type == "import" {
+            guard let generatedJson = viewModel.generateRecipeJSON(
+                summary: self.autherNoteTxtV.text ?? "",
+                recipe_key: isPublicStr,
+                cook_book: SelCookBookId,
+                title: recipeTitleTF.text ?? "",
+                yield: yield,
+                prep_time: prepTime,
+                cook_time: cookTime,
+                is_public: isPublicStr,
+                img: recipeImageBase64 ?? "",
+                createdType: type,
+                sourceURL: sourceUrl,
+                uri: uri
+                
+            ) else {
+                showAlert(for: "Failed to generate recipe JSON")
+                return
+            }
+            jsonString = generatedJson
+        } else {
+            guard let generatedJson = viewModel.generateRecipeJSON(
+                summary: self.autherNoteTxtV.text ?? "",
+                recipe_key: isPublicStr,
+                cook_book: SelCookBookId,
+                title: recipeTitleTF.text ?? "",
+                yield: yield,
+                prep_time: prepTime,
+                cook_time: cookTime,
+                is_public: isPublicStr,
+                img: recipeImageBase64 ?? "",
+                createdType: type,
+                uri: uri
+            ) else {
+                showAlert(for: "Failed to generate recipe JSON")
+                return
+            }
+            jsonString = generatedJson
+        }
+        
+        guard
+            let jsonData = jsonString.data(using: .utf8),
+            let payload = try? JSONDecoder().decode(RecipePayload.self, from: jsonData)
+        else {
+            showAlert(for: "Failed to decode recipe payload")
+            return
+        }
+        
+    
+        viewModel.uploadRecipe(payload,type: "edit") { [weak self] _, statusCode in
+            guard let self = self else { return }
+            
+            if (200...201).contains(statusCode) {
+                self.showOkAlertWithHandler(title: "", "Recipe uploaded successfully!") {
+                    RecipeDraftManager.clear()
+                    self.tabBarController?.selectedIndex = 3
+                }
+                
             } else {
                 self.showAlert(for: "Failed to upload recipe. Status: \(statusCode)")
             }
@@ -1011,4 +1168,50 @@ extension CreateRecipeNewVC {
         
     }
      
+}
+extension CreateRecipeNewVC{
+    // MARK: - Save for local
+    
+    func didChangeTextFildsForlocalData(_ textField: UITextField){
+        if textField == recipeTitleTF{
+            viewModel.title = textField.text ?? ""
+        }
+    }
+    func didChangeTextviewForlocalData(_ textView: UITextView){
+        if textView == autherNoteTxtV{
+            viewModel.description = textView.text
+        }
+    }
+    // MARK: - Get for local
+    
+    func populateAllIfLocalDataAvailable(){
+       
+        
+        recipeTitleTF.text = viewModel.title
+        autherNoteTxtV.text = viewModel.description
+        self.prepTimeLbl.text  = viewModel.prepTime
+        self.cookTimeLbl.text  = viewModel.cookTime
+        self.FavoritesTxtF.text = viewModel.selectedCookbook
+        SelCookBookId = viewModel.selectedCookbookId
+        self.servingCountLbl.text = viewModel.servings
+        let yield = servingCountLbl.text?
+            .removeSpaces
+            .replace(string: "servings", withString: "") ?? ""
+        self.count = Int(yield) ?? 0
+        if viewModel.isPublic {
+            self.PublicBtnO.isSelected = true
+            self.PrivateBtnO.isSelected = false
+        }else{
+            self.PublicBtnO.isSelected = false
+            self.PrivateBtnO.isSelected = true
+        }
+        guard let img = UIImage(data: viewModel.imageData)else {
+            self.recipeImg.image = UIImage(named: "Camera")
+      return
+  }
+        self.recipeImg.image = img
+        self.recipeImageBase64 =  self.viewModel.encodeImageToBase64(img)
+}
+    
+    
 }

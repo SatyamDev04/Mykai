@@ -9,6 +9,7 @@ import UIKit
 import DropDown
 import Alamofire
 import SDWebImage
+import SwiftyJSON
 
 struct CookBooksModle {
     var name: String
@@ -33,6 +34,7 @@ class CookBooksVC: UIViewController {
     
     
     var CelldropDownData = [DropDownModule(name: "Remove Recipe", image: "Group 1171276393"),DropDownModule(name: "Move Recipe", image: "Group 1171275890")]
+    var editCelldropDownData = [DropDownModule(name: "Remove Recipe", image: "Group 1171276393"),DropDownModule(name: "Remove Recipe", image: "Group 1171276393"),DropDownModule(name: "Move Recipe", image: "Group 1171275890")]
     
     let dropDown = DropDown()
     let CelldropDown = DropDown()
@@ -45,7 +47,7 @@ class CookBooksVC: UIViewController {
     
     
     var favCookBookDataArr = [Datum]()
-    
+    var uiModels: [RecipeURL] = []
     var selID = ""
     var uri = ""
     
@@ -236,7 +238,12 @@ extension CookBooksVC: UICollectionViewDelegate, UICollectionViewDataSource ,UIC
         }
     
     @objc func OptnsBtnTapped(sender: UIButton){
-        dropDown.dataSource = self.CelldropDownData.map { $0.name }
+        if favCookBookDataArr[sender.tag].is_created ?? false {
+            dropDown.dataSource = [DropDownModule(name: "Remove Recipe", image: "Group 1171276393"),DropDownModule(name: "Edit Recipe", image: "Group 1171276393"),DropDownModule(name: "Move Recipe", image: "Group 1171275890")].map { $0.name }
+        }else{
+            dropDown.dataSource = self.CelldropDownData.map { $0.name }
+        }
+       
           dropDown.anchorView = sender
           
           // Add trailing space (adjust x for horizontal offset)
@@ -257,27 +264,54 @@ extension CookBooksVC: UICollectionViewDelegate, UICollectionViewDataSource ,UIC
 
           // Use custom cell configuration
           dropDown.cellNib = UINib(nibName: "CustomDropDownCell", bundle: nil)
-          dropDown.customCellConfiguration = { [weak self] (index: Index, item: String, cell: DropDownCell) in
+          dropDown.customCellConfiguration = { [weak self] (index: Int, item: String, cell: DropDownCell) in
               guard let cell = cell as? CustomDropDownCell else { return }
               guard let self = self else { return }
-              let img = self.CelldropDownData[index].image
-              cell.logoImageView.image = UIImage(named: img)
-          }
-          
-          // Handle selection
-          dropDown.selectionAction = { [weak self] (index: Int, item: String) in
-              guard let self = self else { return }
-              print(index)
-              if index == 0 {
-                  self.RemoveBgV.isHidden = false
-                  self.uri = favCookBookDataArr[sender.tag].uri ?? ""
-                  self.selID = "\(favCookBookDataArr[sender.tag].id ?? 0)"
-                  self.SelIndex = sender.tag
+              if favCookBookDataArr[sender.tag].is_created ?? false {
+                  let img = self.editCelldropDownData[index].image
+                  cell.logoImageView.image = UIImage(named: img)
               }else{
-                  self.MoveBgV.isHidden = false
+                  
+                  let img = self.CelldropDownData[index].image
+                  cell.logoImageView.image = UIImage(named: img)
               }
           }
           
+          // Handle selection
+        dropDown.selectionAction = { [weak self] (index: Int, item: String) in
+            guard let self = self else { return }
+            print(index)
+            if favCookBookDataArr[sender.tag].is_created ?? false {
+                if index == 0 {
+                    self.RemoveBgV.isHidden = false
+                    self.uri = favCookBookDataArr[sender.tag].uri ?? ""
+                    self.selID = "\(favCookBookDataArr[sender.tag].id ?? 0)"
+                    self.SelIndex = sender.tag
+                    
+                } else if index == 1 {
+                    let data = uiModels[sender.tag]
+                 
+                    let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+                    let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeNewVC") as! CreateRecipeNewVC
+                    vc.RecipeImportedData = data
+                    vc.comefrom = "cookbook"
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }else{
+                    self.MoveBgV.isHidden = false
+                }
+            }else{
+                
+                if index == 0 {
+                    self.RemoveBgV.isHidden = false
+                    self.uri = favCookBookDataArr[sender.tag].uri ?? ""
+                    self.selID = "\(favCookBookDataArr[sender.tag].id ?? 0)"
+                    self.SelIndex = sender.tag
+                    
+                }else{
+                    self.MoveBgV.isHidden = false
+                }
+            }
+        }
           dropDown.show()
 
     }
@@ -294,7 +328,7 @@ extension CookBooksVC: UICollectionViewDelegate, UICollectionViewDataSource ,UIC
         
         let mealType = self.favCookBookDataArr[sender.tag].data?.recipe?.mealType?.first ?? ""
 
-        let Type = mealType.components(separatedBy: "/").first ?? ""
+        let Type = mealType?.components(separatedBy: "/").first ?? ""
         self.Api_To_AddToBasket_Recipe(uri: uri, type: Type)
         }
     
@@ -522,8 +556,11 @@ extension CookBooksVC {
             
             do{
                 let d = try JSONDecoder().decode(CookBookTypeModel.self, from: data)
+                
+                self.handleRecipeResponse(json: json)
+                
                 if d.success == true {
-
+                  
                     self.favCookBookDataArr.removeAll()
                     self.favCookBookDataArr = d.data ?? []
                     if self.favCookBookDataArr.count == 0 {
@@ -542,7 +579,43 @@ extension CookBooksVC {
             }
         })
     }
-    
+    private func handleRecipeResponse(json: JSON) {
+
+        guard let root = json.dictionaryObject else {
+              print("❌ Root is not dictionary")
+              return
+          }
+
+          guard let dataArray = root["data"] as? [[String: Any]] else {
+              print("❌ data is not array")
+              return
+          }
+
+     
+
+        for item in dataArray {
+
+            guard
+                let dataDict = item["data"] as? [String: Any],
+                let recipeDict = dataDict["recipe"] as? [String: Any]
+            else {
+                continue
+            }
+
+            // Convert recipe dictionary to Data
+            do {
+                let recipeData = try JSONSerialization.data(withJSONObject: recipeDict)
+                let recipe = try JSONDecoder().decode(RecipeURL.self, from: recipeData)
+           
+                uiModels.append(recipe)
+         
+            } catch {
+                print("❌ Recipe decode failed:", error)
+            }
+        }
+
+        
+    }
     func Api_To_RemoveFavMeal(){
         var params = [String: Any]()
  

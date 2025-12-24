@@ -27,7 +27,6 @@ class CreateRecipeVC: UIViewController, UITextFieldDelegate, UITextViewDelegate{
     
     
     @IBOutlet weak var Img: UIImageView!
-    
     @IBOutlet weak var RecipeTitleBgV: UIView!
     @IBOutlet weak var RecipeTitleTxtF: UITextField!
     @IBOutlet weak var ServingCountLbl: UILabel!
@@ -222,15 +221,6 @@ class CreateRecipeVC: UIViewController, UITextFieldDelegate, UITextViewDelegate{
  
     
     
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//        if self.RecipeTitleTxtF.text! != ""{
-//            self.RecipeTitleBgV.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.9725490196, blue: 0.9450980392, alpha: 1)
-//            self.RecipeTitleBgV.borderColor = #colorLiteral(red: 0.9960784314, green: 0.6235294118, blue: 0.2705882353, alpha: 0.8)
-//        }else{
-//            self.RecipeTitleBgV.backgroundColor = #colorLiteral(red: 0.968627451, green: 0.968627451, blue: 0.968627451, alpha: 1)
-//            self.RecipeTitleBgV.borderColor = #colorLiteral(red: 0.8823529412, green: 0.8823529412, blue: 0.8823529412, alpha: 1)
-//        }
-//    }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         if(NotesTxtV.text == "Add your notes about recipe") {

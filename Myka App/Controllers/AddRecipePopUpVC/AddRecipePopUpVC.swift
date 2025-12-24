@@ -312,7 +312,7 @@ extension AddRecipePopUpVC{
                     
                     let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
                     let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeNewVC") as! CreateRecipeNewVC
-                    vc.RecipeImportedData = list?.first
+                    vc.RecipeImportedData = list?.first?.recipe
                     self.navigationController?.pushViewController(vc, animated: true)
                     
                 }else{
