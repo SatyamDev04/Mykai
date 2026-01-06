@@ -1,13 +1,13 @@
 //
 //  OnBoardingApiModelClass.swift
 //  Myka App
-//
 //  Created by YES IT Labs on 24/12/24.
 //
 
 import Foundation
   
 struct OnboardingSelectedDataModelClass: Codable {
+    
     var Username: String = ""
     var UserGender: String = ""
     var Cookingfortype: String = ""

@@ -51,7 +51,7 @@ class SpendingonGroceriesVC: UIViewController, UITextFieldDelegate {
             self.NextbtnStackV.isHidden = true
             self.UpdateBtnO.isHidden = false
         }
-        
+        restoreDraftSpending()
         self.WeekBgV.isHidden = true
         self.MonthlyBgV.isHidden = true
         
@@ -252,9 +252,7 @@ class SpendingonGroceriesVC: UIViewController, UITextFieldDelegate {
                 return
             }
              
-    //        if self.type == "MySelf"{
-            StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata[0].SpendingOnGroceries.Amount = self.amountTxtF.text ?? ""
-            StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata[0].SpendingOnGroceries.duration = self.Duration
+            saveDraftSpending()
             
             let storyboard = UIStoryboard(name: "CookingForMySelf", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "EatingOutVC") as! EatingOutVC
@@ -265,6 +263,49 @@ class SpendingonGroceriesVC: UIViewController, UITextFieldDelegate {
     
     @IBAction func UpdateBtn(_ sender: UIButton) {
         self.Api_To_UpdatePrefrence()
+    }
+    
+    // MARK: - Draft Save
+    private func saveDraftSpending() {
+        let state = StateMangerModelClass.shared
+
+         state.ensureMySelfDraftExists()
+
+        state.onboardingSelectedData.MySelfSeldata[0].SpendingOnGroceries.Amount =
+            amountTxtF.text ?? ""
+
+        state.onboardingSelectedData.MySelfSeldata[0].SpendingOnGroceries.duration =
+            Duration
+    }
+    // MARK: - Draft Restore
+    private func restoreDraftSpending() {
+        let state = StateMangerModelClass.shared
+
+        guard
+            !state.onboardingSelectedData.MySelfSeldata.isEmpty
+        else { return }
+
+        let saved = state.onboardingSelectedData.MySelfSeldata[0].SpendingOnGroceries
+
+        // Restore amount
+        if !saved.Amount.isEmpty {
+            amountTxtF.text = saved.Amount
+        }
+
+        // Restore duration
+        if saved.duration == "Weekly" {
+            Duration = "Weekly"
+            DurationTxtF.text = "Weekly"
+        } else if saved.duration == "Monthly" {
+            Duration = "Monthly"
+            DurationTxtF.text = "Monthly"
+        }
+
+        // Enable button if valid
+        if !saved.Amount.isEmpty && !saved.duration.isEmpty {
+            NextBtnO.backgroundColor = #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)
+            NextBtnO.isUserInteractionEnabled = true
+        }
     }
     }
 

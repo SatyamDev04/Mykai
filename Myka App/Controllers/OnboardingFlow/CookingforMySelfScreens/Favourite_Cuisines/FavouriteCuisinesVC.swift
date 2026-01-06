@@ -16,9 +16,7 @@ class FavouriteCuisinesVC: UIViewController {
     @IBOutlet weak var ProgressLbl: UILabel!
     @IBOutlet weak var TitleLbl: UILabel!
     @IBOutlet weak var SubTitleLbl: UILabel!
-    
     @IBOutlet weak var NextBtnO: UIButton!
-    
     @IBOutlet weak var NextbtnStackV: UIStackView!
     @IBOutlet weak var UpdateBtnO: UIButton!
     
@@ -27,7 +25,7 @@ class FavouriteCuisinesVC: UIViewController {
     
     var FavouriteCuisinesArr = [ModelClass]()
 
-        var ArrData = [BodyGoalsModel]()
+    var ArrData = [BodyGoalsModel]()
     var ArrData1 = [BodyGoalsModel]()
         
         override func viewDidLoad() {
@@ -241,13 +239,48 @@ class FavouriteCuisinesVC: UIViewController {
                 self.TblV.reloadData()
             }
             
-            StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata[0].FavCuisines = FavCuisinesArr
+            saveDraftFavouriteCuisines()
             
             TblV.reloadData()
         }
         
         func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
             return 60
+        }
+        
+        // MARK: - Draft Restore
+        private func restoreDraftFavouriteCuisines() {
+            guard
+                comesfrom == "",
+                let saved = StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata.first
+            else { return }
+
+            let savedIds = saved.FavCuisines
+            guard !savedIds.isEmpty else { return }
+
+            for index in 0..<ArrData.count {
+                let idStr = "\(ArrData[index].id ?? -1)"
+                ArrData[index].isSelected = savedIds.contains(idStr)
+            }
+
+            NextBtnO.setBackgroundImage(UIImage(named: "Button"), for: .normal)
+            NextBtnO.isUserInteractionEnabled = true
+            TblV.reloadData()
+        }
+
+        // MARK: - Draft Save
+        private func saveDraftFavouriteCuisines() {
+            var selectedIds = [String]()
+
+            for item in ArrData where item.isSelected {
+                if let id = item.id {
+                    selectedIds.append("\(id)")
+                }
+            }
+
+            guard !selectedIds.isEmpty else { return }
+
+            StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata[0].FavCuisines = selectedIds
         }
     }
 
@@ -303,7 +336,7 @@ extension FavouriteCuisinesVC {
                 self.ArrData.append(contentsOf: [BodyGoalsModel(Name: "More", id: nil, isSelected: false)])
                 
                 self.TblV.reloadData()
-               
+                self.restoreDraftFavouriteCuisines()
             }else{
                 let responseMessage = dictData["message"] as! String
                 self.showToast(responseMessage)

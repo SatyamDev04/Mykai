@@ -1,7 +1,6 @@
 //
 //  LoginVC.swift
 //  Myka App
-//
 //  Created by YES IT Labs on 02/12/24.
 //
 
@@ -18,19 +17,14 @@ import SwiftyJSON
 class LoginVC: UIViewController {
 
     @IBOutlet weak var Email_PhoneTxt: UITextField!
-    
     @IBOutlet weak var PassTxt: UITextField!
-    
     @IBOutlet weak var PassHideShowBtnO: UIButton!
-    
     @IBOutlet weak var RememberMeBtn: UIButton!
     
     let appleSignIn = HSAppleSignIn()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,7 +44,7 @@ class LoginVC: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
-    //invisible, eye (img name).
+   
     @IBAction func PassHideShowBtn(_ sender: UIButton) {
         if self.PassHideShowBtnO.isSelected {
             self.PassHideShowBtnO.isSelected = false
@@ -87,11 +81,9 @@ class LoginVC: UIViewController {
     @IBAction func GoogleLogiinBtn(_ sender: UIButton) {
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
         
-        // Create Google Sign In configuration object.
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
         
-        // Start the sign in flow!
         GIDSignIn.sharedInstance.signIn(withPresenting: self) { result, error in
             
             guard error == nil else {

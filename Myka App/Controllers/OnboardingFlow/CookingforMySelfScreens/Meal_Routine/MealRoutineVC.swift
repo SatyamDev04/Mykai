@@ -216,13 +216,54 @@ class MealRoutineVC: UIViewController {
                 }
             }
             
-            StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata[0].MealRoutine = SelMealRoutineArr
+            saveDraftMealRoutine()
             
             TblV.reloadData()
         }
         
         func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
             return 60
+        }
+        
+        // MARK: - Draft Restore
+        private func restoreDraftMealRoutine() {
+            guard
+                comesfrom == "",
+                let saved = StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata.first
+            else { return }
+
+            let savedIds = saved.MealRoutine
+            guard !savedIds.isEmpty else { return }
+
+            for index in 0..<ArrData.count {
+                let idStr = "\(ArrData[index].id ?? -1)"
+                ArrData[index].isSelected = savedIds.contains(idStr)
+            }
+
+            // Handle "Select all"
+            if let selectAllIndex = ArrData.firstIndex(where: { $0.Name == "Select all" }),
+               ArrData.filter({ $0.Name != "Select all" }).allSatisfy({ $0.isSelected }) {
+                ArrData[selectAllIndex].isSelected = true
+            }
+
+            NextBtnO.setBackgroundImage(UIImage(named: "Button"), for: .normal)
+            NextBtnO.isUserInteractionEnabled = true
+            TblV.reloadData()
+        }
+
+        // MARK: - Draft Save
+        private func saveDraftMealRoutine() {
+            var selectedIds = [String]()
+
+            for item in ArrData where item.isSelected && item.Name != "Select all" {
+                if let id = item.id {
+                    selectedIds.append("\(id)")
+                }
+            }
+
+            guard !selectedIds.isEmpty else { return }
+
+            StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata[0].MealRoutine = selectedIds
         }
     }
 
@@ -270,7 +311,7 @@ extension MealRoutineVC {
                 self.ArrData.insert(contentsOf: [BodyGoalsModel(Name: "Select all", id: nil, isSelected: false)], at: 0)
                 
                 self.TblV.reloadData()
-               
+                self.restoreDraftMealRoutine()
             }else{
                 let responseMessage = dictData["message"] as! String
                 self.showToast(responseMessage)

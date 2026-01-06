@@ -201,7 +201,8 @@ class ReasonsforTakeawayVC: UIViewController {
             }
             
             if ArrData[indexPath.row].Name == "Add other" {
-                StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata[0].Takeway = Takeway
+//                StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata[0].Takeway = Takeway
+                saveDraftTakeawayReason()
             }else{
                 StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata[0].addOtherTxt = ""
                 StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata[0].Takeway = Takeway
@@ -239,6 +240,48 @@ extension ReasonsforTakeawayVC:AddOtherTxtDelegate {
                 TblV.reloadData()
             }
         }
+    }
+    
+    // MARK: - Draft Restore
+    private func restoreDraftTakeawayReason() {
+        let state = StateMangerModelClass.shared
+
+        guard
+            !state.onboardingSelectedData.MySelfSeldata.isEmpty
+        else { return }
+
+        let savedTakeway = state.onboardingSelectedData.MySelfSeldata[0].Takeway
+        let savedOtherTxt = state.onboardingSelectedData.MySelfSeldata[0].addOtherTxt
+
+        guard !savedTakeway.isEmpty else { return }
+
+        for index in 0..<ArrData.count {
+            ArrData[index].isSelected = "\(ArrData[index].id ?? 0)" == savedTakeway
+        }
+
+        // Restore Add Other text if applicable
+        if !savedOtherTxt.isEmpty {
+            state.onboardingSelectedData.MySelfSeldata[0].addOtherTxt = savedOtherTxt
+        }
+
+        NextBtnO.setBackgroundImage(UIImage(named: "Button"), for: .normal)
+        NextBtnO.isUserInteractionEnabled = true
+        TblV.reloadData()
+    }
+    
+    // MARK: - Draft Save
+    private func saveDraftTakeawayReason() {
+        let state = StateMangerModelClass.shared
+
+        // Ensure draft exists
+        state.ensureMySelfDraftExists()
+
+        var selectedValue = ""
+        for item in ArrData where item.isSelected {
+            selectedValue = "\(item.id ?? 0)"
+        }
+
+        state.onboardingSelectedData.MySelfSeldata[0].Takeway = selectedValue
     }
 }
 
@@ -284,7 +327,7 @@ extension ReasonsforTakeawayVC {
                 }
                 
                 self.TblV.reloadData()
-               
+                self.restoreDraftTakeawayReason()
             }else{
                 let responseMessage = dictData["message"] as! String
                 self.showToast(responseMessage)

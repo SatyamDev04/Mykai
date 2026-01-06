@@ -18,29 +18,20 @@ struct BodyGoalsModel {
 class BodyGoalsVC: UIViewController {
 
     @IBOutlet weak var progressView: UIProgressView!
-    
     @IBOutlet weak var TblV: UITableView!
-    
     @IBOutlet weak var TitleLbl: UILabel!
-    
     @IBOutlet weak var SubTitleLbl: UILabel!
-    
     @IBOutlet weak var ProgressLbl: UILabel!
-
     @IBOutlet weak var NextBtnO: UIButton!
-    
     @IBOutlet weak var NextbtnStackV: UIStackView!
     @IBOutlet weak var UpdateBtnO: UIButton!
     
     var type = ""
-    
     var comesfrom = ""
-     
-    
     var bodyGoalsArr = [ModelClass]()
     
     
-    var ArrData = [BodyGoalsModel]()//[BodyGoalsModel(Name: "Lose fat", isSelected: false), BodyGoalsModel(Name: "Gain Muscle", isSelected: false), BodyGoalsModel(Name: "Maintain", isSelected: false)]
+    var ArrData = [BodyGoalsModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -116,6 +107,7 @@ class BodyGoalsVC: UIViewController {
     
     
     @IBAction func BackBtn(_ sender: UIButton) {
+        
         if self.type == "MySelf"{
             self.navigationController?.popViewController(animated: true)
         }else{
@@ -167,45 +159,65 @@ extension BodyGoalsVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "BodyGoalTblVCell", for: indexPath) as! BodyGoalTblVCell
+        
         cell.NameLbl.text = ArrData[indexPath.row].Name
+        
         cell.TickImg.image = ArrData[indexPath.row].isSelected ? UIImage(named: "Tick1") : UIImage(named: "")
+        
         cell.selectedBgImg.image = ArrData[indexPath.row].isSelected ? UIImage(named: "YelloBorder") : UIImage(named: "Group 1171276489")
+        
         cell.selectionStyle = .none
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        let Bodygoalselid = ArrData[indexPath.row].id ?? Int()
+      
         for index in 0..<ArrData.count {
             ArrData[index].isSelected = false
         }
-            ArrData[indexPath.row].isSelected = true
+        ArrData[indexPath.row].isSelected = true
         NextBtnO.setBackgroundImage(UIImage(named: "Button"), for: .normal)
         NextBtnO.isUserInteractionEnabled = true
             TblV.reloadData()
         
-        let Bodygoalselid = ArrData[indexPath.row].id ?? Int()
-     
-        StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata.removeAll()
-            
-        StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata.append(
-            MyselfModelClass(
-                bodyGoals: "\(Bodygoalselid)",
-                DietaryPreferences: [],
-                FavCuisines: [],
-                DislikeIngredient: [],
-                AllergensIngredients: [],
-                MealRoutine: [],
-                CookingFrequency: "",
-                SpendingOnGroceries: SpendingOnGroceriesModelClass(Amount: "", duration: ""),
-                EatingOut: "",
-                Takeway: ""
-            )
-        )
+        saveDraftBodyGoal(Bodygoalselid)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
+    }
+    
+   
+    // MARK: - Draft Restore
+    
+    private func restoreDraftBodyGoal() {
+        let state = StateMangerModelClass.shared
+        state.ensureMySelfDraftExists()
+
+        let savedGoal = state.onboardingSelectedData.MySelfSeldata[0].bodyGoals
+
+            if savedGoal.isEmpty {
+                return
+            }
+
+
+        for index in 0..<ArrData.count {
+            ArrData[index].isSelected = "\(ArrData[index].id ?? -1)" == savedGoal
+        }
+
+        NextBtnO.setBackgroundImage(UIImage(named: "Button"), for: .normal)
+        NextBtnO.isUserInteractionEnabled = true
+        TblV.reloadData()
+    }
+
+    // MARK: - Draft Save
+    private func saveDraftBodyGoal(_ selectedId: Int) {
+
+        let state = StateMangerModelClass.shared
+         state.ensureMySelfDraftExists()
+
+        state.onboardingSelectedData.MySelfSeldata[0].bodyGoals = "\(selectedId)"
     }
 }
 
@@ -220,9 +232,7 @@ extension BodyGoalsVC {
         }else{
             params["type"] = "3"
         }
-//        let delegate = AppDelegate.shared
-//        let token = delegate.deviceToken
-//        params["device_token"] = token
+
          
         showIndicator(withTitle: "", and: "")
         
@@ -250,7 +260,7 @@ extension BodyGoalsVC {
                 }
                 
                 self.TblV.reloadData()
-               
+                self.restoreDraftBodyGoal()
             }else{
                 let responseMessage = dictData["message"] as! String
                 self.showToast(responseMessage)
@@ -261,9 +271,8 @@ extension BodyGoalsVC {
 
 extension BodyGoalsVC {
     func Api_To_GetPrefrenceBodyGoals(){
-        var params = [String: Any]()
+        let params = [String: Any]()
      
-         
         showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.Getprefrence

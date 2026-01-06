@@ -143,7 +143,7 @@ enum appEndPoints{
     
     static let update_meal = "update-meal"
     static let edit_recipe = "edit-recipe"
-    
+    static let create_order_instacart = "create-order-instacart"
     static let for_filter_search = "for-filter-search"
     
     static let subscription_apple = "subscription/apple"

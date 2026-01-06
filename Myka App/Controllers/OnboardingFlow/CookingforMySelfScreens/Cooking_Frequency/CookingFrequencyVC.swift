@@ -32,6 +32,7 @@ class CookingFrequencyVC: UIViewController {
   
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         if comesfrom == ""{
             self.NextbtnStackV.isHidden = false
             self.UpdateBtnO.isHidden = true
@@ -108,50 +109,7 @@ class CookingFrequencyVC: UIViewController {
             self.navigationController?.popViewController(animated: false)
         }
         
-//        @IBAction func SkipBtn(_ sender: UIButton) {
-//            let storyboard = UIStoryboard(name: "CookingForMySelf", bundle: nil)
-//            let vc = storyboard.instantiateViewController(withIdentifier: "SkipPopupVC") as! SkipPopupVC
-//            vc.backAction = {
-//                if self.type == "MySelf"{
-//                    let storyboard = UIStoryboard(name: "CookingForMySelf", bundle: nil)
-//                    let vc = storyboard.instantiateViewController(withIdentifier: "CookingScheduleVC") as! CookingScheduleVC
-//                    vc.type = self.type
-//                    self.navigationController?.pushViewController(vc, animated: false)
-//                }else if self.type == "Partner"{
-//                    let storyboard = UIStoryboard(name: "CookingForMySelf", bundle: nil)
-//                    let vc = storyboard.instantiateViewController(withIdentifier: "SpendingonGroceriesVC") as! SpendingonGroceriesVC
-//                    vc.type = self.type
-//                    self.navigationController?.pushViewController(vc, animated: false)
-//                }else{
-//                    let storyboard = UIStoryboard(name: "CookingForMySelf", bundle: nil)
-//                    let vc = storyboard.instantiateViewController(withIdentifier: "CookingScheduleVC") as! CookingScheduleVC
-//                    vc.type = self.type
-//                    self.navigationController?.pushViewController(vc, animated: false)
-//                }
-//            }
-//             
-//            vc.modalPresentationStyle = .overCurrentContext
-//            self.present(vc, animated: false)
-//        }
-//        
-//        @IBAction func NextBtn(_ sender: UIButton) {
-//            if self.type == "MySelf"{
-//                let storyboard = UIStoryboard(name: "CookingForMySelf", bundle: nil)
-//                let vc = storyboard.instantiateViewController(withIdentifier: "CookingScheduleVC") as! CookingScheduleVC
-//                vc.type = self.type
-//                self.navigationController?.pushViewController(vc, animated: false)
-//            }else if self.type == "Partner"{
-//                let storyboard = UIStoryboard(name: "CookingForMySelf", bundle: nil)
-//                let vc = storyboard.instantiateViewController(withIdentifier: "SpendingonGroceriesVC") as! SpendingonGroceriesVC
-//                vc.type = self.type
-//                self.navigationController?.pushViewController(vc, animated: false)
-//            }else{
-//                let storyboard = UIStoryboard(name: "CookingForMySelf", bundle: nil)
-//                let vc = storyboard.instantiateViewController(withIdentifier: "CookingScheduleVC") as! CookingScheduleVC
-//                vc.type = self.type
-//                self.navigationController?.pushViewController(vc, animated: false)
-//            }
-//        }
+
     
     @IBAction func SkipBtn(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "CookingForMySelf", bundle: nil)
@@ -160,7 +118,7 @@ class CookingFrequencyVC: UIViewController {
             for index in 0..<self.ArrData.count {
                 self.ArrData[index].isSelected = false
                 }
-            StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata[0].CookingFrequency.removeAll()
+           // StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata[0].CookingFrequency.removeAll()
             
             self.NextBtnO.setBackgroundImage(UIImage(named: "ButtonGray"), for: .normal)
             self.NextBtnO.isUserInteractionEnabled = false
@@ -247,13 +205,35 @@ class CookingFrequencyVC: UIViewController {
             }
              
             self.TblV.reloadData()
-            StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata[0].CookingFrequency = SelCookingFrequency
+            saveDraftCookingFrequency(SelCookingFrequency)
            
             TblV.reloadData()
         }
         
         func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
             return 60
+        }
+        // MARK: - Draft Restore
+        private func restoreDraftCookingFrequency() {
+            let state = StateMangerModelClass.shared
+            state.ensureMySelfDraftExists()
+
+            let savedValue = state.onboardingSelectedData.MySelfSeldata[0].CookingFrequency
+            if savedValue.isEmpty { return }
+
+            for index in 0..<ArrData.count {
+                ArrData[index].isSelected = "\(ArrData[index].id ?? -1)" == savedValue
+            }
+
+            NextBtnO.setBackgroundImage(UIImage(named: "Button"), for: .normal)
+            NextBtnO.isUserInteractionEnabled = true
+            TblV.reloadData()
+        }
+        // MARK: - Draft Save
+        private func saveDraftCookingFrequency(_ value: String) {
+            let state = StateMangerModelClass.shared
+            state.ensureMySelfDraftExists()
+            state.onboardingSelectedData.MySelfSeldata[0].CookingFrequency = value
         }
     }
 
@@ -299,16 +279,20 @@ extension CookingFrequencyVC {
                 }
                 
                 self.TblV.reloadData()
-               
+                self.restoreDraftCookingFrequency()
             }else{
                 let responseMessage = dictData["message"] as! String
                 self.showToast(responseMessage)
             }
         })
     }
+    
+    // MARK: - Draft Save
+  
 }
 
 extension CookingFrequencyVC {
+    
     func Api_To_GetPrefrenceBodyGoals(){
         var params = [String: Any]()
       

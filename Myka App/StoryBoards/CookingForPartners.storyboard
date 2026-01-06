@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="dE2-jN-aDm">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="dE2-jN-aDm">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -470,10 +470,8 @@
                     <connections>
                         <outlet property="DropImg" destination="qoE-qB-8OX" id="zdb-Kk-IwK"/>
                         <outlet property="FemaleBgV" destination="qZ5-8D-QGa" id="L6S-ah-FiJ"/>
-                        <outlet property="FemaleBtnO" destination="5BP-8m-wAG" id="g40-31-7FG"/>
                         <outlet property="GenderDropBtnO" destination="lFj-eX-3cP" id="loU-bT-SeZ"/>
                         <outlet property="MaleBgV" destination="bHk-CX-mEr" id="5fQ-Mh-unL"/>
-                        <outlet property="MaleBtnO" destination="m61-Ro-6sN" id="Iee-C2-AeD"/>
                         <outlet property="NextbtnStackV" destination="OYC-B7-wP2" id="S7K-8q-9Ej"/>
                         <outlet property="PartnersAgeTxtF" destination="njI-xT-5lJ" id="GMZ-2K-SQu"/>
                         <outlet property="PartnersNameTxtF" destination="G8G-VD-LGu" id="MoX-db-mFe"/>

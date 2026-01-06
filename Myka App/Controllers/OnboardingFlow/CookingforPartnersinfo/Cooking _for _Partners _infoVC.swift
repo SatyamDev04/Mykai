@@ -1,7 +1,6 @@
 //
 //  Cooking _for _Partners _infoVC.swift
 //  Myka App
-//
 //  Created by YES IT Labs on 29/11/24.
 //
 
@@ -9,11 +8,11 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 
-class Cooking__for__Partners__infoVC: UIViewController {
-    
+
+class Cooking__for__Partners__infoVC: UIViewController, UITextFieldDelegate {
+
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var ProgressLbl: UILabel!
-    
     @IBOutlet weak var PartnersNameTxtF: UITextField!
     @IBOutlet weak var PartnersAgeTxtF: UITextField!
     @IBOutlet weak var SelectGenderTxtF: UITextField!
@@ -21,126 +20,154 @@ class Cooking__for__Partners__infoVC: UIViewController {
     @IBOutlet weak var DropImg: UIImageView!
     @IBOutlet weak var MaleBgV: UIView!
     @IBOutlet weak var FemaleBgV: UIView!
-    @IBOutlet weak var MaleBtnO: UIButton!
-    @IBOutlet weak var FemaleBtnO: UIButton!
-    
+
     @IBOutlet weak var NextbtnStackV: UIStackView!
     @IBOutlet weak var UpdateBtnO: UIButton!
-    
+
     var type = ""
-    
     var comesfrom = ""
-    
+
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        if comesfrom == ""{
-            self.NextbtnStackV.isHidden = false
-            self.UpdateBtnO.isHidden = true
-        }else{
-            self.NextbtnStackV.isHidden = true
-            self.UpdateBtnO.isHidden = false
-        }
-        
-        self.ProgressLbl.text = "1/11"
-        let progressVw = Float(1) / Float(11)
-        progressView.progress = Float(progressVw)
-        
-        self.MaleBgV.isHidden = true
-        self.FemaleBgV.isHidden = true
-        self.DropImg.image = UIImage(named: "DropDown")
-        
-        if comesfrom != ""{
-          self.Api_To_GetPrefrenceBodyGoals()
+
+        setupUI()
+        restoreDraft()
+
+        if comesfrom != "" {
+            Api_To_GetPrefrenceBodyGoals()
         }
     }
-    
-    @IBAction func BackBtn(_ sender: UIButton) {
-        self.navigationController?.popViewController(animated: false)
+
+    // MARK: - Setup
+    private func setupUI() {
+
+        PartnersNameTxtF.delegate = self
+        PartnersAgeTxtF.delegate = self
+
+        ProgressLbl.text = "1/11"
+        progressView.progress = Float(1) / Float(11)
+
+        MaleBgV.isHidden = true
+        FemaleBgV.isHidden = true
+        DropImg.image = UIImage(named: "DropDown")
+
+        NextbtnStackV.isHidden = comesfrom != ""
+        UpdateBtnO.isHidden = comesfrom == ""
     }
-    
+
+    // MARK: - Restore Draft
+    private func restoreDraft() {
+        let draft = StateMangerModelClass.shared.onboardingSelectedData.Partnersname
+
+        PartnersNameTxtF.text = draft.Name
+        PartnersAgeTxtF.text = draft.Age
+        SelectGenderTxtF.text = draft.Gender
+    }
+
+    // MARK: - Save Draft
+    private func saveDraft() {
+        var partner = StateMangerModelClass.shared.onboardingSelectedData.Partnersname
+        partner.Name = PartnersNameTxtF.text ?? ""
+        partner.Age = PartnersAgeTxtF.text ?? ""
+        partner.Gender = SelectGenderTxtF.text ?? ""
+
+        StateMangerModelClass.shared.onboardingSelectedData.Partnersname = partner
+    }
+
+    // MARK: - TextField Delegate
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+
+        let current = textField.text ?? ""
+        let updated = (current as NSString).replacingCharacters(in: range, with: string)
+        textField.text = updated
+
+        saveDraft()
+        return false
+    }
+
+    // MARK: - Gender Dropdown
     @IBAction func GenderBtn(_ sender: UIButton) {
-        if GenderDropBtnO.isSelected {
-            GenderDropBtnO.isSelected = false
-            self.MaleBgV.isHidden = true
-            self.FemaleBgV.isHidden = true
-            self.DropImg.image = UIImage(named: "DropDown")
-        }else{
-            self.GenderDropBtnO.isSelected = true
-            self.MaleBgV.isHidden = false
-            self.FemaleBgV.isHidden = false
-            self.DropImg.image = UIImage(named: "DropUp")
-        }
+        GenderDropBtnO.isSelected.toggle()
+        let show = GenderDropBtnO.isSelected
+
+        MaleBgV.isHidden = !show
+        FemaleBgV.isHidden = !show
+        DropImg.image = UIImage(named: show ? "DropUp" : "DropDown")
     }
-    
+
     @IBAction func MaleBtn(_ sender: UIButton) {
-        self.GenderDropBtnO.isSelected = false
-        self.MaleBgV.isHidden = true
-        self.FemaleBgV.isHidden = true
-        self.DropImg.image = UIImage(named: "DropDown")
-        self.SelectGenderTxtF.text = "Male"
+        selectGender("Male")
     }
-    
+
     @IBAction func FemaleBtn(_ sender: UIButton) {
-        self.GenderDropBtnO.isSelected = false
-        self.MaleBgV.isHidden = true
-        self.FemaleBgV.isHidden = true
-        self.DropImg.image = UIImage(named: "DropDown")
-        self.SelectGenderTxtF.text = "Female"
+        selectGender("Female")
     }
-    
+
+    private func selectGender(_ gender: String) {
+        GenderDropBtnO.isSelected = false
+        MaleBgV.isHidden = true
+        FemaleBgV.isHidden = true
+        DropImg.image = UIImage(named: "DropDown")
+
+        SelectGenderTxtF.text = gender
+        saveDraft()
+    }
+
+    // MARK: - Navigation
+    @IBAction func BackBtn(_ sender: UIButton) {
+        navigationController?.popViewController(animated: false)
+    }
+
     @IBAction func SkipBtn(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "CookingForMySelf", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "SkipPopupVC") as! SkipPopupVC
         vc.backAction = {
-                let storyboard = UIStoryboard(name: "CookingForMySelf", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "BodyGoalsVC") as! BodyGoalsVC
             vc.type = self.type
-                self.navigationController?.pushViewController(vc, animated: false)
+            self.navigationController?.pushViewController(vc, animated: false)
         }
         vc.modalPresentationStyle = .overCurrentContext
-        self.present(vc, animated: false)
+        present(vc, animated: false)
     }
-    
+
     @IBAction func NextBtn(_ sender: UIButton) {
-        guard self.PartnersNameTxtF.text != "" else {
+
+        guard PartnersNameTxtF.text?.isEmpty == false else {
             AlertControllerOnr(title: "", message: "Enter partner's name first.")
             return
         }
-        
-        guard self.PartnersNameTxtF.text! != "" else{
+
+        guard PartnersAgeTxtF.text?.isEmpty == false else {
             AlertControllerOnr(title: "", message: "Enter partner's age first.")
             return
         }
-        
-        guard self.SelectGenderTxtF.text! != "" else{
+
+        guard SelectGenderTxtF.text?.isEmpty == false else {
             AlertControllerOnr(title: "", message: "Select gender first.")
             return
         }
-        
-        StateMangerModelClass.shared.onboardingSelectedData.Partnersname.Name = self.PartnersNameTxtF.text!
-        StateMangerModelClass.shared.onboardingSelectedData.Partnersname.Age = self.PartnersAgeTxtF.text!
-        
-        if self.SelectGenderTxtF.text! != "" {
-            StateMangerModelClass.shared.onboardingSelectedData.Partnersname.Gender = self.SelectGenderTxtF.text!
-        }
-        
-        
-        let storyboard = UIStoryboard(name: "CookingForMySelf", bundle: nil)
-    let vc = storyboard.instantiateViewController(withIdentifier: "BodyGoalsVC") as! BodyGoalsVC
-    vc.type = self.type
-        self.navigationController?.pushViewController(vc, animated: false)
-    }
+
     
+        saveDraft()
+
+        let storyboard = UIStoryboard(name: "CookingForMySelf", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "BodyGoalsVC") as! BodyGoalsVC
+        vc.type = type
+        navigationController?.pushViewController(vc, animated: false)
+    }
+
     @IBAction func UpdateBtn(_ sender: UIButton) {
-        self.Api_To_UpdatePrefrence()
+        Api_To_UpdatePrefrence()
     }
 }
 
 extension Cooking__for__Partners__infoVC {
     func Api_To_GetPrefrenceBodyGoals(){
-        var params = [String: Any]()
-     
-         
+        
+        let params = [String: Any]()
         showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.Getprefrence

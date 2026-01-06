@@ -179,15 +179,8 @@ extension EatingOutVC: UITableViewDelegate, UITableViewDataSource {
         NextBtnO.isUserInteractionEnabled = true
             TblV.reloadData()
         
-        var Eatout = String()
-        
-        for i in 0..<ArrData.count {
-            if ArrData[i].isSelected {
-                Eatout = ("\(ArrData[i].id ?? Int())")
-            }
-        }
-          
-        StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata[0].EatingOut = Eatout
+     
+        saveDraftEatingOut()
         
     }
     
@@ -197,6 +190,7 @@ extension EatingOutVC: UITableViewDelegate, UITableViewDataSource {
 }
  
 extension EatingOutVC {
+    
     func Api_To_GetEatingOut(){
         var params = [String: Any]()
         if self.type == "MySelf"{
@@ -207,9 +201,7 @@ extension EatingOutVC {
         }else{
             params["type"] = "3"
         }
-//        let delegate = AppDelegate.shared
-//        let token = delegate.deviceToken
-//        params["device_token"] = token
+
          
         showIndicator(withTitle: "", and: "")
         
@@ -237,12 +229,46 @@ extension EatingOutVC {
                 }
                 
                 self.TblV.reloadData()
-               
+                self.restoreDraftEatingOut()
             }else{
                 let responseMessage = dictData["message"] as! String
                 self.showToast(responseMessage)
             }
         })
+    }
+    
+    // MARK: - Draft Restore
+    private func restoreDraftEatingOut() {
+        let state = StateMangerModelClass.shared
+
+        guard
+            !state.onboardingSelectedData.MySelfSeldata.isEmpty
+        else { return }
+
+        let savedValue = state.onboardingSelectedData.MySelfSeldata[0].EatingOut
+        guard !savedValue.isEmpty else { return }
+
+        for index in 0..<ArrData.count {
+            ArrData[index].isSelected = "\(ArrData[index].id ?? 0)" == savedValue
+        }
+
+        NextBtnO.setBackgroundImage(UIImage(named: "Button"), for: .normal)
+        NextBtnO.isUserInteractionEnabled = true
+        TblV.reloadData()
+    }
+    
+    // MARK: - Draft Save
+    private func saveDraftEatingOut() {
+        let state = StateMangerModelClass.shared
+
+        // Ensure draft exists
+         state.ensureMySelfDraftExists()
+        var selectedValue = ""
+        for item in ArrData where item.isSelected {
+            selectedValue = "\(item.id ?? 0)"
+        }
+
+        state.onboardingSelectedData.MySelfSeldata[0].EatingOut = selectedValue
     }
 }
 

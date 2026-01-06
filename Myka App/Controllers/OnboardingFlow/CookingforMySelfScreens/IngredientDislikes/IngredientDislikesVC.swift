@@ -287,13 +287,49 @@ class IngredientDislikesVC: UIViewController, UITextFieldDelegate {
                 
             }
             
-            StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata[0].DislikeIngredient = DislikeIngredientArr
+            saveDraftDislikedIngredients()
             
             TblV.reloadData()
         }
         
         func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
             return 60
+        }
+        
+        // MARK: - Draft Restore
+        private func restoreDraftDislikedIngredients() {
+            guard
+                comesfrom == "",
+                let saved = StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata.first
+            else { return }
+
+            let savedIds = saved.DislikeIngredient
+            guard !savedIds.isEmpty else { return }
+
+            for index in 0..<ArrData.count {
+                let idStr = "\(ArrData[index].id ?? -1)"
+                ArrData[index].isSelected = savedIds.contains(idStr)
+            }
+
+            NextBtnO.setBackgroundImage(UIImage(named: "Button"), for: .normal)
+            NextBtnO.isUserInteractionEnabled = true
+            TblV.reloadData()
+        }
+
+        // MARK: - Draft Save
+        
+        private func saveDraftDislikedIngredients() {
+            var selectedIds = [String]()
+
+            for item in ArrData where item.isSelected {
+                if let id = item.id {
+                    selectedIds.append("\(id)")
+                }
+            }
+
+            guard !selectedIds.isEmpty else { return }
+
+            StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata[0].DislikeIngredient = selectedIds
         }
     }
 
@@ -365,7 +401,7 @@ extension IngredientDislikesVC {
                 }
                 
                 self.TblV.reloadData()
-               
+                self.restoreDraftDislikedIngredients()
             }else{
                 let responseMessage = dictData["message"] as! String
                 self.showToast(responseMessage)

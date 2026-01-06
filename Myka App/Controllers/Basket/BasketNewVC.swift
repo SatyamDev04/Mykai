@@ -13,6 +13,7 @@ import DropDown
 import Alamofire
 import SDWebImage
 import CustomBlurEffectView
+import SwiftyJSON
  
 
 class BasketNewVC: UIViewController, UITextFieldDelegate {
@@ -286,29 +287,7 @@ class BasketNewVC: UIViewController, UITextFieldDelegate {
                     
                     self.reverseGeocodeCoordinate(place.coordinate, placeName: "")
                     
-//                    let AddComp = place.addressComponents
-//                    
-//                    if let addressComponents = AddComp {
-//                        self.StreetNo = self.getAddressComponent(for: "street_number", from: addressComponents) ?? ""
-//                        self.StreetName = self.getAddressComponent(for: "route", from: addressComponents) ?? ""
-//                        self.ApartmentNo = self.getAddressComponent(for: "subpremise", from: addressComponents) ?? ""
-//                        self.City = self.getAddressComponent(for: "locality", from: addressComponents) ?? ""
-//                        self.State = self.getAddressComponent(for: "administrative_area_level_1", from: addressComponents) ?? ""
-//                        self.PostCode = self.getAddressComponent(for: "postal_code", from: addressComponents) ?? ""
-//                        self.Address = "\(self.StreetNo) \(self.StreetName), \(self.City), \(self.State), \(self.PostCode)"
-//                        
-//                        self.country = self.getAddressComponent(for: "country", from: addressComponents) ?? ""
-//                        
-//                    } else {
-//                        self.StreetNo = ""
-//                        self.StreetName = ""
-//                        self.ApartmentNo = ""
-//                        self.City = ""
-//                        self.State = ""
-//                        self.PostCode = ""
-//                        self.Address = ""
-//                        self.country = ""
-//                    }
+
                     
                 } else {
                     print("No address found for this place.")
@@ -443,115 +422,21 @@ class BasketNewVC: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func Ingredients_ViewAllBtn(_ sender: UIButton) {
-//        let storyboard = UIStoryboard(name: "Basket", bundle: nil)
-//        let vc = storyboard.instantiateViewController(withIdentifier: "Tesco_MissingIngredientVC") as! Tesco_MissingIngredientVC
-//        vc.hidesBottomBarWhenPushed = true
-//        self.navigationController?.pushViewController(vc, animated: true)
+
     }
     
 }
  
 extension BasketNewVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        if collectionView == SupermarketCollV{
-//            return BasketListArr.stores?.count ?? 0
-//        }else{
+
             return BasketListArr.recipe?.count ?? 0
-//        }
+
        }
        
        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
             
-//         if collectionView == SupermarketCollV{
-//               let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SupermarketCollVCell", for: indexPath) as! SupermarketCollVCell
-//             
-//             if BasketListArr.stores?[indexPath.item].isOpen == true{
-//                 cell.ClosedBgV.isHidden = true
-//             }else{
-//                 cell.ClosedBgV.isHidden = false
-//                 
-//                 let val = BasketListArr.stores?[indexPath.item].operationalHours ?? nil
-//                
-//                 let today = Date()
-//                 let dateFormatter = DateFormatter()
-//                 dateFormatter.dateFormat = "EEEE"
-//                 let CurrentDay = dateFormatter.string(from: today)
-//                  
-//                 var todayHours: String?
-//                 
-//                 switch CurrentDay {
-//                 case "Sunday":
-//                     todayHours = val?.sunday
-//                 case "Monday":
-//                     todayHours = val?.monday
-//                 case "Tuesday":
-//                     todayHours = val?.tuesday
-//                 case "Wednesday":
-//                     todayHours = val?.wednesday
-//                 case "Thursday":
-//                     todayHours = val?.thursday
-//                 case "Friday":
-//                     todayHours = val?.friday
-//                 case "Saturday":
-//                     todayHours = val?.saturday
-//                 default:
-//                     todayHours = nil
-//                 }
-//                  
-//                 
-//                 
-//                 if let hours = todayHours {
-//                        print("Today's operational hours: \(hours)")
-//                     let firstPart = hours.components(separatedBy: " - ").first ?? ""
-//                        cell.ClosedLbl.text = "Closed now\nOpen at \(firstPart)"
-//                    } else {
-//                        print("No operational hours found for \(CurrentDay).")
-//                    }
-//            
-//             }
-//             
-//             let img = BasketListArr.stores?[indexPath.item].image ?? ""
-//             let imgUrl = URL(string: img)
-//             
-//             cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-//             cell.Img.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "No_Image"))
-//             
-//             let priceValue = BasketListArr.stores?[indexPath.item].total ?? 0
-//             let formattedPrice: String
-//             if priceValue == floor(priceValue) {
-//                 // If the value is a whole number, show it as an integer
-//                 formattedPrice = String(format: "%.0f", priceValue)
-//             } else {
-//                 // If the value has decimals, round it to two decimal places
-//                 formattedPrice = String(format: "%.2f", priceValue)
-//             }
-//             
-//             cell.priceLbl.text = "$\(formattedPrice)"
-//             
-//             let Dist = BasketListArr.stores?[indexPath.item].distance ?? ""
-//             let FDist = formatQuantity(Dist)
-//             cell.Mileslbl.text = "\(FDist) miles"
-//             
-//             let isSelected = BasketListArr.stores?[indexPath.item].isSlected ?? 0 // if 1 selected
-//             if isSelected == 1{
-//                 cell.BgV.borderWidth = 2
-//                 cell.BgV.borderColor = #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)
-//             }else{
-//                 cell.BgV.borderWidth = 2
-//                 cell.BgV.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-//             }
-//             
-//             let isMissing = BasketListArr.stores?[indexPath.item].missing ?? 0 // if 0 all item avaialble
-//             if isMissing == 0{
-//                 cell.Namelbl.text = "ALL ITEMS"
-//                 cell.Namelbl.textColor = #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)
-//             }else{
-//                 cell.Namelbl.text = "\(isMissing) ITEMS MISSING"
-//                 cell.Namelbl.textColor = #colorLiteral(red: 1, green: 0.1960784314, blue: 0.1960784314, alpha: 1)
-//             }
-//             
-//               return cell
-//           }else{
+
                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "YouRecipeCollVCell", for: indexPath) as! YouRecipeCollVCell
                cell.Namelbl.text = BasketListArr.recipe?[indexPath.item].data?.recipe?.label ?? ""
                
@@ -573,7 +458,7 @@ extension BasketNewVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
                cell.RemoveBtn.addTarget(self, action: #selector(removeBtnClick(_:)), for: .touchUpInside)
                
                return cell
-//           }
+
        }
     
     @objc func ServCountMinusBtn(_ sender: UIButton) {
@@ -623,35 +508,18 @@ extension BasketNewVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        if collectionView == SupermarketCollV{
 
             for i in 0..<(BasketListArr.stores?.count ?? 0){
                 BasketListArr.stores?[i].isSlected = 0
             }
             BasketListArr.stores?[indexPath.item].isSlected = 1
-//            self.SupermarketCollV.reloadData()
+
             
             let storNme = BasketListArr.stores?[indexPath.item].storeName ?? ""
             let StoreID = BasketListArr.stores?[indexPath.item].storeUUID ?? ""
             
             self.getBasketListDataByMarket(StoreID:StoreID, StoreName:storNme)
-//        }else{
-//            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-//            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailsVC") as! RecipeDetailsVC
-//            vc.uri = BasketListArr.recipe?[indexPath.item].uri ?? ""
-//            
-//            let string = BasketListArr.recipe?[indexPath.row].type ?? ""
-//            if let result = string.components(separatedBy: "/").first {
-//                vc.MealType = result
-//            }
-//            
-//            vc.backAction = {
-//                self.getBasketListData()
-//            }
-//            
-//            vc.hidesBottomBarWhenPushed = true
-//            self.navigationController?.pushViewController(vc, animated: true)
-//        }
+
     }
  
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -691,48 +559,15 @@ extension BasketNewVC: UITableViewDelegate, UITableViewDataSource {
         if tableView == IngredientsTblV{
             let cell = tableView.dequeueReusableCell(withIdentifier: "IngridenttTblVCell", for: indexPath) as! IngridenttTblVCell
              
-//            let price = self.BasketListArr.ingredient?[indexPath.row].pro_price
-//            if price == "" || price == "Not available"{
-//                cell.Pricelbl.text = "$0"
-//            }else{
-//                cell.Pricelbl.text = price
-//            }
-//            
-//            cell.Countlbl.text = "\(self.BasketListArr.ingredient?[indexPath.row].sch_id ?? 0)"
-            
+
             
             let img = BasketListArr.ingredient?[indexPath.item].proImg ?? ""
             let imgUrl = URL(string: img)
             
-            
-            
-//            if img == "Not available" || img == "" && price == "$0" || price == "Not available"{
-//             
-//                let text = "\(self.BasketListArr.ingredient?[indexPath.row].pro_name ?? "")\nNot Available"
-//
-//                // Create an NSMutableAttributedString
-//                let attributedString = NSMutableAttributedString(string: text)
-//
-//                // Apply black color to "Rice"
-//                if let riceRange = text.range(of: self.BasketListArr.ingredient?[indexPath.row].pro_name ?? "") {
-//                    let nsRange = NSRange(riceRange, in: text)
-//                    attributedString.addAttribute(.foregroundColor, value: UIColor.black, range: nsRange)
-//                }
-//
-//                // Apply gray color to "Not Available"
-//                if let notAvailableRange = text.range(of: "Not Available") {
-//                    let nsRange = NSRange(notAvailableRange, in: text)
-//                    attributedString.addAttribute(.foregroundColor, value: UIColor.gray, range: nsRange)
-//                }
-//
-//                // Set the attributed string to the label
-//                cell.NameLbl.attributedText = attributedString
-//                 
-//            }else{
+         
             cell.NameLbl.text = self.BasketListArr.ingredient?[indexPath.row].name?.capitalizedFirst ?? ""
             cell.quantityLbl.text = "\(self.BasketListArr.ingredient?[indexPath.row].quantity ?? 0) \( self.BasketListArr.ingredient?[indexPath.row].measure ?? "")"
-//            }
-//            cell.quantityLbl.text = self.BasketListArr.ingredient?[indexPath.row].me
+
             cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
             cell.Img.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "No_Image"))
             
@@ -741,15 +576,7 @@ extension BasketNewVC: UITableViewDelegate, UITableViewDataSource {
             }else{
                 cell.checkBoxBtn.setImage(UIImage(named: "YelloUncheck"), for: .normal)
             }
-//            cell.checkBoxBtn.tag = indexPath.row
-//            cell.checkBoxBtn.addTarget(self, action: #selector(checkoutBtn(_:)), for: .touchUpInside)
-            
-//            cell.MinusBtn.tag = indexPath.row
-//            cell.MinusBtn.addTarget(self, action: #selector(IngServCountMinusBtn(_:)), for: .touchUpInside)
-//            
-//            cell.PlusBtn.tag = indexPath.row
-//            cell.PlusBtn.addTarget(self, action: #selector(IngServCountPlusBtn(_:)), for: .touchUpInside)
-            
+
             return cell
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "AddressTblVCell", for: indexPath) as! AddressTblVCell
@@ -793,6 +620,9 @@ extension BasketNewVC: UITableViewDelegate, UITableViewDataSource {
     @objc func checkMarkBtn(_ sender: UIButton){
        
     }
+    
+    
+    
     // MARK: - Leading Swipe Actions (Left to Right)
  
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -819,66 +649,7 @@ extension BasketNewVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     
-//    @objc func IngServCountMinusBtn(_ sender: UIButton) {
-//        var ServCount = self.BasketListArr.ingredient?[sender.tag].sch_id ?? 1
-//        guard ServCount > 1 else{
-//            return
-//        }
-//        ServCount -= 1
-//        self.BasketListArr.ingredient?[sender.tag].sch_id = ServCount
-//        
-//        let priceValue = self.BasketListArr.ingredient?[sender.tag].pro_price ?? ""
-//  
-//        if priceValue != "Not available" || priceValue != ""{
-//
-//            let SelItmPrice = priceValue.replace(string: "$", withString: "")
-//            let ItmPriceValue = Double(SelItmPrice) ?? 0
-//            
-//            let totalPrice = self.BasketListArr.billing?.netTotal ?? 0
-//          //  let a = totalPriceStr.replace(string: "$", withString: "")
-//             
-//            let FTotalPriceValue = totalPrice - ItmPriceValue
-//            
-//            self.BasketListArr.billing?.netTotal = FTotalPriceValue
-//            
-////            let FinalTotalPriceValue = formatPrice(FTotalPriceValue)
-////            self.TotalPriceLbl.text = "$\(FinalTotalPriceValue)*"
-//        }
-//        
-//        self.IngredientsTblV.reloadData()
-//        
-//        let foodID = self.BasketListArr.ingredient?[sender.tag].food_id ?? ""
-//        self.Api_To_Plus_Minus_ingredientsCount(FoodID: foodID, Quenty: "\(ServCount)")
-//    }
-    
-//    @objc func IngServCountPlusBtn(_ sender: UIButton) {
-//        var ServCount = self.BasketListArr.ingredient?[sender.tag].sch_id ?? 1
-//        ServCount += 1
-//        self.BasketListArr.ingredient?[sender.tag].sch_id = ServCount
-//         
-//        let priceValue = self.BasketListArr.ingredient?[sender.tag].pro_price ?? ""
-//  
-//        if priceValue != "Not available" || priceValue != ""{
-//
-//            let SelItmPrice = priceValue.replace(string: "$", withString: "")
-//            let ItmPriceValue = Double(SelItmPrice) ?? 0
-//            
-//            let totalPrice = self.BasketListArr.billing?.netTotal ?? 0
-//          //  let a = totalPriceStr.replace(string: "$", withString: "")
-//             let  a = totapPriceStr.replace(String)
-//            let FTotalPriceValue = totalPrice + ItmPriceValue
-//            
-//            self.BasketListArr.billing?.netTotal = FTotalPriceValue
-//            
-////            let FinalTotalPriceValue = formatPrice(FTotalPriceValue)
-////            self.TotalPriceLbl.text = "$\(FinalTotalPriceValue)*"
-//        }
-//        
-//        self.IngredientsTblV.reloadData()
-//        
-//        let foodID = self.BasketListArr.ingredient?[sender.tag].food_id ?? ""
-//        self.Api_To_Plus_Minus_ingredientsCount(FoodID: foodID, Quenty: "\(ServCount)")
-//    }
+
     
     @objc func EditAddressBtnTapped(sender: UIButton){
         let index = sender.tag
@@ -936,12 +707,11 @@ extension BasketNewVC: UITableViewDelegate, UITableViewDataSource {
                   checkoutInstacartBtnO.isUserInteractionEnabled = true
                   checkoutInstacartBtnO.backgroundColor = #colorLiteral(red: 0.9854765534, green: 0.5848969817, blue: 0.1648380458, alpha: 1)
               } else {
-                  // None are selected
+                  
                   print("❌ Nothing selected")
                   checkoutInstacartBtnO.isUserInteractionEnabled = false
                   checkoutInstacartBtnO.backgroundColor = .lightGray
               }
-//              self.IngredientsTblV.reloadData()
               self.IngredientsTblV.reloadRows(at: [indexPath], with: .automatic)
           }
       }
@@ -965,9 +735,76 @@ extension BasketNewVC: UITableViewDelegate, UITableViewDataSource {
     }
 
 extension BasketNewVC{
-   // MarketModelClass
+    
+    func createSelectedIngredientJSON() -> String? {
+        
+        guard let ingredientList = BasketListArr.ingredient else { return nil }
+
+        var selectedIngredients: [SelectedIngredientPayload] = []
+
+        for ingredient in ingredientList {
+            if ingredient.isSelected == true{
+                let payload = SelectedIngredientPayload(
+                    name: ingredient.name ?? "",
+                    quantity: "\(ingredient.quantity ?? 0)",
+                    unit: ingredient.unitOfMeasurement ?? ""
+                )
+                selectedIngredients.append(payload)
+            }
+        }
+
+        let requestPayload = IngredientRequestPayload(ingredients: selectedIngredients)
+
+        do {
+            let jsonData = try JSONEncoder().encode(requestPayload)
+            if let jsonStr = String(data: jsonData, encoding: .utf8) {
+               
+                return jsonStr
+            }
+          
+        } catch {
+            print("JSON Encoding Error:", error)
+            return nil
+        }
+        return nil
+    }
+    
+    func createSelectedIngredientDict() {
+
+        guard let str = createSelectedIngredientJSON() else {  return }
+        print(str)
+        
+        guard
+            let jsonData = str.data(using: .utf8),
+            
+                let payload = try? JSONDecoder().decode(IngredientRequestPayload.self, from: jsonData)  else {
+            showAlert(for: "Failed to decode recipe payload")
+            return
+        }
+        
+        self.uploadIngredient(payload) { result, statusCode in
+            guard let dict = result.dictionaryObject,let data = dict["data"] as? [String:Any] , let url = data["products_link_url"] as? String else {return}
+            let vc = InstacartContainerVC()
+            vc.urlString = url
+               self.navigationController?.pushViewController(vc, animated: false)
+        }
+    }
+  
+    func uploadIngredient(_ payload: IngredientRequestPayload, completion: @escaping (JSON, Int) -> Void) {
+        var apiURL = ""
+        apiURL = baseURL.baseURL + appEndPoints.create_order_instacart
+        
+        
+        self.showIndicator(withTitle: "Uploading...", and: "Please wait")
+        WebService.shared.uploadModel(apiURL, VC: self, model: payload) { json, statusCode in
+            DispatchQueue.main.async {
+                self.hideIndicator()
+                completion(json, statusCode)
+            }
+        }
+    }
     func getBasketListData() {
-        var params:JSONDictionary = [:]
+        let params:JSONDictionary = [:]
         
 //        params["latitude"] = AppLocation.lat
 //        params["longitude"] = AppLocation.long
@@ -1188,7 +1025,8 @@ extension BasketNewVC{
             }
             
             if dictData["success"] as? Bool == true{
-                self.getBasketListData()
+           //     self.getBasketListData()
+                self.createSelectedIngredientDict()
             }else{
                 let responseMessage = dictData["message"] as! String
                 self.showToast(responseMessage)

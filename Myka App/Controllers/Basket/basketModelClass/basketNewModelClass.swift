@@ -306,5 +306,5 @@ struct TotalNew: Codable {
 
 // MARK: - Chocdf
 struct Chocdf: Codable {
-    let quantity: Int?
+    let quantity: Double?
 }

@@ -13,23 +13,23 @@ class IntroVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata.removeAll()
+//        StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata.removeAll()
             
-        StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata.append(
-            MyselfModelClass(
-                bodyGoals: "",
-                DietaryPreferences: [],
-                FavCuisines: [],
-                DislikeIngredient: [],
-                AllergensIngredients: [],
-                MealRoutine: [],
-                CookingFrequency: "",
-                SpendingOnGroceries: SpendingOnGroceriesModelClass(Amount: "", duration: ""),
-                EatingOut: "",
-                Takeway: ""
-            )
-        )
-         
+//        StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata.append(
+//            MyselfModelClass(
+//                bodyGoals: "",
+//                DietaryPreferences: [],
+//                FavCuisines: [],
+//                DislikeIngredient: [],
+//                AllergensIngredients: [],
+//                MealRoutine: [],
+//                CookingFrequency: "",
+//                SpendingOnGroceries: SpendingOnGroceriesModelClass(Amount: "", duration: ""),
+//                EatingOut: "",
+//                Takeway: ""
+//            )
+//        )
+//         
         
         let isOnboarding = UserDetail.shared.getOnboardingStatus()
         let isLoginSession = UserDetail.shared.getLoginSession()

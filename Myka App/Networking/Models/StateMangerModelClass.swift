@@ -7,24 +7,54 @@
 
 import Foundation
 
-class StateMangerModelClass {
+final class StateMangerModelClass {
+
     static let shared = StateMangerModelClass()
-    
-    var onboardingSelectedData = OnboardingSelectedDataModelClass()
-     
+
+    // MARK: - Onboarding Draft (AUTO Save & Restore)
+    var onboardingSelectedData: OnboardingSelectedDataModelClass {
+        didSet {
+            OnboardingDraftManager.shared.save(onboardingSelectedData)
+        }
+    }
+
+    // MARK: - Other Existing Properties
     var ReffCode = ""
     var ProviderName = ""
     var ProviderImg = ""
     var SearchClickFromPopup = false
 
-    // on home Screen
+    // Home Screen
     var tg: String = ""
     var subs: String = ""
     var subscriptionApiTimer: Timer?
-//
-    
-    var isCardAdded:Bool = false
-    
-    private init() {} // Prevent direct instantiation
-    //
+
+    var isCardAdded: Bool = false
+
+    // MARK: - Init
+    private init() {
+  
+        self.onboardingSelectedData = OnboardingDraftManager.shared.load()
+    }
+}
+extension StateMangerModelClass {
+
+    func ensureMySelfDraftExists() {
+        if onboardingSelectedData.MySelfSeldata.isEmpty {
+            onboardingSelectedData.MySelfSeldata.append(
+                MyselfModelClass(
+                    bodyGoals: "",
+                    DietaryPreferences: [],
+                    FavCuisines: [],
+                    DislikeIngredient: [],
+                    AllergensIngredients: [],
+                    MealRoutine: [],
+                    CookingFrequency: "",
+                    SpendingOnGroceries: SpendingOnGroceriesModelClass(Amount: "", duration: ""),
+                    EatingOut: "",
+                    Takeway: ""
+                )
+            )
+        }
+    }
 }

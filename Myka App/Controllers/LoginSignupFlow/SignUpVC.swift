@@ -421,7 +421,8 @@ extension SignUpVC {
                        if let err = encodingResult.error{
                            //                    if loader { CommonFunctions.hideActivityLoader() }
                            
-                           if (err as NSError).code == NSURLErrorNotConnectedToInternet {
+                           if (err as NSError).code == 
+                                NSURLErrorNotConnectedToInternet {
                                
                            }
                            print(err as NSError)
@@ -455,14 +456,11 @@ extension SignUpVC {
                            }
                            
                            UserDetail.shared.setUserId("\(UID)")
-                           
                            UserDetail.shared.setTokenWith(token)
-                           
                            UserDetail.shared.setisSignInWith("true")
-                           
                            UserDetail.shared.setUserType(userType)
-                           
                            UserDetail.shared.setUserRefferalCode(ReferralCode)
+                           OnboardingDraftManager.shared.clear()
                            
                            guard is_cooking_complete != 0 else{
                             let storyboard = UIStoryboard(name: "Main", bundle: nil)

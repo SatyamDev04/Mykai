@@ -74,8 +74,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
         
         
         
-        FirebaseApp.configure()
-        UIViewController.swizzleViewDidAppear
+       FirebaseApp.configure()
+       UIViewController.swizzleViewDidAppear
         
         if #available(iOS 10.0, *) {
            
@@ -84,8 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
             let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
             UNUserNotificationCenter.current().requestAuthorization(
                 options: authOptions,
-                completionHandler: { _, _ in }
-            )
+                completionHandler: { _, _ in })
         } else {
             let settings: UIUserNotificationSettings =
             UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
@@ -106,7 +105,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
                 
             }
         }
-        
         
         return true
     }

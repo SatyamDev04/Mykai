@@ -96,7 +96,7 @@ extension ConvertUnitPopVC  {
         
         print(units)
     }
-    
+                   
     func retriveQuantity(){
         quantites = ingredientData
             .flatMap { $0.ingredients ?? [] }
@@ -106,8 +106,11 @@ extension ConvertUnitPopVC  {
     }
     
 }
+
+
 extension ConvertUnitPopVC {
     func Api_For_ConvertUnits() {
+        
         let selectType: String
         if self.type == "O" || self.type == "I" {
             selectType = "2"

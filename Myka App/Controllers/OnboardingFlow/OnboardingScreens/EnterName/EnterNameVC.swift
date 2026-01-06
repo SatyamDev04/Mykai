@@ -8,7 +8,7 @@
 import UIKit
 
 class EnterNameVC: UIViewController, UITextFieldDelegate {
-    
+
     @IBOutlet weak var NameTxtF: UITextField!
     @IBOutlet weak var SelectGenderTxtF: UITextField!
     @IBOutlet weak var GenderDropBtnO: UIButton!
@@ -17,113 +17,108 @@ class EnterNameVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var FemaleBgV: UIView!
     @IBOutlet weak var MaleBtnO: UIButton!
     @IBOutlet weak var FemaleBtnO: UIButton!
-     
     @IBOutlet weak var NextBtnO: UIButton!
-    
-    
+
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.MaleBgV.isHidden = true
-        self.FemaleBgV.isHidden = true
-        self.DropImg.image = UIImage(named: "DropDown")
+
+        setupUI()
         
-        self.NameTxtF.delegate = self
-        
-        NextBtnO.backgroundColor = UIColor.lightGray
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        restoreDraft()
+    }
+    // MARK: - Setup
+    private func setupUI() {
+        MaleBgV.isHidden = true
+        FemaleBgV.isHidden = true
+        DropImg.image = UIImage(named: "DropDown")
+
+        NameTxtF.delegate = self
+
+        NextBtnO.backgroundColor = .lightGray
         NextBtnO.isUserInteractionEnabled = false
     }
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == self.NameTxtF {
-            // Get the current text
-            let currentText = textField.text ?? ""
-            
-            // Calculate the new text after the change
-            let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
-           
-            if newText.isEmpty {
-                // If the text is empty, clear the field
-                textField.text = ""
-                NextBtnO.backgroundColor = UIColor.lightGray
-                NextBtnO.isUserInteractionEnabled = false
-                
-            } else {
-                textField.text = newText
-                
-                // Adjust the cursor position
-                if let newPosition = textField.position(from: textField.beginningOfDocument, offset: range.location + string.count + 1) {
-                    textField.selectedTextRange = textField.textRange(from: newPosition, to: newPosition)
-                }
-                
-                // Enable or disable the button based on the conditions
-                if self.SelectGenderTxtF.text!.isEmpty {
-                    NextBtnO.backgroundColor = UIColor.lightGray
-                    NextBtnO.isUserInteractionEnabled = false
-                } else {
-                    NextBtnO.backgroundColor = #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)
-                    NextBtnO.isUserInteractionEnabled = true
-                }
-            }
-            return false // Prevent the default behavior as we are updating the text manually
-        }
-        return true
+
+    // MARK: - Restore Saved Data
+    private func restoreDraft() {
+        let draft = StateMangerModelClass.shared.onboardingSelectedData
+
+        NameTxtF.text = draft.Username
+        SelectGenderTxtF.text = draft.UserGender.isEmpty ? "Gender" : draft.UserGender
+
+        updateNextButtonState()
     }
-    
-    
+
+    // MARK: - Button State
+    private func updateNextButtonState() {
+        let isValid =
+            !(NameTxtF.text?.trimmingCharacters(in: .whitespaces).isEmpty ?? true) &&
+            !(SelectGenderTxtF.text?.isEmpty ?? true) &&
+            SelectGenderTxtF.text != "Gender"
+
+        NextBtnO.backgroundColor = isValid
+            ? #colorLiteral(red: 0.0235, green: 0.7568, blue: 0.4117, alpha: 1)
+            : .lightGray
+
+        NextBtnO.isUserInteractionEnabled = isValid
+    }
+
+    // MARK: - UITextFieldDelegate
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+
+        guard textField == NameTxtF else { return true }
+
+        let currentText = textField.text ?? ""
+        let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
+
+        textField.text = newText
+
+        
+        StateMangerModelClass.shared.onboardingSelectedData.Username = newText
+
+        updateNextButtonState()
+        return false
+    }
+
+    // MARK: - Gender Dropdown
     @IBAction func GenderBtn(_ sender: UIButton) {
-        if GenderDropBtnO.isSelected {
-            GenderDropBtnO.isSelected = false
-            self.MaleBgV.isHidden = true
-            self.FemaleBgV.isHidden = true
-            self.DropImg.image = UIImage(named: "DropDown")
-        }else{
-            self.GenderDropBtnO.isSelected = true
-            self.MaleBgV.isHidden = false
-            self.FemaleBgV.isHidden = false
-            self.DropImg.image = UIImage(named: "DropUp")
-        }
+        GenderDropBtnO.isSelected.toggle()
+
+        let show = GenderDropBtnO.isSelected
+        MaleBgV.isHidden = !show
+        FemaleBgV.isHidden = !show
+        DropImg.image = UIImage(named: show ? "DropUp" : "DropDown")
     }
-    
+
     @IBAction func MaleBtn(_ sender: UIButton) {
-        self.GenderDropBtnO.isSelected = false
-        self.MaleBgV.isHidden = true
-        self.FemaleBgV.isHidden = true
-        self.DropImg.image = UIImage(named: "DropDown")
-        self.SelectGenderTxtF.text = "Male"
-        
-        if self.NameTxtF.text!.isEmpty {
-            NextBtnO.backgroundColor = UIColor.lightGray
-            NextBtnO.isUserInteractionEnabled = false
-        } else {
-            NextBtnO.backgroundColor = #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)
-            NextBtnO.isUserInteractionEnabled = true
-        }
+        selectGender("Male")
     }
-    
+
     @IBAction func FemaleBtn(_ sender: UIButton) {
-        self.GenderDropBtnO.isSelected = false
-        self.MaleBgV.isHidden = true
-        self.FemaleBgV.isHidden = true
-        self.DropImg.image = UIImage(named: "DropDown")
-        self.SelectGenderTxtF.text = "Female"
-        
-        if self.NameTxtF.text!.isEmpty {
-            NextBtnO.backgroundColor = UIColor.lightGray
-            NextBtnO.isUserInteractionEnabled = false
-        } else {
-            NextBtnO.backgroundColor = #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)
-            NextBtnO.isUserInteractionEnabled = true
-        }
+        selectGender("Female")
     }
-    
+
+    private func selectGender(_ gender: String) {
+        GenderDropBtnO.isSelected = false
+        MaleBgV.isHidden = true
+        FemaleBgV.isHidden = true
+        DropImg.image = UIImage(named: "DropDown")
+
+        SelectGenderTxtF.text = gender
+
+        StateMangerModelClass.shared.onboardingSelectedData.UserGender = gender
+
+        updateNextButtonState()
+    }
+
+    // MARK: - Next
     @IBAction func NextBtn(_ sender: UIButton) {
-        
-        StateMangerModelClass.shared.onboardingSelectedData.Username = self.NameTxtF.text ?? ""
-        
-        if self.SelectGenderTxtF.text! != "Gender"{
-            StateMangerModelClass.shared.onboardingSelectedData.UserGender = self.SelectGenderTxtF.text!
-        }
-        let nextVc = self.storyboard?.instantiateViewController(identifier: "CookingForVC") as! CookingForVC
-    self.navigationController?.pushViewController(nextVc, animated: true)
+        let nextVc = storyboard?.instantiateViewController(identifier: "CookingForVC") as! CookingForVC
+        navigationController?.pushViewController(nextVc, animated: true)
     }
 }
