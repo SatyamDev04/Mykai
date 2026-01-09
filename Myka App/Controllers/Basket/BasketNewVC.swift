@@ -21,16 +21,10 @@ class BasketNewVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var yourRecipeCollV: UICollectionView!
     @IBOutlet weak var yourRecipeCollVH: NSLayoutConstraint!
     @IBOutlet weak var IngredientsTblV: UITableView!
-   
-    @IBOutlet weak var IngredientsTblVH: NSLayoutConstraint!
+     @IBOutlet weak var IngredientsTblVH: NSLayoutConstraint!
     
     
-    // Not Using
-//    @IBOutlet var SetYourShoppingPrefBgV: UIView!
-//    @IBOutlet weak var Radius_ProgressBar: ProgressView!
-    //
-    
-    // Replaced by this, using this.
+ 
     @IBOutlet var AddressPopupView: UIView!
     @IBOutlet weak var AddressBgV: UIView!
     @IBOutlet weak var AddressTblV: UITableView!
@@ -48,18 +42,15 @@ class BasketNewVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var YourRecipeBgV: UIView!
     @IBOutlet weak var IngredientBgV: UIView!
     @IBOutlet weak var checkoutInstacartBtnO: UIButton!
-    // DisabledView
+  
     @IBOutlet var DisabledView: UIView!
-    //
+  
     var mapView = GMSMapView()
     var gmsAddress: GMSAddress?
     var zoomCamera : GMSCameraPosition?
     let marker = GMSMarker()
     var locationManager = CLLocationManager()
     let geoCoder = CLGeocoder()
- 
-  //  var btnLocation : UIButton?
-     
     private var placesClient: GMSPlacesClient!
     private var searchResults: [GMSAutocompletePrediction] = []
     var dropDown = DropDown()
@@ -104,7 +95,9 @@ class BasketNewVC: UIViewController, UITextFieldDelegate {
         self.SetWorkBtnO.isSelected = false
         self.HomeIMg.image = UIImage(named: "HomeIcon")
         self.WorkImg.tintColor = #colorLiteral(red: 0.5882352941, green: 0.6666666667, blue: 0.631372549, alpha: 1)
-        self.checkoutInstacartBtnO.isUserInteractionEnabled = false
+       // self.checkoutInstacartBtnO.isUserInteractionEnabled = false
+        self.checkoutInstacartBtnO.isUserInteractionEnabled = true
+        self.checkoutInstacartBtnO.backgroundColor = UIColor(red: 0.0235, green: 0.7569, blue: 0.4118, alpha: 1.0)
 //        let SubscriptionStatus = Int(UserDetail.shared.getSubscriptionStatus())
 //        
 //        if SubscriptionStatus == 1{
@@ -359,9 +352,6 @@ class BasketNewVC: UIViewController, UITextFieldDelegate {
         
     }
     
-    // not using
-    
-   // using This
     
     @IBAction func SetHomeBtn(_ sender: UIButton) {
         self.SetHomeBgV.borderColor = #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)
@@ -409,7 +399,6 @@ class BasketNewVC: UIViewController, UITextFieldDelegate {
             self.Api_To_make_PrimaryAddress()
         }
     }
-    //
     
     @IBAction func Yourrecipe_ViewAllBtn(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Basket", bundle: nil)
@@ -627,13 +616,9 @@ extension BasketNewVC: UITableViewDelegate, UITableViewDataSource {
  
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { _, _, completionHandler in
-            // Remove the item from the data source
-//            let foodID = self.BasketListArr.ingredient?[indexPath.row].food_id ?? ""
+        self.BasketListArr.ingredient?.remove(at: indexPath.row)
             
-            self.BasketListArr.ingredient?.remove(at: indexPath.row)
-            
-//            self.Api_To_Plus_Minus_ingredientsCount(FoodID: foodID, Quenty: "0")
-            // Update the table view
+
             tableView.performBatchUpdates({
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }) { completed in
@@ -702,13 +687,13 @@ extension BasketNewVC: UITableViewDelegate, UITableViewDataSource {
               }
              
               if self.BasketListArr.ingredient?.contains(where: { $0.isSelected ?? false }) == true {
-                  // At least one ingredient is selected
-                  print("✅ Something is selected")
+            
+                  print("Something is selected")
                   checkoutInstacartBtnO.isUserInteractionEnabled = true
                   checkoutInstacartBtnO.backgroundColor = #colorLiteral(red: 0.9854765534, green: 0.5848969817, blue: 0.1648380458, alpha: 1)
               } else {
                   
-                  print("❌ Nothing selected")
+                  print("Nothing selected")
                   checkoutInstacartBtnO.isUserInteractionEnabled = false
                   checkoutInstacartBtnO.backgroundColor = .lightGray
               }
@@ -806,9 +791,6 @@ extension BasketNewVC{
     func getBasketListData() {
         let params:JSONDictionary = [:]
         
-//        params["latitude"] = AppLocation.lat
-//        params["longitude"] = AppLocation.long
-        
         showIndicator(withTitle: "", and: "")
         if UserDetail.shared.getSubscriptionStatus() == "0"{
             showIndicator(withTitle: "", and: "")
@@ -837,14 +819,10 @@ extension BasketNewVC{
                     }
 
                     for i in 0..<(self.BasketListArr.ingredient?.count ?? 0){
-                        self.BasketListArr.ingredient?[i].isSelected = false
-                    }
-//                        if self.BasketListArr.stores?.count ?? 0 > 0 {
-//                            self.SupermarketCollVH.constant = 215
-//                        }else{
-//                            self.SupermarketCollVH.constant = 0
-//                        }
+                        self.BasketListArr.ingredient?[i].isSelected = true
                         
+                    }
+
                         if self.BasketListArr.recipe?.count ?? 0 > 0 {
                             self.YourRecipeBgV.isHidden = false
                             self.yourRecipeCollVH.constant = 220
@@ -858,33 +836,18 @@ extension BasketNewVC{
                     }else{
                         self.IngredientBgV.isHidden = true
                     }
-                    
-                        
-//                    self.SupermarketCollV.reloadData()
+  
                     
                     self.yourRecipeCollV.reloadData()
                     
                     self.IngredientsTblV.reloadData()
                     
-//                    let netTotal = self.BasketListArr.billing?.netTotal ?? 0
-//                  
-//                    
-//                    let priceValue = netTotal
-//                    let formattedPrice: String
-//                    if priceValue == floor(priceValue) {
-//                        // If the value is a whole number, show it as an integer
-//                        formattedPrice = String(format: "%.0f", priceValue)
-//                    } else {
-//                        // If the value has decimals, round it to two decimal places
-//                        formattedPrice = String(format: "%.2f", priceValue)
-//                    }
-//                    
-//                    self.TotalPriceLbl.text = "$\(formattedPrice)*"
+
                      
                 }else{
                     
                     let msg = d.message ?? ""
-                    //self.showToast(msg)
+          
                 }
             }catch{
                 

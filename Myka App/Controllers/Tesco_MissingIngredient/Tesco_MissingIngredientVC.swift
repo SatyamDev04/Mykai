@@ -10,7 +10,6 @@ import UIKit
 class Tesco_MissingIngredientVC: UIViewController {
 
     @IBOutlet weak var SearchTxt: UITextField!
-    
     @IBOutlet weak var SelectAllBtnO: UIButton!
     @IBOutlet weak var AddtoBasketBtnO: UIButton!
     @IBOutlet weak var MissingIngredientTblV: UITableView!
@@ -23,7 +22,7 @@ class Tesco_MissingIngredientVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.MissingIngredientTblV.register(UINib(nibName: "Tesco_MissingIngredientTblVCell", bundle: nil), forCellReuseIdentifier: "Tesco_MissingIngredientTblVCell")
+        self.MissingIngredientTblV.register(UINib(nibName: "IngredientsTblVCell", bundle: nil), forCellReuseIdentifier: "IngredientsTblVCell")
         self.MissingIngredientTblV.delegate = self
         self.MissingIngredientTblV.dataSource = self
         self.MissingIngredientTblV.addObserver(self, forKeyPath: "contentSize", options: [.new, .old], context: nil)
@@ -32,7 +31,7 @@ class Tesco_MissingIngredientVC: UIViewController {
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "contentSize", let tableView = object as? UITableView {
             let newContentSize = tableView.contentSize
-            // Update the height constraint or perform actions as needed
+          
             updateTableViewHeight(newContentSize.height)
         }
     }
@@ -85,19 +84,8 @@ extension Tesco_MissingIngredientVC: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "Tesco_MissingIngredientTblVCell", for: indexPath) as! Tesco_MissingIngredientTblVCell
-            cell.NameLbl.text = recipesArray[indexPath.row].name
-            cell.Img.image = recipesArray[indexPath.row].image
-            cell.QuentityLbl.text = recipesArray[indexPath.row].Quantity
-            
-            if selectedIndex.contains(indexPath.row){
-                cell.CheckBtn.setImage(UIImage(named: "YellowCheck"), for: .normal)
-            }else{
-                cell.CheckBtn.setImage(UIImage(named: "YelloUncheck"), for: .normal)
-            }
-            
-            cell.CheckBtn.tag = indexPath.item
-            cell.CheckBtn.addTarget(self, action: #selector(AddIngredientBtnTapped(sender: )), for: .touchUpInside)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientsTblVCell", for: indexPath) as! IngredientsTblVCell
+         
             return cell
     }
     

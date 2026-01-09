@@ -123,7 +123,7 @@ struct DataRecipe: Codable {
     let recipeMealType, id: String?
     let imageURL: String?
     let createdOn, createdAt: String?
-    let dishType: [String]?
+    let dishType: [String?]?
     let description: String?
     let totalDaily: TotalNew?
     let fingerprint: String?

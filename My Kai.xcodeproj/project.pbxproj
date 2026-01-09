@@ -11,6 +11,7 @@
 		95114FE22D0E5CA000EB7A48 /* CustomBlurEffectView in Frameworks */ = {isa = PBXBuildFile; productRef = 95114FE12D0E5CA000EB7A48 /* CustomBlurEffectView */; };
 		A78D072761D04BE0F9E91967 /* Pods_My_Kai.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33FB989C8B855323132CBA24 /* Pods_My_Kai.framework */; };
 		BCE73CED89471943D9E84FA9 /* Pods_My_Kai_My_KaiUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0F165B1EDD5EBC0B768C729 /* Pods_My_Kai_My_KaiUITests.framework */; };
+		DD9250922F0FC94600BD23EC /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = DD9250912F0FC94600BD23EC /* SwiftSoup */; };
 		E908822C2D5F74D100B46E9E /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E908822B2D5F74D100B46E9E /* StoreKit.framework */; };
 		E916A78E2DD7180800CD5E83 /* BackgroundRemoval in Frameworks */ = {isa = PBXBuildFile; productRef = E916A78D2DD7180800CD5E83 /* BackgroundRemoval */; };
 		E916A7902DD7181C00CD5E83 /* BackgroundRemoval in Frameworks */ = {isa = PBXBuildFile; productRef = E916A78F2DD7181C00CD5E83 /* BackgroundRemoval */; };
@@ -104,6 +105,7 @@
 				E916A7902DD7181C00CD5E83 /* BackgroundRemoval in Frameworks */,
 				E916A78E2DD7180800CD5E83 /* BackgroundRemoval in Frameworks */,
 				E916A7922DD7193700CD5E83 /* BackgroundRemoval in Frameworks */,
+				DD9250922F0FC94600BD23EC /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,6 +294,7 @@
 			packageReferences = (
 				95114FE02D0E5CA000EB7A48 /* XCRemoteSwiftPackageReference "CustomBlurEffectView" */,
 				E943AA3F2DD7154C00E7F791 /* XCRemoteSwiftPackageReference "BackgroundRemoval" */,
+				DD9250902F0FC94600BD23EC /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E99AA04C2CF5B0D0000A5D6D /* Products */;
@@ -877,6 +880,14 @@
 				minimumVersion = 0.0.3;
 			};
 		};
+		DD9250902F0FC94600BD23EC /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.11.3;
+			};
+		};
 		E943AA3F2DD7154C00E7F791 /* XCRemoteSwiftPackageReference "BackgroundRemoval" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Ezaldeen99/BackgroundRemoval.git";
@@ -892,6 +903,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 95114FE02D0E5CA000EB7A48 /* XCRemoteSwiftPackageReference "CustomBlurEffectView" */;
 			productName = CustomBlurEffectView;
+		};
+		DD9250912F0FC94600BD23EC /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD9250902F0FC94600BD23EC /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
 		};
 		E916A78D2DD7180800CD5E83 /* BackgroundRemoval */ = {
 			isa = XCSwiftPackageProductDependency;

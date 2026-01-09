@@ -3549,6 +3549,121 @@ to discard changes.</string>
             </objects>
             <point key="canvasLocation" x="6214.5038167938928" y="1138.7323943661972"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="ECo-jL-zYY">
+            <objects>
+                <viewController id="5sw-vi-RDo" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1hH-G2-N8f">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="88-Rate your Meal" translatesAutoresizingMaskIntoConstraints="NO" id="yzB-sA-H92">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PWG-bc-x1w">
+                                <rect key="frame" x="0.0" y="67" width="393" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hiN-10-nk2">
+                                        <rect key="frame" x="20" y="0.0" width="30" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="6Xm-3d-25P"/>
+                                            <constraint firstAttribute="width" constant="30" id="MTE-7V-N7c"/>
+                                        </constraints>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="Back"/>
+                                        <connections>
+                                            <action selector="backBtnTap:" destination="5sw-vi-RDo" eventType="touchUpInside" id="uiR-6d-b5C"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Missing Ingredients" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y4z-Iz-buU">
+                                        <rect key="frame" x="105.00000000000001" y="14" width="183.33333333333337" height="22"/>
+                                        <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="18"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="hiN-10-nk2" firstAttribute="top" secondItem="PWG-bc-x1w" secondAttribute="top" id="0Hb-ZF-hoG"/>
+                                    <constraint firstAttribute="bottom" secondItem="hiN-10-nk2" secondAttribute="bottom" id="Psy-Li-LSN"/>
+                                    <constraint firstItem="Y4z-Iz-buU" firstAttribute="centerY" secondItem="hiN-10-nk2" secondAttribute="centerY" id="b9k-Pt-wpg"/>
+                                    <constraint firstItem="hiN-10-nk2" firstAttribute="leading" secondItem="PWG-bc-x1w" secondAttribute="leading" constant="20" id="gon-Te-eil"/>
+                                    <constraint firstItem="Y4z-Iz-buU" firstAttribute="centerX" secondItem="PWG-bc-x1w" secondAttribute="centerX" id="mXq-HX-FY0"/>
+                                    <constraint firstAttribute="height" constant="50" id="qgV-Ha-rZm"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select the ingredients you didn't purchase" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y4A-mb-wnD">
+                                <rect key="frame" x="16" y="119" width="361" height="21"/>
+                                <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="15"/>
+                                <color key="textColor" red="0.23529411759999999" green="0.27058823529999998" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="sOv-2V-8df">
+                                <rect key="frame" x="20" y="229" width="353" height="475"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2fq-Uj-qlP">
+                                <rect key="frame" x="0.0" y="704" width="393" height="80"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HvM-BQ-qcm">
+                                        <rect key="frame" x="25" y="30" width="343" height="50"/>
+                                        <color key="backgroundColor" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="QbG-oa-UJd"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Poppins-SemiBold" family="Poppins" pointSize="16"/>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="I have purchased everything">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="ViewStepbyStepBtn:" destination="3qI-p8-K2h" eventType="touchUpInside" id="gQy-GT-eJh"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="HvM-BQ-qcm" firstAttribute="leading" secondItem="2fq-Uj-qlP" secondAttribute="leading" constant="25" id="19m-ed-16q"/>
+                                    <constraint firstAttribute="trailing" secondItem="HvM-BQ-qcm" secondAttribute="trailing" constant="25" id="1HO-El-l4Y"/>
+                                    <constraint firstItem="HvM-BQ-qcm" firstAttribute="top" secondItem="2fq-Uj-qlP" secondAttribute="top" constant="30" id="GTh-k9-JnS"/>
+                                    <constraint firstAttribute="bottom" secondItem="HvM-BQ-qcm" secondAttribute="bottom" id="PRo-AK-JSX"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="va3-yS-os7"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="y4A-mb-wnD" firstAttribute="top" secondItem="PWG-bc-x1w" secondAttribute="bottom" constant="2" id="27D-V5-n12"/>
+                            <constraint firstItem="va3-yS-os7" firstAttribute="trailing" secondItem="sOv-2V-8df" secondAttribute="trailing" constant="20" id="3Ki-q9-lr6"/>
+                            <constraint firstItem="yzB-sA-H92" firstAttribute="trailing" secondItem="va3-yS-os7" secondAttribute="trailing" id="4mt-JK-9XJ"/>
+                            <constraint firstItem="PWG-bc-x1w" firstAttribute="top" secondItem="va3-yS-os7" secondAttribute="top" constant="-51" id="8Au-HF-QTm"/>
+                            <constraint firstItem="va3-yS-os7" firstAttribute="trailing" secondItem="PWG-bc-x1w" secondAttribute="trailing" id="EBR-FJ-XnN"/>
+                            <constraint firstItem="y4A-mb-wnD" firstAttribute="leading" secondItem="va3-yS-os7" secondAttribute="leading" constant="16" id="Lzs-Sx-kFe"/>
+                            <constraint firstItem="yzB-sA-H92" firstAttribute="top" secondItem="1hH-G2-N8f" secondAttribute="top" id="a3b-7H-i1z"/>
+                            <constraint firstItem="sOv-2V-8df" firstAttribute="leading" secondItem="va3-yS-os7" secondAttribute="leading" constant="20" id="erB-Zx-hqa"/>
+                            <constraint firstItem="yzB-sA-H92" firstAttribute="leading" secondItem="va3-yS-os7" secondAttribute="leading" id="hhV-bH-GnV"/>
+                            <constraint firstItem="2fq-Uj-qlP" firstAttribute="top" secondItem="sOv-2V-8df" secondAttribute="bottom" id="iSu-3H-KXE"/>
+                            <constraint firstItem="PWG-bc-x1w" firstAttribute="leading" secondItem="va3-yS-os7" secondAttribute="leading" id="keK-q1-mpy"/>
+                            <constraint firstAttribute="bottom" secondItem="yzB-sA-H92" secondAttribute="bottom" id="nRW-qx-J7j"/>
+                            <constraint firstItem="2fq-Uj-qlP" firstAttribute="bottom" secondItem="va3-yS-os7" secondAttribute="bottom" id="pH5-xm-2RU"/>
+                            <constraint firstAttribute="trailing" secondItem="y4A-mb-wnD" secondAttribute="trailing" constant="16" id="vbh-KR-Mdz"/>
+                            <constraint firstItem="2fq-Uj-qlP" firstAttribute="leading" secondItem="va3-yS-os7" secondAttribute="leading" id="xaY-OB-ICs"/>
+                            <constraint firstItem="2fq-Uj-qlP" firstAttribute="trailing" secondItem="va3-yS-os7" secondAttribute="trailing" id="xky-st-D1M"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="14C-7o-B9z"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZWc-0y-5iS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2612.9770992366412" y="1150"/>
+        </scene>
     </scenes>
     <resources>
         <image name="88-Rate your Meal" width="430" height="932"/>
