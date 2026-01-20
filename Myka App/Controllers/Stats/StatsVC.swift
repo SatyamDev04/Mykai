@@ -96,27 +96,25 @@ class StatsVC: UIViewController, ChartViewDelegate {
         barChartView.leftAxis.gridLineWidth = 0.8
         barChartView.xAxis.drawGridLinesEnabled = false
 
-        // Keep horizontal grid lines (Left Axis)
+      
         barChartView.leftAxis.drawGridLinesEnabled = true
-
-        // Remove extra space on the left and right
-        barChartView.xAxis.axisMinimum = -0.5 // Aligns the first bar to the edge
-        barChartView.xAxis.axisMaximum = Double(4) - 0.5 // Adjust according to the number of bars
+        barChartView.xAxis.axisMinimum = -0.5
+        barChartView.xAxis.axisMaximum = Double(GraphDataArr.count) - 0.5
         barChartView.fitBars = false
 
-        // Remove "0" label from the y-axis and add $ before all values
         barChartView.leftAxis.valueFormatter = DefaultAxisValueFormatter { value, axis in
             if value == 0 {
-                return "" // Remove the "0" label
+                return ""
             }
-            return String(format: "$%.0f", value) // Add "$" before the value
+            return String(format: "$%.0f", value)
         }
         
     }
 
     func setData() {
         let values: [Double] = self.GraphDataArr.map { ($0.amount) }
-        let colors: [NSUIColor] = [.orange, .green, .red, .orange]
+        let baseColors: [NSUIColor] = [.orange, .green, .red, .blue, .purple]
+        let colors = Array(baseColors.prefix(values.count))
 
         var entries: [BarChartDataEntry] = []
         for (index, value) in values.enumerated() {
@@ -208,10 +206,13 @@ class StatsVC: UIViewController, ChartViewDelegate {
             DispatchQueue.main.async {
                 self.present(activityViewController, animated: true, completion: nil)
             }
-            }
+           
+        }
     }
     
     
+    
+
     func generateInviteLink(completion: @escaping (String) -> Void) {
       //  let tempID = AppsFlyerLib().appleAppID
  
@@ -244,6 +245,7 @@ class StatsVC: UIViewController, ChartViewDelegate {
             print("Generated OneLink URL: \(referLink)")
         }
     }
+
     
     
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
@@ -285,12 +287,12 @@ class StatsVC: UIViewController, ChartViewDelegate {
            
          
         // pass Stored Data of the Previous Selected Bar
-        let storyboard = UIStoryboard(name: "RestScreens", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "StatesForWeekOrYearVC") as! StatesForWeekOrYearVC
-        vc.seldate = startOfWeek
-        vc.StartDate = startDate
-        vc.EndDate = endDate
-        self.navigationController?.pushViewController(vc, animated: true)
+//        let storyboard = UIStoryboard(name: "RestScreens", bundle: nil)
+//        let vc = storyboard.instantiateViewController(withIdentifier: "StatesForWeekOrYearVC") as! StatesForWeekOrYearVC
+//        vc.seldate = startOfWeek
+//        vc.StartDate = startDate
+//        vc.EndDate = endDate
+//        self.navigationController?.pushViewController(vc, animated: true)
         }
 
         func chartValueNothingSelected(_ chartView: ChartViewBase) {
@@ -331,12 +333,12 @@ class StatsVC: UIViewController, ChartViewDelegate {
             
            
             // pass Stored Data of the Previous Selected Bar
-            let storyboard = UIStoryboard(name: "RestScreens", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "StatesForWeekOrYearVC") as! StatesForWeekOrYearVC
-            vc.seldate = startOfWeek
-            vc.StartDate = startDate
-            vc.EndDate = endDate
-            self.navigationController?.pushViewController(vc, animated: true)
+//            let storyboard = UIStoryboard(name: "RestScreens", bundle: nil)
+//            let vc = storyboard.instantiateViewController(withIdentifier: "StatesForWeekOrYearVC") as! StatesForWeekOrYearVC
+//            vc.seldate = startOfWeek
+//            vc.StartDate = startDate
+//            vc.EndDate = endDate
+//            self.navigationController?.pushViewController(vc, animated: true)
         }
      }
 
@@ -402,19 +404,21 @@ extension StatsVC{
                 valueArray.append(week3)
                 let week4 = GraphData["week_4"] as? Double ?? Double()
                 valueArray.append(week4)
-                 
-                if week1 == 0 && week2 == 0 && week3 == 0 && week4 == 0{
-                    self.ChartScrollView.isHidden = false//false
-                }else{
-                    self.ChartScrollView.isHidden = true
+                if let week5 = GraphData["week_5"] as? Double {
+                    valueArray.append(week5)
                 }
+                let allZero = valueArray.allSatisfy { $0 == 0 }
+                self.ChartScrollView.isHidden = !allZero
                
                 self.GraphDataArr.removeAll()
                          
-                for i in 0..<valueArray.count{
-                    let amt = Double(valueArray[i])
-                    let WeekDate = weekStartDates[i]
-                    self.GraphDataArr.append(contentsOf: [GraphDataModelClass(date: "\(WeekDate)", amount: amt)])
+                for i in 0..<min(valueArray.count, weekStartDates.count) {
+                    self.GraphDataArr.append(
+                        GraphDataModelClass(
+                            date: weekStartDates[i],
+                            amount: valueArray[i]
+                        )
+                    )
                 }
                 
                 
@@ -429,40 +433,36 @@ extension StatsVC{
     }
     
     func getWeekStartDates(for month: Int, in year: Int) -> [String] {
-        var weekStartDates: [String] = []
+
         let calendar = Calendar.current
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "d MMMM"
-        
-        // Start date for the given month and year
-        guard let startDate = calendar.date(from: DateComponents(year: year, month: month, day: 1)) else {
-            return []
-        }
-        
-        // End date for the given month and year
-        guard let endDate = calendar.date(from: DateComponents(year: year, month: month + 1, day: 0)) else {
-            return []
-        }
-        
-        var currentDate = startDate
-        
-        while currentDate <= endDate {
-            let weekStart = calendar.dateInterval(of: .weekOfYear, for: currentDate)?.start ?? currentDate
-            
-            // Check if the week start falls in the same month
-            let weekStartMonth = calendar.component(.month, from: weekStart)
-            if weekStartMonth == month {
-                weekStartDates.append(dateFormatter.string(from: weekStart))
-            }
-            
-            // Move to the next week
-            guard let nextWeek = calendar.date(byAdding: .weekOfYear, value: 1, to: weekStart) else {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd MMM"
+
+        var result: [String] = []
+
+        // First day of month
+        guard let startOfMonth = calendar.date(
+            from: DateComponents(year: year, month: month, day: 1)
+        ) else { return [] }
+
+        // Last day of month
+        guard let endOfMonth = calendar.date(
+            from: DateComponents(year: year, month: month + 1, day: 0)
+        ) else { return [] }
+
+        var currentStart = startOfMonth
+
+        while currentStart <= endOfMonth {
+            result.append(formatter.string(from: currentStart))
+
+            // Move exactly 7 days forward
+            guard let next = calendar.date(byAdding: .day, value: 7, to: currentStart) else {
                 break
             }
-            currentDate = nextWeek
+            currentStart = next
         }
-        
-        return weekStartDates
+
+        return result
     }
 }
 

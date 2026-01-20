@@ -13,7 +13,7 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
     private let backButton = UIButton(type: .system)
     private let backButtonFooter = UIButton(type: .system)
     private let reloadButton = UIButton(type: .system)
-
+     var backButtonTapped: (() -> Void)?
     private let webView: WKWebView = {
       
         let cfg = WKWebViewConfiguration()
@@ -260,6 +260,7 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
             webView.goBack()
         } else {
             navigationController?.popViewController(animated: true)
+            backButtonTapped?()
         }
     }
     @objc private func didTapBackFooter() {
@@ -411,8 +412,11 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
         }
         let absolute = url.absoluteString.lowercased()
           if absolute.contains("google.com/recaptcha") {
+           
               if let url = URL(string: urlString) {
                   UIApplication.shared.open(url)
+                  self.navigationController?.popViewController(animated: false)
+                  backButtonTapped?()
                   decisionHandler(.cancel)
               }
               return

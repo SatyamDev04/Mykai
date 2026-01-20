@@ -57,6 +57,7 @@ struct WelcomeIngredient: Codable {
     let updatedAt: String?
     let unitSize: Int?
     var isSelected: Bool? = false
+    var isVisible: Bool? = true
     
     enum CodingKeys: String, CodingKey {
         case schID = "sch_id"

@@ -159,14 +159,47 @@ class Invitations: UIViewController {
             }
     }
     
+  
+//    func generateInviteLink(completion: @escaping (String) -> Void) {
+//
+//        AppsFlyerShareInviteHelper.generateInviteUrl(
+//            linkGenerator: { generator in
+//
+//                // Channel & campaign MUST be added as parameters
+//                generator.addParameterValue("share", forKey: "af_channel")
+//                generator.addParameterValue("invite", forKey: "af_campaign")
+//
+//                generator.addParameterValue(UserDetail.shared.getUserId(),
+//                                            forKey: "af_user_id")
+//                generator.addParameterValue(self.UserName,
+//                                            forKey: "providerName")
+//                generator.addParameterValue(self.UserPickUrl,
+//                                            forKey: "providerImage")
+//                generator.addParameterValue(UserDetail.shared.getUserRefferalCode(),
+//                                            forKey: "Referrer")
+//
+//                return generator
+//            },
+//            completionHandler: { url in
+//                if let shortURL = url?.absoluteString {
+//                    completion(shortURL)
+//                } else {
+//                    print("Failed to generate short invite URL")
+//                }
+//            }
+//        )
+//    }
+
+
+    
     func generateInviteLink(completion: @escaping (String) -> Void) {
         let tempID = AppsFlyerLib().appleAppID
  
-        let baseURL = "https://mykaimealplanner.onelink.me/mPqu/" // Replace with your OneLink template
+        let baseURL = "https://mykaimealplanner.onelink.me/mPqu/"
         
         let add = AppsFlyerLib()
       
-        let userID = UserDetail.shared.getUserId() // Replace with your dynamic user identifier
+        let userID = UserDetail.shared.getUserId()
         let parameters: [String: String] = [
             "tempId": tempID,
             "af_user_id": userID,
@@ -174,8 +207,7 @@ class Invitations: UIViewController {
             "providerImage": self.UserPickUrl,
             "Referrer":UserDetail.shared.getUserRefferalCode()
         ]
-       // "Hi, I am inviting you to download ROAM app!\n\nClick on the link below:\n\(AppUrl)"
-
+     
         var components = URLComponents(string: baseURL)
         components?.queryItems = parameters.map { URLQueryItem(name: $0.key, value: $0.value) }
 

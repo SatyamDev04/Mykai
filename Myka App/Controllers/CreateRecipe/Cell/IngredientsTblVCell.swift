@@ -40,7 +40,7 @@ class IngredientsTblVCell: UITableViewCell {
             self.amout_MeasurmentLbl?.text = ""
         }
         self.img.sd_setImage(with: URL(string: model.img ?? ""), placeholderImage: UIImage(named: "No_Image"))
-        self.checkBoxView.isHidden = true // always hidden as per previous code
+     //   self.checkBoxView.isHidden = true
     }
     
     override func awakeFromNib() {

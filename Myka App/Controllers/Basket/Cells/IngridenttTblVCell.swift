@@ -13,15 +13,7 @@ class IngridenttTblVCell: UITableViewCell {
     @IBOutlet weak var NameLbl: UILabel!
     @IBOutlet weak var quantityLbl: UILabel!
     @IBOutlet weak var checkBoxBtn: UIButton!
-//    @IBOutlet weak var QuantityLbl: UILabel!
-//    @IBOutlet weak var Pricelbl: UILabel!
-//    @IBOutlet weak var Countlbl: UILabel!
-//    
-//    @IBOutlet weak var MinusBtn: UIButton!
-//    @IBOutlet weak var PlusBtn: UIButton!
-    
-    
-    
+   
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

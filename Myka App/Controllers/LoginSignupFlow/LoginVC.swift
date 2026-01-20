@@ -470,12 +470,12 @@ extension LoginVC {
         params["social_id"] = social_id
         params["username"] = onboardingData.Username
         params["usergender"] = onboardingData.UserGender
-        params["bodygoal"] = onboardingData.MySelfSeldata[0].bodyGoals
-        params["cooking_frequency"] = onboardingData.MySelfSeldata[0].CookingFrequency
-        params["take_way"] = onboardingData.MySelfSeldata[0].Takeway
-        params["take_way_name"] = StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata[0].addOtherTxt
+        params["bodygoal"] = onboardingData.MySelfSeldata.first?.bodyGoals
+        params["cooking_frequency"] = onboardingData.MySelfSeldata.first?.CookingFrequency
+        params["take_way"] = onboardingData.MySelfSeldata.first?.Takeway
+        params["take_way_name"] = StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata.first?.addOtherTxt
         
-        params["eating_out"] = onboardingData.MySelfSeldata[0].EatingOut
+        params["eating_out"] = onboardingData.MySelfSeldata.first?.EatingOut
         params["partner_name"] = onboardingData.Partnersname.Name
         params["partner_age"] = Int(onboardingData.Partnersname.Age)
         params["partner_gender"] = onboardingData.Partnersname.Gender
@@ -486,13 +486,13 @@ extension LoginVC {
         }else{
             params["child_friendly_meals"] = "0"
         }
-        params["meal_routine_id"] = onboardingData.MySelfSeldata[0].MealRoutine
-        params["spending_amount"] = onboardingData.MySelfSeldata[0].SpendingOnGroceries.Amount
-        params["duration"] = onboardingData.MySelfSeldata[0].SpendingOnGroceries.duration
-        params["dietary_id"] = onboardingData.MySelfSeldata[0].DietaryPreferences
-        params["dislike_ingredients_id"] = onboardingData.MySelfSeldata[0].DislikeIngredient
-        params["favourite"] = onboardingData.MySelfSeldata[0].FavCuisines
-        params["allergies"] = onboardingData.MySelfSeldata[0].AllergensIngredients
+        params["meal_routine_id"] = onboardingData.MySelfSeldata.first?.MealRoutine
+        params["spending_amount"] = onboardingData.MySelfSeldata.first?.SpendingOnGroceries.Amount
+        params["duration"] = onboardingData.MySelfSeldata.first?.SpendingOnGroceries.duration
+        params["dietary_id"] = onboardingData.MySelfSeldata.first?.DietaryPreferences
+        params["dislike_ingredients_id"] = onboardingData.MySelfSeldata.first?.DislikeIngredient
+        params["favourite"] = onboardingData.MySelfSeldata.first?.FavCuisines
+        params["allergies"] = onboardingData.MySelfSeldata.first?.AllergensIngredients
         
         let delegate = AppDelegate.shared
                let token = delegate.deviceToken

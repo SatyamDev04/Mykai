@@ -49,11 +49,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
 //    }
         Thread.sleep(forTimeInterval: 3)
         
-        AppsFlyerLib.shared().appsFlyerDevKey = "<M57zyjkFgb7nSQwHWN6isW>" //YOUR_DEV_KEY
-        AppsFlyerLib.shared().appleAppID = "<6742851385>"
+        AppsFlyerLib.shared().appsFlyerDevKey = "M57zyjkFgb7nSQwHWN6isW"
+        AppsFlyerLib.shared().appleAppID = "6742851385"
         AppsFlyerLib.shared().delegate = self
         AppsFlyerLib.shared().isDebug = true
-      
         AppsFlyerLib.shared().deepLinkDelegate = self
         
         if let url = launchOptions?[.url] as? URL {

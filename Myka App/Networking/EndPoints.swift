@@ -245,6 +245,10 @@ enum appEndPoints{
     static let set_schedule = "set-schedule"
     
     static let convert_units = "convert_units"
+    
+    static let store_purchased_ingredients = "add-purchased-elemenents"
+    
+    static let userPurchasedURL = "user_purchased"
 }
 
 struct AppLocation {

@@ -6,6 +6,8 @@
 	<string>6742851385</string>
 	<key>AppsFlyerDevKey</key>
 	<string>M57zyjkFgb7nSQwHWN6isW</string>
+	<key>AppsFlyerOnelinkID</key>
+	<string>mPqu</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -20,6 +22,16 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.856670496660-qsailjit03lsaeen7v1e6l769no55o93</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.MykaiApp.com</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>mykaimealplanner.onelink.me</string>
 			</array>
 		</dict>
 	</array>
