@@ -112,52 +112,89 @@ class LoginVC: UIViewController {
     
     @IBAction func FacebookLogiinBtn(_ sender: UIButton) {
 
-        LoginManager().logOut()
+//        LoginManager().logOut()
+//
+//        LoginManager().logIn(
+//            permissions: ["public_profile", "email"],
+//            from: self
+//        ) { result, error in
+//
+//            if let error = error {
+//                print("FB Login Error:", error.localizedDescription)
+//                return
+//            }
+//
+//            guard let result = result else {
+//                print("No result returned")
+//                return
+//            }
+//
+//            if result.isCancelled {
+//                print("User cancelled login")
+//                return
+//            }
+//
+//            guard let token = AccessToken.current?.tokenString else {
+//                print("Token missing")
+//                return
+//            }
+//            print("Current permissions:", AccessToken.current?.permissions ?? [])
+//            print("FB Token:", token)
+//
+//            let request = GraphRequest(
+//                graphPath: "me",
+//                parameters: ["fields": "id,name,email"],
+//                tokenString: AccessToken.current?.tokenString,
+//                version: "v19.0",
+//                httpMethod: .get
+//            )
+//
+//            request.start { _, result, error in
+//                if let error = error {
+//                    print("Graph Error:", error.localizedDescription)
+//                    return
+//                }
+//
+//                print("✅ FB USER RESULT:", result ?? "nil")
+//            }
+//        }
+        let manager = LoginManager()
+            manager.logOut()
 
-        LoginManager().logIn(
-            permissions: ["public_profile", "email"],
-            from: self
-        ) { result, error in
+            manager.logIn(
+                permissions: ["public_profile", "email"],
+                from: self
+            ) { result, error in
 
-            if let error = error {
-                print("FB Login Error:", error.localizedDescription)
-                return
-            }
-
-            guard let result = result else {
-                print("No result returned")
-                return
-            }
-
-            if result.isCancelled {
-                print("User cancelled login")
-                return
-            }
-
-            guard let token = AccessToken.current?.tokenString else {
-                print("Token missing")
-                return
-            }
-            print("Current permissions:", AccessToken.current?.permissions ?? [])
-            print("FB Token:", token)
-
-            let request = GraphRequest(
-                graphPath: "me",
-                parameters: ["fields": "id,name,email"],
-                tokenString: AccessToken.current?.tokenString,
-                version: "v19.0",
-                httpMethod: .get
-            )
-
-            request.start { _, result, error in
                 if let error = error {
-                    print("Graph Error:", error.localizedDescription)
+                    print("❌ FB Login Error:", error.localizedDescription)
                     return
                 }
 
-                print("✅ FB USER RESULT:", result ?? "nil")
+                guard let result = result, !result.isCancelled else {
+                    print("❌ Login cancelled")
+                    return
+                }
+
+                guard let authToken = AuthenticationToken.current else {
+                    print("❌ Authentication token missing")
+                    return
+                }
+
+                let idToken = authToken.tokenString
+                print("✅ ID TOKEN:", idToken)
+
+                if let decoded = self.decodeJWT(idToken) {
+//                    print("✅ FB USER DATA:", decoded)
+                    
+                    let email = decoded["email"] as? String ?? ""
+                    let socialId = decoded["sub"] as? Int ?? 0
+                    
+                    self.Api_To_SocialLogin(email: email, social_id: "\(socialId)")
+                }
+//                self.Api_To_SocialLogin(email: emailAddress, social_id: userId ?? "")
+                // 👉 Send idToken to backend for verification
             }
-        }
     }
     
     @IBAction func AppleLogiinBtn(_ sender: UIButton) {
@@ -225,6 +262,25 @@ class LoginVC: UIViewController {
         }
         
         return true
+    }
+    
+    func decodeJWT(_ token: String) -> [String: Any]? {
+        let segments = token.split(separator: ".")
+        guard segments.count >= 2 else { return nil }
+
+        let payload = segments[1]
+            .replacingOccurrences(of: "-", with: "+")
+            .replacingOccurrences(of: "_", with: "/")
+
+        let padded = payload + String(repeating: "=", count: (4 - payload.count % 4) % 4)
+
+        guard let data = Data(base64Encoded: padded),
+              let json = try? JSONSerialization.jsonObject(with: data),
+              let dict = json as? [String: Any] else {
+            return nil
+        }
+
+        return dict
     }
 }
  

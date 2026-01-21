@@ -763,15 +763,15 @@ extension HealthDataVC {
                     
                     
                     let fatVal = self.calculateGram(calorieTarget: self.SuggestedData.calories ?? 0, percentage: self.SuggestedData.macroPer?.fat ?? 0, divide: 9)
-                        self.FatTxtF.text = "\(fatVal)"
+                        self.FatTxtF.text = "\(fatVal)g"
                    
                       
                     let carbsVal = self.calculateGram(calorieTarget: self.SuggestedData.calories ?? 0, percentage: self.SuggestedData.macroPer?.carbs ?? 0, divide: 4)
-                        self.CarbsTxtF.text = "\(carbsVal)"
+                        self.CarbsTxtF.text = "\(carbsVal)g"
                     
                       
                     let proteinVal = self.calculateGram(calorieTarget: self.SuggestedData.calories ?? 0, percentage: self.SuggestedData.macroPer?.protein ?? 0, divide: 4)
-                        self.ProtienTxtF.text = "\(proteinVal)"
+                        self.ProtienTxtF.text = "\(proteinVal)g"
                     
                     let fat = self.SuggestedData.fat ?? 0
                     let carbs = self.SuggestedData.carbs ?? 0

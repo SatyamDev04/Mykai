@@ -116,7 +116,7 @@ class ProfileVC: UIViewController, CLLocationManagerDelegate {
         
          
         locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
+//        locationManager.requestWhenInUseAuthorization()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -147,13 +147,13 @@ class ProfileVC: UIViewController, CLLocationManagerDelegate {
                 self.CalTxtF.text = "\(calories)"
                 
                 let fat = response?["fat"] as? Int ?? Int()
-                self.FatTxtF.text = "\(fat)"
+                self.FatTxtF.text = "\(fat)g"
                 
                 let carbs = response?["carbs"] as? Int ?? Int()
-                self.CarbsTxtF.text = "\(carbs)"
+                self.CarbsTxtF.text = "\(carbs)g"
                 
                 let protien = response?["protein"] as? Int ?? Int()
-                self.ProtienTxtF.text = "\(protien)"
+                self.ProtienTxtF.text = "\(protien)g"
                 
                 let dob = response?["dob"] as? String ?? String()
                 self.dob = dob
