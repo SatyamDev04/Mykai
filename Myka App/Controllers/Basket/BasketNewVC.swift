@@ -498,16 +498,16 @@ extension BasketNewVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
-            for i in 0..<(BasketListArr.stores?.count ?? 0){
-                BasketListArr.stores?[i].isSlected = 0
-            }
-            BasketListArr.stores?[indexPath.item].isSlected = 1
-
-            
-            let storNme = BasketListArr.stores?[indexPath.item].storeName ?? ""
-            let StoreID = BasketListArr.stores?[indexPath.item].storeUUID ?? ""
-            
-            self.getBasketListDataByMarket(StoreID:StoreID, StoreName:storNme)
+//            for i in 0..<(BasketListArr.stores?.count ?? 0){
+//                BasketListArr.stores?[i].isSlected = 0
+//            }
+//            BasketListArr.stores?[indexPath.item].isSlected = 1
+//
+//            
+//            let storNme = BasketListArr.stores?[indexPath.item].storeName ?? ""
+//            let StoreID = BasketListArr.stores?[indexPath.item].storeUUID ?? ""
+//            
+//            self.getBasketListDataByMarket(StoreID:StoreID, StoreName:storNme)
 
     }
  

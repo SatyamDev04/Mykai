@@ -378,10 +378,16 @@ class RecipeDetailNewVC: UIViewController {
     }
     
     @IBAction func AddToBasketBtn(_ sender: UIButton) {
-        guard selectedIndex.count > 0 else{
+
+        let selectedIngredients = tblVIngredientData
+            .flatMap { $0.ingredients ?? [] }
+            .filter { $0.isSelected ?? false }
+
+        guard !selectedIngredients.isEmpty else {
             AlertControllerOnr(title: "", message: "Please select atleast one ingredients.")
             return
         }
+
         self.Api_To_AddToBasket_Recipe()
     }
     
@@ -874,28 +880,48 @@ extension RecipeDetailNewVC{
     
     
     func Api_To_AddToBasket_Recipe() {
-        var jsonArray: [[String: Any]] = []
-        for i in 0..<recipesArray.count{
-            if selectedIndex.contains(i){
-                let dictionary1: [String: String] = ["name": recipesArray[i].name, "image": recipesArray[i].image, "food": recipesArray[i].food, "quantity": recipesArray[i].Quantity,"ingredient_cost": recipesArray[i].ingredient_cost, "foodCategory": recipesArray[i].foodCategory, "measure": recipesArray[i].measure, "food_id": recipesArray[i].foodID, "status": "0"]
-                jsonArray.append(dictionary1)
-            }
+
+        let selectedIngredients =
+            tblVIngredientData
+                .flatMap { $0.ingredients ?? [] }
+                .filter { $0.isSelected ?? false }
+
+        guard !selectedIngredients.isEmpty else {
+            AlertControllerOnr(title: "", message: "Please select atleast one ingredients.")
+            return
         }
-        print(jsonArray)
-        
+
+        var jsonArray: [[String: Any]] = []
+
+        for item in selectedIngredients {
+
+            let dict: [String: Any] = [
+                "name": item.name ?? "",
+                "image": item.image ?? item.img ?? "",
+                "food": item.food ?? "",
+                "quantity": item.quantity ?? "",
+                "ingredient_cost": item.ingredient_cost ?? "",
+                "foodCategory": item.foodCategory ?? "",
+                "measure": item.measure ?? "",
+                "food_id": item.id ?? "",
+                "status": "0"
+            ]
+
+            jsonArray.append(dict)
+        }
+
         let paramsDict: [String: Any] = [
             "ingredients": jsonArray,
             "serving": self.ServCount,
             "uri": self.uri,
             "type": self.MealType
         ]
-        
+
         showIndicator(withTitle: "", and: "")
-        
+
         let loginURL = baseURL.baseURL + appEndPoints.ingredient_basket
         print(paramsDict, "Params")
         print(loginURL, "loginURL")
-        
         if let jsonData = JSONStringEncoder().encode(paramsDict) {
             
             WebService.shared.postServiceRaw(loginURL, VC: self, jsonData: jsonData) { (json, statusCode) in
@@ -923,6 +949,7 @@ extension RecipeDetailNewVC{
         }
     }
 }
+
 extension RecipeDetailNewVC{
     func addIngredient(Header:String?,data:IngredientDataModel) {
        
