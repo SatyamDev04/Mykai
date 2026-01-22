@@ -111,7 +111,7 @@ class PlanVc: UIViewController {
     var BreakfastData = ["Pasta", "BBQ", "stawberry"]
     var LunchData = ["Lasagne", "Pasta", "Bar-B-Q"]
     var DinnerData = ["Lasagne", "stawberry", "Pizza"]
-    
+    var isLoadingMore = [String: Bool]()
     // for popUps
     
     var ChooseDayData = [BodyGoalsModel(Name: "Monday", isSelected: false), BodyGoalsModel(Name: "Tuesday", isSelected: false), BodyGoalsModel(Name: "Wednesday", isSelected: false), BodyGoalsModel(Name: "Thursday", isSelected: false), BodyGoalsModel(Name: "Friday", isSelected: false), BodyGoalsModel(Name: "Saturday", isSelected: false), BodyGoalsModel(Name: "Sunday", isSelected: false)]
@@ -159,6 +159,14 @@ class PlanVc: UIViewController {
         
         
         let customBlurEffectView = CustomBlurEffectView()
+        isLoadingMore = [
+            "Breakfast": false,
+            "Lunch": false,
+            "Dinner": false,
+            "Snacks": false,
+            "Dessert": false,
+            "Teatime": false
+        ]
         
         if UIDevice.current.hasNotch {
             //... consider notch
@@ -2646,8 +2654,133 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         }
         collectionView.scrollToItem(at: index, at: .left, animated: true )
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let collectionView = scrollView as? UICollectionView else { return }
+        
+        let visibleItems = collectionView.indexPathsForVisibleItems.sorted()
+        guard let lastVisible = visibleItems.last else { return }
+        
+        let lastIndex = collectionView.numberOfItems(inSection: 0) - 1
+        
+        if lastVisible.item == lastIndex {
+            onReachedLastIndex(collectionView: collectionView)
+        }
+    }
+    
+    func onReachedLastIndex(collectionView: UICollectionView) {
+        
+        if collectionView == BreakFastCollV {
+            loadMore(meal: "Breakfast")
+        } else if collectionView == LunchCollV {
+            loadMore(meal: "Lunch")
+        } else if collectionView == DinnerCollV {
+            loadMore(meal: "Dinner")
+        } else if collectionView == SnacksCollV {
+            loadMore(meal: "Snacks")
+        } else if collectionView == TeaTimeCollV {
+            loadMore(meal: "Teatime")
+        } else if collectionView == dessertCollV {
+            loadMore(meal: "Dessert")
+        }
+    }
+    
+    func loadMore(meal: String) {
+        guard isLoadingMore[meal] == false else { return }
+        isLoadingMore[meal] = true
+        
+        let apiType = apiMealType(from: meal)
+        
+        Api_To_PlanPagination(mealType: apiType){ result in
+            switch result {
+            case .success(let newData):
+                self.appendData(meal: meal, newData: newData)
+            case .failure(let error):
+                print("Pagination Error: \(error.localizedDescription)")
+            }
+            self.isLoadingMore[meal] = false
+        }
+    }
+    
+    func appendData(meal: String, newData: [Breakfast]) {
+        
+        var existing: [Breakfast]?
+        
+        switch meal {
+        case "Breakfast": existing = self.AllRecipeSelItem.recipes?.breakfast
+        case "Lunch":     existing = self.AllRecipeSelItem.recipes?.lunch
+        case "Dinner":    existing = self.AllRecipeSelItem.recipes?.dinner
+        case "Snacks":    existing = self.AllRecipeSelItem.recipes?.Snack
+        case "Dessert":   existing = self.AllRecipeSelItem.recipes?.Dessert
+        case "Teatime":   existing = self.AllRecipeSelItem.recipes?.Teatime
+        default: return
+        }
+        
+        let merged = (existing ?? []) + newData
+        
+        let unique = Array(Dictionary(grouping: merged, by: { $0.recipe?.uri ?? "" }).values.compactMap { $0.first })
+        
+        switch meal {
+        case "Breakfast": self.AllRecipeSelItem.recipes?.breakfast = unique
+        case "Lunch":     self.AllRecipeSelItem.recipes?.lunch = unique
+        case "Dinner":    self.AllRecipeSelItem.recipes?.dinner = unique
+        case "Snacks":    self.AllRecipeSelItem.recipes?.Snack = unique
+        case "Dessert":   self.AllRecipeSelItem.recipes?.Dessert = unique
+        case "Teatime":   self.AllRecipeSelItem.recipes?.Teatime = unique
+        default: break
+        }
+        
+        reloadCollection(meal: meal)
+    }
+    func reloadCollection(meal: String) {
+        switch meal {
+        case "Breakfast": BreakFastCollV.reloadData()
+        case "Lunch": LunchCollV.reloadData()
+        case "Dinner": DinnerCollV.reloadData()
+        case "Snacks": SnacksCollV.reloadData()
+        case "Dessert": dessertCollV.reloadData()
+        case "Teatime": TeaTimeCollV.reloadData()
+        default: break
+        }
+    }
+    
+    
+    func apiMealType(from meal: String) -> String {
+        switch meal {
+        case "Teatime", "TeaTime", "Tea Time":
+            return "Brunch"
+        default:
+            return meal
+        }
+    }
+    
+    func Api_To_PlanPagination(mealType: String, completion: @escaping (Result<[Breakfast], Error>) -> Void) {
+        
+        let params: [String: Any] = [
+            "meal_type": mealType
+        ]
+        let url = baseURL.baseURL + "all-recipe-pagination"
+        WebService.shared.postServiceURLEncoding(url, VC: self, andParameter: params) { json, status in
+            
+            if let dict = json.dictionaryObject ,
+                         let dataArr = dict["data"] as? [[String: Any]] {
+                          
+                          do {
+                              let jsonData = try JSONSerialization.data(withJSONObject: dataArr)
+                          //    let decoded = try JSONDecoder().decode([RecipeModel].self, from: jsonData)
+                             // completion(.success(decoded))
+                              
+                          } catch {
+                              completion(.failure(error))
+                          }
+                          
+                      } else {
+                          completion(.success([])) // empty bhi chalo
+                      }
+                  }
+        }
+    
 }
-
 
 extension PlanVc: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -2695,14 +2828,7 @@ extension PlanVc: UITableViewDelegate, UITableViewDataSource {
     
     
     @objc func BreakFastSwipBtnClicked(_ sender: UIButton){
-        //        let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-        //        let vc = storyboard.instantiateViewController(withIdentifier: "DailyInspirationsVC") as! DailyInspirationsVC
-        //
-        //        self.addChild(vc)
-        //        vc.view.frame = self.view.frame
-        //        self.view.addSubview(vc.view)
-        //        self.view.bringSubviewToFront(vc.view)
-        //        vc.didMove(toParent: self)
+      
         
         self.SwipeID = "\(self.AllDataList.breakfast?[sender.tag].id ?? 0)"
         self.SwapMealType = "Breakfast"
