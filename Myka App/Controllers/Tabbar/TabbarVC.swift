@@ -124,17 +124,43 @@ class TabbarVC: UITabBarController, UITabBarControllerDelegate {
         greenDot.tag = 99 // Tag to identify the dot later
         
         // Calculate the position for the semicircle and the green dot
+//        if let itemView = selectedItem.value(forKey: "view") as? UIView {
+//            let xPosition = itemView.frame.origin.x + (itemView.frame.width - itemView.frame.width / 2 + 10)
+//            let yPosition = itemView.frame.origin.y - halfCircle.frame.height + 24 // Adjust the value to move it higher
+//            
+//            halfCircle.frame.origin = CGPoint(x: xPosition, y: yPosition)
+//            greenDot.frame.origin = CGPoint(x: xPosition + (halfCircle.frame.width - greenDot.frame.width) / 2, y: yPosition - 6)
+//
+//            // Add the semicircle and green dot to the tab bar
+//            tabBar.addSubview(halfCircle)
+//            tabBar.addSubview(greenDot)
+//        }
         if let itemView = selectedItem.value(forKey: "view") as? UIView {
-            let xPosition = itemView.frame.origin.x + itemView.frame.width / 2 - halfCircle.frame.width / 2
-            let yPosition = itemView.frame.origin.y - halfCircle.frame.height + 24 // Adjust the value to move it higher
-            
-            halfCircle.frame.origin = CGPoint(x: xPosition, y: yPosition)
-            greenDot.frame.origin = CGPoint(x: xPosition + (halfCircle.frame.width - greenDot.frame.width) / 2, y: yPosition - 6)
 
-            // Add the semicircle and green dot to the tab bar
+            // 🔹 Find the icon image view (dynamic & iOS-safe)
+            let iconView = itemView.subviews.first {
+                $0 is UIImageView
+            }
+
+            let referenceView = iconView ?? itemView
+
+            let refFrame = referenceView.convert(referenceView.bounds, to: tabBar)
+
+            let xPosition = refFrame.midX - halfCircle.frame.width / 2
+
+            let yPosition = itemView.frame.origin.y - halfCircle.frame.height + 24
+
+            halfCircle.frame.origin = CGPoint(x: xPosition, y: yPosition)
+
+            greenDot.frame.origin = CGPoint(
+                x: refFrame.midX - greenDot.frame.width / 2,
+                y: yPosition - 6
+            )
+
             tabBar.addSubview(halfCircle)
             tabBar.addSubview(greenDot)
         }
+
     }
 
 
@@ -157,12 +183,6 @@ class TabbarVC: UITabBarController, UITabBarControllerDelegate {
            }
 
 //            Allow switching only if the target tab is not the second tab
-        if targetIndex == 1 && currentIndex == 3 {
-               let data:[String: String] = ["data": "SearchPopup"]
-                       NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationName"), object: nil, userInfo: data)
-               return false // Prevent switching
-           }
-        
         //
         if currentIndex == 0 && targetIndex == 2 {
             let data: [String: String] = ["data": "AddRecipePopup"]
@@ -199,7 +219,6 @@ class TabbarVC: UITabBarController, UITabBarControllerDelegate {
     // Call this when a tab is selected
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
          
-        
         if let index = tabBar.items?.firstIndex(of: item) {
             if StateMangerModelClass.shared.SearchClickFromPopup == true{
                 removeGreenDotAndHalfCircle()
