@@ -215,7 +215,7 @@ extension UIViewController{
 extension UIViewController {
    func showIndicator(withTitle title: String, and Description:String) {
        DispatchQueue.main.async {
-           let loadingView = RSLoadingView(effectType: RSLoadingView.Effect.twins)//RSLoadingView()
+           let loadingView = RSLoadingView(effectType: RSLoadingView.Effect.twins)
            loadingView.mainColor = #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)
            loadingView.show(on: self.view)
        }

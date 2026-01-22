@@ -111,7 +111,8 @@ class PlanVc: UIViewController {
     var BreakfastData = ["Pasta", "BBQ", "stawberry"]
     var LunchData = ["Lasagne", "Pasta", "Bar-B-Q"]
     var DinnerData = ["Lasagne", "stawberry", "Pizza"]
-    var isLoadingMore = [String: Bool]()
+    var isLoadingMore: [String: Bool] = [:]
+    var isLastPage: [String: Bool] = [:]
     // for popUps
     
     var ChooseDayData = [BodyGoalsModel(Name: "Monday", isSelected: false), BodyGoalsModel(Name: "Tuesday", isSelected: false), BodyGoalsModel(Name: "Wednesday", isSelected: false), BodyGoalsModel(Name: "Thursday", isSelected: false), BodyGoalsModel(Name: "Friday", isSelected: false), BodyGoalsModel(Name: "Saturday", isSelected: false), BodyGoalsModel(Name: "Sunday", isSelected: false)]
@@ -159,14 +160,10 @@ class PlanVc: UIViewController {
         
         
         let customBlurEffectView = CustomBlurEffectView()
-        isLoadingMore = [
-            "Breakfast": false,
-            "Lunch": false,
-            "Dinner": false,
-            "Snacks": false,
-            "Dessert": false,
-            "Teatime": false
-        ]
+        ["Breakfast","Lunch","Dinner","Snacks","Dessert","Teatime"].forEach {
+            isLoadingMore[$0] = false
+            isLastPage[$0] = false
+        }
         
         if UIDevice.current.hasNotch {
             //... consider notch
@@ -2638,92 +2635,116 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let collectionView = scrollView as? UICollectionView else { return }
-        
-        let visibleItems = collectionView.indexPathsForVisibleItems.sorted()
-        guard let lastVisible = visibleItems.last else { return }
-        
-        let lastIndex = collectionView.numberOfItems(inSection: 0) - 1
-        
-        if lastVisible.item == lastIndex {
-            onReachedLastIndex(collectionView: collectionView)
+
+        let visibleIndexPaths = collectionView.indexPathsForVisibleItems
+        guard let maxIndex = visibleIndexPaths.map({ $0.item }).max() else { return }
+
+        let totalItems = collectionView.numberOfItems(inSection: 0)
+        if totalItems == 0 { return }
+
+        // 🔥 Only when last cell is reached
+        if maxIndex == totalItems - 1 {
+            handlePagination(for: collectionView)
         }
     }
-    
-    func onReachedLastIndex(collectionView: UICollectionView) {
-        
-        if collectionView == BreakFastCollV {
-            loadMore(meal: "Breakfast")
-        } else if collectionView == LunchCollV {
-            loadMore(meal: "Lunch")
-        } else if collectionView == DinnerCollV {
-            loadMore(meal: "Dinner")
-        } else if collectionView == SnacksCollV {
-            loadMore(meal: "Snacks")
-        } else if collectionView == TeaTimeCollV {
-            loadMore(meal: "Teatime")
-        } else if collectionView == dessertCollV {
-            loadMore(meal: "Dessert")
-        }
-    }
-    
-    func loadMore(meal: String) {
-        guard isLoadingMore[meal] == false else { return }
-        isLoadingMore[meal] = true
-        
-        let apiType = apiMealType(from: meal)
-        
-        Api_To_PlanPagination(mealType: apiType){ result in
-            switch result {
-            case .success(let newData):
-                self.appendData(meal: meal, newData: newData)
-            case .failure(let error):
-                print("Pagination Error: \(error.localizedDescription)")
-            }
-            self.isLoadingMore[meal] = false
-        }
-    }
-    
-    func appendData(meal: String, newData: [Breakfast]) {
-        
-        var existing: [Breakfast]?
-        
-        switch meal {
-        case "Breakfast": existing = self.AllRecipeSelItem.recipes?.breakfast
-        case "Lunch":     existing = self.AllRecipeSelItem.recipes?.lunch
-        case "Dinner":    existing = self.AllRecipeSelItem.recipes?.dinner
-        case "Snacks":    existing = self.AllRecipeSelItem.recipes?.Snack
-        case "Dessert":   existing = self.AllRecipeSelItem.recipes?.Dessert
-        case "Teatime":   existing = self.AllRecipeSelItem.recipes?.Teatime
+    func handlePagination(for collectionView: UICollectionView) {
+
+        let meal: String
+
+        switch collectionView {
+        case BreakFastCollV: meal = "Breakfast"
+        case LunchCollV: meal = "Lunch"
+        case DinnerCollV: meal = "Dinner"
+        case SnacksCollV: meal = "Snacks"
+        case dessertCollV: meal = "Dessert"
+        case TeaTimeCollV: meal = "Teatime"
         default: return
         }
+
         
-        let merged = (existing ?? []) + newData
-        
-        let unique = Array(Dictionary(grouping: merged, by: { $0.recipe?.uri ?? "" }).values.compactMap { $0.first })
-        
-        switch meal {
-        case "Breakfast": self.AllRecipeSelItem.recipes?.breakfast = unique
-        case "Lunch":     self.AllRecipeSelItem.recipes?.lunch = unique
-        case "Dinner":    self.AllRecipeSelItem.recipes?.dinner = unique
-        case "Snacks":    self.AllRecipeSelItem.recipes?.Snack = unique
-        case "Dessert":   self.AllRecipeSelItem.recipes?.Dessert = unique
-        case "Teatime":   self.AllRecipeSelItem.recipes?.Teatime = unique
-        default: break
-        }
-        
-        reloadCollection(meal: meal)
+        if isLoadingMore[meal] == true { return }
+        if isLastPage[meal] == true { return }
+
+        loadMore(meal: meal)
     }
-    func reloadCollection(meal: String) {
-        switch meal {
-        case "Breakfast": BreakFastCollV.reloadData()
-        case "Lunch": LunchCollV.reloadData()
-        case "Dinner": DinnerCollV.reloadData()
-        case "Snacks": SnacksCollV.reloadData()
-        case "Dessert": dessertCollV.reloadData()
-        case "Teatime": TeaTimeCollV.reloadData()
-        default: break
+
+    
+    func loadMore(meal: String) {
+
+        guard isLoadingMore[meal] == false else { return }
+        isLoadingMore[meal] = true
+
+        let apiMeal = (meal == "Teatime") ? "Brunch" : meal
+
+        Api_To_PlanPagination(mealType: apiMeal) { result in
+
+            self.isLoadingMore[meal] = false
+
+            switch result {
+            case .success(let newItems):
+                if newItems.isEmpty {
+                             self.isLastPage[meal] = true
+                             return
+                         }
+                self.appendPaginationData(meal: meal, newData: newItems)
+
+            case .failure(let error):
+                print("Pagination error:", error.localizedDescription)
+            }
         }
     }
+    
+    func appendPaginationData(meal: String, newData: [Breakfast]) {
+
+        var current: [Breakfast] = []
+
+        switch meal {
+        case "Breakfast": current = AllRecipeSelItem.recipes?.breakfast ?? []
+        case "Lunch": current = AllRecipeSelItem.recipes?.lunch ?? []
+        case "Dinner": current = AllRecipeSelItem.recipes?.dinner ?? []
+        case "Snacks": current = AllRecipeSelItem.recipes?.Snack ?? []
+        case "Dessert": current = AllRecipeSelItem.recipes?.Dessert ?? []
+        case "Teatime": current = AllRecipeSelItem.recipes?.Teatime ?? []
+        default: return
+        }
+
+        let merged = current + newData
+
+        let unique = Array(
+            Dictionary(grouping: merged, by: { $0.recipe?.uri ?? "" })
+                .compactMap { $0.value.first }
+        )
+
+        switch meal {
+        case "Breakfast":
+            AllRecipeSelItem.recipes?.breakfast = unique
+            BreakFastCollV.reloadData()
+
+        case "Lunch":
+            AllRecipeSelItem.recipes?.lunch = unique
+            LunchCollV.reloadData()
+
+        case "Dinner":
+            AllRecipeSelItem.recipes?.dinner = unique
+            DinnerCollV.reloadData()
+
+        case "Snacks":
+            AllRecipeSelItem.recipes?.Snack = unique
+            SnacksCollV.reloadData()
+
+        case "Dessert":
+            AllRecipeSelItem.recipes?.Dessert = unique
+            dessertCollV.reloadData()
+
+        case "Teatime":
+            AllRecipeSelItem.recipes?.Teatime = unique
+            TeaTimeCollV.reloadData()
+
+        default:
+            break
+        }
+    }
+
     
     
     func apiMealType(from meal: String) -> String {
@@ -2736,28 +2757,56 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     }
     
     func Api_To_PlanPagination(mealType: String, completion: @escaping (Result<[Breakfast], Error>) -> Void) {
-        
+        self.showIndicator(withTitle: "", and: "")
         let params: [String: Any] = [
             "meal_type": mealType
         ]
         let url = baseURL.baseURL + "all-recipe-pagination"
+        
         WebService.shared.postServiceURLEncoding(url, VC: self, andParameter: params) { json, status in
-            
-            if let dict = json.dictionaryObject ,
-                         let dataArr = dict["data"] as? [[String: Any]] {
-                          
-                          do {
-                              let jsonData = try JSONSerialization.data(withJSONObject: dataArr)
-                          //    let decoded = try JSONDecoder().decode([RecipeModel].self, from: jsonData)
-                             // completion(.success(decoded))
-                              
-                          } catch {
-                              completion(.failure(error))
-                          }
-                          
-                      } else {
-                          completion(.success([])) // empty bhi chalo
-                      }
+            self.hideIndicator()
+            do {
+                   
+                    let jsonData: Data
+
+                    // ✅ SAFELY HANDLE RESPONSE TYPE
+                    if let data = json as? Data {
+                        jsonData = data
+                    } else if let dict = json.dictionaryObject{
+                        jsonData = try JSONSerialization.data(withJSONObject: dict)
+                    } else {
+                        throw NSError(
+                            domain: "InvalidResponse",
+                            code: 0,
+                            userInfo: [NSLocalizedDescriptionKey: "Invalid response format"]
+                        )
+                    }
+                let decoded = try JSONDecoder().decode(PlanModelClass.self, from: jsonData)
+                guard let recipes = decoded.data?.recipes else {
+                             completion(.success([]))
+                             return
+                         }
+
+                       switch mealType {
+                       case "Breakfast":
+                           completion(.success(recipes.breakfast ?? []))
+                       case "Lunch":
+                           completion(.success(recipes.lunch ?? []))
+                       case "Dinner":
+                           completion(.success(recipes.dinner ?? []))
+                       case "Snacks":
+                           completion(.success(recipes.Snack ?? []))
+                       case "Dessert":
+                           completion(.success(recipes.Dessert ?? []))
+                       case "Brunch":
+                           completion(.success(recipes.Teatime ?? []))
+                       default:
+                           completion(.success([]))
+                       }
+
+                   } catch {
+                       completion(.failure(error))
+                   }
                   }
         }
     
