@@ -223,8 +223,6 @@ class PlanVc: UIViewController {
         let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(handleTap2(_:)))
         AddAnotherMealBgV.addGestureRecognizer(tapGesture2)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(listnerFunction(_:)), name: NSNotification.Name(rawValue: "notificationName"), object: nil)
-        
         
         NotificationCenter.default.addObserver(self, selector: #selector(listnerFunctionAddRecipe(_:)), name: NSNotification.Name(rawValue: "notificationNameAddRecipeP"), object: nil)
         
@@ -270,23 +268,6 @@ class PlanVc: UIViewController {
         }
         //
     }
-    
-    
-    @objc func listnerFunction(_ notification: NSNotification) {
-        if let data = notification.userInfo?["data"] as? String {
-            if data == "SearchPopup"{
-                let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-                let vc = storyboard.instantiateViewController(withIdentifier: "SearchPopUpVC") as! SearchPopUpVC
-                
-                self.addChild(vc)
-                vc.view.frame = self.view.frame
-                self.view.addSubview(vc.view)
-                self.view.bringSubviewToFront(vc.view)
-                vc.didMove(toParent: self)
-            }
-        }
-    }
-    
     
     @objc func listnerFunctionAddRecipe(_ notification: NSNotification) {
         if let data = notification.userInfo?["data"] as? String {
@@ -1226,13 +1207,13 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.Calorieslbl.text = "\(Int(self.AllDataList.breakfast?[indexPath.item].recipe?.calories ?? 0))"
             
             let Fat = self.AllDataList.breakfast?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "FAT"})
-            cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))"
+            cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))g"
             
             let Protine = self.AllDataList.breakfast?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "PROCNT"})
-            cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))"
+            cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))g"
             
             let carbs = self.AllDataList.breakfast?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
-            cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))"
+            cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))g"
             
             
             cell.ServCountLbl.text = "\(self.AllDataList.breakfast?[indexPath.item].servings ?? 0) Servings"
@@ -1262,13 +1243,13 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.Calorieslbl.text = "\(Int(self.AllDataList.dessert?[indexPath.item].recipe?.calories ?? 0))"
             
             let Fat = self.AllDataList.dessert?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "FAT"})
-            cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))"
+            cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))g"
             
             let Protine = self.AllDataList.dessert?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "PROCNT"})
-            cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))"
+            cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))g"
             
             let carbs = self.AllDataList.dessert?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
-            cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))"
+            cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))g"
             
             cell.ServCountLbl.text = "\(self.AllDataList.dessert?[indexPath.item].servings ?? 0) Servings"
             
@@ -1294,13 +1275,13 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.Calorieslbl.text = "\(Int(self.AllDataList.lunch?[indexPath.item].recipe?.calories ?? 0))"
             
             let Fat = self.AllDataList.lunch?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "FAT"})
-            cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))"
+            cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))g"
             
             let Protine = self.AllDataList.lunch?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "PROCNT"})
-            cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))"
+            cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))g"
             
             let carbs = self.AllDataList.lunch?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
-            cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))"
+            cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))g"
             
             
             cell.ServCountLbl.text = "\(self.AllDataList.lunch?[indexPath.item].servings ?? 0) Servings"
@@ -1328,13 +1309,13 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.Calorieslbl.text = "\(Int(self.AllDataList.dinner?[indexPath.item].recipe?.calories ?? 0))"
             
             let Fat = self.AllDataList.dinner?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "FAT"})
-            cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))"
+            cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))g"
             
             let Protine = self.AllDataList.dinner?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "PROCNT"})
-            cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))"
+            cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))g"
             
             let carbs = self.AllDataList.dinner?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
-            cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))"
+            cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))g"
             
             
             cell.ServCountLbl.text = "\(self.AllDataList.dinner?[indexPath.item].servings ?? 0) Servings"
@@ -1362,13 +1343,13 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.Calorieslbl.text = "\(Int(self.AllDataList.teatime?[indexPath.item].recipe?.calories ?? 0))"
             
             let Fat = self.AllDataList.teatime?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "FAT"})
-            cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))"
+            cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))g"
             
             let Protine = self.AllDataList.teatime?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "PROCNT"})
-            cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))"
+            cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))g"
             
             let carbs = self.AllDataList.teatime?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
-            cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))"
+            cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))g"
             
             
             cell.ServCountLbl.text = "\(self.AllDataList.teatime?[indexPath.item].servings ?? 0) Servings"
@@ -1396,13 +1377,13 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.Calorieslbl.text = "\(Int(self.AllDataList.snacks?[indexPath.item].recipe?.calories ?? 0))"
             
             let Fat = self.AllDataList.snacks?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "FAT"})
-            cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))"
+            cell.Fatlbl.text = "\(Int(Fat?.value.quantity ?? 0))g"
             
             let Protine = self.AllDataList.snacks?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "PROCNT"})
-            cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))"
+            cell.Protienlbl.text = "\(Int(Protine?.value.quantity ?? 0))g"
             
             let carbs = self.AllDataList.snacks?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
-            cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))"
+            cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))g"
             
             
             cell.ServCountLbl.text = "\(self.AllDataList.snacks?[indexPath.item].servings ?? 0) Servings"
@@ -3065,15 +3046,14 @@ extension PlanVc {
             let fat = self.roundedFormattedValue(self.AllDataList.fat ?? 0, decimalPlaces: 2)
             
             self.CaloriesLbl.text = "\(cal)"
-            self.ProtienLbl.text = "\(pro)"
-            self.CarbsLbl.text = "\(car)"
-            self.FatLbl.text = "\(fat)"
-            
+            self.ProtienLbl.text = "\(pro)g"
+            self.CarbsLbl.text = "\(car)g"
+            self.FatLbl.text = "\(fat)g"
         }else{
             self.CaloriesLbl.text = "0"
-            self.ProtienLbl.text = "0"
-            self.CarbsLbl.text = "0"
-            self.FatLbl.text = "0"
+            self.ProtienLbl.text = "0g"
+            self.CarbsLbl.text = "0g"
+            self.FatLbl.text = "0g"
             self.CalculateBMRBgV.isHidden = false
             self.DailyNutritionCountBgV.isHidden = false
         }

@@ -450,13 +450,13 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
                
                if self.FridgeBtnO.isSelected == true{
                    nme = self.AllDataList.fridgeData?.breakfast?[indexPath.item].recipe?.label ?? ""
-                   serv = "\(self.AllDataList.fridgeData?.breakfast?[indexPath.item].servings ?? 0)"
+                   serv = "\(self.AllDataList.fridgeData?.breakfast?[indexPath.item].recipe?.servings ?? 0)"
                    createdDate = self.AllDataList.fridgeData?.breakfast?[indexPath.item].createdDate ?? "0 days ago"
                    img = self.AllDataList.fridgeData?.breakfast?[indexPath.item].recipe?.images?.small?.url ?? ""
                    isLike = self.AllDataList.fridgeData?.breakfast?[indexPath.item].isLike ?? 0
                }else{
                    nme = self.AllDataList.freezerData?.breakfast?[indexPath.item].recipe?.label ?? ""
-                   serv = "\(self.AllDataList.freezerData?.breakfast?[indexPath.item].servings ?? 0)"
+                   serv = "\(self.AllDataList.freezerData?.breakfast?[indexPath.item].recipe?.servings ?? 0)"
                    createdDate = self.AllDataList.freezerData?.breakfast?[indexPath.item].createdDate ?? "0 days ago"
                    img = self.AllDataList.freezerData?.breakfast?[indexPath.item].recipe?.images?.small?.url ?? ""
                    isLike = self.AllDataList.freezerData?.breakfast?[indexPath.item].isLike ?? 0
@@ -507,13 +507,13 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
            
            if self.FridgeBtnO.isSelected == true{
                nme = self.AllDataList.fridgeData?.dessert?[indexPath.item].recipe?.label ?? ""
-               serv = "\(self.AllDataList.fridgeData?.dessert?[indexPath.item].servings ?? 0)"
+               serv = "\(self.AllDataList.fridgeData?.dessert?[indexPath.item].recipe?.servings ?? 0)"
                createdDate = self.AllDataList.fridgeData?.dessert?[indexPath.item].createdDate ?? "0 days ago"
                img = self.AllDataList.fridgeData?.dessert?[indexPath.item].recipe?.images?.small?.url ?? ""
                isLike = self.AllDataList.fridgeData?.dessert?[indexPath.item].isLike ?? 0
            }else{
                nme = self.AllDataList.freezerData?.dessert?[indexPath.item].recipe?.label ?? ""
-               serv = "\(self.AllDataList.freezerData?.dessert?[indexPath.item].servings ?? 0)"
+               serv = "\(self.AllDataList.freezerData?.dessert?[indexPath.item].recipe?.servings ?? 0)"
                createdDate = self.AllDataList.freezerData?.dessert?[indexPath.item].createdDate ?? "0 days ago"
                img = self.AllDataList.freezerData?.dessert?[indexPath.item].recipe?.images?.small?.url ?? ""
                isLike = self.AllDataList.freezerData?.dessert?[indexPath.item].isLike ?? 0
@@ -563,13 +563,13 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
                
                if self.FridgeBtnO.isSelected == true{
                    nme = self.AllDataList.fridgeData?.lunch?[indexPath.item].recipe?.label ?? ""
-                   serv = "\(self.AllDataList.fridgeData?.lunch?[indexPath.item].servings ?? 0)"
+                   serv = "\(self.AllDataList.fridgeData?.lunch?[indexPath.item].recipe?.servings ?? 0)"
                    createdDate = self.AllDataList.fridgeData?.lunch?[indexPath.item].createdDate ?? "0 days ago"
                    img = self.AllDataList.fridgeData?.lunch?[indexPath.item].recipe?.images?.small?.url ?? ""
                    isLike = self.AllDataList.fridgeData?.lunch?[indexPath.item].isLike ?? 0
                }else{
                    nme = self.AllDataList.freezerData?.lunch?[indexPath.item].recipe?.label ?? ""
-                   serv = "\(self.AllDataList.freezerData?.lunch?[indexPath.item].servings ?? 0)"
+                   serv = "\(self.AllDataList.freezerData?.lunch?[indexPath.item].recipe?.servings ?? 0)"
                    createdDate = self.AllDataList.freezerData?.lunch?[indexPath.item].createdDate ?? "0 days ago"
                    img = self.AllDataList.freezerData?.lunch?[indexPath.item].recipe?.images?.small?.url ?? ""
                    isLike = self.AllDataList.freezerData?.lunch?[indexPath.item].isLike ?? 0
@@ -618,13 +618,13 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
                
                if self.FridgeBtnO.isSelected == true{
                    nme = self.AllDataList.fridgeData?.dinner?[indexPath.item].recipe?.label ?? ""
-                   serv = "\(self.AllDataList.fridgeData?.dinner?[indexPath.item].servings ?? 0)"
+                   serv = "\(self.AllDataList.fridgeData?.dinner?[indexPath.item].recipe?.servings ?? 0)"
                    createdDate = self.AllDataList.fridgeData?.dinner?[indexPath.item].createdDate ?? "0 days ago"
                    img = self.AllDataList.fridgeData?.dinner?[indexPath.item].recipe?.images?.small?.url ?? ""
                    isLike = self.AllDataList.fridgeData?.dinner?[indexPath.item].isLike ?? 0
                }else{
                    nme = self.AllDataList.freezerData?.dinner?[indexPath.item].recipe?.label ?? ""
-                   serv = "\(self.AllDataList.freezerData?.dinner?[indexPath.item].servings ?? 0)"
+                   serv = "\(self.AllDataList.freezerData?.dinner?[indexPath.item].recipe?.servings ?? 0)"
                    createdDate = self.AllDataList.freezerData?.dinner?[indexPath.item].createdDate ?? "0 days ago"
                    img = self.AllDataList.freezerData?.dinner?[indexPath.item].recipe?.images?.small?.url ?? ""
                    isLike = self.AllDataList.freezerData?.dinner?[indexPath.item].isLike ?? 0
@@ -673,13 +673,13 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
                
                if self.FridgeBtnO.isSelected == true{
                    nme = self.AllDataList.fridgeData?.snacks?[indexPath.item].recipe?.label ?? ""
-                   serv = "\(self.AllDataList.fridgeData?.snacks?[indexPath.item].servings ?? 0)"
+                   serv = "\(self.AllDataList.fridgeData?.snacks?[indexPath.item].recipe?.servings ?? 0)"
                    createdDate = self.AllDataList.fridgeData?.snacks?[indexPath.item].createdDate ?? "0 days ago"
                    img = self.AllDataList.fridgeData?.snacks?[indexPath.item].recipe?.images?.small?.url ?? ""
                    isLike = self.AllDataList.fridgeData?.snacks?[indexPath.item].isLike ?? 0
                }else{
                    nme = self.AllDataList.freezerData?.snacks?[indexPath.item].recipe?.label ?? ""
-                   serv = "\(self.AllDataList.freezerData?.snacks?[indexPath.item].servings ?? 0)"
+                   serv = "\(self.AllDataList.freezerData?.snacks?[indexPath.item].recipe?.servings ?? 0)"
                    createdDate = self.AllDataList.freezerData?.snacks?[indexPath.item].createdDate ?? "0 days ago"
                    img = self.AllDataList.freezerData?.snacks?[indexPath.item].recipe?.images?.small?.url ?? ""
                    isLike = self.AllDataList.freezerData?.snacks?[indexPath.item].isLike ?? 0
@@ -727,13 +727,13 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
                
                if self.FridgeBtnO.isSelected == true{
                    nme = self.AllDataList.fridgeData?.teatime?[indexPath.item].recipe?.label ?? ""
-                   serv = "\(self.AllDataList.fridgeData?.teatime?[indexPath.item].servings ?? 0)"
+                   serv = "\(self.AllDataList.fridgeData?.teatime?[indexPath.item].recipe?.servings ?? 0)"
                    createdDate = self.AllDataList.fridgeData?.teatime?[indexPath.item].createdDate ?? "0 days ago"
                    img = self.AllDataList.fridgeData?.teatime?[indexPath.item].recipe?.images?.small?.url ?? ""
                    isLike = self.AllDataList.fridgeData?.teatime?[indexPath.item].isLike ?? 0
                }else{
                    nme = self.AllDataList.freezerData?.teatime?[indexPath.item].recipe?.label ?? ""
-                   serv = "\(self.AllDataList.freezerData?.teatime?[indexPath.item].servings ?? 0)"
+                   serv = "\(self.AllDataList.freezerData?.teatime?[indexPath.item].recipe?.servings ?? 0)"
                    createdDate = self.AllDataList.freezerData?.teatime?[indexPath.item].createdDate ?? "0 days ago"
                    img = self.AllDataList.freezerData?.teatime?[indexPath.item].recipe?.images?.small?.url ?? ""
                    isLike = self.AllDataList.freezerData?.teatime?[indexPath.item].isLike ?? 0
@@ -1367,9 +1367,16 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
             vc.uri = uri
             vc.MealType = "Breakfast"
-            vc.Id = "\(self.AllDataList.fridgeData?.breakfast?[indexPath.item].id ?? 0)"
+            if self.FridgeBtnO.isSelected == true{
+                vc.Id = "\(self.AllDataList.fridgeData?.breakfast?[indexPath.item].id ?? 0)"
+                vc.ServCount = self.AllDataList.fridgeData?.breakfast?[indexPath.item].servings ?? 0
+            }else{
+                vc.Id = "\(self.AllDataList.freezerData?.breakfast?[indexPath.item].id ?? 0)"
+                vc.ServCount = self.AllDataList.freezerData?.breakfast?[indexPath.item].servings ?? 0
+            }
+            
             vc.type = "0"
-            vc.ServCount = self.AllDataList.fridgeData?.breakfast?[indexPath.item].servings ?? 0
+            
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         } else if collectionView == dessertCollV{
@@ -1385,9 +1392,16 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
             vc.uri = uri
             vc.MealType = "Dessert"
-            vc.Id = "\(self.AllDataList.fridgeData?.dessert?[indexPath.item].id ?? 0)"
+            if self.FridgeBtnO.isSelected == true{
+                vc.Id = "\(self.AllDataList.fridgeData?.dessert?[indexPath.item].id ?? 0)"
+                vc.ServCount = self.AllDataList.fridgeData?.dessert?[indexPath.item].servings ?? 0
+            }else{
+                vc.Id = "\(self.AllDataList.freezerData?.dessert?[indexPath.item].id ?? 0)"
+                vc.ServCount = self.AllDataList.freezerData?.dessert?[indexPath.item].servings ?? 0
+            }
+            
             vc.type = "0"
-            vc.ServCount = self.AllDataList.fridgeData?.dessert?[indexPath.item].servings ?? 0
+            
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }else if collectionView == LunchCollV{
@@ -1403,9 +1417,14 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
             vc.uri = uri
             vc.MealType = "Lunch"
-            vc.Id = "\(self.AllDataList.fridgeData?.lunch?[indexPath.item].id ?? 0)"
+            if self.FridgeBtnO.isSelected == true{
+                vc.Id = "\(self.AllDataList.fridgeData?.lunch?[indexPath.item].id ?? 0)"
+                vc.ServCount = self.AllDataList.fridgeData?.lunch?[indexPath.item].servings ?? 0
+            }else{
+                vc.Id = "\(self.AllDataList.freezerData?.lunch?[indexPath.item].id ?? 0)"
+                vc.ServCount = self.AllDataList.freezerData?.lunch?[indexPath.item].servings ?? 0
+            }
             vc.type = "0"
-            vc.ServCount = self.AllDataList.fridgeData?.lunch?[indexPath.item].servings ?? 0
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }else if collectionView == DinnerCollV{
@@ -1421,9 +1440,14 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
             vc.uri = uri
             vc.MealType = "Dinner"
-            vc.Id = "\(self.AllDataList.fridgeData?.dinner?[indexPath.item].id ?? 0)"
+            if self.FridgeBtnO.isSelected == true{
+                vc.Id = "\(self.AllDataList.fridgeData?.dinner?[indexPath.item].id ?? 0)"
+                vc.ServCount = self.AllDataList.fridgeData?.dinner?[indexPath.item].servings ?? 0
+            }else{
+                vc.Id = "\(self.AllDataList.freezerData?.dinner?[indexPath.item].id ?? 0)"
+                vc.ServCount = self.AllDataList.freezerData?.dinner?[indexPath.item].servings ?? 0
+            }
             vc.type = "0"
-            vc.ServCount = self.AllDataList.fridgeData?.dinner?[indexPath.item].servings ?? 0
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }else if collectionView == SnackCollV{
@@ -1439,9 +1463,14 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
             vc.uri = uri
             vc.MealType = "Snacks"
-            vc.Id = "\(self.AllDataList.fridgeData?.snacks?[indexPath.item].id ?? 0)"
+            if self.FridgeBtnO.isSelected == true{
+                vc.Id = "\(self.AllDataList.fridgeData?.snacks?[indexPath.item].id ?? 0)"
+                vc.ServCount = self.AllDataList.fridgeData?.snacks?[indexPath.item].servings ?? 0
+            }else{
+                vc.Id = "\(self.AllDataList.freezerData?.snacks?[indexPath.item].id ?? 0)"
+                vc.ServCount = self.AllDataList.freezerData?.snacks?[indexPath.item].servings ?? 0
+            }
             vc.type = "0"
-            vc.ServCount = self.AllDataList.fridgeData?.snacks?[indexPath.item].servings ?? 0
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }else{
@@ -1457,9 +1486,14 @@ extension YourCoockedMealVC: UICollectionViewDelegate, UICollectionViewDataSourc
             let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
             vc.uri = uri
             vc.MealType = "Brunch"
-            vc.Id = "\(self.AllDataList.fridgeData?.teatime?[indexPath.item].id ?? 0)"
+            if self.FridgeBtnO.isSelected == true{
+                vc.Id = "\(self.AllDataList.fridgeData?.teatime?[indexPath.item].id ?? 0)"
+                vc.ServCount = self.AllDataList.fridgeData?.teatime?[indexPath.item].servings ?? 0
+            }else{
+                vc.Id = "\(self.AllDataList.freezerData?.teatime?[indexPath.item].id ?? 0)"
+                vc.ServCount = self.AllDataList.freezerData?.teatime?[indexPath.item].servings ?? 0
+            }
             vc.type = "0"
-            vc.ServCount = self.AllDataList.fridgeData?.teatime?[indexPath.item].servings ?? 0
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }
