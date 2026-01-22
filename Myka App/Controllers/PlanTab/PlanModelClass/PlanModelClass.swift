@@ -99,7 +99,7 @@ struct BreakfastRecipe: Codable {
     var co2EmissionsClass: String?
     var totalWeight: Double?
     var totalTime: Int?
-    var cuisineType, mealType, dishType: [String]?
+    var cuisineType, mealType, dishType: [String?]?
     var totalNutrients, totalDaily: [String: Total]?
     var digest: [Digest]?
     var tags: [String]?
@@ -333,7 +333,7 @@ struct DinnerRecipe: Codable {
     var totalTime: Int?
     var cuisineType: [String]?
     var mealType: [String]?
-    var dishType: [String]?
+    var dishType: [String?]?
     var totalNutrients, totalDaily: [String: Total]?
     var digest: [Digest]?
 }

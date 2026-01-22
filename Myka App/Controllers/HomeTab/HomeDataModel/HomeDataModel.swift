@@ -125,7 +125,7 @@ struct HomeDataModel: Codable {
         let totalTime: Int?
         let cuisineType: [String]?
         let mealType: [String]?
-        let dishType: [String]?
+        let dishType: [String?]?
         let totalNutrients, totalDaily: [String: Total]?
         let digest: [Digest]?
         let instructionLines: [String]?
