@@ -13,7 +13,7 @@ class ChooseMealTypeVC: UIViewController {
     @IBOutlet weak var ChooseMealTypeTblV: UITableView!
     @IBOutlet weak var ChooseMealTypeBgV: UIView!
     
-    var ChooseMealTypeyData = [BodyGoalsModel(Name: "Breakfast", isSelected: false), BodyGoalsModel(Name: "Lunch", isSelected: false), BodyGoalsModel(Name: "Dinner", isSelected: false), BodyGoalsModel(Name: "Snacks", isSelected: false), BodyGoalsModel(Name: "Brunch", isSelected: false)]
+    var ChooseMealTypeyData = [BodyGoalsModel(Name: "Breakfast", isSelected: false), BodyGoalsModel(Name: "Brunch", isSelected: false), BodyGoalsModel(Name: "Lunch", isSelected: false), BodyGoalsModel(Name: "Snacks", isSelected: false), BodyGoalsModel(Name: "Dinner", isSelected: false), BodyGoalsModel(Name: "Dessert", isSelected: false)]
     
     var SelDateArray = [[String: String]]()
      var uri = ""

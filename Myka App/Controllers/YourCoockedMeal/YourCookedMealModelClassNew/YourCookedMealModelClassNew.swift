@@ -85,5 +85,5 @@ struct FreezerDataClass: Codable {
  
 struct Recommended: Codable {
     let calories, fat, carbs: Int?
-    let protein: String?
+    let protein: StringOrNumber?
 }

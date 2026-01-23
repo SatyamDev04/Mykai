@@ -83,6 +83,7 @@ struct BreakfastRecipe: Codable {
     var totalNutrients, totalDaily: [String: Total]?
     var digest: [Digest]?
     var tags: [String]?
+    var servings: Int?
 }
 
 

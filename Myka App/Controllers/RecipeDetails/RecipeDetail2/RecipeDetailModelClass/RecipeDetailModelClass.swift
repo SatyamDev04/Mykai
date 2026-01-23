@@ -53,7 +53,7 @@ struct RecipeDetail: Codable {
     var dishType: [String?]?
     var totalNutrients, totalDaily: [String: Total]?
     var digest: [Digest]?
-    var instructionLines: [String]?
+//    var instructionLines: [String?]?
     var createdType: String?
     var source_url: String?
 }

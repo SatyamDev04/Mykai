@@ -68,7 +68,7 @@ class RecipeDetailNewVC: UIViewController {
     var ServCount = 1
     var ChooseDayData = [BodyGoalsModel(Name: "Monday", isSelected: false), BodyGoalsModel(Name: "Tuesday", isSelected: false), BodyGoalsModel(Name: "Wednesday", isSelected: false), BodyGoalsModel(Name: "Thursday", isSelected: false), BodyGoalsModel(Name: "Friday", isSelected: false), BodyGoalsModel(Name: "Saturday", isSelected: false), BodyGoalsModel(Name: "Sunday", isSelected: false)]
     
-    var ChooseMealTypeyData = [BodyGoalsModel(Name: "Breakfast", isSelected: false), BodyGoalsModel(Name: "Lunch", isSelected: false), BodyGoalsModel(Name: "Dinner", isSelected: false), BodyGoalsModel(Name: "Snacks", isSelected: false), BodyGoalsModel(Name: "Brunch", isSelected: false)]
+    var ChooseMealTypeyData = [BodyGoalsModel(Name: "Breakfast", isSelected: false),BodyGoalsModel(Name: "Brunch", isSelected: false), BodyGoalsModel(Name: "Lunch", isSelected: false), BodyGoalsModel(Name: "Dinner", isSelected: false), BodyGoalsModel(Name: "Snacks", isSelected: false), BodyGoalsModel(Name: "Dessert", isSelected: false)]
     
     var recipesArray: [RecipeDetailsIngredientModel] = []
     var CookWareArray = [Cookware]()
@@ -165,7 +165,8 @@ class RecipeDetailNewVC: UIViewController {
         for indx in 0..<ChooseMealTypeyData.count{
             ChooseMealTypeyData[indx].isSelected = false
         }
-        
+        self.ChoosedaysTblV.reloadData()
+        self.ChooseMealTypeTblV.reloadData()
     }
     
     @objc func handleTap1(_ sender: UITapGestureRecognizer) {
@@ -179,6 +180,8 @@ class RecipeDetailNewVC: UIViewController {
         for indx in 0..<ChooseMealTypeyData.count{
             ChooseMealTypeyData[indx].isSelected = false
         }
+        self.ChoosedaysTblV.reloadData()
+        self.ChooseMealTypeTblV.reloadData()
     }
     
     private func setupTableView() {
@@ -478,7 +481,11 @@ class RecipeDetailNewVC: UIViewController {
 extension RecipeDetailNewVC: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        if tableView == self.TblV {
+        if tableView == ChoosedaysTblV {
+            return 1
+        }else if tableView == ChooseMealTypeTblV{
+            return 1
+        }else if tableView == self.TblV {
             return tblVIngredientData.count
         } else if tableView == self.CookwareTblV {
             return cookwareArr.count
@@ -488,7 +495,11 @@ extension RecipeDetailNewVC: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if tableView == self.TblV {
+        if tableView == ChoosedaysTblV {
+            return ChooseDayData.count
+        }else if tableView == ChooseMealTypeTblV{
+            return ChooseMealTypeyData.count
+        }else if tableView == self.TblV {
             guard section < tblVIngredientData.count else { return 0 }
             return tblVIngredientData[section].ingredients?.count ?? 0
         } else if tableView == self.CookwareTblV {
@@ -501,7 +512,20 @@ extension RecipeDetailNewVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if tableView == self.TblV {
+        if tableView == ChoosedaysTblV {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ChooseDaysTblVCell", for: indexPath) as! ChooseDaysTblVCell
+            cell.NameLbl.text = ChooseDayData[indexPath.row].Name
+            cell.TickImg.image = ChooseDayData[indexPath.row].isSelected ? UIImage(named: "chck") : UIImage(named: "Unchck")
+            cell.selectedBgImg.image = ChooseDayData[indexPath.row].isSelected ? UIImage(named: "Yelloborder") : UIImage(named: "Group 1171276489")
+            cell.selectionStyle = .none
+            return cell
+        }else if tableView == ChooseMealTypeTblV{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ChooseDaysTblVCell", for: indexPath) as! ChooseDaysTblVCell
+            cell.NameLbl.text = ChooseMealTypeyData[indexPath.row].Name
+            cell.TickImg.image = ChooseMealTypeyData[indexPath.row].isSelected ? UIImage(named: "RadioOn") : UIImage(named: "RadioOff")
+            cell.selectionStyle = .none
+            return cell
+        }else if tableView == self.TblV {
             let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientsTblVCell", for: indexPath) as! IngredientsTblVCell
             
             let section = indexPath.section
@@ -556,7 +580,7 @@ extension RecipeDetailNewVC: UITableViewDelegate, UITableViewDataSource {
             cell.selectionStyle = .none
             return cell
         }else{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeTblVCell", for: indexPath) as! RecipeTblVCell
+            let cell = recipeTblV.dequeueReusableCell(withIdentifier: "RecipeTblVCell", for: indexPath) as! RecipeTblVCell
             let section = indexPath.section
             let row = indexPath.row
             let header = recipeArr[section].hearder ?? ""
@@ -585,7 +609,38 @@ extension RecipeDetailNewVC: UITableViewDelegate, UITableViewDataSource {
 //        return UITableViewCell()
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        if tableView == ChoosedaysTblV {
+            if ChooseDayData[indexPath.row].isSelected {
+                ChooseDayData[indexPath.row].isSelected = false
+            }else{
+                let dateformatter = DateFormatter()
+                let date = self.currentWeekDates[indexPath.row]
+                dateformatter.dateFormat = "yyyy-MM-dd"
+                let Sdate = dateformatter.string(from: date)
+                dateformatter.dateFormat = "yyyy-MM-dd"
+                let ReconvertDate = dateformatter.date(from: Sdate)!
+                
+                dateformatter.dateFormat = "EEEE" // Full day name, e.g., "Monday"
+                let dayOfWeek = dateformatter.string(from: date)
+                let selDay = ChooseDayData[indexPath.row].Name
+                guard selDay == dayOfWeek else { return }
+                dateformatter.dateFormat = "yyyy-MM-dd"
+                let Cdate = dateformatter.string(from: Date())
+                dateformatter.dateFormat = "yyyy-MM-dd"
+                let cReconvertDate = dateformatter.date(from: Cdate)!
+                
+                guard ReconvertDate >= cReconvertDate else { return }
+                
+                ChooseDayData[indexPath.row].isSelected = true
+            }
+            ChoosedaysTblV.reloadData()
+        }else if tableView == ChooseMealTypeTblV{
+            for i in 0..<ChooseMealTypeyData.count{
+                ChooseMealTypeyData[i].isSelected = false
+            }
+            ChooseMealTypeyData[indexPath.row].isSelected = true
+            ChooseMealTypeTblV.reloadData()
+        }
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -749,13 +804,13 @@ extension RecipeDetailNewVC{
                         // self.ImgDesc1Lbl.text = "By \(val?.source ?? "")"
                         
                         let carbs = val?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
-                        self.CarbsLbl.text = "\(Int(carbs?.value.quantity ?? 0))"
+                        self.CarbsLbl.text = "\(Int(carbs?.value.quantity ?? 0))g"
                         
                         let Fat = val?.totalNutrients?.first(where: {$0.key == "FAT"})
-                        self.FatLbl.text = "\(Int(Fat?.value.quantity ?? 0))"
+                        self.FatLbl.text = "\(Int(Fat?.value.quantity ?? 0))g"
                         
                         let Protine = val?.totalNutrients?.first(where: {$0.key == "PROCNT"})
-                        self.ProtienLbl.text = "\(Int(Protine?.value.quantity ?? 0))"
+                        self.ProtienLbl.text = "\(Int(Protine?.value.quantity ?? 0))g"
                         
                         let calories = val?.calories ?? 0
                         self.Calorieslbl.text = "\(Int(calories))"

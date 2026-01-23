@@ -117,7 +117,7 @@ class PlanVc: UIViewController {
     
     var ChooseDayData = [BodyGoalsModel(Name: "Monday", isSelected: false), BodyGoalsModel(Name: "Tuesday", isSelected: false), BodyGoalsModel(Name: "Wednesday", isSelected: false), BodyGoalsModel(Name: "Thursday", isSelected: false), BodyGoalsModel(Name: "Friday", isSelected: false), BodyGoalsModel(Name: "Saturday", isSelected: false), BodyGoalsModel(Name: "Sunday", isSelected: false)]
     
-    var ChooseMealTypeyData = [BodyGoalsModel(Name: "Breakfast", isSelected: false), BodyGoalsModel(Name: "Brunch", isSelected: false),BodyGoalsModel(Name: "Dessert", isSelected: false), BodyGoalsModel(Name: "Lunch", isSelected: false), BodyGoalsModel(Name: "Dinner", isSelected: false), BodyGoalsModel(Name: "Snacks", isSelected: false)]
+    var ChooseMealTypeyData = [BodyGoalsModel(Name: "Breakfast", isSelected: false), BodyGoalsModel(Name: "Brunch", isSelected: false), BodyGoalsModel(Name: "Lunch", isSelected: false), BodyGoalsModel(Name: "Snacks", isSelected: false), BodyGoalsModel(Name: "Dinner", isSelected: false),BodyGoalsModel(Name: "Dessert", isSelected: false)]
     
     var AllRecipeSelItem = PlanDataClass()
     
@@ -2253,6 +2253,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         let uri = self.AllDataList.breakfast?[index].recipe?.uri ?? ""
         
         guard self.AllDataList.breakfast?[index].servings ?? 0 > 1 else{
+            self.showToast("Minimum serving at least value is one")
             return
         }
         
@@ -2278,6 +2279,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         let uri = self.AllDataList.dessert?[index].recipe?.uri ?? ""
         
         guard self.AllDataList.dessert?[index].servings ?? 0 > 1 else{
+            self.showToast("Minimum serving at least value is one")
             return
         }
         
@@ -2303,6 +2305,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         let uri = self.AllDataList.lunch?[index].recipe?.uri ?? ""
         
         guard self.AllDataList.lunch?[index].servings ?? 0 > 1 else{
+            self.showToast("Minimum serving at least value is one")
             return
         }
         
@@ -2328,6 +2331,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         let uri = self.AllDataList.dinner?[index].recipe?.uri ?? ""
         
         guard self.AllDataList.dinner?[index].servings ?? 0 > 1 else{
+            self.showToast("Minimum serving at least value is one")
             return
         }
         
@@ -2353,6 +2357,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         let uri = self.AllDataList.snacks?[index].recipe?.uri ?? ""
         
         guard self.AllDataList.snacks?[index].servings ?? 0 > 1 else{
+            self.showToast("Minimum serving at least value is one")
             return
         }
         
@@ -2378,6 +2383,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         let uri = self.AllDataList.teatime?[index].recipe?.uri ?? ""
         
         guard self.AllDataList.teatime?[index].servings ?? 0 > 1 else{
+            self.showToast("Minimum serving at least value is one")
             return
         }
         
@@ -2482,11 +2488,12 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
                 }
             }
         }
-        else if collectionView == BreakFastCollV{
+        else if collectionView == BreakFastCollV {
             let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
             vc.MealType = "Breakfast"
             vc.uri = self.AllRecipeSelItem.recipes?.breakfast?[indexPath.item].recipe?.uri ?? ""
+            vc.Id = ""
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }else if collectionView == dessertCollV{
@@ -2522,6 +2529,66 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
             vc.MealType = "Brunch"
             vc.uri = self.AllRecipeSelItem.recipes?.Teatime?[indexPath.item].recipe?.uri ?? ""
+            vc.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(vc, animated: true)
+        }else if collectionView == BreakFastDishCollV{
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
+            vc.MealType = "Breakfast"
+            vc.uri = self.AllDataList.breakfast?[indexPath.item].recipe?.uri ?? ""
+            vc.Id = "\(self.AllDataList.breakfast?[indexPath.item].id ?? 0)"
+            vc.ServCount = self.AllDataList.breakfast?[indexPath.item].servings ?? 0
+            vc.type = "0"
+            vc.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(vc, animated: true)
+        }else if collectionView == dessertDishCollV{
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
+            vc.MealType = "Dessert"
+            vc.uri = self.AllDataList.dessert?[indexPath.item].recipe?.uri ?? ""
+            vc.Id = "\(self.AllDataList.dessert?[indexPath.item].id ?? 0)"
+            vc.ServCount = self.AllDataList.dessert?[indexPath.item].servings ?? 0
+            vc.type = "0"
+            vc.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(vc, animated: true)
+        }else if collectionView == LunchDishCollV{
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
+            vc.MealType = "Lunch"
+            vc.uri = self.AllDataList.lunch?[indexPath.item].recipe?.uri ?? ""
+            vc.Id = "\(self.AllDataList.lunch?[indexPath.item].id ?? 0)"
+            vc.ServCount = self.AllDataList.lunch?[indexPath.item].servings ?? 0
+            vc.type = "0"
+            vc.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(vc, animated: true)
+        }else if collectionView == DinnerDishCollV{
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
+            vc.MealType = "Dinner"
+            vc.uri = self.AllDataList.dinner?[indexPath.item].recipe?.uri ?? ""
+            vc.Id = "\(self.AllDataList.dinner?[indexPath.item].id ?? 0)"
+            vc.ServCount = self.AllDataList.dinner?[indexPath.item].servings ?? 0
+            vc.type = "0"
+            vc.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(vc, animated: true)
+        }else if collectionView == TeaTimeDishCollV{
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
+            vc.MealType = "Brunch"
+            vc.uri = self.AllDataList.teatime?[indexPath.item].recipe?.uri ?? ""
+            vc.Id = "\(self.AllDataList.teatime?[indexPath.item].id ?? 0)"
+            vc.ServCount = self.AllDataList.teatime?[indexPath.item].servings ?? 0
+            vc.type = "0"
+            vc.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(vc, animated: true)
+        }else{
+            let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
+            vc.MealType = "Snacks"
+            vc.uri = self.AllDataList.snacks?[indexPath.item].recipe?.uri ?? ""
+            vc.Id = "\(self.AllDataList.snacks?[indexPath.item].id ?? 0)"
+            vc.ServCount = self.AllDataList.snacks?[indexPath.item].servings ?? 0
+            vc.type = "0"
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }

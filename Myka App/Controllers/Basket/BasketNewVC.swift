@@ -508,7 +508,17 @@ extension BasketNewVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
 //            let StoreID = BasketListArr.stores?[indexPath.item].storeUUID ?? ""
 //            
 //            self.getBasketListDataByMarket(StoreID:StoreID, StoreName:storNme)
-
+        let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
+        let Type = BasketListArr.recipe?[indexPath.item].type ?? ""
+        let type = Type.prefix(while: { $0 != "," })
+        vc.MealType = "\(type)"
+        vc.uri = BasketListArr.recipe?[indexPath.item].uri ?? ""
+        vc.Id = "\(BasketListArr.recipe?[indexPath.item].id ?? 0)"
+        vc.ServCount = Int(BasketListArr.recipe?[indexPath.item].serving ?? "1") ?? 1
+        vc.type = "0"
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
     }
  
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

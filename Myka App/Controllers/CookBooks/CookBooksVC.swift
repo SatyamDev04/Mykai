@@ -451,10 +451,11 @@ extension CookBooksVC: UICollectionViewDelegate, UICollectionViewDataSource ,UIC
                 let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
                 let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
                 let Type = favCookBookDataArr[indexPath.row].data?.recipe?.mealType?[0] ?? ""
-                let type = Type.prefix(while: { $0 != "/" })
-                vc.MealType = "\(type)"
+                let type = Type.prefix(while: { $0 != "," })
+                vc.MealType = "\(type)".firstUppercased()
                 vc.uri = favCookBookDataArr[indexPath.row].data?.recipe?.uri ?? ""
-                
+                vc.Id = "\(favCookBookDataArr[indexPath.row].id ?? 0)"
+                vc.ServCount = Int(favCookBookDataArr[indexPath.row].data?.recipe?.yield ?? 0)
                 vc.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(vc, animated: true)
             }

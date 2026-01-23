@@ -367,31 +367,48 @@ extension YourrecipeVC: UICollectionViewDelegate, UICollectionViewDataSource, UI
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         var URI: String = ""
         var MealType: String = ""
+        var serving = 1
+        var id = ""
         
         if collectionView == BreakfastCollV{
             URI = self.AllRecipeSelItem.breakfast?[indexPath.item].uri ?? ""
             MealType = (self.AllRecipeSelItem.breakfast?[indexPath.row].data?.recipe?.mealType?.first ?? "") ?? ""
+            serving = Int(self.AllRecipeSelItem.breakfast?[indexPath.row].serving ?? "1") ?? 1
+            id = "\(self.AllRecipeSelItem.breakfast?[indexPath.row].basketID ?? 0)"
         }else if collectionView == LunchCollV{
             URI = self.AllRecipeSelItem.lunch?[indexPath.item].uri ?? ""
             MealType = (self.AllRecipeSelItem.lunch?[indexPath.row].data?.recipe?.mealType?.first ?? "") ?? ""
+            serving = Int(self.AllRecipeSelItem.lunch?[indexPath.row].serving ?? "1") ?? 1
+            id = "\(self.AllRecipeSelItem.lunch?[indexPath.row].basketID ?? 0)"
+            
         }else if collectionView == DinnerCollV{
             URI = self.AllRecipeSelItem.dinner?[indexPath.item].uri ?? ""
             MealType = (self.AllRecipeSelItem.dinner?[indexPath.row].data?.recipe?.mealType?.first ?? "") ?? ""
+            serving = Int(self.AllRecipeSelItem.dinner?[indexPath.row].serving ?? "1") ?? 1
+            id = "\(self.AllRecipeSelItem.dinner?[indexPath.row].basketID ?? 0)"
+            
         }else if collectionView == SnacksCollV{
             URI = self.AllRecipeSelItem.snacks?[indexPath.item].uri ?? ""
             MealType = (self.AllRecipeSelItem.snacks?[indexPath.row].data?.recipe?.mealType?.first ?? "") ?? ""
+            serving = Int(self.AllRecipeSelItem.snacks?[indexPath.row].serving ?? "1") ?? 1
+            id = "\(self.AllRecipeSelItem.snacks?[indexPath.row].basketID ?? 0)"
         }else{
             URI = self.AllRecipeSelItem.Teatime?[indexPath.item].uri ?? ""
             MealType = (self.AllRecipeSelItem.Teatime?[indexPath.row].data?.recipe?.mealType?.first ?? "") ?? ""
+            serving = Int(self.AllRecipeSelItem.Teatime?[indexPath.row].serving ?? "1") ?? 1
+            id = "\(self.AllRecipeSelItem.Teatime?[indexPath.row].basketID ?? 0)"
         }
         
         let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
         vc.uri = URI
         let string = MealType
-        if let result = string.components(separatedBy: "/").first {
+        if let result = string.components(separatedBy: ",").first {
             vc.MealType = result
         }
+        vc.ServCount = serving
+        vc.type = "0"
+        vc.Id = id
         vc.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(vc, animated: true)
     }

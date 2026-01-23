@@ -273,3 +273,9 @@ extension Date {
     
     
 }
+extension String {
+    func firstUppercased() -> String {
+        guard let first = self.first else { return self }
+        return first.uppercased() + self.dropFirst()
+    }
+}

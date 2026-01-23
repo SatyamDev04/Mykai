@@ -40,7 +40,7 @@ class DinnerVc: UIViewController {
     
     var ChooseDayData = [BodyGoalsModel(Name: "Monday", isSelected: false), BodyGoalsModel(Name: "Tuesday", isSelected: false), BodyGoalsModel(Name: "Wednesday", isSelected: false), BodyGoalsModel(Name: "Thursday", isSelected: false), BodyGoalsModel(Name: "Friday", isSelected: false), BodyGoalsModel(Name: "Saturday", isSelected: false), BodyGoalsModel(Name: "Sunday", isSelected: false)]
     
-    var ChooseMealTypeyData = [BodyGoalsModel(Name: "Breakfast", isSelected: false), BodyGoalsModel(Name: "Brunch", isSelected: false),BodyGoalsModel(Name: "Dessert", isSelected: false), BodyGoalsModel(Name: "Lunch", isSelected: false), BodyGoalsModel(Name: "Dinner", isSelected: false), BodyGoalsModel(Name: "Snacks", isSelected: false)]
+    var ChooseMealTypeyData = [BodyGoalsModel(Name: "Breakfast", isSelected: false), BodyGoalsModel(Name: "Brunch", isSelected: false), BodyGoalsModel(Name: "Lunch", isSelected: false), BodyGoalsModel(Name: "Snacks", isSelected: false), BodyGoalsModel(Name: "Dinner", isSelected: false),BodyGoalsModel(Name: "Dessert", isSelected: false)]
     
     var currentWeekDates: [Date] = []
     var calendar = Calendar.current
@@ -615,11 +615,21 @@ extension DinnerVc {
         }
         
         if comesfrom == "Filter"{
-            params["mealType"] = mealTypeArray
-            params["health"] = healthArray
-            params["time"] = highestCookTime
-            params["cuisineType"] = cuisinesArrList
-            params["calories"] = highestNutrition
+            if !mealTypeArray.isEmpty{
+                params["mealType"] = mealTypeArray
+            }
+            if !healthArray.isEmpty{
+                params["health"] = healthArray
+            }
+            if !highestCookTime.isEmpty{
+                params["time"] = highestCookTime
+            }
+            if !cuisinesArrList.isEmpty{
+                params["cuisineType"] = cuisinesArrList
+            }
+            if !highestNutrition.isEmpty{
+                params["calories"] = highestNutrition
+            }
         }else if comesfrom == "Mealtype"{
             params["mealType"] = Serach
         }else if comesfrom == "PopularCat"{

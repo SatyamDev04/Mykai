@@ -484,10 +484,12 @@ extension HomeVC: UICollectionViewDelegate,UICollectionViewDataSource,UICollecti
             vc.uri = recipeCookedData[indexPath.row].recipe?.uri ?? ""
             
             let string = recipeCookedData[indexPath.row].recipe?.mealType?.first ?? ""
-            if let result = string.components(separatedBy: "/").first {
-                vc.MealType = result
+            if let result = string.components(separatedBy: ",").first {
+                vc.MealType = result.firstUppercased()
             }
-            
+            vc.ServCount = recipeCookedData[indexPath.row].recipe?.servings ?? 1
+            vc.Id = "\(recipeCookedData[indexPath.row].id ?? 0)"
+            vc.type = "0"
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }else{

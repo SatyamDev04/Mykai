@@ -689,13 +689,13 @@ extension RecipeDetailsVC{
 //                            self.recipesArray.append(contentsOf: [RecipeDetailsIngredientModel(name: name, image: img, Quantity: quantity, food: food, foodCategory: foodCat, measure: "\(measure)", foodID: FoodId, ingredient_cost: ingredient_cost)])
 //                        }
                         
-                        let ingredientList = val?.instructionLines
-                        self.RecipeInstArr.removeAll()
+//                        let ingredientList = val?.instructionLines
+//                        self.RecipeInstArr.removeAll()
                         
-                        for item in ingredientList ?? [] {
-                            print("item: \(item)")
-                            self.RecipeInstArr.append(item)
-                        }
+//                        for item in ingredientList ?? [] {
+//                            print("item: \(item)")
+//                            self.RecipeInstArr.append(item)
+//                        }
                         
                         for i in 0..<self.recipesArray.count{
                             self.selectedIndex.append(i)

@@ -125,11 +125,11 @@ struct HomeDataModel: Codable {
         let totalTime: Int?
         let cuisineType: [String]?
         let mealType: [String]?
-        let dishType: [String?]?
+//        let dishType: [String?]?
         let totalNutrients, totalDaily: [String: Total]?
         let digest: [Digest]?
         let instructionLines: [String]?
-        
+        let servings: Int?
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.uri = try container.decodeIfPresent(String.self, forKey: .uri)
@@ -150,11 +150,12 @@ struct HomeDataModel: Codable {
             self.totalTime = try container.decodeIfPresent(Int.self, forKey: .totalTime)
             self.cuisineType = try container.decodeIfPresent([String].self, forKey: .cuisineType)
             self.mealType = try container.decodeIfPresent([String].self, forKey: .mealType)
-            self.dishType = try container.decodeIfPresent([String].self, forKey: .dishType)
+//            self.dishType = try container.decodeIfPresent([String].self, forKey: .dishType)
             self.totalNutrients = try container.decodeIfPresent([String : Total].self, forKey: .totalNutrients)
             self.totalDaily = try container.decodeIfPresent([String : Total].self, forKey: .totalDaily)
             self.digest = try container.decodeIfPresent([Digest].self, forKey: .digest)
             self.instructionLines = try container.decodeIfPresent([String].self, forKey: .instructionLines)
+            self.servings = try container.decode(Int.self, forKey: .servings)
         }
     }
 

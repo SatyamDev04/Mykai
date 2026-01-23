@@ -375,7 +375,6 @@ extension FilterVC: UICollectionViewDelegate,UICollectionViewDataSource,UICollec
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == mealCollv{
-             
             if MealArray[indexPath.row].Selcolor == true{
                 MealArray[indexPath.row].Selcolor = false
                 MealArray1[indexPath.row].Selcolor = false
@@ -387,13 +386,12 @@ extension FilterVC: UICollectionViewDelegate,UICollectionViewDataSource,UICollec
                 self.MealArray0[indexPath.row].Selcolor = true
                 self.mealCollv.reloadData()
             }
-             
-             
+            
             if MealArray[indexPath.row].name == "More"{
                 MealArray1[indexPath.row].Selcolor = false
                 self.MealArray.removeAll()
                 MealArray = MealArray1
-                self.MealArray0.remove(at: indexPath.item)
+//                self.MealArray0.remove(at: indexPath.item)
                 self.reloadAllCollectionViews()
             }
             
@@ -415,7 +413,7 @@ extension FilterVC: UICollectionViewDelegate,UICollectionViewDataSource,UICollec
                 DietArray1[indexPath.row].Selcolor = false
                 self.DietArray.removeAll()
                 self.DietArray = self.DietArray1
-                self.DietArray0.remove(at: indexPath.item)
+//                self.DietArray0.remove(at: indexPath.item)
                 self.reloadAllCollectionViews()
             }
             print(self.DietArray)
@@ -437,7 +435,7 @@ extension FilterVC: UICollectionViewDelegate,UICollectionViewDataSource,UICollec
                  CookTimeArray1[indexPath.row].Selcolor = false
                  self.CookTimeArray.removeAll()
                  self.CookTimeArray = self.CookTimeArray1
-                 self.CookTimeArray0.remove(at: indexPath.item)
+//                 self.CookTimeArray0.remove(at: indexPath.item)
                  self.reloadAllCollectionViews()
              }
         }else if collectionView == CuisinesCollv {
@@ -458,7 +456,7 @@ extension FilterVC: UICollectionViewDelegate,UICollectionViewDataSource,UICollec
                 CuisinesArray1[indexPath.row].Selcolor = false
                 self.CuisinesArray.removeAll()
                 self.CuisinesArray = self.CuisinesArray1
-                self.CuisinesArray0.remove(at: indexPath.item)
+//                self.CuisinesArray0.remove(at: indexPath.item)
                  self.reloadAllCollectionViews()
              }
         }else {
@@ -479,7 +477,7 @@ extension FilterVC: UICollectionViewDelegate,UICollectionViewDataSource,UICollec
                 NutritionArray1[indexPath.row].Selcolor = false
                 self.NutritionArray.removeAll()
                 self.NutritionArray = self.NutritionArray1
-                self.NutritionArray0.remove(at: indexPath.item)
+//                self.NutritionArray0.remove(at: indexPath.item)
                 self.reloadAllCollectionViews()
             }
        }
@@ -661,11 +659,11 @@ extension FilterVC{
                         }
                     }
                     
-                    self.MealArray0 = self.MealArray
-                    self.DietArray0 = self.DietArray
-                    self.CookTimeArray0 = self.CookTimeArray
-                    self.CuisinesArray0 = self.CuisinesArray
-                    self.NutritionArray0 = self.NutritionArray
+                    self.MealArray0 = self.MealArray1
+                    self.DietArray0 = self.DietArray1
+                    self.CookTimeArray0 = self.CookTimeArray1
+                    self.CuisinesArray0 = self.CuisinesArray1
+                    self.NutritionArray0 = self.NutritionArray1
                        
                     self.Show_or_Hide_FilterView()
                 }else{
