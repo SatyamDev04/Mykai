@@ -565,7 +565,16 @@ extension BasketNewVC: UITableViewDelegate, UITableViewDataSource {
             
          
             cell.NameLbl.text = self.BasketListArr.ingredient?[indexPath.row].name?.capitalizedFirst ?? ""
-            cell.quantityLbl.text = "\(self.BasketListArr.ingredient?[indexPath.row].quantity ?? 0) \( self.BasketListArr.ingredient?[indexPath.row].measure ?? "")"
+            
+            let qtyValue: Double = {
+                if let qty = self.BasketListArr.ingredient?[indexPath.row].quantity, qty > 0 {
+                    return Double(qty)
+                } else {
+                    return 1.0
+                }
+            }()
+
+            cell.quantityLbl.text = "\(qtyValue) \( self.BasketListArr.ingredient?[indexPath.row].measure ?? "")"
 
             cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
             cell.Img.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "No_Image"))
@@ -738,12 +747,22 @@ extension BasketNewVC{
         var selectedIngredients: [SelectedIngredientPayload] = []
 
         for ingredient in ingredientList {
-            if ingredient.isSelected == true{
+            if ingredient.isSelected == true {
+
+                let qtyValue: Double = {
+                    if let qty = ingredient.quantity, qty > 0 {
+                        return Double(qty)
+                    } else {
+                        return 1.0
+                    }
+                }()
+
                 let payload = SelectedIngredientPayload(
                     name: ingredient.name ?? "",
-                    quantity: "\(ingredient.quantity ?? 0)",
+                    quantity: "\(qtyValue)",
                     unit: ingredient.unitOfMeasurement ?? ""
                 )
+
                 selectedIngredients.append(payload)
             }
         }

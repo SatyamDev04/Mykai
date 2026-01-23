@@ -21,16 +21,12 @@ class Shopping_ListVC: UIViewController, UITextFieldDelegate {
     
     
     @IBOutlet weak var yourRecipeCollV: UICollectionView!
-    
     @IBOutlet weak var IngredientsTblV: UITableView!
-    
     @IBOutlet weak var IngredientsTblVH: NSLayoutConstraint!
-    
     @IBOutlet weak var YourRecipeBgV: UIView!
-    
     @IBOutlet weak var SaveBtnO: UIButton!
     
-    // popup outlets
+    
     @IBOutlet var AddNewItemPopupV: UIView!
     @IBOutlet weak var CountLbl: UILabel!
     @IBOutlet weak var ItemNameTxtF: UITextField!
@@ -41,12 +37,7 @@ class Shopping_ListVC: UIViewController, UITextFieldDelegate {
     var DislikesIngredientArr = [ModelClass]()
     var moreCount = 100
     var dropDown = DropDown()
-    //
-    
-    //    var YourRecipesList = [ShoppingListModel(name: "", quantity: "", Count: 1, isSelected: false), ShoppingListModel(name: "", quantity: "", Count: 1, isSelected: false), ShoppingListModel(name: "", quantity: "", Count: 1, isSelected: false), ShoppingListModel(name: "", quantity: "", Count: 1, isSelected: false), ShoppingListModel(name: "", quantity: "", Count: 1, isSelected: false)]
-    //
-    //    var ShoppingList = [ShoppingListModel(name: "Tesco Mustard Seeds", quantity: "", Count: 1, isSelected: false), ShoppingListModel(name: "ketchup", quantity: "", Count: 1, isSelected: false), ShoppingListModel(name: "Milk", quantity: "", Count: 1, isSelected: false), ShoppingListModel(name: "Pasta", quantity: "", Count: 1, isSelected: false), ShoppingListModel(name: "Pizza", quantity: "", Count: 1, isSelected: false)]
-    
+   
     
     var ShoppingListArr: basketModelData?
     
@@ -87,12 +78,12 @@ class Shopping_ListVC: UIViewController, UITextFieldDelegate {
     }
     
     private func updateTableViewHeight(for tableView: UITableView, heightConstraint: NSLayoutConstraint) {
-        // Update the height constraint with the tableView's contentSize height
+        
         heightConstraint.constant = tableView.contentSize.height
     }
     
     deinit {
-        // Remove observers for both table views to avoid memory leaks
+     
         IngredientsTblV.removeObserver(self, forKeyPath: "contentSize")
     }
     
@@ -104,20 +95,10 @@ class Shopping_ListVC: UIViewController, UITextFieldDelegate {
     }
     
     
-
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.getShopping_ListData()
-//        let SubscriptionStatus = Int(UserDetail.shared.getSubscriptionStatus())
-//        
-//        if SubscriptionStatus == 1{
-//            self.yourRecipeCollV.isUserInteractionEnabled = false
-//            self.IngredientsTblV.isUserInteractionEnabled = false
-//        }else{
-//            self.yourRecipeCollV.isUserInteractionEnabled = true
-//            self.IngredientsTblV.isUserInteractionEnabled = true
-//        }
+
     }
       
     
@@ -131,7 +112,7 @@ class Shopping_ListVC: UIViewController, UITextFieldDelegate {
                 let vc = storyboard.instantiateViewController(withIdentifier: "AddMoreVc") as! AddMoreVc
                 vc.hidesBottomBarWhenPushed = true
                 navigationController?.pushViewController(vc, animated: true)
-     //   self.AddNewItemPopupV.isHidden = false
+     
     }
     
     
@@ -143,7 +124,7 @@ class Shopping_ListVC: UIViewController, UITextFieldDelegate {
     }
     
     
-    // popup btns.
+
     @IBAction func MinusBtn(_ sender: UIButton) {
         if self.count > 1 {
             self.count -= 1
@@ -171,7 +152,7 @@ class Shopping_ListVC: UIViewController, UITextFieldDelegate {
         
         self.ShoppingListArr?.ingredient?.append(contentsOf: [Product(created_at: "", deleted_at: "", food_id: "", id: nil, market_id: "", name: "", price: nil, pro_id: "", pro_img: "", pro_name: self.ItemNameTxtF.text!, pro_price: "", product_id: "", sch_id: self.count, status: nil, unit_size: 0, updated_at: "", user_id: nil, unit_of_measurement: "", is_checked: 0)])
         
-       // [DataIngredient(id: nil, userID: nil, foodID: "", schID: self.count, name: "", productID: "", price: nil, status: nil, marketID: nil, createdAt: "", updatedAt: "", deletedAt: "", proPrice: "", proName: self.ItemNameTxtF.text!, proID: "", proImg: "")]
+     
         
         self.AddNewItemPopupV.isHidden = true
         self.count = 1
@@ -188,7 +169,8 @@ class Shopping_ListVC: UIViewController, UITextFieldDelegate {
     }
   
     @IBAction func SaveBtn(_ sender: UIButton) {
-      
+        
+        self.Api_To_Send_Checked_Ingredients()
     }
 }
 
@@ -242,7 +224,7 @@ extension Shopping_ListVC: UICollectionViewDelegate, UICollectionViewDataSource,
         self.yourRecipeCollV.reloadData()
         
         let uri = ShoppingListArr?.recipe?[sender.tag].uri ?? ""
-        self.Api_To_Plus_Minus_ServesCount(uri: uri, Quenty: "\(ServCount)")
+        self.Api_To_Plus_Minus_ServesCount(uri: uri, Quenty: "\(ServCount)", type: ShoppingListArr?.recipe?[sender.tag].type ?? "")
     }
     
     @objc func RecipeServCountPlusBtn(_ sender: UIButton) {
@@ -252,7 +234,7 @@ extension Shopping_ListVC: UICollectionViewDelegate, UICollectionViewDataSource,
         self.yourRecipeCollV.reloadData()
         
         let uri = ShoppingListArr?.recipe?[sender.tag].uri ?? ""
-        self.Api_To_Plus_Minus_ServesCount(uri: uri, Quenty: "\(ServCount)")
+        self.Api_To_Plus_Minus_ServesCount(uri: uri, Quenty: "\(ServCount)", type: ShoppingListArr?.recipe?[sender.tag].type ?? "")
     }
     
     
@@ -333,22 +315,22 @@ extension Shopping_ListVC: UITableViewDelegate, UITableViewDataSource {
             
             let text = "\(ShoppingListArr?.ingredient?[indexPath.row].pro_name ?? "")\nNot Available"
 
-            // Create an NSMutableAttributedString
+            
             let attributedString = NSMutableAttributedString(string: text)
 
-            // Apply black color to "Rice"
+          
             if let riceRange = text.range(of: ShoppingListArr?.ingredient?[indexPath.row].pro_name ?? "") {
                 let nsRange = NSRange(riceRange, in: text)
                 attributedString.addAttribute(.foregroundColor, value: UIColor.black, range: nsRange)
             }
 
-            // Apply gray color to "Not Available"
+         
             if let notAvailableRange = text.range(of: "Not Available") {
                 let nsRange = NSRange(notAvailableRange, in: text)
                 attributedString.addAttribute(.foregroundColor, value: UIColor.gray, range: nsRange)
             }
 
-            // Set the attributed string to the label
+         
             cell.NameLbl.attributedText = attributedString
              
         }else{
@@ -410,15 +392,19 @@ extension Shopping_ListVC: UITableViewDelegate, UITableViewDataSource {
         }
         let indexPath = IndexPath(row: row, section: 0)
         self.IngredientsTblV.reloadRows(at: [indexPath], with: .automatic)
+        updateSaveButtonState()
     }
     
-    
-//    @objc func CheckBtnAction(_ sender: UIButton) {
-//        let indexPath = IndexPath(row: sender.tag, section: 0)
-//        ShoppingList[indexPath.row].isSelected.toggle()
-//        IngredientsTblV.reloadData()
-//    }
-    
+    func updateSaveButtonState() {
+        let hasSelectedItem = ShoppingListArr?.ingredient?
+            .contains(where: { $0.is_checked == 1 }) ?? false
+
+        SaveBtnO.isUserInteractionEnabled = hasSelectedItem
+        SaveBtnO.backgroundColor = hasSelectedItem
+            ? #colorLiteral(red: 0.0235, green: 0.7568, blue: 0.4117, alpha: 1)
+            : .lightGray
+    }
+
     
     // MARK: - Leading Swipe Actions (Left to Right)
  
@@ -444,7 +430,8 @@ extension Shopping_ListVC: UITableViewDelegate, UITableViewDataSource {
         
         deleteAction.image = UIImage(named: "DeleteIcon 1") // Replace with actual image name
         deleteAction.backgroundColor = .white
-        
+        tableView.reloadData()
+        self.updateSaveButtonState()
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }
     
@@ -484,7 +471,7 @@ extension Shopping_ListVC{
                  
                 let d = try JSONDecoder().decode(basketModelClass.self, from: data)
                 if d.success == true {
-                    
+                   
                     let allData = d.data
                     
                     self.ShoppingListArr = allData ?? basketModelData()
@@ -501,10 +488,12 @@ extension Shopping_ListVC{
                             self.ShoppingListArr = shopping
                         }
                     }
+                    self.sortIngredientsByCheckedStatus()
                     self.yourRecipeCollV.reloadData()
                     self.IngredientsTblV.reloadData()
                     self.SaveBtnO.isUserInteractionEnabled = false
                     self.SaveBtnO.backgroundColor = UIColor.lightGray
+                    self.updateSaveButtonState()
                
                 }else{
                     
@@ -520,14 +509,13 @@ extension Shopping_ListVC{
     
     
     // for Recipes
-    func Api_To_Plus_Minus_ServesCount(uri:String, Quenty:String){
+    func Api_To_Plus_Minus_ServesCount(uri:String, Quenty:String,type:String){
         
         var params:JSONDictionary = [:]
         
         params["uri"] = uri
         params["quantity"] = Quenty
-     
-        
+        params["type"] = type
         showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.add_to_basket
@@ -617,6 +605,58 @@ extension Shopping_ListVC{
     }
     
     
+    func getSelectedIngredientIDs() -> [Int] {
+        return ShoppingListArr?.ingredient?
+            .compactMap { $0.is_checked == 1 ? $0.id : nil } ?? []
+    }
+    func sortIngredientsByCheckedStatus() {
+        guard var ingredients = ShoppingListArr?.ingredient else { return }
+        
+       
+        ingredients.sort {
+            ($0.is_checked) < ($1.is_checked)
+        }
+        
+        ShoppingListArr?.ingredient = ingredients
+    }
+    
+    func Api_To_Send_Checked_Ingredients() {
+        
+        let selectedIDs = getSelectedIngredientIDs()
+        
+        guard !selectedIDs.isEmpty else {
+            AlertControllerOnr(title: "", message: "Please select at least one ingredient.")
+            return
+        }
+        
+        let params: [String: Any] = [
+            "id": selectedIDs
+        ]
+        
+        showIndicator(withTitle: "", and: "")
+        
+        let url = "https://admin.getmykai.com/api/is_checked"
+        
+        WebService.shared.postServiceMultipart(
+            url,
+            VC: self,
+            andParameter: params
+        ) { (json, statusCode) in
+            
+            self.hideIndicator()
+            
+            let dict = json.dictionaryObject ?? [:]
+            
+            if dict["success"] as? Bool == true {
+                self.showToast("Items updated successfully")
+                self.SaveBtnO.isUserInteractionEnabled = false
+                self.SaveBtnO.backgroundColor = .lightGray
+            } else {
+                let msg = dict["message"] as? String ?? "Something went wrong"
+                self.showToast(msg)
+            }
+        }
+    }
     
     
     }

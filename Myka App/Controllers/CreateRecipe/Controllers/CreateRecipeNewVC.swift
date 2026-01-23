@@ -586,18 +586,29 @@ extension CreateRecipeNewVC: UITextFieldDelegate{
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
         
-        let fractions = ["1/2", "1/3", "1/4", "1/8", "2/3", "3/4"]
-        
+        let fractions = ["1/2", "1/3", "1/4", "1/8", "2/3",]
         
         var items: [UIBarButtonItem] = []
         
         for frac in fractions {
-            let button = UIBarButtonItem(title: frac, style: .plain, target: self, action: #selector(fractionTapped(_:)))
+            let button = UIBarButtonItem(
+                title: frac,
+                style: .plain,
+                target: self,
+                action: #selector(fractionTapped(_:))
+            )
             items.append(button)
         }
         
-        items.append(UIBarButtonItem.flexibleSpace())
-        let done = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneTapped))
+     
+        items.append(UIBarButtonItem.fixedSpace(1))
+        
+        let done = UIBarButtonItem(
+            title: "Done",
+            style: .done,
+            target: self,
+            action: #selector(doneTapped)
+        )
         items.append(done)
         
         toolbar.items = items
@@ -659,7 +670,7 @@ extension CreateRecipeNewVC: UITextFieldDelegate{
         
       
         let lineHeight = addrecipeTxtV.font?.lineHeight ?? 0
-        let maxHeight = lineHeight * 4   // 4 lines max
+        let maxHeight = lineHeight * 4
         
         addrecipeTxtVHConstraint.constant = min(estimatedSize.height, maxHeight)
         addrecipeTxtV.isScrollEnabled = estimatedSize.height > maxHeight
@@ -970,12 +981,17 @@ extension CreateRecipeNewVC {
         }
         
     
-        viewModel.uploadRecipe(payload,type: "") { [weak self] _, statusCode in
+        viewModel.uploadRecipe(payload,type: "") { [weak self] json, statusCode in
             guard let self = self else { return }
             
             if (200...201).contains(statusCode) {
+                if let dict = json.dictionaryObject {
+                    let status = dict["status"] as? String ?? ""
+                }
                 self.showOkAlertWithHandler(title: "", "Recipe uploaded successfully!") {
                     RecipeDraftManager.clear()
+                  //  self.navigationController?.popToViewController(ofClass: HomeVC.self)
+                    self.tabBarController?.tabBar.isHidden = false
                     self.tabBarController?.selectedIndex = 3
                 }
                 
