@@ -60,7 +60,7 @@ class OtpVC: UIViewController {
             fullString.append(worldString)
             self.TitleLbl.attributedText = fullString
             
-            SendOtponLbl.text = "We have sent the code to email below-\n\(email_Phone)"
+            SendOtponLbl.text = "We have sent the code to email below \n\(email_Phone)"
         }else{
             let helloString = NSAttributedString(string: "Please check your", attributes: Attributes1)
             let worldString = NSAttributedString(string: " Phone", attributes: Attributes2)

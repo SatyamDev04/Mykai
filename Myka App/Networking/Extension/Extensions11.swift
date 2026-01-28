@@ -11,6 +11,35 @@ import UIKit
 import QuartzCore
 import AVFoundation
 
+extension UIColor {
+    convenience init?(hex: String) {
+        var hexString = hex.trimmingCharacters(in: .whitespacesAndNewlines)
+        if hexString.hasPrefix("#") {
+            hexString.removeFirst()
+        }
+        var rgb: UInt64 = 0
+        guard Scanner(string: hexString).scanHexInt64(&rgb) else { return nil }
+        let length = hexString.count
+        switch length {
+        case 6:
+            self.init(
+                red: CGFloat((rgb & 0xFF0000) >> 16) / 255.0,
+                green: CGFloat((rgb & 0x00FF00) >> 8) / 255.0,
+                blue: CGFloat(rgb & 0x0000FF) / 255.0,
+                alpha: 1.0
+            )
+        case 8:
+            self.init(
+                red: CGFloat((rgb & 0xFF000000) >> 24) / 255.0,
+                green: CGFloat((rgb & 0x00FF0000) >> 16) / 255.0,
+                blue: CGFloat((rgb & 0x0000FF00) >> 8) / 255.0,
+                alpha: CGFloat(rgb & 0x000000FF) / 255.0
+            )
+        default:
+            return nil
+        }
+    }
+}
 
 
 extension UIImageView {
@@ -1239,3 +1268,84 @@ enum StringOrNumber: Codable {
         }
     }
 }
+
+
+@IBDesignable
+class MyKaiTitleLabel: UILabel {
+
+    // MARK: - Inspectables (Defaults preserved)
+
+    @IBInspectable var firstText: String = "My Kai" {
+        didSet { applyStyle() }
+    }
+
+    @IBInspectable var secondText: String = " Meal Planner" {
+        didSet { applyStyle() }
+    }
+
+    @IBInspectable var firstColor: UIColor = UIColor(hex: "#06C169") ?? .yellow {
+        didSet { applyStyle() }
+    }
+
+    @IBInspectable var secondColor: UIColor = UIColor(hex: "#FE9F45") ?? .orange {
+        didSet { applyStyle() }
+    }
+
+    @IBInspectable var titleFontSize: CGFloat = 29 {
+        didSet { applyStyle() }
+    }
+
+    @IBInspectable var fontNamee: String = "Sarabun-ExtraBold" {
+        didSet { applyStyle() }
+    }
+
+    // MARK: - Lifecycle
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        applyStyle()
+    }
+
+    override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
+        applyStyle()
+    }
+
+    // MARK: - Style
+
+    private func applyStyle() {
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.alignment = .center
+
+        let font = UIFont(name: fontNamee, size: titleFontSize)
+            ?? UIFont.boldSystemFont(ofSize: titleFontSize)
+
+        let attributesFirst: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .foregroundColor: firstColor,
+            .paragraphStyle: paragraph
+        ]
+
+        let attributesSecond: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .foregroundColor: secondColor,
+            .paragraphStyle: paragraph
+        ]
+
+        let attributedText = NSMutableAttributedString(
+            string: firstText,
+            attributes: attributesFirst
+        )
+
+        attributedText.append(
+            NSAttributedString(
+                string: secondText,
+                attributes: attributesSecond
+            )
+        )
+
+        numberOfLines = 1
+      self.attributedText = attributedText
+    }
+}
+
