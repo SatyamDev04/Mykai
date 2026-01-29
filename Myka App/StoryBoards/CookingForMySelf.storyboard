@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="MQe-ql-9uv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="MQe-ql-9uv">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -87,7 +87,7 @@
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IoT-kM-YMw">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IoT-kM-YMw" customClass="MyKaiTitleLabel" customModule="My_Kai" customModuleProvider="target">
                                 <rect key="frame" x="30" y="272" width="333" height="33.666666666666686"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Body">
@@ -113,6 +113,20 @@
                                     </fragment>
                                 </attributedString>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="fontNamee" value="Montserrat-Bold"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="titleFontSize">
+                                        <real key="value" value="32"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="firstText" value="Body "/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="firstColor">
+                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="secondColor">
+                                        <color key="value" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="secondText" value="Goals"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What are your body goals?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ku-sR-bhA">
                                 <rect key="frame" x="30" y="325.66666666666669" width="333" height="22.666666666666686"/>
@@ -310,7 +324,7 @@
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NGb-yB-WDf">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NGb-yB-WDf" customClass="MyKaiTitleLabel" customModule="My_Kai" customModuleProvider="target">
                                 <rect key="frame" x="30" y="218" width="333" height="33.666666666666657"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Dietary ">
@@ -329,6 +343,20 @@
                                     </fragment>
                                 </attributedString>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="fontNamee" value="Montserrat-Bold"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="titleFontSize">
+                                        <real key="value" value="32"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="firstText" value="Dietary "/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="firstColor">
+                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="secondColor">
+                                        <color key="value" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="secondText" value="Restrictions"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Do you have any dietary restrictions" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3oB-Yb-Y2R">
                                 <rect key="frame" x="30" y="271.66666666666669" width="333" height="22.666666666666686"/>
@@ -618,7 +646,7 @@
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fG4-9A-hDQ">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fG4-9A-hDQ" customClass="MyKaiTitleLabel" customModule="My_Kai" customModuleProvider="target">
                                 <rect key="frame" x="30" y="218" width="333" height="33.666666666666657"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Favorite">
@@ -644,6 +672,20 @@
                                     </fragment>
                                 </attributedString>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="fontNamee" value="Montserrat-Bold"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="titleFontSize">
+                                        <real key="value" value="32"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="firstText" value="Favorite  "/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="firstColor">
+                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="secondColor">
+                                        <color key="value" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="secondText" value="Cuisines"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What cuisines do you enjoy most?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lN7-b7-oNG">
                                 <rect key="frame" x="30" y="271.66666666666669" width="353" height="22.666666666666686"/>
@@ -823,7 +865,7 @@
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yv6-4Q-Qhc">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yv6-4Q-Qhc" customClass="MyKaiTitleLabel" customModule="My_Kai" customModuleProvider="target">
                                 <rect key="frame" x="30" y="218" width="333" height="33.666666666666657"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Disliked">
@@ -849,6 +891,20 @@
                                     </fragment>
                                 </attributedString>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="fontNamee" value="Montserrat-Bold"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="titleFontSize">
+                                        <real key="value" value="32"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="firstText" value="Disliked "/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="firstColor">
+                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="secondColor">
+                                        <color key="value" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="secondText" value="Ingredients"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search and select the ingredients you dislike" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="616-ky-sHd">
                                 <rect key="frame" x="30" y="271.66666666666669" width="333" height="45"/>
@@ -868,45 +924,43 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </imageView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search" translatesAutoresizingMaskIntoConstraints="NO" id="DTV-by-dCf">
-                                        <rect key="frame" x="298" y="7.6666666666666288" width="20" height="20"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search" translatesAutoresizingMaskIntoConstraints="NO" id="Bxb-H4-YRX">
+                                        <rect key="frame" x="15" y="7.6666666666666288" width="20" height="20"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="Adz-KS-0Dz"/>
-                                            <constraint firstAttribute="width" constant="20" id="Fjh-kL-e6b"/>
+                                            <constraint firstAttribute="width" constant="20" id="PyT-Nd-wh1"/>
+                                            <constraint firstAttribute="height" constant="20" id="iAl-Yz-Pha"/>
                                         </constraints>
                                     </imageView>
-                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search ingredients" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qj6-y1-N1h">
-                                        <rect key="frame" x="15" y="6.6666666666666288" width="273" height="22"/>
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="teG-wf-Qra">
-                                        <rect key="frame" x="296" y="0.0" width="32" height="35"/>
+                                    <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7wE-ti-UKX">
+                                        <rect key="frame" x="15" y="2.6666666666666288" width="30" height="30"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <connections>
-                                            <action selector="SearchBtn:" destination="d0w-tB-iyJ" eventType="touchUpInside" id="6Eu-5t-1iz"/>
+                                            <action selector="SearchBtn:" destination="d0w-tB-iyJ" eventType="touchUpInside" id="SRN-Rg-wwa"/>
                                         </connections>
                                     </button>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search ingredients" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qj6-y1-N1h">
+                                        <rect key="frame" x="45" y="6.6666666666666288" width="273" height="22"/>
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="teG-wf-Qra" firstAttribute="leading" secondItem="qj6-y1-N1h" secondAttribute="trailing" constant="8" symbolic="YES" id="9W0-3Q-b2u"/>
+                                    <constraint firstItem="7wE-ti-UKX" firstAttribute="leading" secondItem="hCJ-32-lxe" secondAttribute="leading" constant="15" id="11j-sV-y9D"/>
+                                    <constraint firstItem="qj6-y1-N1h" firstAttribute="centerY" secondItem="7wE-ti-UKX" secondAttribute="centerY" id="7y9-HI-nYP"/>
+                                    <constraint firstItem="Bxb-H4-YRX" firstAttribute="centerY" secondItem="7wE-ti-UKX" secondAttribute="centerY" id="BCm-F5-0og"/>
                                     <constraint firstAttribute="height" constant="35" id="EGG-N9-sAf"/>
                                     <constraint firstAttribute="bottom" secondItem="pQh-ql-oDg" secondAttribute="bottom" id="HQs-TQ-ahA"/>
-                                    <constraint firstItem="qj6-y1-N1h" firstAttribute="centerY" secondItem="DTV-by-dCf" secondAttribute="centerY" id="J3j-6z-UPJ"/>
-                                    <constraint firstItem="DTV-by-dCf" firstAttribute="centerY" secondItem="pQh-ql-oDg" secondAttribute="centerY" id="THe-1L-fx7"/>
+                                    <constraint firstItem="Bxb-H4-YRX" firstAttribute="leading" secondItem="hCJ-32-lxe" secondAttribute="leading" constant="15" id="Uax-ej-JPF"/>
                                     <constraint firstItem="pQh-ql-oDg" firstAttribute="leading" secondItem="hCJ-32-lxe" secondAttribute="leading" id="Xyl-t7-bH2"/>
                                     <constraint firstItem="pQh-ql-oDg" firstAttribute="top" secondItem="hCJ-32-lxe" secondAttribute="top" id="aYt-7P-cBD"/>
-                                    <constraint firstItem="teG-wf-Qra" firstAttribute="top" secondItem="hCJ-32-lxe" secondAttribute="top" id="oLY-5Z-u0i"/>
-                                    <constraint firstAttribute="trailing" secondItem="qj6-y1-N1h" secondAttribute="trailing" constant="45" id="q0I-Di-aCc"/>
+                                    <constraint firstItem="qj6-y1-N1h" firstAttribute="leading" secondItem="7wE-ti-UKX" secondAttribute="trailing" id="p1v-yR-F7v"/>
+                                    <constraint firstItem="7wE-ti-UKX" firstAttribute="centerY" secondItem="pQh-ql-oDg" secondAttribute="centerY" id="pUf-V8-gHB"/>
+                                    <constraint firstAttribute="trailing" secondItem="qj6-y1-N1h" secondAttribute="trailing" constant="15" id="q0I-Di-aCc"/>
                                     <constraint firstAttribute="trailing" secondItem="pQh-ql-oDg" secondAttribute="trailing" id="ssa-Jf-1Fe"/>
-                                    <constraint firstAttribute="trailing" secondItem="teG-wf-Qra" secondAttribute="trailing" constant="5" id="tYX-R6-WZ7"/>
-                                    <constraint firstItem="qj6-y1-N1h" firstAttribute="leading" secondItem="hCJ-32-lxe" secondAttribute="leading" constant="15" id="vM3-fq-MAT"/>
-                                    <constraint firstAttribute="bottom" secondItem="teG-wf-Qra" secondAttribute="bottom" id="xJX-3V-pUr"/>
-                                    <constraint firstAttribute="trailing" secondItem="DTV-by-dCf" secondAttribute="trailing" constant="15" id="yn3-9A-cZ9"/>
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="KJg-8s-lxk">
@@ -1083,18 +1137,32 @@
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LE6-hj-rXz">
-                                <rect key="frame" x="30" y="218" width="343" height="33.666666666666657"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LE6-hj-rXz" customClass="MyKaiTitleLabel" customModule="My_Kai" customModuleProvider="target">
+                                <rect key="frame" x="30.000000000000007" y="218" width="103.66666666666669" height="33.666666666666657"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Allergies">
                                         <attributes>
                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <font key="NSFont" metaFont="system" size="28"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
                                 </attributedString>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="fontNamee" value="Montserrat-Bold"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="titleFontSize">
+                                        <real key="value" value="32"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="firstText" value="Allergie"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="firstColor">
+                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="secondColor">
+                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="secondText" value="s"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search and select the ingredients you’re allergic to, so I can help you avoid them" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LUf-dE-oAU">
                                 <rect key="frame" x="30" y="271.66666666666669" width="353" height="45"/>
@@ -1178,43 +1246,42 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </imageView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search" translatesAutoresizingMaskIntoConstraints="NO" id="YzB-g9-eE1">
-                                        <rect key="frame" x="298" y="7.6666666666666288" width="20" height="20"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search" translatesAutoresizingMaskIntoConstraints="NO" id="dRP-8D-c78">
+                                        <rect key="frame" x="15" y="7.6666666666666288" width="20" height="20"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="hha-J4-vCd"/>
-                                            <constraint firstAttribute="width" constant="20" id="tVa-0U-N7S"/>
+                                            <constraint firstAttribute="width" constant="20" id="PvX-IH-xYa"/>
+                                            <constraint firstAttribute="height" constant="20" id="pDB-fp-Pwb"/>
                                         </constraints>
                                     </imageView>
-                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search ingredients" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EB1-R5-8O0">
-                                        <rect key="frame" x="15" y="6.6666666666666288" width="268" height="22"/>
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qwb-iv-ni3">
-                                        <rect key="frame" x="296" y="1" width="30" height="33"/>
+                                    <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ssY-SE-UNh">
+                                        <rect key="frame" x="15" y="2.6666666666666288" width="30" height="30"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <connections>
-                                            <action selector="SearchBtn:" destination="x9T-ba-6lm" eventType="touchUpInside" id="CxV-kk-PRf"/>
+                                            <action selector="SearchBtn:" destination="x9T-ba-6lm" eventType="touchUpInside" id="46V-53-8M8"/>
                                         </connections>
                                     </button>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search ingredients" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EB1-R5-8O0">
+                                        <rect key="frame" x="45" y="6.6666666666666288" width="273" height="22"/>
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="Qwb-iv-ni3" firstAttribute="top" secondItem="kav-Lj-dys" secondAttribute="top" constant="1" id="6J5-2c-UCa"/>
-                                    <constraint firstAttribute="trailing" secondItem="Qwb-iv-ni3" secondAttribute="trailing" constant="7" id="EdC-kI-W2T"/>
+                                    <constraint firstItem="dRP-8D-c78" firstAttribute="leading" secondItem="kav-Lj-dys" secondAttribute="leading" constant="15" id="3f0-Nu-eQY"/>
                                     <constraint firstItem="mWk-0D-SU3" firstAttribute="top" secondItem="kav-Lj-dys" secondAttribute="top" id="GFr-ZT-gyM"/>
                                     <constraint firstAttribute="height" constant="35" id="Gbg-wR-RNq"/>
                                     <constraint firstAttribute="bottom" secondItem="mWk-0D-SU3" secondAttribute="bottom" id="RHd-DL-9hT"/>
-                                    <constraint firstAttribute="bottom" secondItem="Qwb-iv-ni3" secondAttribute="bottom" constant="1" id="V1U-V9-axn"/>
-                                    <constraint firstItem="EB1-R5-8O0" firstAttribute="centerY" secondItem="YzB-g9-eE1" secondAttribute="centerY" id="bLi-rO-mZC"/>
-                                    <constraint firstItem="YzB-g9-eE1" firstAttribute="centerY" secondItem="mWk-0D-SU3" secondAttribute="centerY" id="dJp-Pz-m3i"/>
+                                    <constraint firstItem="EB1-R5-8O0" firstAttribute="centerY" secondItem="ssY-SE-UNh" secondAttribute="centerY" id="TZb-Vl-hr1"/>
+                                    <constraint firstItem="EB1-R5-8O0" firstAttribute="leading" secondItem="ssY-SE-UNh" secondAttribute="trailing" id="Z4b-CM-hQh"/>
+                                    <constraint firstItem="ssY-SE-UNh" firstAttribute="centerY" secondItem="mWk-0D-SU3" secondAttribute="centerY" id="cCc-H4-u9x"/>
+                                    <constraint firstItem="dRP-8D-c78" firstAttribute="centerY" secondItem="ssY-SE-UNh" secondAttribute="centerY" id="e3s-64-NMk"/>
                                     <constraint firstAttribute="trailing" secondItem="mWk-0D-SU3" secondAttribute="trailing" id="hNa-Gl-TPf"/>
-                                    <constraint firstItem="Qwb-iv-ni3" firstAttribute="leading" secondItem="EB1-R5-8O0" secondAttribute="trailing" constant="13" id="j3o-1b-oLV"/>
-                                    <constraint firstAttribute="trailing" secondItem="YzB-g9-eE1" secondAttribute="trailing" constant="15" id="pFt-ND-dSA"/>
-                                    <constraint firstItem="EB1-R5-8O0" firstAttribute="leading" secondItem="kav-Lj-dys" secondAttribute="leading" constant="15" id="qYj-rO-WYW"/>
+                                    <constraint firstAttribute="trailing" secondItem="EB1-R5-8O0" secondAttribute="trailing" constant="15" id="kI2-Uv-w4X"/>
+                                    <constraint firstItem="ssY-SE-UNh" firstAttribute="leading" secondItem="kav-Lj-dys" secondAttribute="leading" constant="15" id="mar-tg-su2"/>
                                     <constraint firstItem="mWk-0D-SU3" firstAttribute="leading" secondItem="kav-Lj-dys" secondAttribute="leading" id="wTo-1o-IqT"/>
                                 </constraints>
                             </view>
@@ -1227,7 +1294,6 @@
                             <constraint firstItem="mua-N9-ayp" firstAttribute="bottom" secondItem="idg-TZ-VoW" secondAttribute="bottom" constant="20" id="97G-K5-dIB"/>
                             <constraint firstItem="toa-v9-lyh" firstAttribute="leading" secondItem="mua-N9-ayp" secondAttribute="leading" id="AXZ-8s-pvb"/>
                             <constraint firstItem="LUf-dE-oAU" firstAttribute="leading" secondItem="GNn-Ro-1U3" secondAttribute="leading" constant="30" id="COg-sM-IQ2"/>
-                            <constraint firstAttribute="trailing" secondItem="LE6-hj-rXz" secondAttribute="trailing" constant="20" id="COr-Qy-ue0"/>
                             <constraint firstItem="hHP-gl-PJp" firstAttribute="leading" secondItem="mua-N9-ayp" secondAttribute="leading" constant="30" id="D3o-ev-nY1"/>
                             <constraint firstItem="LE6-hj-rXz" firstAttribute="top" secondItem="MVn-tL-6eD" secondAttribute="bottom" constant="25" id="FOe-8o-mTW"/>
                             <constraint firstItem="Xe6-Dh-gBX" firstAttribute="centerY" secondItem="MVn-tL-6eD" secondAttribute="centerY" id="HN3-x7-jHL"/>
@@ -1326,7 +1392,7 @@
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Fv-ry-agt">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Fv-ry-agt" customClass="MyKaiTitleLabel" customModule="My_Kai" customModuleProvider="target">
                                 <rect key="frame" x="30" y="218" width="333" height="33.666666666666657"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Meal ">
@@ -1345,6 +1411,20 @@
                                     </fragment>
                                 </attributedString>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="fontNamee" value="Montserrat-Bold"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="titleFontSize">
+                                        <real key="value" value="32"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="firstText" value="Meal  "/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="firstColor">
+                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="secondColor">
+                                        <color key="value" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="secondText" value="Routine"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What meals do you typically cook at home?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="guG-Dx-V9C">
                                 <rect key="frame" x="30" y="271.66666666666669" width="333" height="45"/>
@@ -1524,7 +1604,7 @@
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fBI-1f-mY5">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fBI-1f-mY5" customClass="MyKaiTitleLabel" customModule="My_Kai" customModuleProvider="target">
                                 <rect key="frame" x="30" y="218" width="333" height="33.666666666666657"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Cooking">
@@ -1550,6 +1630,20 @@
                                     </fragment>
                                 </attributedString>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="fontNamee" value="Montserrat-Bold"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="titleFontSize">
+                                        <real key="value" value="32"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="firstText" value="Cooking "/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="firstColor">
+                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="secondColor">
+                                        <color key="value" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="secondText" value="Frequency"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How often do you guys cook meals at home?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uC7-SX-RKm">
                                 <rect key="frame" x="30" y="271.66666666666669" width="333" height="45"/>
@@ -1729,7 +1823,7 @@
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h2h-oT-Zft">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h2h-oT-Zft" customClass="MyKaiTitleLabel" customModule="My_Kai" customModuleProvider="target">
                                 <rect key="frame" x="30" y="218" width="333" height="33.666666666666657"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Cooking">
@@ -1755,6 +1849,20 @@
                                     </fragment>
                                 </attributedString>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="fontNamee" value="Montserrat-Bold"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="titleFontSize">
+                                        <real key="value" value="32"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="firstText" value="Cooking "/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="firstColor">
+                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="secondColor">
+                                        <color key="value" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="secondText" value="Schedule"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select the days you usually cook or prep  meals" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pc4-wk-GbJ">
                                 <rect key="frame" x="30" y="271.66666666666669" width="333" height="45"/>
@@ -1934,7 +2042,7 @@
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ktQ-aC-Tfs">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ktQ-aC-Tfs" customClass="MyKaiTitleLabel" customModule="My_Kai" customModuleProvider="target">
                                 <rect key="frame" x="30" y="218" width="333" height="67"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Spending on">
@@ -1960,6 +2068,20 @@
                                     </fragment>
                                 </attributedString>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="fontNamee" value="Montserrat-Bold"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="titleFontSize">
+                                        <real key="value" value="32"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="firstText" value="Spending on\n"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="firstColor">
+                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="secondColor">
+                                        <color key="value" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="secondText" value="Groceries"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How much do you guys normally spend on groceries each week or month?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CVm-5n-lKg">
                                 <rect key="frame" x="30" y="305" width="333" height="45"/>
@@ -2387,7 +2509,7 @@
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TI7-gD-nff">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TI7-gD-nff" customClass="MyKaiTitleLabel" customModule="My_Kai" customModuleProvider="target">
                                 <rect key="frame" x="30" y="218" width="333" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="gKk-rl-KGm"/>
@@ -2409,6 +2531,20 @@
                                     </fragment>
                                 </attributedString>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="fontNamee" value="Montserrat-Bold"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="titleFontSize">
+                                        <real key="value" value="32"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="firstText" value="Eating "/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="firstColor">
+                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="secondColor">
+                                        <color key="value" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="secondText" value="Out"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ieV-Ba-hpd">
                                 <rect key="frame" x="30" y="273" width="333" height="365"/>
@@ -2616,7 +2752,7 @@
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ix4-ht-IWg">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ix4-ht-IWg" customClass="MyKaiTitleLabel" customModule="My_Kai" customModuleProvider="target">
                                 <rect key="frame" x="28" y="218" width="348" height="33.666666666666657"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Reasons for ">
@@ -2635,6 +2771,20 @@
                                     </fragment>
                                 </attributedString>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="fontNamee" value="Montserrat-Bold"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="titleFontSize">
+                                        <real key="value" value="32"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="firstText" value="Reasons for "/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="firstColor">
+                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="secondColor">
+                                        <color key="value" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="secondText" value="Takeaway"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What are your reasons for getting takeaway?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tkF-V7-Skf">
                                 <rect key="frame" x="30" y="271.66666666666669" width="347" height="45"/>
