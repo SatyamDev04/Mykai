@@ -66,9 +66,6 @@ class ConfirmYourAddressVC: UIViewController {
         }else if StreetNoTxtF.text == ""{
             AlertControllerOnr(title: "", message: "Enter street number first.")
             return false
-        }else if ApartmentNumTxtF.text == ""{
-            AlertControllerOnr(title: "", message: "Enter apartment number first.")
-            return false
         }else if CityTxtF.text == ""{
             AlertControllerOnr(title: "", message: "Enter city first.")
             return false

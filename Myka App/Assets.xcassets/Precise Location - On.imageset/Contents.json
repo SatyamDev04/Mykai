@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Precise Location - On.png",
+      "filename" : "New Allow Location Pop Up Image.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Precise Location - On@2x.png",
+      "filename" : "New Allow Location Pop Up Image 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Precise Location - On@3x.png",
+      "filename" : "New Allow Location Pop Up Image 2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

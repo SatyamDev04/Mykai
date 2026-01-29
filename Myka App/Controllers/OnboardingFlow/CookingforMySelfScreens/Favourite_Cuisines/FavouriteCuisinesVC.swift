@@ -279,8 +279,9 @@ class FavouriteCuisinesVC: UIViewController {
             }
 
             guard !selectedIds.isEmpty else { return }
-
-            StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata[0].FavCuisines = selectedIds
+            if !StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata.isEmpty {
+                StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata[0].FavCuisines = selectedIds
+            }
         }
     }
 
@@ -486,3 +487,4 @@ extension FavouriteCuisinesVC {
         })
     }
 }
+

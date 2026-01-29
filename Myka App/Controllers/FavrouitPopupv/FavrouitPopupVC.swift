@@ -145,11 +145,30 @@ extension FavrouitPopupVC {
             do{
                 let d = try JSONDecoder().decode(FavDropDownModelClass.self, from: data)
                 if d.success == true {
-                    if let list = d.data, list.count != 0 {
-                        self.FavDropDownArrList = list
+                    if d.success == true {
+                        if let list = d.data, list.count != 0 {
+                            self.FavDropDownArrList = list
+                        }
+
+                        self.FavDropDownArrList.insert(
+                            FavDropDownModel(
+                                id: 0,
+                                userID: 0,
+                                name: "Favorites",
+                                image: "",
+                                status: 0,
+                                updatedAt: "",
+                                createdAt: "",
+                                deletedAt: ""
+                            ),
+                            at: 0
+                        )
+
+            
+                        self.DropDownTxtLbl.text = "Favorites"
+                        self.selID = "0"
+                        self.typeclicked = "Favorites"
                     }
-                    
-                    self.FavDropDownArrList.insert(contentsOf: [FavDropDownModel(id: 0, userID: 0, name: "Favorites", image: "", status: 0, updatedAt: "", createdAt: "", deletedAt: "")], at: 0)
                 }else{
                     let msg = d.message ?? ""
                     self.showToast(msg)

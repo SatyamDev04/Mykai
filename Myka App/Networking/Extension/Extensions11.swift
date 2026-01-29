@@ -1295,7 +1295,7 @@ class MyKaiTitleLabel: UILabel {
         didSet { applyStyle() }
     }
 
-    @IBInspectable var fontNamee: String = "Sarabun-ExtraBold" {
+    @IBInspectable var fontNamee: String = "Montserrat-Bold" {
         didSet { applyStyle() }
     }
 
@@ -1345,6 +1345,7 @@ class MyKaiTitleLabel: UILabel {
         )
 
         numberOfLines = 1
+        textAlignment = .left
       self.attributedText = attributedText
     }
 }

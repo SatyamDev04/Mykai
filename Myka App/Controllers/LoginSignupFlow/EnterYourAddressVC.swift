@@ -62,8 +62,8 @@ class EnterYourAddressVC: UIViewController,CLLocationManagerDelegate, UITextFiel
         SetHomeBgV.borderColor = #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)
         SetWorkBtnO.isSelected = false
         SetWorkBgV.borderColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9529411765, alpha: 1)
-        WorkImg.tintColor = #colorLiteral(red: 0.9960784314, green: 0.6235294118, blue: 0.2705882353, alpha: 1)
-        HomeIMg.image = UIImage(named: "Home1")
+        HomeIMg.image = UIImage(named: "HomeIcon")
+        WorkImg.tintColor = #colorLiteral(red: 0.5882352941, green: 0.6666666667, blue: 0.631372549, alpha: 1)
         
         
         SearchAddTxtF.delegate = self
@@ -291,7 +291,7 @@ class EnterYourAddressVC: UIViewController,CLLocationManagerDelegate, UITextFiel
                 self.AlertControllerOnr(title: "Error", message: "", BtnTitle: "OK")
                 return
             }
-            self.AlertControllerCuston(title: "Location Services Disabled", message: "Please enable location service for this app in ALLOW LOCATION ACCESS: Always, Go to Setting?", BtnTitle: ["Not Now","Open Setting"]) { (str) in
+            self.AlertControllerCuston(title: "Enable Location Services", message: "Please enable location services for this app in Settings to find nearby stores and compare prices. Always allow for the best experience.", BtnTitle: ["Not Now","Open Setting"]) { (str) in
                 if str == "Open Setting" {
                     let appSettings = URL(string: UIApplication.openSettingsURLString + Bundle.main.bundleIdentifier!)
                     if #available(iOS 10.0, *) {
