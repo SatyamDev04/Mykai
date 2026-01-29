@@ -34,7 +34,7 @@ class IngredientDislikesVC: UIViewController, UITextFieldDelegate {
     
     var ArrData1 = [BodyGoalsModel]()
     
-    var moreCount = 10
+    var moreCount = 5
     
     var textChangedWorkItem: DispatchWorkItem?
         
@@ -127,7 +127,8 @@ class IngredientDislikesVC: UIViewController, UITextFieldDelegate {
     @objc func TextSearch(sender: UITextField){
         if self.SearchTxt.text == ""{
             textChangedWorkItem?.cancel()
-            self.moreCount = 10
+            self.moreCount = 5
+            self.DislikesIngredientArr.removeAll()
             if comesfrom == ""{
                 self.Api_To_GetIngredientDislikes()
             }else{
@@ -365,15 +366,67 @@ extension IngredientDislikesVC {
             if dictData["success"] as? Bool == true{
                 let responseArray = dictData["data"] as? [[String : Any]] ?? [[String: Any]]()
                 
-                self.DislikesIngredientArr.removeAll()
-                self.DislikesIngredientArr = ModelClass.getBodyGoalsDetails(responseArray: responseArray)
-                self.ArrData.removeAll()
-                self.ArrData1.removeAll()
-                
-                for i in self.DislikesIngredientArr{
-                    self.ArrData1.append(contentsOf: [BodyGoalsModel(Name: i.name, id: i.id, isSelected: false)])
+                if self.SearchTxt.text == ""{
+    //                self.DislikesIngredientArr.removeAll()
+                    self.DislikesIngredientArr.append(contentsOf: ModelClass.getBodyGoalsDetails(responseArray: responseArray))
+    //                self.DislikesIngredientArr = ModelClass.getBodyGoalsDetails(responseArray: responseArray)
+                    
+                    // Remove duplicates by name
+                    var seenNames = Set<String>()
+                    self.DislikesIngredientArr = self.DislikesIngredientArr.filter {
+                        let name = $0.name.lowercased()
+                        if seenNames.contains(name) {
+                            return false
+                        } else {
+                            seenNames.insert(name)
+                            return true
+                        }
+                    }
+                    let priorityOrder = ["cilantro", "okra", "mushrooms", "brussels sprouts", "tofu"]
+                    
+                    self.ArrData1.removeAll()
+                    self.ArrData.removeAll()
+                    
+                    // 1️⃣ Append priority items in required order
+                    for name in priorityOrder {
+                        if let item = self.DislikesIngredientArr.first(where: { $0.name.lowercased() == name }) {
+                            self.ArrData1.append(
+                                BodyGoalsModel(Name: item.name, id: item.id, isSelected: item.selected)
+                            )
+                        }
+                    }
+                    
+                    // 2️⃣ Append remaining items (excluding priority ones)
+                    for item in self.DislikesIngredientArr {
+                        if !priorityOrder.contains(item.name.lowercased()) {
+                            self.ArrData1.append(
+                                BodyGoalsModel(Name: item.name, id: item.id, isSelected: item.selected)
+                            )
+                        }
+                    }
+                }else{
+                    self.DislikesIngredientArr.removeAll()
+//                    self.DislikesIngredientArr.append(contentsOf: ModelClass.getBodyGoalsDetails(responseArray: responseArray))
+                    self.DislikesIngredientArr = ModelClass.getBodyGoalsDetails(responseArray: responseArray)
+                    
+                    // Remove duplicates by name
+                    var seenNames = Set<String>()
+                    self.DislikesIngredientArr = self.DislikesIngredientArr.filter {
+                        let name = $0.name.lowercased()
+                        if seenNames.contains(name) {
+                            return false
+                        } else {
+                            seenNames.insert(name)
+                            return true
+                        }
+                    }
+                    self.ArrData.removeAll()
+                    self.ArrData1.removeAll()
+    
+                    for i in self.DislikesIngredientArr{
+                        self.ArrData1.append(contentsOf: [BodyGoalsModel(Name: i.name, id: i.id, isSelected: false)])
+                    }
                 }
-                
                 self.ArrData1.insert(contentsOf: [BodyGoalsModel(Name: "None", id: nil, isSelected: false)], at: 0)
                  
 //                for i in 0..<self.ArrData1.count{
@@ -437,15 +490,69 @@ extension IngredientDislikesVC {
                 
                 let responseArray = result["ingredientdislike"] as? [[String : Any]] ?? [[String: Any]]()
                 
-                self.DislikesIngredientArr.removeAll()
-                self.DislikesIngredientArr = ModelClass.getBodyGoalsDetails(responseArray: responseArray)
-                self.ArrData1.removeAll()
-                self.ArrData.removeAll()
+
                 
-                for i in self.DislikesIngredientArr{
-                    self.ArrData1.append(contentsOf: [BodyGoalsModel(Name: i.name, id: i.id, isSelected: i.selected)])
+                if self.SearchTxt.text == ""{
+    //                self.DislikesIngredientArr.removeAll()
+                    self.DislikesIngredientArr.append(contentsOf: ModelClass.getBodyGoalsDetails(responseArray: responseArray))
+    //                self.DislikesIngredientArr = ModelClass.getBodyGoalsDetails(responseArray: responseArray)
+                    
+                    // Remove duplicates by name
+                    var seenNames = Set<String>()
+                    self.DislikesIngredientArr = self.DislikesIngredientArr.filter {
+                        let name = $0.name.lowercased()
+                        if seenNames.contains(name) {
+                            return false
+                        } else {
+                            seenNames.insert(name)
+                            return true
+                        }
+                    }
+                    let priorityOrder = ["cilantro", "okra", "mushrooms", "brussels sprouts", "tofu"]
+                    
+                    self.ArrData1.removeAll()
+                    self.ArrData.removeAll()
+                    
+                    // 1️⃣ Append priority items in required order
+                    for name in priorityOrder {
+                        if let item = self.DislikesIngredientArr.first(where: { $0.name.lowercased() == name }) {
+                            self.ArrData1.append(
+                                BodyGoalsModel(Name: item.name, id: item.id, isSelected: item.selected)
+                            )
+                        }
+                    }
+                    
+                    // 2️⃣ Append remaining items (excluding priority ones)
+                    for item in self.DislikesIngredientArr {
+                        if !priorityOrder.contains(item.name.lowercased()) {
+                            self.ArrData1.append(
+                                BodyGoalsModel(Name: item.name, id: item.id, isSelected: item.selected)
+                            )
+                        }
+                    }
+                }else{
+                    self.DislikesIngredientArr.removeAll()
+//                    self.DislikesIngredientArr.append(contentsOf: ModelClass.getBodyGoalsDetails(responseArray: responseArray))
+                    self.DislikesIngredientArr = ModelClass.getBodyGoalsDetails(responseArray: responseArray)
+                    
+                    // Remove duplicates by name
+                    var seenNames = Set<String>()
+                    self.DislikesIngredientArr = self.DislikesIngredientArr.filter {
+                        let name = $0.name.lowercased()
+                        if seenNames.contains(name) {
+                            return false
+                        } else {
+                            seenNames.insert(name)
+                            return true
+                        }
+                    }
+                    self.ArrData.removeAll()
+                    self.ArrData1.removeAll()
+    
+                    for i in self.DislikesIngredientArr{
+                        self.ArrData1.append(contentsOf: [BodyGoalsModel(Name: i.name, id: i.id, isSelected: false)])
+                    }
                 }
-                
                 self.ArrData1.insert(contentsOf: [BodyGoalsModel(Name: "None", id: nil, isSelected: false)], at: 0)
                 
 //                for i in 0..<self.ArrData1.count{

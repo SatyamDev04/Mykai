@@ -319,13 +319,34 @@ extension DietaryRestrictionsVC {
                 
                 self.DietaryRestrictionsArr.removeAll()
                 self.DietaryRestrictionsArr = ModelClass.getBodyGoalsDetails(responseArray: responseArray)
+//                self.ArrData1.removeAll()
+//                self.ArrData.removeAll()
+//                
+//                for i in self.DietaryRestrictionsArr{
+//                    self.ArrData1.append(contentsOf: [BodyGoalsModel(Name: i.name, id: i.id, isSelected: false)])
+//                }
+                let priorityOrder = ["vegetarian", "vegan", "halal", "red meat-free", "dairy-free","Pescatarian"]
+                
                 self.ArrData1.removeAll()
                 self.ArrData.removeAll()
                 
-                for i in self.DietaryRestrictionsArr{
-                    self.ArrData1.append(contentsOf: [BodyGoalsModel(Name: i.name, id: i.id, isSelected: false)])
+                // 1️⃣ Append priority items in required order
+                for name in priorityOrder {
+                    if let item = self.DietaryRestrictionsArr.first(where: { $0.name.lowercased() == name }) {
+                        self.ArrData1.append(
+                            BodyGoalsModel(Name: item.name, id: item.id, isSelected: item.selected)
+                        )
+                    }
                 }
                 
+                // 2️⃣ Append remaining items (excluding priority ones)
+                for item in self.DietaryRestrictionsArr {
+                    if !priorityOrder.contains(item.name.lowercased()) {
+                        self.ArrData1.append(
+                            BodyGoalsModel(Name: item.name, id: item.id, isSelected: item.selected)
+                        )
+                    }
+                }
                 self.ArrData1.insert(contentsOf: [BodyGoalsModel(Name: "None", id: nil, isSelected: false)], at: 0)
                 
                 for i in 0..<self.ArrData1.count{
@@ -371,11 +392,27 @@ extension DietaryRestrictionsVC {
                 
                 self.DietaryRestrictionsArr.removeAll()
                 self.DietaryRestrictionsArr = ModelClass.getBodyGoalsDetails(responseArray: responseArray)
-                self.ArrData.removeAll()
-                self.ArrData1.removeAll()
+                let priorityOrder = ["vegetarian", "vegan", "halal", "red meat free", "dairy free","dairy-free","pescatarian"]
                 
-                for i in self.DietaryRestrictionsArr{
-                    self.ArrData1.append(contentsOf: [BodyGoalsModel(Name: i.name, id: i.id, isSelected: i.selected)])
+                self.ArrData1.removeAll()
+                self.ArrData.removeAll()
+                
+                // 1️⃣ Append priority items in required order
+                for name in priorityOrder {
+                    if let item = self.DietaryRestrictionsArr.first(where: { $0.name.lowercased() == name }) {
+                        self.ArrData1.append(
+                            BodyGoalsModel(Name: item.name, id: item.id, isSelected: item.selected)
+                        )
+                    }
+                }
+                
+                // 2️⃣ Append remaining items (excluding priority ones)
+                for item in self.DietaryRestrictionsArr {
+                    if !priorityOrder.contains(item.name.lowercased()) {
+                        self.ArrData1.append(
+                            BodyGoalsModel(Name: item.name, id: item.id, isSelected: item.selected)
+                        )
+                    }
                 }
                 
                 self.ArrData1.insert(contentsOf: [BodyGoalsModel(Name: "None", id: nil, isSelected: false)], at: 0)
