@@ -51,10 +51,12 @@ class MealRoutineVC: UIViewController {
         NextBtnO.isUserInteractionEnabled = false
         
         let Attributes1: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.black
+            .foregroundColor: UIColor.black,
+            .font: UIFont(name: "Montserrat-Bold", size: 32) ?? UIFont.systemFont(ofSize: 32)
         ]
         let Attributes2: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.init(red: 6/255, green: 193/255, blue: 105/255, alpha: 1)
+            .foregroundColor: UIColor.init(red: 6/255, green: 193/255, blue: 105/255, alpha: 1),
+            .font: UIFont(name: "Montserrat-Bold", size: 32) ?? UIFont.systemFont(ofSize: 32)
         ]
          
         if self.type == "MySelf"{

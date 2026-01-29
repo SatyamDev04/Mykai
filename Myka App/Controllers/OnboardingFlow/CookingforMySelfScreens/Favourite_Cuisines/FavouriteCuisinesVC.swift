@@ -48,10 +48,12 @@ class FavouriteCuisinesVC: UIViewController {
             NextBtnO.isUserInteractionEnabled = false
             
             let Attributes1: [NSAttributedString.Key: Any] = [
-                .foregroundColor: UIColor.black
+                .foregroundColor: UIColor.black,
+                .font: UIFont(name: "Montserrat-Bold", size: 32) ?? UIFont.systemFont(ofSize: 32)
             ]
             let Attributes2: [NSAttributedString.Key: Any] = [
-                .foregroundColor: UIColor.init(red: 6/255, green: 193/255, blue: 105/255, alpha: 1)
+                .foregroundColor: UIColor.init(red: 6/255, green: 193/255, blue: 105/255, alpha: 1),
+                .font: UIFont(name: "Montserrat-Bold", size: 32) ?? UIFont.systemFont(ofSize: 32)
             ]
              
             if self.type == "MySelf"{
@@ -222,23 +224,31 @@ class FavouriteCuisinesVC: UIViewController {
                 }
             }
             
-            if self.ArrData[indexPath.row].Name == "More"{
-                self.ArrData = self.ArrData1
-                
-                if ArrData.allSatisfy({ ($0.isSelected) == false }) {
-                    // All items are unselected
-                    print("All items are unselected.")
+            if self.ArrData[indexPath.row].Name == "More" {
+
+                // Keep previous selections
+                let selectedIDs = ArrData.filter { $0.isSelected }.compactMap { $0.id }
+
+                self.ArrData = self.ArrData1.map { item in
+                    var newItem = item
+                    if let id = item.id {
+                        newItem.isSelected = selectedIDs.contains(id)
+                    }
+                    return newItem
+                }
+
+                if ArrData.allSatisfy({ $0.isSelected == false }) {
                     NextBtnO.setBackgroundImage(UIImage(named: "ButtonGray"), for: .normal)
                     NextBtnO.isUserInteractionEnabled = false
                 } else {
-                    // At least one item is selected
-                    print("Some items are selected.")
                     NextBtnO.setBackgroundImage(UIImage(named: "Button"), for: .normal)
                     NextBtnO.isUserInteractionEnabled = true
                 }
+
                 self.TblV.reloadData()
+                return
             }
-            
+
             saveDraftFavouriteCuisines()
             
             TblV.reloadData()
@@ -324,6 +334,10 @@ extension FavouriteCuisinesVC {
                 
                 for i in self.FavouriteCuisinesArr{
                     self.ArrData1.append(contentsOf: [BodyGoalsModel(Name: i.name, id: i.id, isSelected: false)])
+                }
+                if let index = self.ArrData1.firstIndex(where: { $0.Name.lowercased() == "american" }) {
+                    let americanItem = self.ArrData1.remove(at: index)
+                    self.ArrData1.insert(americanItem, at: 0)
                 }
                 
             //    self.ArrData1.insert(contentsOf: [BodyGoalsModel(Name: "None", id: nil, isSelected: false)], at: 0)

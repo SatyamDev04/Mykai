@@ -1344,7 +1344,7 @@ class MyKaiTitleLabel: UILabel {
             )
         )
 
-        numberOfLines = 1
+        numberOfLines = 2
         textAlignment = .left
       self.attributedText = attributedText
     }
