@@ -1138,16 +1138,22 @@ extension HealthDataVC {
                params["macros"] = "\(self.SuggestedData.old_macro ?? "")"
                self.HeighProtine = "\(self.SuggestedData.old_macro ?? "")"
            }
+        if self.SuggestedData.typeStatus == "1"{
             params["calories"] = "\(self.SuggestedData.calories ?? 0)"
             params["fat_per"] = "\(self.SuggestedData.macroPer?.fat ?? 0)"
             params["protein_per"] = "\(self.SuggestedData.macroPer?.protein ?? 0)"
             params["carbs_per"] = "\(self.SuggestedData.macroPer?.carbs ?? 0)"
-           
+        }else{
+            params["calories"] = ""
+            params["fat_per"] = ""
+            params["protein_per"] = ""
+            params["carbs_per"] = ""
+        }
             
             if self.MaleBtnO.isSelected{
-                params["gender"] = "Male"
+                params["gender"] = "male"
             }else{
-                params["gender"] = "Female"
+                params["gender"] = "female"
             }
           
   

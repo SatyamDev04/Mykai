@@ -1272,81 +1272,83 @@ enum StringOrNumber: Codable {
 
 @IBDesignable
 class MyKaiTitleLabel: UILabel {
-
+    
     // MARK: - Inspectables (Defaults preserved)
-
+    
     @IBInspectable var firstText: String = "My Kai" {
         didSet { applyStyle() }
     }
-
+    
     @IBInspectable var secondText: String = " Meal Planner" {
         didSet { applyStyle() }
     }
-
+    
     @IBInspectable var firstColor: UIColor = UIColor(hex: "#06C169") ?? .yellow {
         didSet { applyStyle() }
     }
-
+    
     @IBInspectable var secondColor: UIColor = UIColor(hex: "#FE9F45") ?? .orange {
         didSet { applyStyle() }
     }
-
+    
     @IBInspectable var titleFontSize: CGFloat = 29 {
         didSet { applyStyle() }
     }
-
+    
     @IBInspectable var fontNamee: String = "Montserrat-Bold" {
         didSet { applyStyle() }
     }
-
-    // MARK: - Lifecycle
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        applyStyle()
+    @IBInspectable var textAlignmentValue: Int = 0 {
+        didSet { applyStyle() }
+        // MARK: - Lifecycle
     }
-
-    override func prepareForInterfaceBuilder() {
-        super.prepareForInterfaceBuilder()
-        applyStyle()
-    }
-
-    // MARK: - Style
-
-    private func applyStyle() {
-        let paragraph = NSMutableParagraphStyle()
-        paragraph.alignment = .center
-
-        let font = UIFont(name: fontNamee, size: titleFontSize)
+        override func awakeFromNib() {
+            super.awakeFromNib()
+            applyStyle()
+        }
+        
+        override func prepareForInterfaceBuilder() {
+            super.prepareForInterfaceBuilder()
+            applyStyle()
+        }
+        
+        // MARK: - Style
+        
+        private func applyStyle() {
+            
+            let paragraph = NSMutableParagraphStyle()
+            paragraph.alignment = NSTextAlignment(rawValue: textAlignmentValue) ?? .left
+            
+            let font = UIFont(name: fontNamee, size: titleFontSize)
             ?? UIFont.boldSystemFont(ofSize: titleFontSize)
-
-        let attributesFirst: [NSAttributedString.Key: Any] = [
-            .font: font,
-            .foregroundColor: firstColor,
-            .paragraphStyle: paragraph
-        ]
-
-        let attributesSecond: [NSAttributedString.Key: Any] = [
-            .font: font,
-            .foregroundColor: secondColor,
-            .paragraphStyle: paragraph
-        ]
-
-        let attributedText = NSMutableAttributedString(
-            string: firstText,
-            attributes: attributesFirst
-        )
-
-        attributedText.append(
-            NSAttributedString(
-                string: secondText,
-                attributes: attributesSecond
+            
+            let attributesFirst: [NSAttributedString.Key: Any] = [
+                .font: font,
+                .foregroundColor: firstColor,
+                .paragraphStyle: paragraph
+            ]
+            
+            let attributesSecond: [NSAttributedString.Key: Any] = [
+                .font: font,
+                .foregroundColor: secondColor,
+                .paragraphStyle: paragraph
+            ]
+            
+            let attributedText = NSMutableAttributedString(
+                string: firstText,
+                attributes: attributesFirst
             )
-        )
-
-        numberOfLines = 2
-        textAlignment = .left
-      self.attributedText = attributedText
-    }
+            
+            attributedText.append(
+                NSAttributedString(
+                    string: secondText,
+                    attributes: attributesSecond
+                )
+            )
+            
+            numberOfLines = 2
+            self.attributedText = attributedText
+        }
+    
+    
 }
-
