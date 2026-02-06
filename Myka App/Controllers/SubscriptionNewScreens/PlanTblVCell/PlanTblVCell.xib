@@ -140,6 +140,7 @@
                 <outlet property="PlanTypeBgV" destination="Jpx-va-c5j" id="DJC-tD-PkM"/>
                 <outlet property="TypeOfUserLbl" destination="GQd-Lb-ThU" id="ATA-gj-rPj"/>
                 <outlet property="TypeTxtLbl" destination="7YF-RJ-LPv" id="ecR-0h-5c8"/>
+                <outlet property="perMonthlbl" destination="j9W-mK-NQs" id="ULw-tB-Lcz"/>
             </connections>
             <point key="canvasLocation" x="139.69465648854961" y="26.760563380281692"/>
         </tableViewCell>

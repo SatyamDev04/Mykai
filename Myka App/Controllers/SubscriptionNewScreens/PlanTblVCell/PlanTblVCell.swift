@@ -19,7 +19,7 @@ class PlanTblVCell: UITableViewCell {
     @IBOutlet weak var OriginalPriceLbl: UILabel!
     @IBOutlet weak var DiscountView: UIView!
     @IBOutlet weak var DiscountedPriceLbl: UILabel!
-    
+    @IBOutlet weak var perMonthlbl: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

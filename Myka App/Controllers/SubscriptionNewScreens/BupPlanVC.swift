@@ -177,9 +177,14 @@ extension BupPlanVC: UITableViewDelegate, UITableViewDataSource {
         
         cell.DiscountedPriceLbl.text = PlanArr[indexPath.row].discountPrice
          
-   
+        
         cell.TypeTxtLbl.textColor = #colorLiteral(red: 0.07058823529, green: 0.07058823529, blue: 0.07058823529, alpha: 1)
        
+        let priceString = PlanArr[indexPath.row].discountPrice
+        let yearlyPrice = Double(priceString) ?? 0
+        let monthlyPrice = 49.99 / 12
+        cell.perMonthlbl.text = String(format: "$%.2f/month", monthlyPrice)
+
         
         if PlanArr[indexPath.row].isSelected == true {
             
@@ -409,13 +414,7 @@ extension BupPlanVC{
                     self.PlanArr[i].isSelected = false
                 }
                 
-                if last_plan == "weekly_plan"{
-                    self.PlanArr[0].isSelected = true
-                }else if last_plan == "monthly_plan"{
-                    self.PlanArr[1].isSelected = true
-                }else if last_plan == "annual_plan"{
-                    self.PlanArr[1].isSelected = true
-                }else{
+                if last_plan == "annual_plan"{
                     self.PlanArr[0].isSelected = true
                 }
                 
