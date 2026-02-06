@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Map view configurations" minToolsVersion="14.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -1635,105 +1635,106 @@
                         <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sAs-SU-RO2">
-                                <rect key="frame" x="0.0" y="144" width="440" height="744"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kKu-Am-8ee">
+                                <rect key="frame" x="0.0" y="304" width="440" height="404"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kKu-Am-8ee">
-                                        <rect key="frame" x="0.0" y="0.0" width="440" height="607.33333333333337"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="notification" translatesAutoresizingMaskIntoConstraints="NO" id="VnD-7C-1WF">
+                                        <rect key="frame" x="145" y="0.0" width="150" height="150"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="150" id="3F0-bi-hiU"/>
+                                            <constraint firstAttribute="width" constant="150" id="RNn-Xh-xWe"/>
+                                        </constraints>
+                                    </imageView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="S4i-nG-P1u">
+                                        <rect key="frame" x="30" y="170" width="380" height="144"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="notification" translatesAutoresizingMaskIntoConstraints="NO" id="VnD-7C-1WF">
-                                                <rect key="frame" x="145" y="0.0" width="150" height="150"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="150" id="3F0-bi-hiU"/>
-                                                    <constraint firstAttribute="width" constant="150" id="RNn-Xh-xWe"/>
-                                                </constraints>
-                                            </imageView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="S4i-nG-P1u">
-                                                <rect key="frame" x="30" y="200" width="380" height="136.66666666666663"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VvE-rP-gIv">
-                                                        <rect key="frame" x="0.0" y="0.0" width="380" height="21.666666666666668"/>
-                                                        <attributedString key="attributedText">
-                                                            <fragment content="Turn on ">
-                                                                <attributes>
-                                                                    <color key="NSBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <font key="NSFont" metaFont="system" size="18"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                                </attributes>
-                                                            </fragment>
-                                                            <fragment content="Notifications">
-                                                                <attributes>
-                                                                    <color key="NSBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <font key="NSFont" metaFont="system" size="18"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                                </attributes>
-                                                            </fragment>
-                                                        </attributedString>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="liw-Kv-2EQ">
-                                                        <rect key="frame" x="0.0" y="31.666666666666686" width="380" height="105"/>
-                                                        <string key="text">Change to “Never miss a thing! Get reminders for missing ingredients, updates on your grocery orders, recipe tips, and exclusive deals. Enable notifications to stay organized and save time with Myka!</string>
-                                                        <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="15"/>
-                                                        <color key="textColor" red="0.23529411759999999" green="0.27058823529999998" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                            </stackView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kPj-8t-tQG">
-                                                <rect key="frame" x="30" y="366.66666666666669" width="380" height="50"/>
-                                                <color key="backgroundColor" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="50" id="aX3-0O-QzP"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" name="Poppins-SemiBold" family="Poppins" pointSize="16"/>
-                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Turn on Notifications">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VvE-rP-gIv" customClass="MyKaiTitleLabel" customModule="My_Kai" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="380" height="21.666666666666668"/>
+                                                <attributedString key="attributedText">
+                                                    <fragment content="Turn on ">
+                                                        <attributes>
+                                                            <color key="NSBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <font key="NSFont" metaFont="system" size="18"/>
+                                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                        </attributes>
+                                                    </fragment>
+                                                    <fragment content="Notifications">
+                                                        <attributes>
+                                                            <color key="NSBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <font key="NSFont" metaFont="system" size="18"/>
+                                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                        </attributes>
+                                                    </fragment>
+                                                </attributedString>
+                                                <nil key="highlightedColor"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                        <real key="value" value="10"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="firstText" value="Turn on "/>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="firstColor">
+                                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="secondColor">
+                                                        <color key="value" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="secondText" value="Notification"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="fontNamee" value="Montserrat-SemiBold"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="titleFontSize">
+                                                        <real key="value" value="18"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="TurnOnLocBtn:" destination="Vzq-ec-J2e" eventType="touchUpInside" id="g9v-jZ-y5I"/>
-                                                </connections>
-                                            </button>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="liw-Kv-2EQ">
+                                                <rect key="frame" x="0.0" y="31.666666666666679" width="380" height="112.33333333333331"/>
+                                                <string key="text">Change to “Never miss a thing! Get reminders for missing ingredients, updates on your grocery orders, recipe tips, and exclusive deals. Enable notifications to stay organized and save time with Myka!</string>
+                                                <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="16"/>
+                                                <color key="textColor" red="0.23529411759999999" green="0.27058823529999998" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kPj-8t-tQG">
+                                        <rect key="frame" x="30" y="344" width="380" height="50"/>
+                                        <color key="backgroundColor" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="S4i-nG-P1u" secondAttribute="trailing" constant="30" id="A7v-zQ-WMI"/>
-                                            <constraint firstItem="S4i-nG-P1u" firstAttribute="leading" secondItem="kKu-Am-8ee" secondAttribute="leading" constant="30" id="JyG-p1-T6t"/>
-                                            <constraint firstItem="S4i-nG-P1u" firstAttribute="top" secondItem="VnD-7C-1WF" secondAttribute="bottom" constant="50" id="K4D-7Q-FoY"/>
-                                            <constraint firstAttribute="bottom" secondItem="kPj-8t-tQG" secondAttribute="bottom" priority="250" constant="190.5" id="PWo-X1-wdr"/>
-                                            <constraint firstAttribute="trailing" secondItem="kPj-8t-tQG" secondAttribute="trailing" constant="30" id="dJr-al-qIF"/>
-                                            <constraint firstItem="VnD-7C-1WF" firstAttribute="centerX" secondItem="kKu-Am-8ee" secondAttribute="centerX" id="e7C-ze-WLo"/>
-                                            <constraint firstItem="kPj-8t-tQG" firstAttribute="leading" secondItem="kKu-Am-8ee" secondAttribute="leading" constant="30" id="gWo-tO-aeE"/>
-                                            <constraint firstItem="kPj-8t-tQG" firstAttribute="top" secondItem="S4i-nG-P1u" secondAttribute="bottom" constant="30" id="nrJ-ub-sxK"/>
-                                            <constraint firstItem="VnD-7C-1WF" firstAttribute="top" secondItem="kKu-Am-8ee" secondAttribute="top" id="qeT-kr-w4o"/>
-                                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="kPj-8t-tQG" secondAttribute="bottom" constant="190.5" id="shG-6o-dxL"/>
+                                            <constraint firstAttribute="height" constant="50" id="aX3-0O-QzP"/>
                                         </constraints>
-                                    </view>
+                                        <fontDescription key="fontDescription" name="Poppins-SemiBold" family="Poppins" pointSize="16"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Turn on Notifications">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="TurnOnLocBtn:" destination="Vzq-ec-J2e" eventType="touchUpInside" id="g9v-jZ-y5I"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstItem="kKu-Am-8ee" firstAttribute="leading" secondItem="sAs-SU-RO2" secondAttribute="leading" id="HYj-RV-may"/>
-                                    <constraint firstAttribute="trailing" secondItem="kKu-Am-8ee" secondAttribute="trailing" id="f0b-xx-1eZ"/>
-                                    <constraint firstItem="kKu-Am-8ee" firstAttribute="centerX" secondItem="sAs-SU-RO2" secondAttribute="centerX" id="iLm-Gs-3fZ"/>
-                                    <constraint firstAttribute="bottom" secondItem="kKu-Am-8ee" secondAttribute="bottom" id="lq1-wC-CZw"/>
-                                    <constraint firstItem="kKu-Am-8ee" firstAttribute="top" secondItem="sAs-SU-RO2" secondAttribute="top" id="vOC-Zs-ArY"/>
+                                    <constraint firstAttribute="trailing" secondItem="S4i-nG-P1u" secondAttribute="trailing" constant="30" id="A7v-zQ-WMI"/>
+                                    <constraint firstItem="S4i-nG-P1u" firstAttribute="leading" secondItem="kKu-Am-8ee" secondAttribute="leading" constant="30" id="JyG-p1-T6t"/>
+                                    <constraint firstItem="S4i-nG-P1u" firstAttribute="top" secondItem="VnD-7C-1WF" secondAttribute="bottom" constant="20" id="K4D-7Q-FoY"/>
+                                    <constraint firstAttribute="bottom" secondItem="kPj-8t-tQG" secondAttribute="bottom" priority="250" constant="190.5" id="PWo-X1-wdr"/>
+                                    <constraint firstAttribute="trailing" secondItem="kPj-8t-tQG" secondAttribute="trailing" constant="30" id="dJr-al-qIF"/>
+                                    <constraint firstItem="VnD-7C-1WF" firstAttribute="centerX" secondItem="kKu-Am-8ee" secondAttribute="centerX" id="e7C-ze-WLo"/>
+                                    <constraint firstItem="kPj-8t-tQG" firstAttribute="leading" secondItem="kKu-Am-8ee" secondAttribute="leading" constant="30" id="gWo-tO-aeE"/>
+                                    <constraint firstItem="kPj-8t-tQG" firstAttribute="top" secondItem="S4i-nG-P1u" secondAttribute="bottom" constant="30" id="nrJ-ub-sxK"/>
+                                    <constraint firstItem="VnD-7C-1WF" firstAttribute="top" secondItem="kKu-Am-8ee" secondAttribute="top" id="qeT-kr-w4o"/>
+                                    <constraint firstAttribute="bottom" secondItem="kPj-8t-tQG" secondAttribute="bottom" constant="10" id="shG-6o-dxL"/>
                                 </constraints>
-                            </scrollView>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="nha-L9-q8h"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="sAs-SU-RO2" firstAttribute="top" secondItem="nha-L9-q8h" secondAttribute="top" constant="20" id="7Q0-kY-Te1"/>
-                            <constraint firstItem="sAs-SU-RO2" firstAttribute="leading" secondItem="nha-L9-q8h" secondAttribute="leading" id="AcJ-cF-SFT"/>
-                            <constraint firstItem="sAs-SU-RO2" firstAttribute="trailing" secondItem="nha-L9-q8h" secondAttribute="trailing" id="YJ7-1l-ZEZ"/>
-                            <constraint firstItem="sAs-SU-RO2" firstAttribute="bottom" secondItem="nha-L9-q8h" secondAttribute="bottom" id="a0p-dk-w1m"/>
+                            <constraint firstItem="kKu-Am-8ee" firstAttribute="leading" secondItem="nha-L9-q8h" secondAttribute="leading" id="WCC-Yj-25c"/>
+                            <constraint firstItem="kKu-Am-8ee" firstAttribute="trailing" secondItem="nha-L9-q8h" secondAttribute="trailing" id="XTe-K1-iY9"/>
+                            <constraint firstItem="kKu-Am-8ee" firstAttribute="centerY" secondItem="nha-L9-q8h" secondAttribute="centerY" id="gjr-yP-j2N"/>
                         </constraints>
                     </view>
                 </viewController>
