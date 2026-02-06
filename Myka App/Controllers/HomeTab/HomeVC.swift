@@ -68,8 +68,7 @@ class HomeVC: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        let vc = InstacartContainerVC()
-//        self.navigationController?.pushViewController(vc, animated: false)
+        
         self.PlanMealBgV.isHidden = false
         self.RecipesCookedlBgV.isHidden = true
         self.CookedMealSeeAllBgV.isHidden = true

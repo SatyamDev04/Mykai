@@ -1078,6 +1078,7 @@ class WebService {
                 "Authorization": "Bearer \(token)"
             ]
         }
+        print(parameters)
         
             let reuestUrl = request
 //            let headers: HTTPHeaders = [

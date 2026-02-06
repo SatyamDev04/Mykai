@@ -26,7 +26,7 @@ class BupPlanVC: UIViewController, SKRequestDelegate {
     @IBOutlet weak var TblV: UITableView!
     @IBOutlet weak var BuyBtnO: UIButton!
     
-    var PlanArr = [PlanModel(planName: "Starter", userType: "New to Kai", originalPrice: "$3.99/ Weekly", discountPrice: "$1.99/ Weekly", isSelected: true, planNameBgColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)), PlanModel(planName: "Popular", userType: "Pro Kai User", originalPrice: "$11.99/ Monthly", discountPrice: "$5.99/ Monthly", isSelected: false, planNameBgColor: #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)), PlanModel(planName: "Best value", userType: "Love Kai", originalPrice: "$99.99/ Yearly", discountPrice: "$49.99/ Yearly", isSelected: false, planNameBgColor: #colorLiteral(red: 0.9764705882, green: 0.8352941176, blue: 0.05098039216, alpha: 1))]
+    var PlanArr = [/*PlanModel(planName: "Starter", userType: "New to Kai", originalPrice: "$3.99/ Weekly", discountPrice: "$1.99/ Weekly", isSelected: true, planNameBgColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)), PlanModel(planName: "Popular", userType: "Pro Kai User", originalPrice: "$11.99/ Monthly", discountPrice: "$5.99/ Monthly", isSelected: false, planNameBgColor: #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)),*/ PlanModel(planName: "Best value", userType: "Annual", originalPrice: "$99.99/ Yearly", discountPrice: "$49.99/ Yearly", isSelected: false, planNameBgColor: #colorLiteral(red: 0.9764705882, green: 0.8352941176, blue: 0.05098039216, alpha: 1))]
     
     var Sel_SubsPrice = 1.99
    
@@ -206,7 +206,7 @@ extension BupPlanVC: UITableViewDelegate, UITableViewDataSource {
             cell.BgV.backgroundColor = #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)
             cell.OriginalPriceLbl.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
             cell.DiscountView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-            cell.RadioIMg.image = UIImage(named: "RadioTick")
+       //     cell.RadioIMg.image = UIImage(named: "RadioTick")
             cell.DiscountedPriceLbl.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
             cell.TypeOfUserLbl.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         }else{
@@ -229,7 +229,7 @@ extension BupPlanVC: UITableViewDelegate, UITableViewDataSource {
            // cell.BgV.shadowCornerRadius = 10
             
             cell.BgV.backgroundColor = #colorLiteral(red: 0.7215686275, green: 0.9019607843, blue: 0.800728729, alpha: 1)
-            cell.RadioIMg.image = UIImage(named: "RadioWhite")
+           // cell.RadioIMg.image = UIImage(named: "RadioWhite")
             cell.OriginalPriceLbl.textColor = #colorLiteral(red: 0.4588235294, green: 0.4588235294, blue: 0.4588235294, alpha: 1)
             cell.DiscountView.backgroundColor = #colorLiteral(red: 0.4588235294, green: 0.4588235294, blue: 0.4588235294, alpha: 1)
             cell.DiscountedPriceLbl.textColor = #colorLiteral(red: 0.1215686275, green: 0.1176470588, blue: 0.1176470588, alpha: 1)
@@ -256,7 +256,7 @@ extension BupPlanVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        return 95
     }
 }
 

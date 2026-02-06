@@ -259,7 +259,29 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
                 self.SuggestedData.weightType = "kg"
             }
             
-            self.targetWeightTxtF.text = ""
+            //self.targetWeightTxtF.text = ""
+            
+            let weightText = str.lowercased()
+
+            var unit = "lb"
+            var numericPart: Double = 0.0
+
+            if let match = weightText.range(of: #"[\d.]+(?=\s*(kg|lb))"#, options: .regularExpression) {
+                numericPart = Double(weightText[match]) ?? 0.0
+            }
+
+            if weightText.contains("kg") {
+                unit = "kg"
+                numericPart += 0.5
+            } else {
+                unit = "lb"
+                numericPart += 1.0
+            }
+
+            let target = String(format: "%.1f %@", numericPart, unit)
+            self.targetWeightTxtF.text = target
+            self.SuggestedData.targetWeight = target
+            self.SuggestedData.targetWeightType = unit
             
             if !(self.DOBTxtF.text?.isEmpty ?? true) &&
                 !(self.HeightTxtF.text?.isEmpty ?? true) &&
@@ -455,19 +477,23 @@ class HealthDataVC: UIViewController, UITextFieldDelegate {
                     cell.EstimateLbl.isHidden = false
                     cell.EstimateLbl.text = estimatedText
                 }
-            
             let lbPerWeek = self.targetDateArray[index].value ?? 0.5
-            let output = lbPerWeek.truncatingRemainder(dividingBy: 1) == 0 ? "\(Int(lbPerWeek))" : "\(lbPerWeek)"
-            
-            var weightUnit = ""
-            
+
+            var weightUnit = "lb"
+            var displayValue = lbPerWeek
+
             if let text = self.WeightTxtF.text?.lowercased(), text.contains("kg") {
                 weightUnit = "kg"
-            } else {
-                weightUnit = "lb"
+                displayValue = lbPerWeek * 0.453592
             }
-        
-            cell.lbPerWeekLbl.text = "You'll \((self.SuggestedData.dataPerWeek?[index].tar ?? "").lowercased()) \(output) \(weightUnit)/week"
+
+            
+            let output = displayValue.truncatingRemainder(dividingBy: 1) == 0
+                ? "\(Int(displayValue))"
+                : String(format: "%.2f", displayValue)
+
+            cell.lbPerWeekLbl.text =
+            "You'll \((self.SuggestedData.dataPerWeek?[index].tar ?? "").lowercased()) \(output) \(weightUnit)/week"
             
             
             if self.targetDateArray[index].isSelected == 1{

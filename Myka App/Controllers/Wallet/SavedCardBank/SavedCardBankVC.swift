@@ -153,7 +153,7 @@ extension SavedCardBankVC: UITableViewDataSource, UITableViewDelegate {
         }else {
             self.SelCardIndex = indexPath
             self.CardTblV.reloadData()
-            let cardID = self.SavedCardArrList[indexPath.row].card_id
+            let cardID = self.SavedCardArrList[indexPath.row].connect_account_id
             let CustomerID = self.SavedCardArrList[indexPath.row].customer_id
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3){

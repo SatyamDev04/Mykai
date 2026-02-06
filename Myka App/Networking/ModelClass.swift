@@ -89,7 +89,7 @@ class ModelClass: NSObject {
        var exp_year : Int?
        var last4 : String = ""
        var card_id : String = ""
-    //   var name : String = ""
+      var connect_account_id : String = ""
        var customer_id : String = ""
        
    
@@ -105,7 +105,7 @@ class ModelClass: NSObject {
                tempobj.exp_year = tempDict.validatedValue("exp_year", expected: Int() as AnyObject) as? Int
                tempobj.last4 = tempDict.validatedValue("last4", expected: "" as AnyObject) as! String
                
-               tempobj.name = tempDict.validatedValue("name", expected: "" as AnyObject) as! String
+               tempobj.connect_account_id = tempDict.validatedValue("connect_account_id", expected: "" as AnyObject) as! String
                tempobj.customer_id = tempDict.validatedValue("customer_id", expected: "" as AnyObject) as! String
                 
                Saved_CardsDetails.append(tempobj)

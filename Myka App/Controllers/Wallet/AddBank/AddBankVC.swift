@@ -627,118 +627,106 @@ extension AddBankVC : ImagePickerDelegate {
 // for stripe BankAcc.
 extension AddBankVC {
     func callFunc() {
+
         showIndicator(withTitle: "", and: "")
-        let BankParams = STPBankAccountParams()
-         let accNo = self.txt_confirm_accountNumber.text!
-        let final_account_num =  accNo.removeSpaces
-        BankParams.accountNumber = final_account_num
-        BankParams.routingNumber = self.txt_routingNumber.text!
-        BankParams.currency = "USD"
-        BankParams.country = "US"
-        BankParams.accountHolderType = .individual
-        BankParams.accountHolderName = self.txt_accountHoldName.text!
-  
-        print("CardDetail====",BankParams)
-        
-        STPAPIClient.shared.createToken(withBankAccount: BankParams, completion: { (token: STPToken?, error: Error?) in
-        
-            print(error)
+
+        let bankParams = STPBankAccountParams()
+        bankParams.accountNumber = txt_confirm_accountNumber.text!.removeSpaces
+        bankParams.routingNumber = txt_routingNumber.text!.removeSpaces
+        bankParams.country = "US"
+        bankParams.currency = "USD"
+        bankParams.accountHolderType = .individual
+        bankParams.accountHolderName = txt_accountHoldName.text!
+
+        STPAPIClient.shared.createToken(withBankAccount: bankParams) { token, error in
             self.hideIndicator()
-            
-            guard let token111 = token, error == nil else {
-                // Present error to user...
-                self.hideIndicator()
-                let UserInfo = error.unsafelyUnwrapped.localizedDescription
-                self.AlertControllerOnr(title: "Alert", message: UserInfo, BtnTitle: "OK")
-                
+
+            if let error = error {
+                self.AlertControllerOnr(
+                    title: "Alert",
+                    message: error.localizedDescription,
+                    BtnTitle: "OK"
+                )
                 return
             }
-            self.hideIndicator()
-            
-            print(token111.tokenId)
-            print(token111.bankAccount?.bankName ?? "", "Bank name")
-            print(token111.bankAccount?.accountHolderName ?? "", "name")
-            print(token111.bankAccount?.routingNumber ?? "", "RoutingNo")
-            print(token111.bankAccount?.accountHolderType ?? "", "AccHolderType")
-            print(token111.bankAccount?.stripeID ?? "", "Stripe ID")
-     
-            
-            let tokenNum = token111.tokenId
-            let Routingnum = token111.bankAccount?.routingNumber ?? ""
-            let AccHName = token111.bankAccount?.accountHolderName ?? ""
-            let BnkName = token111.bankAccount?.bankName ?? ""
-            let StripeID = token111.bankAccount?.stripeID ?? ""
-            let accType = token111.bankAccount?.accountHolderType ?? STPBankAccountHolderType.individual
-                       
-            self.API_TO_Add_bank(Token: tokenNum, bank_id: StripeID)
-        })
+
+            guard let token = token else { return }
+
+            print("✅ Bank Token:", token.tokenId)
+
+            // SAME AS ANDROID
+            self.API_TO_Add_bank(bankToken: token.tokenId)
+        }
     }
 }
  
 //save_card
 extension AddBankVC{
-    
-    func API_TO_Add_bank(Token: String, bank_id: String){
-            var params = [String: Any]()
-            
-            let p = self.txt_phoneNumber.text ?? ""
-            let k = p.removeSpaces
-            let o = k.replace(string: "(", withString: "")
-            let t = o.replace(string: ")", withString: "")
-            let I = t.replace(string: "-", withString: "")
-            let c = I.replace(string: "+", withString: "")
-            let numb = c.dropFirst()
-            
-            
-            params["token_type"] = "bank_account"
-            params["stripe_token"] = Token
-            params["save_card"] = ""
-            params["amount"] =  ""
-            params["payment_type"] = ""
-            params["firstname"] = self.txt_firstName.text!
-            params["lastname"] = self.txt_lastName.text!
-            params["email"] = self.txt_email.text!
-            params["phone"] = "\(numb)"
-            params["dob"] = self.txt_dob.text!
-            params["id_number"] = self.PersonalIdentificationNumTxtF.text!
-            params["id_type"] = self.txt_idType.text!
-        //  params["pin_number"] = self.txt_PIN.text!
-            params["ssn"] = self.txt_SSN.text!
-            params["address"] = self.txt_address.text!
-            params["country"] = self.countryCode
-            params["state_code"] = self.stateCode
-            params["city"] = self.txt_city.text!
-            params["postal_code"] = self.txt_postalCode.text!
-            params["bank_id"] = bank_id
-            params["bank_proof_type"] = self.selectedBankProof
-            params["device_type"] = "ios"
-        
-        let temp = self.frontImg?.jpegData(compressionQuality: 0.5) ?? Data()
-        let temp1 = self.BackImg?.jpegData(compressionQuality: 0.5) ?? Data()
-         
-          
-            showIndicator(withTitle: "", and: "")
-            let loginURL = baseURL.baseURL + appEndPoints.Add_Bank
-            
-        WebService.shared.uploadLicenseImageWithParameter(loginURL, temp, temp1, self.BankProofDOC, VC: self, params, imageFrontName: "document_front", imageBackName: "document_back", BanKProofDoc: "bank_proof", FileType: self.fileTypeName, withCompletion: { (json, statusCode) in
- 
-                self.hideIndicator()
-                
-                guard let dictData = json.dictionaryObject else{
-                    return
-                }
-                
-                if dictData["success"] as? Bool == true{
-                    let responseMessage = dictData["message"] as! String
-                    self.showToast(responseMessage)
-                    self.navigationController?.popViewController(animated: true)
-                }else{
-                    let responseMessage = dictData["message"] as! String
-                    self.showToast(responseMessage)
-                }
-            })
-            
+    func API_TO_Add_bank(bankToken: String) {
+
+        var params = [String: Any]()
+
+        let phone = txt_phoneNumber.text ?? ""
+        let cleanPhone = phone
+            .replace(string: "+", withString: "")
+            .replace(string: "(", withString: "")
+            .replace(string: ")", withString: "")
+            .replace(string: "-", withString: "")
+            .removeSpaces
+
+        params["token_type"] = "bank_account"
+        params["stripe_token"] = bankToken
+        params["device_type"] = "ios"
+
+        params["firstname"] = txt_firstName.text!
+        params["lastname"] = txt_lastName.text!
+        params["email"] = txt_email.text!
+        params["phone"] = cleanPhone
+        params["dob"] = txt_dob.text!
+        params["id_type"] = txt_idType.text!
+        params["id_number"] = PersonalIdentificationNumTxtF.text!
+        params["ssn"] = txt_SSN.text!
+        params["address"] = txt_address.text!
+        params["country"] = countryCode
+        params["state_code"] = stateCode
+        params["city"] = txt_city.text!
+        params["postal_code"] = txt_postalCode.text!
+        params["bank_proof_type"] = selectedBankProof
+
+        let frontData = frontImg?.jpegData(compressionQuality: 0.5) ?? Data()
+        let backData = BackImg?.jpegData(compressionQuality: 0.5) ?? Data()
+
+        showIndicator(withTitle: "", and: "")
+
+        let loginURL = baseURL.baseURL + appEndPoints.Add_Bank
+
+        WebService.shared.uploadLicenseImageWithParameter(
+            loginURL,
+            frontData,
+            backData,
+            BankProofDOC,
+            VC: self,
+            params,
+            imageFrontName: "document_front",
+            imageBackName: "document_back",
+            BanKProofDoc: "bank_proof",
+            FileType: fileTypeName
+        ) { json, statusCode in
+
+            self.hideIndicator()
+
+            guard let dict = json.dictionaryObject else { return }
+
+            let message = dict["message"] as? String ?? ""
+
+            if dict["success"] as? Bool == true {
+                self.showToast(message)
+                self.navigationController?.popViewController(animated: true)
+            } else {
+                self.showToast(message)
+            }
         }
+    }
         
     }
 

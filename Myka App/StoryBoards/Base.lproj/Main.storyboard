@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xO2-nL-b1B">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xO2-nL-b1B">
     <device id="retina6_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -38,7 +38,7 @@
                                 <rect key="frame" x="70" y="200" width="300" height="409"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="anH-mZ-wkj" customClass="MyKaiTitleLabel" customModule="My_Kai" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="624" width="440" height="34.333333333333371"/>
+                                <rect key="frame" x="126.66666666666667" y="624" width="186.66666666666663" height="34.333333333333371"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34.329999999999998" id="Msw-Mv-5a5"/>
                                 </constraints>
@@ -119,12 +119,11 @@
                             <constraint firstItem="PrI-AH-sUg" firstAttribute="top" secondItem="anH-mZ-wkj" secondAttribute="bottom" constant="30" id="Kwz-xk-cXp"/>
                             <constraint firstItem="aRc-51-O58" firstAttribute="bottom" secondItem="l6p-mL-yYb" secondAttribute="bottom" constant="76" id="LaJ-sI-MHe"/>
                             <constraint firstItem="anH-mZ-wkj" firstAttribute="top" secondItem="ESJ-70-tnI" secondAttribute="bottom" constant="15" id="LjV-4D-luo"/>
-                            <constraint firstItem="anH-mZ-wkj" firstAttribute="leading" secondItem="aRc-51-O58" secondAttribute="leading" id="Nrg-HN-FDF"/>
                             <constraint firstItem="w6o-MR-Ok4" firstAttribute="top" secondItem="STo-PE-bLl" secondAttribute="top" id="PWT-br-vqy"/>
                             <constraint firstItem="ESJ-70-tnI" firstAttribute="top" secondItem="aRc-51-O58" secondAttribute="top" constant="76" id="Qwa-ba-Us8"/>
                             <constraint firstItem="aRc-51-O58" firstAttribute="trailing" secondItem="w6o-MR-Ok4" secondAttribute="trailing" id="Tvi-UB-7qQ"/>
                             <constraint firstItem="aRc-51-O58" firstAttribute="trailing" secondItem="PrI-AH-sUg" secondAttribute="trailing" constant="30" id="bTm-U4-gwJ"/>
-                            <constraint firstItem="aRc-51-O58" firstAttribute="trailing" secondItem="anH-mZ-wkj" secondAttribute="trailing" id="hFz-qZ-z0X"/>
+                            <constraint firstItem="anH-mZ-wkj" firstAttribute="centerX" secondItem="STo-PE-bLl" secondAttribute="centerX" id="cKs-OE-KvK"/>
                             <constraint firstItem="ESJ-70-tnI" firstAttribute="leading" secondItem="aRc-51-O58" secondAttribute="leading" constant="70" id="lq4-Pl-MTn"/>
                             <constraint firstItem="aRc-51-O58" firstAttribute="trailing" secondItem="ESJ-70-tnI" secondAttribute="trailing" constant="70" id="lqf-of-cwq"/>
                             <constraint firstAttribute="bottom" secondItem="w6o-MR-Ok4" secondAttribute="bottom" id="lux-OI-Qbh"/>
@@ -768,12 +767,12 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="7tV-W3-R5G" kind="relationship" relationship="rootViewController" id="cHL-a7-8RS"/>
+                        <segue destination="DME-eW-YIk" kind="relationship" relationship="rootViewController" id="Ppu-S2-i69"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mrG-iW-P6e" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1924" y="-63"/>
+            <point key="canvasLocation" x="1377" y="-63"/>
         </scene>
         <!--Cooking ForVC-->
         <scene sceneID="byo-0X-8yE">
@@ -1090,6 +1089,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wNO-x3-Mct" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1890.0000000000002" y="695.39748953974902"/>
+        </scene>
+        <!--Splash View Controller-->
+        <scene sceneID="HLb-v2-KMl">
+            <objects>
+                <viewController storyboardIdentifier="SplashViewController" id="DME-eW-YIk" customClass="SplashViewController" customModule="My_Kai" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="DFc-Ln-kYo">
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="fGF-op-H0r"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Efs-nj-f3V"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HLy-pi-vfz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2144" y="-63"/>
         </scene>
     </scenes>
     <resources>

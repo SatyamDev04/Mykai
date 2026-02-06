@@ -14,7 +14,7 @@ class PlanTblVCell: UITableViewCell {
     @IBOutlet weak var TypeTxtLbl: UILabel!
     @IBOutlet weak var TypeOfUserLbl: UILabel!
     
-    @IBOutlet weak var RadioIMg: UIImageView!
+    //@IBOutlet weak var RadioIMg: UIImageView!
     
     @IBOutlet weak var OriginalPriceLbl: UILabel!
     @IBOutlet weak var DiscountView: UIView!

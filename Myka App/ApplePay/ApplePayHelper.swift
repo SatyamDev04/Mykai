@@ -30,7 +30,7 @@ class ApplePayHelper : NSObject{
     
     func presentApplePay(onVC: UIViewController) {
         
-        StripeAPI.defaultPublishableKey = "pk_test_51Qko2KEowij4RlG8Ehh3tKQVhxVJUMzAPIi0rTnsX77jwtz5F8LfHfSvS9d2PTg8G7I5NQ3x19JlqdMaAihRcXAn00MvY1CI0X"//Test
+      //  StripeAPI.defaultPublishableKey = "pk_test_51Qko2KEowij4RlG8Ehh3tKQVhxVJUMzAPIi0rTnsX77jwtz5F8LfHfSvS9d2PTg8G7I5NQ3x19JlqdMaAihRcXAn00MvY1CI0X"//Test
        
         let merchantIdentifier = Applepay.merchantID
         let paymentRequest = StripeAPI.paymentRequest(withMerchantIdentifier: merchantIdentifier, country: Applepay.country, currency: Applepay.currency)

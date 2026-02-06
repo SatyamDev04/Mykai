@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
 //            print("    \(name)")
 //        }
 //    }
-        Thread.sleep(forTimeInterval: 3)
+       
         
         AppsFlyerLib.shared().appsFlyerDevKey = "M57zyjkFgb7nSQwHWN6isW"
         AppsFlyerLib.shared().appleAppID = "6742851385"
@@ -69,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
         
         // StripeAPI.defaultPublishableKey = "pk_test_51Qko2KEowij4RlG8Ehh3tKQVhxVJUMzAPIi0rTnsX77jwtz5F8LfHfSvS9d2PTg8G7I5NQ3x19JlqdMaAihRcXAn00MvY1CI0X" //Test
         
-        StripeAPI.defaultPublishableKey = "pk_test_51RVEe2DujJKtntDw4WHj4B11GXtevi9wGVF9bY9XoHGbD69EUNDiEYaBaBswxzwBhzFjD3Oz55LWozIVPUfzIyqr00uPgzdErF" //Test
+        StripeAPI.defaultPublishableKey = "pk_test_51Swj9ILMipTfgps9F3mAcq1yPcEu6K0Xvh3s5kOnmtazKqqZ8seLk6uYJKKL4gWVHoQ4Zo8Ht6rGlIByc13AYBwK00cWQQ2skR" 
         
         
         
@@ -104,7 +104,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
                 
             }
         }
-        
+               window = UIWindow(frame: UIScreen.main.bounds)
+               window?.rootViewController = SplashViewController()
+               window?.makeKeyAndVisible()
         return true
     }
     

@@ -86,10 +86,10 @@ class WalletVC: UIViewController, UIPopoverPresentationControllerDelegate {
     
     
     @IBAction func WithdrawMoneyBtn(_ sender: UIButton) {
-        guard  self.WalletCreated_DayCount > 15 else{
-            self.AlertControllerOnr(title: "", message: "You can only withdraw money after 15 days of creating your wallet.")
-            return
-        }
+//        guard  self.WalletCreated_DayCount > 15 else{
+//            self.AlertControllerOnr(title: "", message: "You can only withdraw money after 15 days of creating your wallet.")
+//            return
+//        }
         
         guard self.BalanceLbl.text! != "$ 0" else{
             self.AlertControllerOnr(title: "", message: "You have no balance to withdraw.")

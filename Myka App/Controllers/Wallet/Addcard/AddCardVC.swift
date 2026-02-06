@@ -284,108 +284,81 @@ func format2(with mask: String, phone: String) -> String {
 extension AddCardVC {
     func callFunc() {
         showIndicator(withTitle: "", and: "")
-        let cardParams = STPCardParams()
-        
-//        let fullName = self.expiryTF.text!
-//        let fullNameArr = fullName.components(separatedBy: "/")
-        cardParams.name = self.NameTxtF.text!
-        cardParams.number = self.CardNumTxtF.text!
-        cardParams.expMonth = UInt(MonthTxt.text!)!
-        cardParams.expYear = UInt(YearTxt.text!)!
+
+        let cardParams = STPPaymentMethodCardParams()
+        cardParams.number = CardNumTxtF.text!
+        cardParams.expMonth = NSNumber(value: Int(MonthTxt.text!)!)
+        cardParams.expYear = NSNumber(value: Int(YearTxt.text!)!)
         cardParams.cvc = CvvTxtF.text!
-        print("CardDetail====",cardParams)
-        
-        STPAPIClient.shared.createToken(withCard: cardParams) { (token: STPToken?, error: Error?) in
+
+        let billingDetails = STPPaymentMethodBillingDetails()
+        billingDetails.name = NameTxtF.text!
+
+        let paymentMethodParams = STPPaymentMethodParams(
+            card: cardParams,
+            billingDetails: billingDetails,
+            metadata: nil
+        )
+
+        STPAPIClient.shared.createPaymentMethod(with: paymentMethodParams) { paymentMethod, error in
             self.hideIndicator()
-            
-            guard let token111 = token, error == nil else {
-                // Present error to user...
-                self.hideIndicator()
-                let UserInfo = error.unsafelyUnwrapped.localizedDescription
-                self.AlertControllerOnr(title: "Alert", message: UserInfo, BtnTitle: "OK")
-                
+
+            if let error = error {
+                self.AlertControllerOnr(
+                    title: "Alert",
+                    message: error.localizedDescription,
+                    BtnTitle: "OK"
+                )
                 return
             }
-          
-            self.hideIndicator()
-            
-            let cardParamss = STPPaymentMethodCardParams()
-           
-            cardParamss.number = self.CardNumTxtF.text!
-            cardParamss.expMonth = (UInt(self.MonthTxt.text!)!) as NSNumber
-            cardParamss.expYear = (UInt(self.YearTxt.text!)!) as NSNumber
-            cardParamss.cvc = self.CvvTxtF.text!
 
-            let paymentMethodParams = STPPaymentMethodParams(card: cardParamss, billingDetails: nil, metadata: nil)
+            guard let paymentMethod = paymentMethod else { return }
 
-            STPAPIClient.shared.createPaymentMethod(with: paymentMethodParams) { (paymentMethod, error) in
-                if let error = error {
-                    print("Error creating payment method: \(error.localizedDescription)")
-                } else if let paymentMethod = paymentMethod {
-                    print("Payment method created: \(paymentMethod.stripeId)")
-                    print("Payment method created: \(paymentMethod)")
-                    
-                    print(token111.tokenId)
-                    print(token111.card?.brand ?? "", "card type")
-                    print(token111.card?.name ?? "", "name")
-                    print(token111.card?.expYear ?? Int(), "expYear")
-                    print(token111.card?.expMonth ?? Int(), "expMonth")
-                    print(token111.card?.last4 ?? "", "card last 4")
-                    
-                    
-                    let ExpYr = token111.card?.expYear ?? Int()
-                    let ExpM = token111.card?.expMonth ?? Int()
-                    let crdHName = token111.card?.name ?? ""
-                    let crdType = token111.card?.brand ?? STPCardBrand.unknown
-                    let cardNo = self.CardNumTxtF.text!
-                    
-                    self.API_TO_Add_Cards(Token: "\(token111.tokenId)", stripe_Paymt_meth0d_ID: "\(paymentMethod.stripeId)")
-                }
-            }
+            print("✅ PaymentMethod ID:", paymentMethod.stripeId)
+
+            self.API_TO_Add_Cards(
+                stripe_Paymt_meth0d_ID: paymentMethod.stripeId
+            )
         }
     }
   }
 
 //save_card
 extension AddCardVC{
-
-    func API_TO_Add_Cards(Token: String,stripe_Paymt_meth0d_ID: String){
-    var params = [String: Any]()
-        let cardno = self.CardNumTxtF.text!
-        let cardType = detectCardType(cardNumber: "\(cardno)")
-   
-        params["type"] = cardType
-       // params["token_type"] = "card"
-        params["stripe_token"] = Token
-//        params["save_card"] = "yes"
-//        params["amount"] =  ""
-//        params["device_type"] = "ios"
-//        params["stripe_payment_method_id"] = stripe_Paymt_meth0d_ID
     
- 
-     showIndicator(withTitle: "", and: "")
+    func API_TO_Add_Cards(stripe_Paymt_meth0d_ID: String) {
+
+        var params = [String: Any]()
+        let cardno = self.CardNumTxtF.text!
+        let cardType = detectCardType(cardNumber: cardno)
+
+        params["stripe_token"] = stripe_Paymt_meth0d_ID
+       
+
+        showIndicator(withTitle: "", and: "")
+
         let loginURL = baseURL.baseURL + appEndPoints.add_Card
 
-        WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion:  { (json, statusCode) in
- 
-     self.hideIndicator()
-     
-     guard let dictData = json.dictionaryObject else{
-         return
-     }
- 
-     if dictData["success"] as? Bool == true{
-         let responseMessage = dictData["message"] as! String
-         StateMangerModelClass.shared.isCardAdded = true
-         self.showToast(responseMessage)
-         self.navigationController?.popViewController(animated: true)
-        }else{
-            
-            let responseMessage = dictData["message"] as! String
-            self.showToast(responseMessage)
-        }
- })
+        WebService.shared.postServiceURLEncoding(
+            loginURL,
+            VC: self,
+            andParameter: params
+        ) { json, statusCode in
 
- }
+            self.hideIndicator()
+
+            guard let dictData = json.dictionaryObject else { return }
+
+            let message = dictData["message"] as? String ?? ""
+
+            if dictData["success"] as? Bool == true {
+                StateMangerModelClass.shared.isCardAdded = true
+                self.showToast(message)
+                self.navigationController?.popViewController(animated: true)
+            } else {
+                self.showToast(message)
+            }
+        }
+    }
  
 }
