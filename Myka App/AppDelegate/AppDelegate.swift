@@ -157,8 +157,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
     
 }
 
-
-
 extension UIApplication {
     class func topViewController(
         _ base: UIViewController? = UIApplication.shared.connectedScenes

@@ -36,6 +36,7 @@ struct BillingNew: Codable {
 struct WelcomeIngredient: Codable {
     let schID: Int?
     let proPrice: String?
+    let servings: Int?
     let foodCategory: String?
     let marketID: Int?
     let foodID: String?
@@ -43,7 +44,7 @@ struct WelcomeIngredient: Codable {
     let userID: Int?
     let productID, price: String?
     let name: String?
-    let quantity: Int?
+    var quantity: Int?
     let measure: String?
     let createdAt: String?
     let isChecked: Int?
@@ -65,7 +66,7 @@ struct WelcomeIngredient: Codable {
         case foodCategory
         case marketID = "market_id"
         case foodID = "food_id"
-        case image
+        case image,servings
         case userID = "user_id"
         case productID = "product_id"
         case price, name, quantity, measure

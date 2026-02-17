@@ -88,7 +88,7 @@ class RecipeDetailNewVC: UIViewController {
     var recipeFrom = ""
     var sourceUrl = ""
     var conevertType = "O"
-    
+    private var baseIngredientData: [RecipeDataModel] = []
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -368,12 +368,14 @@ class RecipeDetailNewVC: UIViewController {
         }
         self.ServCount -= 1
         self.ServCountLbl.text = "\(ServCount) servings"
+        updateQuantitiesForServing()
     }
     
     @IBAction func ServCountPlusBtn(_ sender: UIButton) {
         self.ServCount += 1
         
         self.ServCountLbl.text = "\(ServCount) servings"
+        updateQuantitiesForServing()
     }
     
     @IBAction func AddToPlanBtn(_ sender: UIButton) {
@@ -826,9 +828,12 @@ extension RecipeDetailNewVC{
                                     header = ""
                                 }
                                 self.addIngredient(Header: header, data: IngredientDataModel(name: ingredient.name, quantity: ingredient.quantity, unit: ingredient.measure, img: ingredient.image,isSelected: true))
+                                
+                               
                             }
                         }
-                        
+                        self.baseIngredientData = self.tblVIngredientData
+                     //   self.updateIngredientQuantities()
                         if let cookwares = val?.cookware {
                             for cookware in cookwares {
                                 self.addCookware(data: CookwareDataModel(name: cookware.name,img: cookware.imageURL))
@@ -1006,52 +1011,117 @@ extension RecipeDetailNewVC{
 }
 
 extension RecipeDetailNewVC{
-    func addIngredient(Header:String?,data:IngredientDataModel) {
-       
+    func addIngredient(Header: String?, data: IngredientDataModel) {
+        
         let ingredientName = data.name?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        var amountText = ""
-        if let amountValue = Double(data.quantity ?? "") {
-            let truncated = floor(amountValue * 10) / 10
-            let formattedAmount = String(format: "%.1f", truncated)
-            amountText = formattedAmount.trimmingCharacters(in: .whitespacesAndNewlines)
-        }
-        let unitText = data.unit?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        let imgStr = data.img?.trimmingCharacters(in: .whitespacesAndNewlines)
         let headerText = Header?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-     
-
-        if  ingredientName.isEmpty || amountText.isEmpty || unitText.isEmpty {
-            return
+        let imgStr = data.img?.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard let baseQty = Double(data.quantity ?? "") else { return }
+        
+        // base unit clean
+        var unitText = data.unit?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if unitText.lowercased() == "each" {
+            unitText = ""
         }
         
-        let ingredient = IngredientDataModel(
+        // ---------- BASE INGREDIENT (original quantity) ----------
+        let baseIngredient = IngredientDataModel(
             name: ingredientName,
-            quantity: amountText,
+            quantity: formatQuantity(baseQty),   // original
             unit: unitText,
             img: imgStr,
             isSelected: true
         )
-
+        
+        // ---------- DISPLAY INGREDIENT (serving applied) ----------
+        let finalQty = baseQty * Double(ServCount)
+        
+        let displayIngredient = IngredientDataModel(
+            name: ingredientName,
+            quantity: formatQuantity(finalQty),
+            unit: unitText,
+            img: imgStr,
+            isSelected: true
+        )
+        
         DispatchQueue.main.async {
-            if headerText.isEmpty {
-                let data = RecipeDataModel(hearder: "", ingredients: [ingredient])
-                self.tblVIngredientData.append(data)
-            } else {
-                if let existingIndex = self.tblVIngredientData.firstIndex(where: {
-                    ($0.hearder ?? "").trimmingCharacters(in: .whitespacesAndNewlines).caseInsensitiveCompare(headerText) == .orderedSame
-                }) {
-                    if self.tblVIngredientData[existingIndex].ingredients == nil {
-                        self.tblVIngredientData[existingIndex].ingredients = [ingredient]
-                    } else {
-                        self.tblVIngredientData[existingIndex].ingredients?.append(ingredient)
-                    }
-                } else {
-                    let data = RecipeDataModel(hearder: headerText, ingredients: [ingredient])
-                    self.tblVIngredientData.append(data)
-                }
-            }
-          
+            
+            // ---------- STORE IN BASE ----------
+            self.appendIngredient(baseIngredient, header: headerText, to: &self.baseIngredientData)
+            
+            // ---------- STORE IN DISPLAY ----------
+            self.appendIngredient(displayIngredient, header: headerText, to: &self.tblVIngredientData)
+            
             self.TblV.reloadData()
+        }
+    }
+    
+    private func appendIngredient(
+        _ ingredient: IngredientDataModel,
+        header: String,
+        to array: inout [RecipeDataModel]
+    ) {
+        
+        if header.isEmpty {
+            array.append(RecipeDataModel(hearder: "", ingredients: [ingredient]))
+            return
+        }
+        
+        if let index = array.firstIndex(where: {
+            ($0.hearder ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+                .caseInsensitiveCompare(header) == .orderedSame
+        }) {
+            array[index].ingredients?.append(ingredient)
+        } else {
+            array.append(RecipeDataModel(hearder: header, ingredients: [ingredient]))
+        }
+    }
+    func updateQuantitiesForServing() {
+        
+        tblVIngredientData.removeAll()
+        
+        for section in baseIngredientData {
+            
+            var updatedIngredients: [IngredientDataModel] = []
+            
+            for ingredient in section.ingredients ?? [] {
+                
+                guard let baseQty = Double(ingredient.quantity ?? "") else {
+                    updatedIngredients.append(ingredient)
+                    continue
+                }
+                
+                let newQty = baseQty * Double(ServCount)
+                
+                var updatedIngredient = ingredient
+                updatedIngredient.quantity = formatQuantity(newQty)
+                
+                // remove each
+                if updatedIngredient.unit?.lowercased() == "each" {
+                    updatedIngredient.unit = ""
+                }
+                
+                updatedIngredients.append(updatedIngredient)
+            }
+            
+            let updatedSection = RecipeDataModel(
+                hearder: section.hearder,
+                ingredients: updatedIngredients
+            )
+            
+            tblVIngredientData.append(updatedSection)
+        }
+        
+        TblV.reloadData()
+    }
+    private func formatQuantity(_ value: Double) -> String {
+        if value.truncatingRemainder(dividingBy: 1) == 0 {
+            return String(Int(value))   // 2.0 → 2
+        } else {
+            return String(format: "%.2f", value)  // 2.5 → 2.50
+                .replacingOccurrences(of: #"0+$"#, with: "", options: .regularExpression)
+                .replacingOccurrences(of: #"\.$"#, with: "", options: .regularExpression)
         }
     }
     
