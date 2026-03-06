@@ -31,7 +31,7 @@
 			<string>com.MykaiApp.com</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>mykaimealplanner.onelink.me</string>
+				<string>mykai.onelink.me</string>
 			</array>
 		</dict>
 	</array>

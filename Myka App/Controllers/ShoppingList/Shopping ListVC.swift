@@ -292,7 +292,7 @@ extension Shopping_ListVC: UICollectionViewDelegate, UICollectionViewDataSource,
 
 extension Shopping_ListVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ShoppingListArr?.ingredient?.count ?? 0 
+        return ShoppingListArr?.ingredient?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -313,13 +313,13 @@ extension Shopping_ListVC: UITableViewDelegate, UITableViewDataSource {
         
         if img == "Not available" || img == "" && priceValue == "Not available" || priceValue == ""{
             
-            let text = "\(ShoppingListArr?.ingredient?[indexPath.row].pro_name ?? "")\nNot Available"
+            let text = "\(ShoppingListArr?.ingredient?[indexPath.row].name ?? "")\nNot Available"
 
             
             let attributedString = NSMutableAttributedString(string: text)
 
           
-            if let riceRange = text.range(of: ShoppingListArr?.ingredient?[indexPath.row].pro_name ?? "") {
+            if let riceRange = text.range(of: ShoppingListArr?.ingredient?[indexPath.row].name ?? "") {
                 let nsRange = NSRange(riceRange, in: text)
                 attributedString.addAttribute(.foregroundColor, value: UIColor.black, range: nsRange)
             }
@@ -466,10 +466,19 @@ extension Shopping_ListVC{
             
             self.hideIndicator()
             
-            let data = try! json.rawData()
-            do{
-                 
-                let d = try JSONDecoder().decode(basketModelClass.self, from: data)
+            do {
+                
+                let rawData = try json.rawData()
+                
+                let decoder = JSONDecoder()
+
+                decoder.nonConformingFloatDecodingStrategy = .convertFromString(
+                    positiveInfinity: "Infinity",
+                    negativeInfinity: "-Infinity",
+                    nan: "NaN"
+                )
+
+                let d = try decoder.decode(basketModelClass.self, from: rawData)
                 if d.success == true {
                    
                     let allData = d.data

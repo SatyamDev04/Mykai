@@ -5,12 +5,17 @@
 //  Created by Sumit on 11/12/24.
 //
 
+//
+//  StatsVC.swift
+//  Myka App
+//
+
 import UIKit
 import Charts
 import AppsFlyerLib
 import Alamofire
 import SDWebImage
- 
+
 struct GraphDataModelClass: Codable {
     var date: String
     var amount: Double
@@ -33,90 +38,105 @@ class StatsVC: UIViewController, ChartViewDelegate {
     var UserPickUrl = ""
     
     var GraphDataArr = [GraphDataModelClass]()
-     
     var x = 0.0
     
-   
-     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-         barChartView.delegate = self
-       
+        barChartView.delegate = self
+        barChartView.dragEnabled = false
+        barChartView.setScaleEnabled(false)
+        barChartView.pinchZoomEnabled = false
+        // ✅ Show Month + Year in label
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM yyyy"
+        DateLbl.text = formatter.string(from: seldate)
+
         planService.shared.Api_To_Get_ProfileData(vc: self) { result in
             
             switch result {
             case .success(let allData):
                 let response = allData
                 
-                let Name = response?["name"] as? String ?? String()
+                let Name = response?["name"] as? String ?? ""
                 self.UserName = Name.capitalizedFirst
                 
                 self.ProfDescLbl.text = "Good job \(Name.capitalizedFirst) you're on track to big savings! Stick with your plan and watch the results add up."
                 
-                let ProfImg = response?["profile_img"] as? String ?? String()
+                let ProfImg = response?["profile_img"] as? String ?? ""
                 let img = "\(baseURL.imageUrl)\(ProfImg)"
                 let ImgUrl = URL(string: img)
                 self.ProfImg.sd_imageIndicator = SDWebImageActivityIndicator.medium
                 self.ProfImg.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "DummyImg"))
                 self.UserPickUrl = img
+                
             case .failure(let error):
-                // Handle error
                 print("Error retrieving data: \(error.localizedDescription)")
             }
         }
-        self.Api_To_Get_Graph()
         
+        self.Api_To_Get_Graph()
     }
     
- 
     func setupBarChart() {
-        barChartView.renderer = RoundedBarChartRenderer(dataProvider: barChartView, animator: barChartView.chartAnimator, viewPortHandler: barChartView.viewPortHandler)
         
-        barChartView.delegate = self // Important
-        
+        barChartView.renderer = RoundedBarChartRenderer(
+            dataProvider: barChartView,
+            animator: barChartView.chartAnimator,
+            viewPortHandler: barChartView.viewPortHandler
+        )
+
         barChartView.xAxis.labelPosition = .bottom
-        barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: self.GraphDataArr.map { String($0.date) })
-                                                                    
+        barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: self.GraphDataArr.map { $0.date })
         barChartView.xAxis.granularity = 1
+
         barChartView.rightAxis.enabled = false
         barChartView.leftAxis.axisMinimum = 0
-        barChartView.leftAxis.axisMaximum = 700 // Adjust maximum value
+
+        // ✅ Dynamic Y Axis
+        let maxValue = GraphDataArr.map { $0.amount }.max() ?? 0
+        let roundedMax = ceil((maxValue * 1.2) / 10) * 10 // round to next 10
+        barChartView.leftAxis.axisMaximum = roundedMax == 0 ? 10 : roundedMax
+
         barChartView.leftAxis.labelCount = 5
+
         barChartView.legend.enabled = false
         barChartView.doubleTapToZoomEnabled = false
-       // barChartView.isUserInteractionEnabled = false
-        barChartView.isUserInteractionEnabled = true
-        barChartView.highlightPerTapEnabled = true
-        barChartView.highlightFullBarEnabled = false
-        
-        // Customize left axis grid lines (add dashed effect)
-        barChartView.leftAxis.gridLineDashLengths = [4, 4] // Pattern: [dash length, space length]
-        barChartView.leftAxis.gridColor = .lightGray // Color of dashed lines
+
+        barChartView.leftAxis.gridLineDashLengths = [4,4]
+        barChartView.leftAxis.gridColor = .lightGray
         barChartView.leftAxis.gridLineWidth = 0.8
+
+        barChartView.leftAxis.drawGridLinesEnabled = true
         barChartView.xAxis.drawGridLinesEnabled = false
 
-      
-        barChartView.leftAxis.drawGridLinesEnabled = true
         barChartView.xAxis.axisMinimum = -0.5
         barChartView.xAxis.axisMaximum = Double(GraphDataArr.count) - 0.5
-        barChartView.fitBars = false
 
+        // Y axis formatter
         barChartView.leftAxis.valueFormatter = DefaultAxisValueFormatter { value, axis in
             if value == 0 {
-                return ""
+                return "$0"
             }
-            return String(format: "$%.0f", value)
+            return "$\(Int(value))"
         }
-        
     }
 
     func setData() {
-        let values: [Double] = self.GraphDataArr.map { ($0.amount) }
-        let baseColors: [NSUIColor] = [.orange, .green, .red, .blue, .purple]
-        let colors = Array(baseColors.prefix(values.count))
+        
+        let values: [Double] = self.GraphDataArr.map { $0.amount }
+        
+        // ✅ Android matching colors
+        let orange = UIColor(red: 254/255, green: 159/255, blue: 69/255, alpha: 1)
+        let green  = UIColor(red: 6/255, green: 193/255, blue: 105/255, alpha: 1)
+        
+        var colors: [UIColor] = []
+        for i in 0..<values.count {
+            colors.append(i % 2 == 0 ? orange : green)
+        }
 
         var entries: [BarChartDataEntry] = []
+        
         for (index, value) in values.enumerated() {
             let entry = BarChartDataEntry(x: Double(index), y: value)
             entries.append(entry)
@@ -125,40 +145,41 @@ class StatsVC: UIViewController, ChartViewDelegate {
         let dataSet = BarChartDataSet(entries: entries, label: "")
         dataSet.colors = colors
         dataSet.valueColors = [.black]
-         
         dataSet.valueFont = UIFont.systemFont(ofSize: 12)
         
         dataSet.valueFormatter = CurrencyValueFormatter()
 
         let data = BarChartData(dataSet: dataSet)
-
-        // Completely remove space between bars
         data.barWidth = 1.0
-
+        
         barChartView.data = data
-        barChartView.notifyDataSetChanged() // Refresh the chart
+        barChartView.notifyDataSetChanged()
     }
-     
-
+    
     @IBAction func CalanderBtn(_ sender: UIButton) {
+        
         let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "StatesCalendarVC") as! StatesCalendarVC
         vc.seldate = seldate
-      //  vc.comesfrom = "StatsVC"
-        vc.backAction = {date in
+        
+        vc.backAction = { date in
+            
             self.seldate = date
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "dd MMM yyyy"
-            let formattedDate = dateFormatter.string(from: self.seldate)
-            self.DateLbl.text = formattedDate
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MMMM yyyy"
+            
+            self.DateLbl.text = formatter.string(from: date)
             self.Api_To_Get_Graph()
         }
+        
         self.addChild(vc)
         vc.view.frame = self.view.frame
         self.view.addSubview(vc.view)
         self.view.bringSubviewToFront(vc.view)
         vc.didMove(toParent: self)
     }
+
     
      
     
@@ -173,80 +194,154 @@ class StatsVC: UIViewController, ChartViewDelegate {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
+//    @IBAction func InviteFrndBtn(_ sender: UIButton) {
+//        generateInviteLink { inviteLink in
+//            
+//            let AppUrl:URL = URL(string: inviteLink)!
+//
+////            let referralCode = UserDetail.shared.getUserRefferalCode() // Replace with the actual referral code
+//            
+//            let productImage = UIImage(named: "InviteAppLogo")
+//            
+//            let someText: String = """
+//            Hey, My Kai’s an all-in-one app that’s completely changed the way
+//            I shop. It saves me time, money, and even helps with meal planning without having to step into a supermarket. See for yourself with a free gift from me
+//
+//            Click on the link below:
+//            \(AppUrl)   
+//            """
+//            // save reff code from signup, login, social login
+//            
+//            let itemsToShare: [Any] = [productImage!, someText]
+//            // 4. Create and present the UIActivityViewController
+//            let activityViewController = UIActivityViewController(activityItems: itemsToShare, applicationActivities: nil)
+//            
+//            // Exclude irrelevant activities if needed
+//            activityViewController.excludedActivityTypes = [
+//              .addToReadingList,
+//              .saveToCameraRoll,
+//              .assignToContact
+//            ]
+//            
+//            // Present the activity view controller
+//            DispatchQueue.main.async {
+//                self.present(activityViewController, animated: true, completion: nil)
+//            }
+//           
+//        }
+//    }
+//    
+//    
+//    
+//
+//    func generateInviteLink(completion: @escaping (String) -> Void) {
+//      //  let tempID = AppsFlyerLib().appleAppID
+// 
+//        let baseURL = "https://mykaimealplanner.onelink.me/mPqu/" //ns5ueabp    Replace with your OneLink template
+//     
+//        let userID = UserDetail.shared.getUserId() // Replace with your dynamic user identifier
+//  
+//        // Deep link URL for when the app is installed
+//        let deepLink = "mykai://property?" +
+//            "af_user_id=\(userID)" +
+//            "&Referrer=\(UserDetail.shared.getUserRefferalCode())" +
+//            "&providerName=\(self.UserName)" +
+//            "&providerImage=\(self.UserPickUrl)"
+//        
+//         
+//        // Web fallback URL (e.g., if app is not installed)
+//        let webLink = "https://www.mykaimealplanner.com" // Replace with your fallback web URL
+//         
+//        // Create the final URL with query parameters
+//        var components = URLComponents(string: baseURL)!
+//        components.queryItems = [
+//            URLQueryItem(name: "af_dp", value: deepLink),
+//            URLQueryItem(name: "af_web_dp", value: webLink)
+//        ]
+//         
+//        // Convert to string and log or use the URL
+//        if let fullURL = components.url?.absoluteString {
+//            let referLink = fullURL
+//            completion(referLink)
+//            print("Generated OneLink URL: \(referLink)")
+//        }
+//    }
+//
+    
     @IBAction func InviteFrndBtn(_ sender: UIButton) {
         generateInviteLink { inviteLink in
-            
-            let AppUrl:URL = URL(string: inviteLink)!
-
-//            let referralCode = UserDetail.shared.getUserRefferalCode() // Replace with the actual referral code
+            guard let appUrl = URL(string: inviteLink) else { return }
             
             let productImage = UIImage(named: "InviteAppLogo")
             
             let someText: String = """
-            Hey, My Kai’s an all-in-one app that’s completely changed the way
+            Hey, My Kai's an all-in-one app that's completely changed the way
             I shop. It saves me time, money, and even helps with meal planning without having to step into a supermarket. See for yourself with a free gift from me
 
             Click on the link below:
-            \(AppUrl)   
+            \(appUrl)
             """
-            // save reff code from signup, login, social login
             
             let itemsToShare: [Any] = [productImage!, someText]
-            // 4. Create and present the UIActivityViewController
-            let activityViewController = UIActivityViewController(activityItems: itemsToShare, applicationActivities: nil)
+            let activityVC = UIActivityViewController(activityItems: itemsToShare, applicationActivities: nil)
+            activityVC.excludedActivityTypes = [.addToReadingList, .saveToCameraRoll, .assignToContact]
             
-            // Exclude irrelevant activities if needed
-            activityViewController.excludedActivityTypes = [
-              .addToReadingList,
-              .saveToCameraRoll,
-              .assignToContact
-            ]
-            
-            // Present the activity view controller
             DispatchQueue.main.async {
-                self.present(activityViewController, animated: true, completion: nil)
+                self.present(activityVC, animated: true)
             }
-           
         }
     }
     
-    
-    
-
     func generateInviteLink(completion: @escaping (String) -> Void) {
-      //  let tempID = AppsFlyerLib().appleAppID
- 
-        let baseURL = "https://mykaimealplanner.onelink.me/mPqu/" //ns5ueabp    Replace with your OneLink template
-     
-        let userID = UserDetail.shared.getUserId() // Replace with your dynamic user identifier
-  
-        // Deep link URL for when the app is installed
-        let deepLink = "mykai://property?" +
-            "af_user_id=\(userID)" +
-            "&Referrer=\(UserDetail.shared.getUserRefferalCode())" +
-            "&providerName=\(self.UserName)" +
-            "&providerImage=\(self.UserPickUrl)"
-        
-         
-        // Web fallback URL (e.g., if app is not installed)
-        let webLink = "https://www.mykaimealplanner.com" // Replace with your fallback web URL
-         
-        // Create the final URL with query parameters
-        var components = URLComponents(string: baseURL)!
-        components.queryItems = [
-            URLQueryItem(name: "af_dp", value: deepLink),
-            URLQueryItem(name: "af_web_dp", value: webLink)
-        ]
-         
-        // Convert to string and log or use the URL
-        if let fullURL = components.url?.absoluteString {
-            let referLink = fullURL
-            completion(referLink)
-            print("Generated OneLink URL: \(referLink)")
-        }
-    }
+        let userID       = UserDetail.shared.getUserId()
+        let referralCode = UserDetail.shared.getUserRefferalCode()
 
-    
+        AppsFlyerShareInviteHelper.generateInviteUrl(
+            linkGenerator: { generator -> AppsFlyerLinkGenerator in
+
+                
+                let deepLink = "mykai://property?" +
+                            "af_user_id=\(userID)" +
+                            "&Referrer=\(referralCode)" +
+                            "&providerName=\(self.UserName)" +
+                            "&providerImage=\(self.UserPickUrl)"
+                
+                generator.addParameterValue("invite_landing", forKey: "deep_link_value")
+                generator.addParameterValue(deepLink, forKey: "af_dp")
+              
+                generator.addParameterValue(userID,           forKey: "af_user_id")
+                generator.addParameterValue(referralCode,     forKey: "Referrer")
+                generator.addParameterValue(self.UserName,    forKey: "providerName")
+                generator.addParameterValue(self.UserPickUrl, forKey: "providerImage")
+
+             
+                generator.addParameterValue("https://www.mykai.com", forKey: "af_web_dp")
+
+                generator.setChannel("mobile_share")
+                generator.setCampaign("referral_program")
+
+                // ✅ Optional: force a custom short link ID (e.g. referral code becomes the slug)
+                // generator.addParameterValue(referralCode, forKey: "af_custom_shortlink")
+
+                return generator
+            },
+            completionHandler: { url in
+                if let inviteURL = url?.absoluteString {
+                    print("✅ AppsFlyer invite URL: \(inviteURL)")
+
+                    AppsFlyerShareInviteHelper.logInvite("mobile_share", parameters: [
+                        "campaign"   : "referral_program",
+                        "referrerId" : userID
+                    ])
+
+                    completion(inviteURL)
+                } else {
+                    print("❌ AppsFlyer URL generation failed")
+                    completion("https://www.mykaimealplanner.com")
+                }
+            }
+        )
+    }
     
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
             guard let barEntry = entry as? BarChartDataEntry else { return }
@@ -469,12 +564,38 @@ extension StatsVC{
 
 import Charts
 
+//class CurrencyValueFormatter: NSObject, ValueFormatter {
+//    func stringForValue(_ value: Double, entry: ChartDataEntry, dataSetIndex: Int, viewPortHandler: ViewPortHandler?) -> String {
+//        return "$\(formatPrice1(value))" // Format with $ and two decimal places
+//    }
+//    
+//    func formatPrice1(_ netTotal: Double) -> String {
+//        let formatter = NumberFormatter()
+//        formatter.numberStyle = .decimal
+//        formatter.minimumFractionDigits = 0
+//        formatter.maximumFractionDigits = 2
+//        
+//        return formatter.string(from: NSNumber(value: netTotal)) ?? "\(netTotal)"
+//    }
+//}
+
 class CurrencyValueFormatter: NSObject, ValueFormatter {
-    func stringForValue(_ value: Double, entry: ChartDataEntry, dataSetIndex: Int, viewPortHandler: ViewPortHandler?) -> String {
-        return "$\(formatPrice1(value))" // Format with $ and two decimal places
+
+    func stringForValue(_ value: Double,
+                        entry: ChartDataEntry,
+                        dataSetIndex: Int,
+                        viewPortHandler: ViewPortHandler?) -> String {
+
+        // ✅ Hide $0 above bars
+        if value == 0 {
+            return ""
+        }
+
+        return "$\(formatPrice1(value))"
     }
-    
+
     func formatPrice1(_ netTotal: Double) -> String {
+
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.minimumFractionDigits = 0
@@ -484,7 +605,7 @@ class CurrencyValueFormatter: NSObject, ValueFormatter {
     }
 }
 
- 
+
 class RoundedBarChartRenderer: BarChartRenderer {
     override func drawDataSet(context: CGContext, dataSet: BarChartDataSetProtocol, index: Int) {
         guard let barData = dataProvider?.barData else { return }

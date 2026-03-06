@@ -17,15 +17,17 @@ struct MissingIngModelClass: Codable {
 // MARK: - Datum
 struct MissingIngModel: Codable {
     var text: String?
-    var quantity: Double?
+    var quantity: StringOrNumber?
     var measure, food: String?
     var weight: Double?
     var foodCategory, foodID: String?
     var image: String?
     var isMissing: Int?
+    var id: String?
+    var unit:String?
 
     enum CodingKeys: String, CodingKey {
-        case text, quantity, measure, food, weight, foodCategory
+        case text, quantity, measure, food, weight, foodCategory,id,unit
         case foodID = "foodId"
         case image
         case isMissing = "is_missing"

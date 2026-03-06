@@ -106,7 +106,7 @@ extension RecipeDetail1VC: UITableViewDelegate, UITableViewDataSource {
         
          let quantityString = val?.ingredients?[indexPath.row].quantity
 
-        let quantity = Double(quantityString ?? "") ?? 0
+        let quantity = Double(quantityString?.stringValue() ?? "") ?? 0
             let formatter = NumberFormatter()
             formatter.minimumFractionDigits = 0  // Show no fractional digits if not needed
             formatter.maximumFractionDigits = 2  // Limit to 2 fractional digits
@@ -116,7 +116,7 @@ extension RecipeDetail1VC: UITableViewDelegate, UITableViewDataSource {
                 print(formattedQuantity) // This will give "2" for 2.00 and "2.05" for 2.05
                 cell.QuentityLbl.text = "\(formattedQuantity) \(val?.ingredients?[indexPath.row].measure ?? "")"
             }else{
-                cell.QuentityLbl.text = "\(quantityString ?? "") \(val?.ingredients?[indexPath.row].measure ?? "")"
+                cell.QuentityLbl.text = "\(quantityString?.stringValue() ?? "") \(val?.ingredients?[indexPath.row].measure ?? "")"
             }
           
             return cell

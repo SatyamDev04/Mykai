@@ -222,16 +222,31 @@ extension DietaryRestrictionsVC: UITableViewDelegate, UITableViewDataSource {
             }
         }
         
-        if self.ArrData[indexPath.row].Name == "More"{
+        if self.ArrData[indexPath.row].Name == "More" {
+            
+            // 🔁 Preserve already selected items before expanding list
+            var selectedIds = Set<Int>()
+            for item in ArrData where item.isSelected {
+                if let id = item.id {
+                    selectedIds.insert(id)
+                }
+            }
+            
+            // 🔁 Apply selection to full list (ArrData1)
+            for index in 0..<ArrData1.count {
+                if let id = ArrData1[index].id {
+                    ArrData1[index].isSelected = selectedIds.contains(id)
+                }
+            }
+            
+            // 🔁 Expand to full list
             self.ArrData = self.ArrData1
             
             if ArrData.allSatisfy({ ($0.isSelected) == false }) {
-                // All items are unselected
                 print("All items are unselected.")
                 NextBtnO.setBackgroundImage(UIImage(named: "ButtonGray"), for: .normal)
                 NextBtnO.isUserInteractionEnabled = false
             } else {
-                // At least one item is selected
                 print("Some items are selected.")
                 NextBtnO.setBackgroundImage(UIImage(named: "Button"), for: .normal)
                 NextBtnO.isUserInteractionEnabled = true
@@ -256,12 +271,19 @@ extension DietaryRestrictionsVC: UITableViewDelegate, UITableViewDataSource {
         else { return }
 
         let savedIds = saved.DietaryPreferences
-
         guard !savedIds.isEmpty else { return }
 
-        for index in 0..<ArrData.count {
-            let idStr = "\(ArrData[index].id ?? -1)"
-            ArrData[index].isSelected = savedIds.contains(idStr)
+        // 🔁 If NONE was saved, select only None
+        if savedIds.contains("NONE") {
+            for index in 0..<ArrData.count {
+                ArrData[index].isSelected = (ArrData[index].Name == "None")
+            }
+        } else {
+            // 🔁 Restore normal selections
+            for index in 0..<ArrData.count {
+                let idStr = "\(ArrData[index].id ?? -1)"
+                ArrData[index].isSelected = savedIds.contains(idStr)
+            }
         }
 
         NextBtnO.setBackgroundImage(UIImage(named: "Button"), for: .normal)
@@ -273,19 +295,24 @@ extension DietaryRestrictionsVC: UITableViewDelegate, UITableViewDataSource {
     private func saveDraftDietaryRestrictions() {
         var selectedIds = [String]()
 
-        for item in ArrData where item.isSelected {
-            if let id = item.id {
-                selectedIds.append("\(id)")
+        // 🔁 Check if None is selected
+        if ArrData.contains(where: { $0.Name == "None" && $0.isSelected }) {
+            selectedIds = ["NONE"]
+        } else {
+            for item in ArrData where item.isSelected {
+                if let id = item.id {
+                    selectedIds.append("\(id)")
+                }
             }
         }
 
-        guard !selectedIds.isEmpty else { return }
-
+        // 🔁 Always save selection (including NONE)
         StateMangerModelClass.shared.onboardingSelectedData.MySelfSeldata[0].DietaryPreferences = selectedIds
     }
 }
 
 extension DietaryRestrictionsVC {
+//    MARK: - Sign up flow....
     func Api_To_GetDietaryRestrictions(){
         var params = [String: Any]()
         if self.type == "MySelf"{
@@ -296,10 +323,6 @@ extension DietaryRestrictionsVC {
         }else{
             params["type"] = "3"
         }
-//        let delegate = AppDelegate.shared
-//        let token = delegate.deviceToken
-//        params["device_token"] = token
-         
         showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.dietaryRestrictions
@@ -319,27 +342,23 @@ extension DietaryRestrictionsVC {
                 
                 self.DietaryRestrictionsArr.removeAll()
                 self.DietaryRestrictionsArr = ModelClass.getBodyGoalsDetails(responseArray: responseArray)
-//                self.ArrData1.removeAll()
-//                self.ArrData.removeAll()
-//                
-//                for i in self.DietaryRestrictionsArr{
-//                    self.ArrData1.append(contentsOf: [BodyGoalsModel(Name: i.name, id: i.id, isSelected: false)])
-//                }
-                let priorityOrder = ["vegetarian", "vegan", "halal", "red meat-free", "dairy-free","Pescatarian"]
+
+                let priorityOrder = ["vegetarian", "vegan", "halal", "red meat-free","dairy-free","pescatarian"]
                 
                 self.ArrData1.removeAll()
                 self.ArrData.removeAll()
-                
-                // 1️⃣ Append priority items in required order
+             
                 for name in priorityOrder {
+                    print(name,"name phle" )
                     if let item = self.DietaryRestrictionsArr.first(where: { $0.name.lowercased() == name }) {
+                        print(name,item.name.lowercased(),"name")
                         self.ArrData1.append(
                             BodyGoalsModel(Name: item.name, id: item.id, isSelected: item.selected)
                         )
                     }
                 }
                 
-                // 2️⃣ Append remaining items (excluding priority ones)
+            
                 for item in self.DietaryRestrictionsArr {
                     if !priorityOrder.contains(item.name.lowercased()) {
                         self.ArrData1.append(
@@ -351,7 +370,7 @@ extension DietaryRestrictionsVC {
                 
                 for i in 0..<self.ArrData1.count{
                     if i <= 6{
-                        self.ArrData.append(contentsOf: [self.ArrData1[i]])
+                        self.ArrData.append(self.ArrData1[i])
                     }
                 }
                 

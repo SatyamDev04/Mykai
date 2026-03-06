@@ -194,7 +194,31 @@ func Api_To_createCookBook(){
         params["id"] = self.selID
     }
     
-    let temp = self.Img.image?.pngData() ?? Data()
+    guard let selectedImage = self.Img.image else {
+        AlertControllerOnr(title: "", message: "Invalid image.")
+        return
+    }
+    let maxSizeInBytes: Int = 1024 * 1024
+    var compression: CGFloat = 1.0
+    guard var imageData = selectedImage.jpegData(compressionQuality: compression) else {
+        AlertControllerOnr(title: "", message: "Image processing failed.")
+        return
+    }
+
+    while imageData.count > maxSizeInBytes && compression > 0.1 {
+        compression -= 0.1
+        if let compressedData = selectedImage.jpegData(compressionQuality: compression) {
+            imageData = compressedData
+        }
+    }
+
+    if imageData.count > maxSizeInBytes {
+        AlertControllerOnr(title: "", message: "Image size must be less than 1 MB.")
+        return
+    }
+    let imageSizeInMB = Double(imageData.count) / (1024.0 * 1024.0)
+    print("Final image size before upload: \(String(format: "%.2f", imageSizeInMB)) MB")
+    let temp = imageData
     
   
     showIndicator(withTitle: "", and: "")
@@ -247,7 +271,7 @@ func Api_To_createCookBook(){
                 
                 self.backAction(self.EditcookBooksData)
                 self.navigationController?.popViewController(animated: true)
-            }else if self.comesfrom == "Cookbooks"{
+            }else if self.comesfrom == "Cookbooks" || self.comesfrom == "SearchTab"{
                 let val = dictData["data"] as? NSDictionary ?? NSDictionary()
                 let id = val["id"] as? Int ?? 0
                 self.selID = "\(id)"
@@ -274,7 +298,6 @@ func Api_To_createCookBook(){
         params["type"] = 1
         params["cook_book"] = self.selID
    
-        
         showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.add_to_favorite

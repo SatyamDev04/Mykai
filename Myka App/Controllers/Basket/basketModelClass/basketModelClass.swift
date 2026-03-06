@@ -145,8 +145,8 @@ struct PurpleRecipe: Codable {
         let cookware: [Cookware]?
         let isPublic: Int?
         let cuisine: String?
-        let calories, prepTime: Int?
-
+        let prepTime: Int?
+       let calories:Double?
         enum CodingKeys: String, CodingKey {
             case reviewsCount = "reviews_count"
             case mealType

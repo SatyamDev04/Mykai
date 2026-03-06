@@ -75,8 +75,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
-            AppsFlyerLib.shared().continue(userActivity, restorationHandler: nil)
-        }
+        
+       
+        if let incomingURL = userActivity.webpageURL,
+              let components = URLComponents(url: incomingURL, resolvingAgainstBaseURL: false),
+              let aaid = components.queryItems?.first(where: { $0.name == "a_aid" })?.value {
+               
+               print("AIID Value:", aaid)
+           }
+        AppsFlyerLib.shared().continue(userActivity, restorationHandler: nil)
+    }
  
 }
 

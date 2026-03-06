@@ -89,7 +89,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shopping list" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ny3-uP-Qah">
-                                                <rect key="frame" x="25" y="6" width="87" height="18.333333333333336"/>
+                                                <rect key="frame" x="25" y="6" width="87" height="18.333333333333332"/>
                                                 <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -764,7 +764,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ze2-ym-9Nl">
                             <rect key="frame" x="30" y="88" width="307" height="491"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Addresses" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Ut-ga-Mex">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address’s" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Ut-ga-Mex">
                                     <rect key="frame" x="20" y="20" width="267" height="18"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="18" id="DhB-sl-2EC"/>
@@ -3525,44 +3525,44 @@
                                             <constraint firstAttribute="trailing" secondItem="Gns-7Q-5Bt" secondAttribute="trailing" id="i6J-0O-NX6"/>
                                         </constraints>
                                     </view>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="7Ur-hV-v0z">
-                                        <rect key="frame" x="30" y="458" width="333" height="50"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o8y-BX-zKw">
-                                                <rect key="frame" x="0.0" y="0.0" width="333" height="50"/>
-                                                <color key="backgroundColor" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="50" id="plU-Wl-tBz"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
-                                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="I have purchased everything">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                        <real key="value" value="10"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="AddToBasketBtn:" destination="PDr-Ad-eao" eventType="touchUpInside" id="RmP-v3-M8Q"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="mZm-EB-I3I" secondAttribute="trailing" constant="20" id="7Ha-Je-WBe"/>
                                     <constraint firstItem="mZm-EB-I3I" firstAttribute="centerX" secondItem="hyZ-st-Ms6" secondAttribute="centerX" id="9QD-Xa-V7z"/>
+                                    <constraint firstAttribute="bottom" secondItem="Gns-7Q-5Bt" secondAttribute="bottom" constant="100" id="DCi-4h-exI"/>
                                     <constraint firstItem="mZm-EB-I3I" firstAttribute="top" secondItem="hyZ-st-Ms6" secondAttribute="top" id="JBf-xX-ekc"/>
-                                    <constraint firstItem="7Ur-hV-v0z" firstAttribute="leading" secondItem="hyZ-st-Ms6" secondAttribute="leading" constant="30" id="NX0-6d-Eih"/>
-                                    <constraint firstItem="7Ur-hV-v0z" firstAttribute="top" secondItem="mZm-EB-I3I" secondAttribute="bottom" constant="20" id="SJ2-Cm-FLz"/>
-                                    <constraint firstAttribute="trailing" secondItem="7Ur-hV-v0z" secondAttribute="trailing" constant="30" id="SXd-3r-aCL"/>
                                     <constraint firstItem="mZm-EB-I3I" firstAttribute="leading" secondItem="hyZ-st-Ms6" secondAttribute="leading" constant="20" id="XNu-cZ-PoU"/>
-                                    <constraint firstAttribute="bottom" secondItem="7Ur-hV-v0z" secondAttribute="bottom" constant="40" id="ZtV-K3-Goh"/>
                                 </constraints>
                             </scrollView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="7Ur-hV-v0z">
+                                <rect key="frame" x="20" y="734" width="353" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o8y-BX-zKw">
+                                        <rect key="frame" x="0.0" y="0.0" width="353" height="50"/>
+                                        <color key="backgroundColor" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="plU-Wl-tBz"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="I have purchased everything">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="AddToBasketBtn:" destination="PDr-Ad-eao" eventType="touchUpInside" id="RmP-v3-M8Q"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="7tn-Nn-bHL"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="i57-27-W26"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -3579,6 +3579,9 @@
                             <constraint firstItem="7ya-xP-K9K" firstAttribute="leading" secondItem="i57-27-W26" secondAttribute="leading" constant="30" id="arx-d8-fWm"/>
                             <constraint firstItem="hyZ-st-Ms6" firstAttribute="leading" secondItem="i57-27-W26" secondAttribute="leading" id="azp-hq-BMF"/>
                             <constraint firstItem="i57-27-W26" firstAttribute="trailing" secondItem="7ya-xP-K9K" secondAttribute="trailing" constant="30" id="d7j-l1-Xe6"/>
+                            <constraint firstItem="i57-27-W26" firstAttribute="bottom" secondItem="7Ur-hV-v0z" secondAttribute="bottom" id="gUp-CZ-oAy"/>
+                            <constraint firstItem="7Ur-hV-v0z" firstAttribute="leading" secondItem="i57-27-W26" secondAttribute="leading" constant="20" id="iJr-oo-4bn"/>
+                            <constraint firstItem="i57-27-W26" firstAttribute="trailing" secondItem="7Ur-hV-v0z" secondAttribute="trailing" constant="20" id="ja2-xa-yeO"/>
                             <constraint firstItem="rT3-fE-yif" firstAttribute="top" secondItem="i57-27-W26" secondAttribute="top" id="jiR-gh-DIc"/>
                             <constraint firstItem="i57-27-W26" firstAttribute="bottom" secondItem="hyZ-st-Ms6" secondAttribute="bottom" id="ofx-Tf-MNL"/>
                             <constraint firstItem="i57-27-W26" firstAttribute="trailing" secondItem="hyZ-st-Ms6" secondAttribute="trailing" id="tlF-FO-jtc"/>
@@ -3612,25 +3615,25 @@
                             <rect key="frame" x="20" y="226" width="353" height="400"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Want me to track your savings?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fzc-0l-4po">
-                                    <rect key="frame" x="49.333333333333329" y="20" width="254.33333333333337" height="21"/>
+                                    <rect key="frame" x="29.666666666666657" y="20" width="294" height="22"/>
                                     <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="18"/>
                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="cCw-uT-gnH">
-                                    <rect key="frame" x="16" y="61" width="321" height="319"/>
+                                    <rect key="frame" x="16" y="62" width="321" height="318"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="ArW-DR-1nP">
-                                            <rect key="frame" x="0.0" y="0.0" width="321" height="59"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="321" height="62"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Grocery store name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uYu-co-h9F">
-                                                    <rect key="frame" x="0.0" y="0.0" width="321" height="14"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="321" height="17"/>
                                                     <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="12"/>
                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jxo-5B-cGx">
-                                                    <rect key="frame" x="0.0" y="19" width="321" height="40"/>
+                                                    <rect key="frame" x="0.0" y="22" width="321" height="40"/>
                                                     <subviews>
                                                         <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter the grocery store name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Fhp-F4-CUm">
                                                             <rect key="frame" x="10" y="5" width="291" height="30"/>
@@ -3667,16 +3670,16 @@
                                             </subviews>
                                         </stackView>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="2uH-V8-45d">
-                                            <rect key="frame" x="0.0" y="75" width="321" height="59"/>
+                                            <rect key="frame" x="0.0" y="78" width="321" height="62"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Cart total" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bZ7-QF-tAX">
-                                                    <rect key="frame" x="0.0" y="0.0" width="321" height="14"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="321" height="17"/>
                                                     <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="12"/>
                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7FK-wp-5jT">
-                                                    <rect key="frame" x="0.0" y="19" width="321" height="40"/>
+                                                    <rect key="frame" x="0.0" y="22" width="321" height="40"/>
                                                     <subviews>
                                                         <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter the cart total" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3qf-Ev-j7f">
                                                             <rect key="frame" x="10" y="5" width="291" height="30"/>
@@ -3713,16 +3716,16 @@
                                             </subviews>
                                         </stackView>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="7Gs-uz-jpj">
-                                            <rect key="frame" x="0.0" y="150" width="321" height="59"/>
+                                            <rect key="frame" x="0.0" y="156" width="321" height="62"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Date purchased" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RzF-If-FCa">
-                                                    <rect key="frame" x="0.0" y="0.0" width="321" height="14"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="321" height="17"/>
                                                     <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="12"/>
                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5tZ-0u-sHK">
-                                                    <rect key="frame" x="0.0" y="19" width="321" height="40"/>
+                                                    <rect key="frame" x="0.0" y="22" width="321" height="40"/>
                                                     <subviews>
                                                         <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="09/11/2025" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="48I-Mm-RdV">
                                                             <rect key="frame" x="10" y="5" width="291" height="30"/>
@@ -3759,10 +3762,10 @@
                                             </subviews>
                                         </stackView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WR4-6d-jbO">
-                                            <rect key="frame" x="0.0" y="225" width="321" height="94"/>
+                                            <rect key="frame" x="0.0" y="234" width="321" height="84"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LBu-td-FOd">
-                                                    <rect key="frame" x="0.0" y="44" width="321" height="50"/>
+                                                    <rect key="frame" x="0.0" y="34" width="321" height="50"/>
                                                     <color key="backgroundColor" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="sch-tF-56o"/>
@@ -8636,7 +8639,7 @@ now</string>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shopping list" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d8u-g5-alR">
-                                                <rect key="frame" x="25" y="6" width="87" height="18.333333333333336"/>
+                                                <rect key="frame" x="25" y="6" width="87" height="18.333333333333332"/>
                                                 <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>

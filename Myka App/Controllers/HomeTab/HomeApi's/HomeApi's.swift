@@ -224,8 +224,8 @@ class HomeService {
       //  showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.getSubscriptionDeltails
-        print(params,"Params")
-        print(loginURL,"loginURL")
+//        print(params,"Params")
+//        print(loginURL,"loginURL")
         
         WebService.shared.postServiceURLEncodingSubscription(loginURL, VC: vc, andParameter: params, withCompletion: { (json, statusCode) in
             

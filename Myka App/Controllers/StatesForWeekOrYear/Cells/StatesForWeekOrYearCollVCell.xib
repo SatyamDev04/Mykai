@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -31,7 +31,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nBM-FR-xuC">
                         <rect key="frame" x="5" y="5" width="142" height="236"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image 1" translatesAutoresizingMaskIntoConstraints="NO" id="FKi-gF-Vxh">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image 1" translatesAutoresizingMaskIntoConstraints="NO" id="FKi-gF-Vxh">
                                 <rect key="frame" x="0.0" y="0.0" width="142" height="124"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="FKi-gF-Vxh" secondAttribute="height" multiplier="1:1" constant="18" id="ZL0-wg-R6e"/>
@@ -239,8 +239,8 @@
     <resources>
         <image name="Clock" width="10" height="10"/>
         <image name="Fav" width="32" height="32"/>
-        <image name="Group 1171276549" width="28" height="28"/>
-        <image name="Group 1171276765" width="12" height="12.333333015441895"/>
+        <image name="Group 1171276549" width="59.333332061767578" height="26"/>
+        <image name="Group 1171276765" width="12" height="15.666666984558105"/>
         <image name="Image 1" width="153" height="136"/>
         <image name="UnFav" width="32" height="32"/>
     </resources>

@@ -755,7 +755,7 @@ extension CreateRecipeVC {
         self.convertURLToBase64(urlString: urlString) { base64String in
             if let base64String = base64String {
                 print("Base64 Encoded String: \(base64String)")
-                self.IngredientsArr.append(Ingredients(txt: itm.food ?? "", food: itm.food ?? "",Quantity: itm.quantity ?? "",Unit: UnitString,img: base64String))
+                self.IngredientsArr.append(Ingredients(txt: itm.food ?? "", food: itm.food ?? "",Quantity: itm.quantity?.stringValue() ?? "",Unit: UnitString,img: base64String))
             } else {
                 print("Failed to encode URL to Base64")
             }

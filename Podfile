@@ -39,7 +39,7 @@ target 'My Kai' do
     pod 'GoogleAPIClientForREST/Vision'
     pod 'GTMAppAuth'
     pod 'AppAuth'
-    pod 'AppsFlyerFramework'
+   # pod 'AppsFlyerFramework'
     pod 'GoogleMaps'
     pod 'GooglePlaces'
     pod 'SwiftGifOrigin'

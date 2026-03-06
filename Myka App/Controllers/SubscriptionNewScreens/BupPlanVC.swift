@@ -49,7 +49,7 @@ class BupPlanVC: UIViewController, SKRequestDelegate {
         
         var worldString = NSAttributedString()
         
-        if UserDetail.shared.getiSfromSignup() == true{
+        if !StateMangerModelClass.shared.ProviderName.isEmpty{
             let imgUrl = URL(string: StateMangerModelClass.shared.ProviderImg) ?? nil
             self.ProfileImg.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "Prof"))
             
@@ -79,7 +79,7 @@ class BupPlanVC: UIViewController, SKRequestDelegate {
         
         self.Api_To_fetchSubscription()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(listnerFunction(_:)), name: NSNotification.Name(rawValue: "notificationName"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(listnerFunction(_:)), name: NSNotification.Name(rawValue: "PurchaseNotification"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -104,37 +104,93 @@ class BupPlanVC: UIViewController, SKRequestDelegate {
   }
 
 func sendReceiptToServer(Receipt: String) {
-    var params = [String: Any]()
-
-    params["receipt_data"] = Receipt
     
-
-        self.hideIndicator()
-        showIndicator(withTitle: "", and: "")
-      
     let loginURL = baseURL.baseURL + appEndPoints.subscription_apple
-        print(loginURL,"loginURL")
-
-    WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
-
+    
+    let params: [String: Any] = [
+        "receipt_data": Receipt,
+        "type":"ios"
+    ]
+    
+    let token = UserDetail.shared.getTokenWith()
+    
+    let headers: HTTPHeaders = [
+        "Authorization": "Bearer \(token)",
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+    ]
+    
+    print("================ API REQUEST ================")
+    print("URL:", loginURL)
+    print("HEADERS:", headers)
+    print("PARAMETERS:", params)
+    print("=============================================")
+    
+    self.showIndicator(withTitle: "", and: "")
+    
+    AF.request(loginURL,
+               method: .post,
+               parameters: params,
+               encoding: JSONEncoding.default,
+               headers: headers)
+    .responseData { response in
+        
         self.hideIndicator()
-         
-         guard let dictData = json.dictionaryObject else{
-             return
-         }
-            if dictData["success"] as! Bool == true{
-                if self.comesfrom == "Signup" {
-                    let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-                    let vc = storyboard.instantiateViewController(withIdentifier: "TabbarVC") as! TabbarVC
-                    self.navigationController?.pushViewController(vc, animated: true)
-                }else{
-                    self.navigationController?.popToRootViewController(animated: true)
+        
+        print("================ API RESPONSE ================")
+        print("STATUS CODE:", response.response?.statusCode ?? 0)
+        
+        if let data = response.data,
+           let rawString = String(data: data, encoding: .utf8) {
+            print("RAW RESPONSE:")
+            print(rawString)
+        }
+        
+        switch response.result {
+        case .success(let data):
+            
+            do {
+                if let jsonObject = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                    
+                    print("PARSED JSON:", jsonObject)
+                    
+                    let success = jsonObject["success"] as? Bool ?? false
+                    let message = jsonObject["message"] as? String ?? "Unknown error"
+                    
+                    if success {
+                        print("✅ Subscription Success")
+                        
+                        if self.comesfrom == "Signup" {
+                            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
+                            let vc = storyboard.instantiateViewController(withIdentifier: "TabbarVC") as! TabbarVC
+                            self.navigationController?.pushViewController(vc, animated: true)
+                        } else {
+                            self.navigationController?.popToRootViewController(animated: true)
+                        }
+                        
+                    } else {
+                        print("❌ Backend Error:", message)
+                        self.showToast(message)
+                    }
+                    
+                } else {
+                    print("❌ Response is not a valid JSON object")
+                    self.showToast("Server configuration error")
                 }
-            }else{
-              
+                
+            } catch {
+                print("❌ JSON Parsing Error:", error)
+                self.showToast("Invalid server response")
             }
-        })
-      }
+            
+        case .failure(let error):
+            print("❌ API Failure:", error.localizedDescription)
+            self.showToast("Network error. Please try again.")
+        }
+        
+        print("==============================================")
+    }
+}
  
     
     @IBAction func CloseBtn(_ sender: UIButton) {
@@ -411,9 +467,9 @@ extension BupPlanVC{
                 let last_plan = Result["active_plan"] as? String ?? String()
                 
                 for i in 0..<self.PlanArr.count{
-                    self.PlanArr[i].isSelected = false
+                    self.PlanArr[i].isSelected = true
                 }
-                
+                self.Sel_SubsPrice = 49.99
                 if last_plan == "annual_plan"{
                     self.PlanArr[0].isSelected = true
                 }

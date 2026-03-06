@@ -234,7 +234,7 @@ class CookBooksTypeVc: UIViewController {
         
         
         // Base URL for the OneLink template
-        let baseURL = "https://mykaimealplanner.onelink.me/mPqu/" // Replace with your OneLink template
+        let baseURL = "https://mykai.onelink.me/mPqu/" // Replace with your OneLink template
         
         // Deep link URL for when the app is installed
         let deepLink = "mykai://property?" +

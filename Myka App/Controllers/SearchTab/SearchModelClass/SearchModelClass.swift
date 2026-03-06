@@ -179,7 +179,8 @@ struct Ingredient: Codable {
     let imageURL: String?
     let header: String?
     let ingredientID: Int?
-    let updatedAt, name, quantity: String?
+    let updatedAt, name:String?
+    let quantity: StringOrNumber?
     let orderIndex: Int?
     let ingredientCost, searchKey, id, measureImperial: String?
     let food, recipeID: String?

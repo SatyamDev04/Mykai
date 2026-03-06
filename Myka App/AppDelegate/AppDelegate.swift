@@ -49,18 +49,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
 //    }
        
         
+       
+        
+        
         AppsFlyerLib.shared().appsFlyerDevKey = "M57zyjkFgb7nSQwHWN6isW"
         AppsFlyerLib.shared().appleAppID = "6742851385"
+        AppsFlyerLib.shared().appInviteOneLinkID = "mu9R"
         AppsFlyerLib.shared().delegate = self
         AppsFlyerLib.shared().isDebug = true
         AppsFlyerLib.shared().deepLinkDelegate = self
+        AppsFlyerLib.shared().start()
         
         if let url = launchOptions?[.url] as? URL {
             AppsFlyerLib.shared().handleOpen(url)
         }
-        
-        AppsFlyerLib.shared().start()
-        
         
         GMSServices.provideAPIKey("AIzaSyA7f3YXlTD-foNwy7phnJJHCsYDiWgURkQ")
         GMSPlacesClient.provideAPIKey("AIzaSyA7f3YXlTD-foNwy7phnJJHCsYDiWgURkQ")
@@ -332,31 +334,45 @@ extension AppDelegate: DeepLinkDelegate {
         switch result.status {
         case .found:
             if let deepLink = result.deepLink {
-                
+                print("🔥 Full DeepLink Object:", deepLink)
                 // Handle deep link data
                 print("Deep link data: \(deepLink.clickEvent)")
-                let Result = deepLink.clickEvent
-                
-                print("Resultdata: \(Result)")
-                
-                // Check if "referral_code" is available as a query parameter
-                if let referralCode = Result.first(where: { $0.key == "referral_code" })?.value as? String {
-                    print("Referral Code: \(referralCode)")
-                    // Handle the referral code (e.g., save it, show it, or process it)
+                let result = deepLink.clickEvent
+                print("Resultdata: \(result)")
+
+                // Helper function to safely extract String from String OR [String]
+                func extractString(_ value: Any?) -> String {
+                    if let str = value as? String {
+                        return str
+                    }
+                    if let arr = value as? [String] {
+                        return arr.first ?? ""
+                    }
+                    return ""
                 }
+
+                // Extract values safely
+                let providerName = extractString(result["providerName"])
+                let providerImage = extractString(result["providerImage"])
+                let referrerCode = extractString(result["deep_link_sub1"])
+
+                // ✅ Extract affiliate ID (af_referrer_uid)
+                let affiliateID = extractString(result["af_referrer_uid"])
+
+                // Save to state manager
+                StateMangerModelClass.shared.ProviderName = providerName
+                StateMangerModelClass.shared.ProviderImg = providerImage
+                StateMangerModelClass.shared.ReffCode = referrerCode
+                StateMangerModelClass.shared.AffiliateID = affiliateID
+                UserDetail.shared.setaflieateID(affiliateID)
+                print("ProviderName:", providerName)
+                print("ProviderImage:", providerImage)
+                print("Referrer Code:", referrerCode)
+                print("Affiliate ID:", affiliateID)
                 
-                let ProvName = Result.first(where: { $0.key == "providerName" })?.value as? String ?? ""
-                let ProvImage = Result.first(where: { $0.key == "providerImage" })?.value as? String ?? ""
-                let Referrer = Result.first(where: { $0.key == "Referrer" })?.value as? String ?? ""
-                
-                StateMangerModelClass.shared.ProviderName = ProvName
-                StateMangerModelClass.shared.ProviderImg = ProvImage
-                StateMangerModelClass.shared.ReffCode = Referrer
-                
-                
-                let screenName = Result.first(where: { $0.key == "ScreenName" })?.value as? String ?? ""
-                let cookbooksID = Result.first(where: { $0.key == "CookbooksID" })?.value as? String ?? ""
-                let ItmName = Result.first(where: { $0.key == "ItemName" })?.value as? String ?? ""
+                let screenName = result.first(where: { $0.key == "ScreenName" })?.value as? String ?? ""
+                let cookbooksID = result.first(where: { $0.key == "CookbooksID" })?.value as? String ?? ""
+                let ItmName = result.first(where: { $0.key == "ItemName" })?.value as? String ?? ""
                 
                 
                 print("ScreenName: \(screenName)")

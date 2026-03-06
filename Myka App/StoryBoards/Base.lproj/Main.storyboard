@@ -824,7 +824,7 @@
                                                 </attributedString>
                                                 <nil key="highlightedColor"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="firstText" value="Who will be you "/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="firstText" value="Who will you be "/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="firstColor">
                                                         <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </userDefinedRuntimeAttribute>

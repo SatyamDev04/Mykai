@@ -2614,7 +2614,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         }else if collectionView == SnacksCollV{
             return CGSize(width: 197, height: collectionView.frame.height)
         } else {
-            return CGSize(width: self.view.frame.width - 50, height: height)
+            return CGSize(width: self.view.frame.width - 20, height: height)
         }
     }
     
@@ -2825,9 +2825,34 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     
     func Api_To_PlanPagination(mealType: String, completion: @escaping (Result<[Breakfast], Error>) -> Void) {
         self.showIndicator(withTitle: "", and: "")
-        let params: [String: Any] = [
+        var params: [String: Any] = [
             "meal_type": mealType
         ]
+
+        // 🔥 Send already loaded recipe URIs to prevent duplicate pagination data
+        var existingItems: [Breakfast] = []
+
+        switch mealType {
+        case "Breakfast":
+            existingItems = self.AllRecipeSelItem.recipes?.breakfast ?? []
+        case "Lunch":
+            existingItems = self.AllRecipeSelItem.recipes?.lunch ?? []
+        case "Dinner":
+            existingItems = self.AllRecipeSelItem.recipes?.dinner ?? []
+        case "Snacks":
+            existingItems = self.AllRecipeSelItem.recipes?.Snack ?? []
+        case "Dessert":
+            existingItems = self.AllRecipeSelItem.recipes?.Dessert ?? []
+        case "Brunch":
+            existingItems = self.AllRecipeSelItem.recipes?.Teatime ?? []
+        default:
+            break
+        }
+
+        let existingIds = existingItems.compactMap { $0.recipe?.uri }
+        if !existingIds.isEmpty {
+            params["ids"] = existingIds   // use "ids[]" if backend expects array format
+        }
         let url = baseURL.baseURL + "all-recipe-pagination"
         
         WebService.shared.postServiceURLEncoding(url, VC: self, andParameter: params) { json, status in

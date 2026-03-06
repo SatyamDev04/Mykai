@@ -4098,7 +4098,7 @@ OFF My-Kai. </string>
                                                                                 </constraints>
                                                                                 <userDefinedRuntimeAttributes>
                                                                                     <userDefinedRuntimeAttribute type="number" keyPath="starSize">
-                                                                                        <real key="value" value="20"/>
+                                                                                        <real key="value" value="18"/>
                                                                                     </userDefinedRuntimeAttribute>
                                                                                     <userDefinedRuntimeAttribute type="number" keyPath="totalStars">
                                                                                         <integer key="value" value="5"/>
@@ -4124,6 +4124,8 @@ OFF My-Kai. </string>
                                                                                     <userDefinedRuntimeAttribute type="number" keyPath="fillMode">
                                                                                         <integer key="value" value="0"/>
                                                                                     </userDefinedRuntimeAttribute>
+                                                                                    <userDefinedRuntimeAttribute type="image" keyPath="filledImage" value="yellowStar"/>
+                                                                                    <userDefinedRuntimeAttribute type="image" keyPath="emptyImage" value="Blackstar"/>
                                                                                 </userDefinedRuntimeAttributes>
                                                                             </view>
                                                                         </subviews>
@@ -4178,26 +4180,28 @@ OFF My-Kai. </string>
                                                                             <constraint firstAttribute="width" constant="35" id="qtG-g9-fzF"/>
                                                                         </constraints>
                                                                     </imageView>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ehx-VE-aqB">
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nutrition Per Serving" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ehx-VE-aqB" customClass="MyKaiTitleLabel" customModule="My_Kai" customModuleProvider="target">
                                                                         <rect key="frame" x="59.999999999999986" y="20" width="150.66666666666663" height="25.333333333333329"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="25.329999999999998" id="6ea-0P-JiC"/>
                                                                         </constraints>
-                                                                        <attributedString key="attributedText">
-                                                                            <fragment content="Nutrition Per ">
-                                                                                <attributes>
-                                                                                    <color key="NSColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                                    <font key="NSFont" metaFont="system" size="16"/>
-                                                                                </attributes>
-                                                                            </fragment>
-                                                                            <fragment content="Serving">
-                                                                                <attributes>
-                                                                                    <color key="NSColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41176470588235292" alpha="1" colorSpace="calibratedRGB"/>
-                                                                                    <font key="NSFont" metaFont="system" size="16"/>
-                                                                                </attributes>
-                                                                            </fragment>
-                                                                        </attributedString>
+                                                                        <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="16"/>
+                                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <nil key="highlightedColor"/>
+                                                                        <userDefinedRuntimeAttributes>
+                                                                            <userDefinedRuntimeAttribute type="string" keyPath="fontNamee" value="Montserrat-SemiBold"/>
+                                                                            <userDefinedRuntimeAttribute type="number" keyPath="titleFontSize">
+                                                                                <real key="value" value="20"/>
+                                                                            </userDefinedRuntimeAttribute>
+                                                                            <userDefinedRuntimeAttribute type="string" keyPath="firstText" value="Nutrition Per "/>
+                                                                            <userDefinedRuntimeAttribute type="color" keyPath="firstColor">
+                                                                                <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                            </userDefinedRuntimeAttribute>
+                                                                            <userDefinedRuntimeAttribute type="color" keyPath="secondColor">
+                                                                                <color key="value" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                            </userDefinedRuntimeAttribute>
+                                                                            <userDefinedRuntimeAttribute type="string" keyPath="secondText" value="Serving"/>
+                                                                        </userDefinedRuntimeAttributes>
                                                                     </label>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="wou-Nh-h6D">
                                                                         <rect key="frame" x="15" y="60.000000000000014" width="303" height="138.33333333333337"/>
@@ -4206,13 +4210,13 @@ OFF My-Kai. </string>
                                                                                 <rect key="frame" x="0.0" y="0.0" width="75.666666666666671" height="138.33333333333334"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Calories" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l0y-WL-dbf">
-                                                                                        <rect key="frame" x="5" y="10.000000000000002" width="65.666666666666671" height="19.666666666666671"/>
+                                                                                        <rect key="frame" x="5" y="10" width="65.666666666666671" height="9.6666666666666643"/>
                                                                                         <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
                                                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8bU-Fu-MLB">
-                                                                                        <rect key="frame" x="13" y="39.666666666666629" width="50" height="80"/>
+                                                                                        <rect key="frame" x="13" y="29.666666666666629" width="50" height="90"/>
                                                                                         <subviews>
                                                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Group 1171275580" translatesAutoresizingMaskIntoConstraints="NO" id="OI9-hV-WAD">
                                                                                                 <rect key="frame" x="12" y="8" width="26" height="26"/>
@@ -4222,7 +4226,7 @@ OFF My-Kai. </string>
                                                                                                 </constraints>
                                                                                             </imageView>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LUU-2A-Lta">
-                                                                                                <rect key="frame" x="0.0" y="48.666666666666742" width="50" height="16"/>
+                                                                                                <rect key="frame" x="0.0" y="48.666666666666742" width="50" height="19.666666666666671"/>
                                                                                                 <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
                                                                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                                 <nil key="highlightedColor"/>
@@ -4232,8 +4236,7 @@ OFF My-Kai. </string>
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="width" constant="50" id="3BU-90-B88"/>
                                                                                             <constraint firstItem="LUU-2A-Lta" firstAttribute="leading" secondItem="8bU-Fu-MLB" secondAttribute="leading" id="8lb-Sn-wLX"/>
-                                                                                            <constraint firstAttribute="height" constant="80" id="C2Z-hp-9P9"/>
-                                                                                            <constraint firstAttribute="bottom" secondItem="LUU-2A-Lta" secondAttribute="bottom" constant="15.33" id="DZc-3j-1Tv"/>
+                                                                                            <constraint firstAttribute="height" constant="90" id="C2Z-hp-9P9"/>
                                                                                             <constraint firstItem="OI9-hV-WAD" firstAttribute="centerX" secondItem="8bU-Fu-MLB" secondAttribute="centerX" id="T2w-ih-eMm"/>
                                                                                             <constraint firstAttribute="trailing" secondItem="LUU-2A-Lta" secondAttribute="trailing" id="WES-h6-om8"/>
                                                                                             <constraint firstItem="LUU-2A-Lta" firstAttribute="top" secondItem="OI9-hV-WAD" secondAttribute="bottom" constant="14.67" id="ijz-aI-5hr"/>
@@ -4260,13 +4263,13 @@ OFF My-Kai. </string>
                                                                                 <rect key="frame" x="75.666666666666671" y="0.0" width="76.000000000000014" height="138.33333333333334"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fat" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EVT-6e-NRO">
-                                                                                        <rect key="frame" x="9.9999999999999858" y="10.000000000000002" width="56" height="19.666666666666671"/>
+                                                                                        <rect key="frame" x="9.9999999999999858" y="10" width="56" height="9.6666666666666643"/>
                                                                                         <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
                                                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xuF-35-xVC">
-                                                                                        <rect key="frame" x="12.999999999999986" y="39.666666666666629" width="50" height="80"/>
+                                                                                        <rect key="frame" x="12.999999999999986" y="29.666666666666629" width="50" height="90"/>
                                                                                         <subviews>
                                                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Group 1171275592" translatesAutoresizingMaskIntoConstraints="NO" id="FzX-oF-1Hd">
                                                                                                 <rect key="frame" x="12" y="8" width="26" height="26"/>
@@ -4275,8 +4278,8 @@ OFF My-Kai. </string>
                                                                                                     <constraint firstAttribute="height" constant="26" id="XeR-VQ-jVM"/>
                                                                                                 </constraints>
                                                                                             </imageView>
-                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mOi-sk-cys">
-                                                                                                <rect key="frame" x="0.0" y="48.666666666666742" width="50" height="16"/>
+                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0g" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mOi-sk-cys">
+                                                                                                <rect key="frame" x="0.0" y="48.666666666666742" width="50" height="19.666666666666671"/>
                                                                                                 <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
                                                                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                                 <nil key="highlightedColor"/>
@@ -4290,8 +4293,7 @@ OFF My-Kai. </string>
                                                                                             <constraint firstAttribute="width" constant="50" id="Orl-u0-b1x"/>
                                                                                             <constraint firstAttribute="trailing" secondItem="mOi-sk-cys" secondAttribute="trailing" id="XvZ-gF-N0v"/>
                                                                                             <constraint firstItem="mOi-sk-cys" firstAttribute="top" secondItem="FzX-oF-1Hd" secondAttribute="bottom" constant="14.67" id="dRU-8K-Ajv"/>
-                                                                                            <constraint firstAttribute="height" constant="80" id="fxZ-iF-dHE"/>
-                                                                                            <constraint firstAttribute="bottom" secondItem="mOi-sk-cys" secondAttribute="bottom" constant="15.33" id="ifH-eB-TXa"/>
+                                                                                            <constraint firstAttribute="height" constant="90" id="fxZ-iF-dHE"/>
                                                                                         </constraints>
                                                                                         <userDefinedRuntimeAttributes>
                                                                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -4314,13 +4316,13 @@ OFF My-Kai. </string>
                                                                                 <rect key="frame" x="151.66666666666666" y="0.0" width="75.666666666666657" height="138.33333333333334"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Carbs" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="icp-GZ-PiF">
-                                                                                        <rect key="frame" x="9.9999999999999964" y="10.000000000000002" width="55.666666666666657" height="19.666666666666671"/>
+                                                                                        <rect key="frame" x="9.9999999999999964" y="10" width="55.666666666666657" height="9.6666666666666643"/>
                                                                                         <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
                                                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HDi-b5-0ka">
-                                                                                        <rect key="frame" x="12.666666666666686" y="39.666666666666629" width="50" height="80"/>
+                                                                                        <rect key="frame" x="12.666666666666686" y="29.666666666666629" width="50" height="90"/>
                                                                                         <subviews>
                                                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Group 1171276545" translatesAutoresizingMaskIntoConstraints="NO" id="kxB-Lx-49k">
                                                                                                 <rect key="frame" x="12" y="8" width="26" height="26"/>
@@ -4330,7 +4332,7 @@ OFF My-Kai. </string>
                                                                                                 </constraints>
                                                                                             </imageView>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Le6-52-6Wy">
-                                                                                                <rect key="frame" x="0.0" y="48.666666666666742" width="50" height="16.333333333333329"/>
+                                                                                                <rect key="frame" x="0.0" y="48.666666666666742" width="50" height="19.666666666666671"/>
                                                                                                 <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
                                                                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                                 <nil key="highlightedColor"/>
@@ -4341,11 +4343,10 @@ OFF My-Kai. </string>
                                                                                             <constraint firstItem="kxB-Lx-49k" firstAttribute="top" secondItem="HDi-b5-0ka" secondAttribute="top" constant="8" id="04q-Qd-Hdz"/>
                                                                                             <constraint firstItem="Le6-52-6Wy" firstAttribute="top" secondItem="kxB-Lx-49k" secondAttribute="bottom" constant="14.67" id="Csf-7h-6hc"/>
                                                                                             <constraint firstItem="Le6-52-6Wy" firstAttribute="leading" secondItem="HDi-b5-0ka" secondAttribute="leading" id="Gy9-Yn-E3C"/>
-                                                                                            <constraint firstAttribute="height" constant="80" id="Hud-8b-poX"/>
+                                                                                            <constraint firstAttribute="height" constant="90" id="Hud-8b-poX"/>
                                                                                             <constraint firstItem="kxB-Lx-49k" firstAttribute="centerX" secondItem="HDi-b5-0ka" secondAttribute="centerX" id="RYP-1S-fYB"/>
                                                                                             <constraint firstAttribute="width" constant="50" id="TFA-tF-Lgi"/>
                                                                                             <constraint firstAttribute="trailing" secondItem="Le6-52-6Wy" secondAttribute="trailing" id="hqX-6k-lLr"/>
-                                                                                            <constraint firstAttribute="bottom" secondItem="Le6-52-6Wy" secondAttribute="bottom" constant="15" id="mdF-Eh-F9f"/>
                                                                                         </constraints>
                                                                                         <userDefinedRuntimeAttributes>
                                                                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -4367,14 +4368,14 @@ OFF My-Kai. </string>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qbw-5z-xhW">
                                                                                 <rect key="frame" x="227.33333333333329" y="0.0" width="75.666666666666657" height="138.33333333333334"/>
                                                                                 <subviews>
-                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Protien" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MMN-nW-czc">
-                                                                                        <rect key="frame" x="9.9999999999999964" y="10.000000000000002" width="55.666666666666657" height="19.666666666666671"/>
+                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Protein" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MMN-nW-czc">
+                                                                                        <rect key="frame" x="9.9999999999999964" y="10" width="55.666666666666657" height="9.6666666666666643"/>
                                                                                         <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
                                                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YHD-rW-2Hq">
-                                                                                        <rect key="frame" x="12.666666666666686" y="39.666666666666629" width="50" height="80"/>
+                                                                                        <rect key="frame" x="12.666666666666686" y="29.666666666666629" width="50" height="90"/>
                                                                                         <subviews>
                                                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Group 1171275594" translatesAutoresizingMaskIntoConstraints="NO" id="sSo-wn-woE">
                                                                                                 <rect key="frame" x="12" y="8" width="26" height="26"/>
@@ -4384,7 +4385,7 @@ OFF My-Kai. </string>
                                                                                                 </constraints>
                                                                                             </imageView>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XEj-e0-GZ9">
-                                                                                                <rect key="frame" x="0.0" y="48.666666666666742" width="50" height="16.333333333333329"/>
+                                                                                                <rect key="frame" x="0.0" y="48.666666666666742" width="50" height="19.666666666666671"/>
                                                                                                 <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
                                                                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                                 <nil key="highlightedColor"/>
@@ -4392,13 +4393,12 @@ OFF My-Kai. </string>
                                                                                         </subviews>
                                                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                                         <constraints>
-                                                                                            <constraint firstAttribute="height" constant="80" id="Ef7-uZ-JiS"/>
+                                                                                            <constraint firstAttribute="height" constant="90" id="Ef7-uZ-JiS"/>
                                                                                             <constraint firstAttribute="width" constant="50" id="Olu-px-iez"/>
                                                                                             <constraint firstItem="sSo-wn-woE" firstAttribute="top" secondItem="YHD-rW-2Hq" secondAttribute="top" constant="8" id="SNb-d7-oEE"/>
                                                                                             <constraint firstAttribute="trailing" secondItem="XEj-e0-GZ9" secondAttribute="trailing" id="Uu9-WR-xkZ"/>
                                                                                             <constraint firstItem="XEj-e0-GZ9" firstAttribute="leading" secondItem="YHD-rW-2Hq" secondAttribute="leading" id="Z4o-pD-uUR"/>
                                                                                             <constraint firstItem="XEj-e0-GZ9" firstAttribute="top" secondItem="sSo-wn-woE" secondAttribute="bottom" constant="14.67" id="b4l-SY-IBP"/>
-                                                                                            <constraint firstAttribute="bottom" secondItem="XEj-e0-GZ9" secondAttribute="bottom" constant="15" id="h8l-u4-31q"/>
                                                                                             <constraint firstItem="sSo-wn-woE" firstAttribute="centerX" secondItem="YHD-rW-2Hq" secondAttribute="centerX" id="shp-C6-zB6"/>
                                                                                         </constraints>
                                                                                         <userDefinedRuntimeAttributes>
@@ -6554,9 +6554,8 @@ OFF My-Kai. </string>
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="606"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bro" translatesAutoresizingMaskIntoConstraints="NO" id="UPJ-B4-eai">
-                                                <rect key="frame" x="71" y="25" width="251" height="239"/>
+                                                <rect key="frame" x="20" y="25" width="353" height="239"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="251" id="3h3-0I-FCf"/>
                                                     <constraint firstAttribute="height" constant="239" id="No6-kB-A2E"/>
                                                 </constraints>
                                             </imageView>
@@ -6606,6 +6605,8 @@ OFF My-Kai. </string>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="emptyBorderWidth">
                                                                 <real key="value" value="1"/>
                                                             </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="image" keyPath="filledImage" value="yellowStar"/>
+                                                            <userDefinedRuntimeAttribute type="image" keyPath="emptyImage" value="Blackstar"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tPp-Co-L4e">
@@ -6691,7 +6692,9 @@ OFF My-Kai. </string>
                                             <constraint firstItem="UPJ-B4-eai" firstAttribute="top" secondItem="m3K-ih-ruu" secondAttribute="top" constant="25" id="QTh-g0-zJJ"/>
                                             <constraint firstItem="UpB-ze-db9" firstAttribute="leading" secondItem="m3K-ih-ruu" secondAttribute="leading" constant="25" id="Uhu-Bd-GXn"/>
                                             <constraint firstItem="UpB-ze-db9" firstAttribute="top" secondItem="UPJ-B4-eai" secondAttribute="bottom" constant="20" id="WEn-M3-rCC"/>
+                                            <constraint firstAttribute="trailing" secondItem="UPJ-B4-eai" secondAttribute="trailing" constant="20" id="aj8-Vb-vwk"/>
                                             <constraint firstAttribute="trailing" secondItem="UpB-ze-db9" secondAttribute="trailing" constant="25" id="bJp-Iu-9zw"/>
+                                            <constraint firstItem="UPJ-B4-eai" firstAttribute="leading" secondItem="m3K-ih-ruu" secondAttribute="leading" constant="20" id="kKy-kl-AxA"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -9298,18 +9301,18 @@ OFF My-Kai. </string>
                                                                         </attributedString>
                                                                         <nil key="highlightedColor"/>
                                                                         <userDefinedRuntimeAttributes>
-                                                                            <userDefinedRuntimeAttribute type="string" keyPath="firstText" value="Calculate daily"/>
+                                                                            <userDefinedRuntimeAttribute type="string" keyPath="firstText" value="Daily Nutrition "/>
                                                                             <userDefinedRuntimeAttribute type="color" keyPath="firstColor">
                                                                                 <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             </userDefinedRuntimeAttribute>
                                                                             <userDefinedRuntimeAttribute type="color" keyPath="secondColor">
                                                                                 <color key="value" red="0.023529411760000001" green="0.75686274509999996" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             </userDefinedRuntimeAttribute>
-                                                                            <userDefinedRuntimeAttribute type="string" keyPath="secondText" value="macros"/>
+                                                                            <userDefinedRuntimeAttribute type="string" keyPath="secondText" value="Count"/>
                                                                             <userDefinedRuntimeAttribute type="number" keyPath="titleFontSize">
-                                                                                <real key="value" value="16"/>
+                                                                                <real key="value" value="20"/>
                                                                             </userDefinedRuntimeAttribute>
-                                                                            <userDefinedRuntimeAttribute type="string" keyPath="fontNamee" value="Sarabun-Medium"/>
+                                                                            <userDefinedRuntimeAttribute type="string" keyPath="fontNamee" value="Montserrat-SemiBold"/>
                                                                         </userDefinedRuntimeAttributes>
                                                                     </label>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="i26-1B-aeu">
@@ -9335,8 +9338,8 @@ OFF My-Kai. </string>
                                                                                                 </constraints>
                                                                                             </imageView>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="25" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gXQ-mS-Hyi">
-                                                                                                <rect key="frame" x="2" y="44" width="51" height="19.666666666666671"/>
-                                                                                                <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
+                                                                                                <rect key="frame" x="2" y="44" width="51" height="18.333333333333329"/>
+                                                                                                <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="13"/>
                                                                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
@@ -9389,8 +9392,8 @@ OFF My-Kai. </string>
                                                                                                 </constraints>
                                                                                             </imageView>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="25g" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9gn-BK-JCY">
-                                                                                                <rect key="frame" x="2" y="42" width="51" height="19.666666666666671"/>
-                                                                                                <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
+                                                                                                <rect key="frame" x="2" y="42" width="51" height="18.333333333333329"/>
+                                                                                                <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="13"/>
                                                                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
@@ -9443,8 +9446,8 @@ OFF My-Kai. </string>
                                                                                                 </constraints>
                                                                                             </imageView>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="45g" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wDX-7T-prL">
-                                                                                                <rect key="frame" x="2" y="42" width="51" height="19.666666666666671"/>
-                                                                                                <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
+                                                                                                <rect key="frame" x="2" y="42" width="51" height="18.333333333333329"/>
+                                                                                                <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="13"/>
                                                                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
@@ -9480,7 +9483,7 @@ OFF My-Kai. </string>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZJI-KW-TMg">
                                                                                 <rect key="frame" x="234.66666666666671" y="0.0" width="78.333333333333343" height="150"/>
                                                                                 <subviews>
-                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Protien" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jRU-eg-Obk">
+                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Protein" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jRU-eg-Obk">
                                                                                         <rect key="frame" x="10.000000000000004" y="10" width="58.333333333333343" height="25"/>
                                                                                         <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
                                                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -9497,8 +9500,8 @@ OFF My-Kai. </string>
                                                                                                 </constraints>
                                                                                             </imageView>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="35g" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="11d-5r-ehV">
-                                                                                                <rect key="frame" x="2" y="42" width="51" height="19.666666666666671"/>
-                                                                                                <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
+                                                                                                <rect key="frame" x="2" y="42" width="51" height="18.333333333333329"/>
+                                                                                                <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="13"/>
                                                                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
@@ -9651,7 +9654,7 @@ OFF My-Kai. </string>
                                                                         <rect key="frame" x="0.0" y="40" width="393" height="285"/>
                                                                         <subviews>
                                                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="s68-lQ-QQw">
-                                                                                <rect key="frame" x="25" y="0.0" width="343" height="285"/>
+                                                                                <rect key="frame" x="10" y="0.0" width="373" height="285"/>
                                                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="285" id="tD8-cx-41p"/>
@@ -9669,15 +9672,15 @@ OFF My-Kai. </string>
                                                                         <constraints>
                                                                             <constraint firstAttribute="bottom" secondItem="s68-lQ-QQw" secondAttribute="bottom" id="589-GL-ndt"/>
                                                                             <constraint firstItem="s68-lQ-QQw" firstAttribute="top" secondItem="GKu-ez-nq4" secondAttribute="top" id="A27-X5-3dr"/>
-                                                                            <constraint firstAttribute="trailing" secondItem="s68-lQ-QQw" secondAttribute="trailing" constant="25" id="ZfC-7C-0M6"/>
-                                                                            <constraint firstItem="s68-lQ-QQw" firstAttribute="leading" secondItem="GKu-ez-nq4" secondAttribute="leading" constant="25" id="bN8-c5-UFI"/>
+                                                                            <constraint firstAttribute="trailing" secondItem="s68-lQ-QQw" secondAttribute="trailing" constant="10" id="ZfC-7C-0M6"/>
+                                                                            <constraint firstItem="s68-lQ-QQw" firstAttribute="leading" secondItem="GKu-ez-nq4" secondAttribute="leading" constant="10" id="bN8-c5-UFI"/>
                                                                         </constraints>
                                                                     </view>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RWO-3I-rdz">
                                                                         <rect key="frame" x="0.0" y="325" width="393" height="420"/>
                                                                         <subviews>
                                                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="BZO-8B-Zt9">
-                                                                                <rect key="frame" x="25" y="0.0" width="343" height="420"/>
+                                                                                <rect key="frame" x="10" y="0.0" width="373" height="420"/>
                                                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="oBX-kV-SDE">
                                                                                     <size key="itemSize" width="343" height="250"/>
@@ -9693,8 +9696,8 @@ OFF My-Kai. </string>
                                                                             <constraint firstItem="BZO-8B-Zt9" firstAttribute="top" secondItem="RWO-3I-rdz" secondAttribute="top" id="0l5-1e-DkX"/>
                                                                             <constraint firstAttribute="bottom" secondItem="BZO-8B-Zt9" secondAttribute="bottom" id="R0f-cP-chC"/>
                                                                             <constraint firstAttribute="height" constant="420" id="cSB-g2-95J"/>
-                                                                            <constraint firstAttribute="trailing" secondItem="BZO-8B-Zt9" secondAttribute="trailing" constant="25" id="dJe-4U-gLE"/>
-                                                                            <constraint firstItem="BZO-8B-Zt9" firstAttribute="leading" secondItem="RWO-3I-rdz" secondAttribute="leading" constant="25" id="fmc-hc-fTs"/>
+                                                                            <constraint firstAttribute="trailing" secondItem="BZO-8B-Zt9" secondAttribute="trailing" constant="10" id="dJe-4U-gLE"/>
+                                                                            <constraint firstItem="BZO-8B-Zt9" firstAttribute="leading" secondItem="RWO-3I-rdz" secondAttribute="leading" constant="10" id="fmc-hc-fTs"/>
                                                                         </constraints>
                                                                     </view>
                                                                 </subviews>
@@ -9754,7 +9757,7 @@ OFF My-Kai. </string>
                                                                         <rect key="frame" x="0.0" y="40" width="393" height="285"/>
                                                                         <subviews>
                                                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ah1-lH-M9g">
-                                                                                <rect key="frame" x="25" y="0.0" width="343" height="285"/>
+                                                                                <rect key="frame" x="10" y="0.0" width="373" height="285"/>
                                                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="285" id="n3l-cz-H3z"/>
@@ -9770,17 +9773,17 @@ OFF My-Kai. </string>
                                                                         </subviews>
                                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                         <constraints>
-                                                                            <constraint firstAttribute="trailing" secondItem="ah1-lH-M9g" secondAttribute="trailing" constant="25" id="Nlo-FN-3uR"/>
+                                                                            <constraint firstAttribute="trailing" secondItem="ah1-lH-M9g" secondAttribute="trailing" constant="10" id="Nlo-FN-3uR"/>
                                                                             <constraint firstItem="ah1-lH-M9g" firstAttribute="top" secondItem="bOv-kZ-WUe" secondAttribute="top" id="fI2-9Y-Nur"/>
                                                                             <constraint firstAttribute="bottom" secondItem="ah1-lH-M9g" secondAttribute="bottom" id="m5J-6M-SDO"/>
-                                                                            <constraint firstItem="ah1-lH-M9g" firstAttribute="leading" secondItem="bOv-kZ-WUe" secondAttribute="leading" constant="25" id="o6z-Y5-DfL"/>
+                                                                            <constraint firstItem="ah1-lH-M9g" firstAttribute="leading" secondItem="bOv-kZ-WUe" secondAttribute="leading" constant="10" id="o6z-Y5-DfL"/>
                                                                         </constraints>
                                                                     </view>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XCI-Lc-dTe">
                                                                         <rect key="frame" x="0.0" y="325" width="393" height="420"/>
                                                                         <subviews>
                                                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="mcY-v9-hC4">
-                                                                                <rect key="frame" x="25" y="0.0" width="343" height="420"/>
+                                                                                <rect key="frame" x="10" y="0.0" width="373" height="420"/>
                                                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="YWa-0j-P7P">
                                                                                     <size key="itemSize" width="128" height="128"/>
@@ -9793,8 +9796,8 @@ OFF My-Kai. </string>
                                                                         </subviews>
                                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                         <constraints>
-                                                                            <constraint firstAttribute="trailing" secondItem="mcY-v9-hC4" secondAttribute="trailing" constant="25" id="LQd-fD-epb"/>
-                                                                            <constraint firstItem="mcY-v9-hC4" firstAttribute="leading" secondItem="XCI-Lc-dTe" secondAttribute="leading" constant="25" id="bkw-bk-1gS"/>
+                                                                            <constraint firstAttribute="trailing" secondItem="mcY-v9-hC4" secondAttribute="trailing" constant="10" id="LQd-fD-epb"/>
+                                                                            <constraint firstItem="mcY-v9-hC4" firstAttribute="leading" secondItem="XCI-Lc-dTe" secondAttribute="leading" constant="10" id="bkw-bk-1gS"/>
                                                                             <constraint firstAttribute="height" constant="420" id="g8A-FN-KF0"/>
                                                                             <constraint firstItem="mcY-v9-hC4" firstAttribute="top" secondItem="XCI-Lc-dTe" secondAttribute="top" id="gdl-am-CnD"/>
                                                                             <constraint firstAttribute="bottom" secondItem="mcY-v9-hC4" secondAttribute="bottom" id="jZa-1r-0Xh"/>
@@ -9857,7 +9860,7 @@ OFF My-Kai. </string>
                                                                         <rect key="frame" x="0.0" y="40" width="393" height="285"/>
                                                                         <subviews>
                                                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="oUW-CQ-mrn">
-                                                                                <rect key="frame" x="25" y="0.0" width="343" height="285"/>
+                                                                                <rect key="frame" x="10" y="0.0" width="373" height="285"/>
                                                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="285" id="Iva-VW-0JI"/>
@@ -9875,15 +9878,15 @@ OFF My-Kai. </string>
                                                                         <constraints>
                                                                             <constraint firstItem="oUW-CQ-mrn" firstAttribute="top" secondItem="d8W-DY-Ok0" secondAttribute="top" id="3G3-Cz-lSc"/>
                                                                             <constraint firstAttribute="bottom" secondItem="oUW-CQ-mrn" secondAttribute="bottom" id="3Lf-k4-Ijc"/>
-                                                                            <constraint firstAttribute="trailing" secondItem="oUW-CQ-mrn" secondAttribute="trailing" constant="25" id="c2T-6H-UbJ"/>
-                                                                            <constraint firstItem="oUW-CQ-mrn" firstAttribute="leading" secondItem="d8W-DY-Ok0" secondAttribute="leading" constant="25" id="vm3-2c-ypv"/>
+                                                                            <constraint firstAttribute="trailing" secondItem="oUW-CQ-mrn" secondAttribute="trailing" constant="10" id="c2T-6H-UbJ"/>
+                                                                            <constraint firstItem="oUW-CQ-mrn" firstAttribute="leading" secondItem="d8W-DY-Ok0" secondAttribute="leading" constant="10" id="vm3-2c-ypv"/>
                                                                         </constraints>
                                                                     </view>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dfy-oZ-APm">
                                                                         <rect key="frame" x="0.0" y="325" width="393" height="420"/>
                                                                         <subviews>
                                                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ev2-BA-X1k">
-                                                                                <rect key="frame" x="25" y="0.0" width="343" height="420"/>
+                                                                                <rect key="frame" x="10" y="0.0" width="373" height="420"/>
                                                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2Zm-tF-bCM">
                                                                                     <size key="itemSize" width="128" height="128"/>
@@ -9897,8 +9900,8 @@ OFF My-Kai. </string>
                                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="420" id="F0s-Nu-ehx"/>
-                                                                            <constraint firstItem="ev2-BA-X1k" firstAttribute="leading" secondItem="dfy-oZ-APm" secondAttribute="leading" constant="25" id="RtU-l5-OpO"/>
-                                                                            <constraint firstAttribute="trailing" secondItem="ev2-BA-X1k" secondAttribute="trailing" constant="25" id="Spj-lC-fRg"/>
+                                                                            <constraint firstItem="ev2-BA-X1k" firstAttribute="leading" secondItem="dfy-oZ-APm" secondAttribute="leading" constant="10" id="RtU-l5-OpO"/>
+                                                                            <constraint firstAttribute="trailing" secondItem="ev2-BA-X1k" secondAttribute="trailing" constant="10" id="Spj-lC-fRg"/>
                                                                             <constraint firstItem="ev2-BA-X1k" firstAttribute="top" secondItem="dfy-oZ-APm" secondAttribute="top" id="miy-fY-JBy"/>
                                                                             <constraint firstAttribute="bottom" secondItem="ev2-BA-X1k" secondAttribute="bottom" id="x2V-dw-Dkn"/>
                                                                         </constraints>
@@ -9960,7 +9963,7 @@ OFF My-Kai. </string>
                                                                         <rect key="frame" x="0.0" y="40" width="393" height="285"/>
                                                                         <subviews>
                                                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="fuf-md-A51">
-                                                                                <rect key="frame" x="25" y="0.0" width="343" height="285"/>
+                                                                                <rect key="frame" x="10" y="0.0" width="373" height="285"/>
                                                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="285" id="dSm-AO-czP"/>
@@ -9976,9 +9979,9 @@ OFF My-Kai. </string>
                                                                         </subviews>
                                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                         <constraints>
-                                                                            <constraint firstItem="fuf-md-A51" firstAttribute="leading" secondItem="iNh-6x-AmW" secondAttribute="leading" constant="25" id="Fh7-QZ-sO1"/>
+                                                                            <constraint firstItem="fuf-md-A51" firstAttribute="leading" secondItem="iNh-6x-AmW" secondAttribute="leading" constant="10" id="Fh7-QZ-sO1"/>
                                                                             <constraint firstAttribute="bottom" secondItem="fuf-md-A51" secondAttribute="bottom" id="fbY-zG-AIB"/>
-                                                                            <constraint firstAttribute="trailing" secondItem="fuf-md-A51" secondAttribute="trailing" constant="25" id="iaB-1M-ave"/>
+                                                                            <constraint firstAttribute="trailing" secondItem="fuf-md-A51" secondAttribute="trailing" constant="10" id="iaB-1M-ave"/>
                                                                             <constraint firstItem="fuf-md-A51" firstAttribute="top" secondItem="iNh-6x-AmW" secondAttribute="top" id="sp7-4J-ral"/>
                                                                         </constraints>
                                                                     </view>
@@ -9986,7 +9989,7 @@ OFF My-Kai. </string>
                                                                         <rect key="frame" x="0.0" y="325" width="393" height="420"/>
                                                                         <subviews>
                                                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="NvY-Dk-a8x">
-                                                                                <rect key="frame" x="25" y="0.0" width="343" height="420"/>
+                                                                                <rect key="frame" x="10" y="0.0" width="373" height="420"/>
                                                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="u1O-sY-MmV">
                                                                                     <size key="itemSize" width="128" height="128"/>
@@ -10001,9 +10004,9 @@ OFF My-Kai. </string>
                                                                         <constraints>
                                                                             <constraint firstAttribute="bottom" secondItem="NvY-Dk-a8x" secondAttribute="bottom" id="9iI-ua-thm"/>
                                                                             <constraint firstAttribute="height" constant="420" id="Bwm-jJ-oqb"/>
-                                                                            <constraint firstAttribute="trailing" secondItem="NvY-Dk-a8x" secondAttribute="trailing" constant="25" id="RYD-hP-fTX"/>
+                                                                            <constraint firstAttribute="trailing" secondItem="NvY-Dk-a8x" secondAttribute="trailing" constant="10" id="RYD-hP-fTX"/>
                                                                             <constraint firstItem="NvY-Dk-a8x" firstAttribute="top" secondItem="Bkh-Fe-81R" secondAttribute="top" id="ZlI-QP-iQX"/>
-                                                                            <constraint firstItem="NvY-Dk-a8x" firstAttribute="leading" secondItem="Bkh-Fe-81R" secondAttribute="leading" constant="25" id="axt-6k-sUj"/>
+                                                                            <constraint firstItem="NvY-Dk-a8x" firstAttribute="leading" secondItem="Bkh-Fe-81R" secondAttribute="leading" constant="10" id="axt-6k-sUj"/>
                                                                         </constraints>
                                                                     </view>
                                                                 </subviews>
@@ -10063,7 +10066,7 @@ OFF My-Kai. </string>
                                                                         <rect key="frame" x="0.0" y="40" width="393" height="285"/>
                                                                         <subviews>
                                                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="JWK-H2-0NO">
-                                                                                <rect key="frame" x="25" y="0.0" width="343" height="285"/>
+                                                                                <rect key="frame" x="10" y="0.0" width="373" height="285"/>
                                                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="285" id="D9e-gc-Lta"/>
@@ -10080,8 +10083,8 @@ OFF My-Kai. </string>
                                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="bottom" secondItem="JWK-H2-0NO" secondAttribute="bottom" id="2qY-b2-Ynq"/>
-                                                                            <constraint firstItem="JWK-H2-0NO" firstAttribute="leading" secondItem="mhU-fI-cgQ" secondAttribute="leading" constant="25" id="YnD-ZI-H2q"/>
-                                                                            <constraint firstAttribute="trailing" secondItem="JWK-H2-0NO" secondAttribute="trailing" constant="25" id="v1c-AC-uIz"/>
+                                                                            <constraint firstItem="JWK-H2-0NO" firstAttribute="leading" secondItem="mhU-fI-cgQ" secondAttribute="leading" constant="10" id="YnD-ZI-H2q"/>
+                                                                            <constraint firstAttribute="trailing" secondItem="JWK-H2-0NO" secondAttribute="trailing" constant="10" id="v1c-AC-uIz"/>
                                                                             <constraint firstItem="JWK-H2-0NO" firstAttribute="top" secondItem="mhU-fI-cgQ" secondAttribute="top" id="zMD-fw-wWJ"/>
                                                                         </constraints>
                                                                     </view>
@@ -10089,7 +10092,7 @@ OFF My-Kai. </string>
                                                                         <rect key="frame" x="0.0" y="325" width="393" height="420"/>
                                                                         <subviews>
                                                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8ch-Qj-q8P">
-                                                                                <rect key="frame" x="25" y="0.0" width="343" height="420"/>
+                                                                                <rect key="frame" x="10" y="0.0" width="373" height="420"/>
                                                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="jaa-Kr-g8p">
                                                                                     <size key="itemSize" width="128" height="128"/>
@@ -10102,8 +10105,8 @@ OFF My-Kai. </string>
                                                                         </subviews>
                                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                         <constraints>
-                                                                            <constraint firstAttribute="trailing" secondItem="8ch-Qj-q8P" secondAttribute="trailing" constant="25" id="1dh-z1-nUM"/>
-                                                                            <constraint firstItem="8ch-Qj-q8P" firstAttribute="leading" secondItem="k4V-lq-7ha" secondAttribute="leading" constant="25" id="54n-hm-EY7"/>
+                                                                            <constraint firstAttribute="trailing" secondItem="8ch-Qj-q8P" secondAttribute="trailing" constant="10" id="1dh-z1-nUM"/>
+                                                                            <constraint firstItem="8ch-Qj-q8P" firstAttribute="leading" secondItem="k4V-lq-7ha" secondAttribute="leading" constant="10" id="54n-hm-EY7"/>
                                                                             <constraint firstAttribute="bottom" secondItem="8ch-Qj-q8P" secondAttribute="bottom" id="5aL-lg-FjD"/>
                                                                             <constraint firstAttribute="height" constant="420" id="nwb-Gt-q9l"/>
                                                                             <constraint firstItem="8ch-Qj-q8P" firstAttribute="top" secondItem="k4V-lq-7ha" secondAttribute="top" id="y0U-gg-qvx"/>
@@ -10166,7 +10169,7 @@ OFF My-Kai. </string>
                                                                         <rect key="frame" x="0.0" y="40" width="393" height="285"/>
                                                                         <subviews>
                                                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="uIq-hK-05I">
-                                                                                <rect key="frame" x="25" y="0.0" width="343" height="285"/>
+                                                                                <rect key="frame" x="10" y="0.0" width="373" height="285"/>
                                                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="285" id="c1P-85-s9H"/>
@@ -10182,8 +10185,8 @@ OFF My-Kai. </string>
                                                                         </subviews>
                                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                         <constraints>
-                                                                            <constraint firstItem="uIq-hK-05I" firstAttribute="leading" secondItem="eHB-sI-c9o" secondAttribute="leading" constant="25" id="HUy-rQ-Lws"/>
-                                                                            <constraint firstAttribute="trailing" secondItem="uIq-hK-05I" secondAttribute="trailing" constant="25" id="duD-mx-xuI"/>
+                                                                            <constraint firstItem="uIq-hK-05I" firstAttribute="leading" secondItem="eHB-sI-c9o" secondAttribute="leading" constant="10" id="HUy-rQ-Lws"/>
+                                                                            <constraint firstAttribute="trailing" secondItem="uIq-hK-05I" secondAttribute="trailing" constant="10" id="duD-mx-xuI"/>
                                                                             <constraint firstAttribute="bottom" secondItem="uIq-hK-05I" secondAttribute="bottom" id="mx1-gV-6iK"/>
                                                                             <constraint firstItem="uIq-hK-05I" firstAttribute="top" secondItem="eHB-sI-c9o" secondAttribute="top" id="zWs-lg-Yiu"/>
                                                                         </constraints>
@@ -10192,7 +10195,7 @@ OFF My-Kai. </string>
                                                                         <rect key="frame" x="0.0" y="325" width="393" height="420"/>
                                                                         <subviews>
                                                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PFU-rc-CDU">
-                                                                                <rect key="frame" x="25" y="0.0" width="343" height="420"/>
+                                                                                <rect key="frame" x="10" y="0.0" width="373" height="420"/>
                                                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="6Kb-Ec-L20">
                                                                                     <size key="itemSize" width="128" height="128"/>
@@ -10205,8 +10208,8 @@ OFF My-Kai. </string>
                                                                         </subviews>
                                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                         <constraints>
-                                                                            <constraint firstItem="PFU-rc-CDU" firstAttribute="leading" secondItem="1bm-dc-TTI" secondAttribute="leading" constant="25" id="3eM-Gc-v01"/>
-                                                                            <constraint firstAttribute="trailing" secondItem="PFU-rc-CDU" secondAttribute="trailing" constant="25" id="SpI-Qf-M61"/>
+                                                                            <constraint firstItem="PFU-rc-CDU" firstAttribute="leading" secondItem="1bm-dc-TTI" secondAttribute="leading" constant="10" id="3eM-Gc-v01"/>
+                                                                            <constraint firstAttribute="trailing" secondItem="PFU-rc-CDU" secondAttribute="trailing" constant="10" id="SpI-Qf-M61"/>
                                                                             <constraint firstAttribute="bottom" secondItem="PFU-rc-CDU" secondAttribute="bottom" id="Txq-r0-Ks7"/>
                                                                             <constraint firstAttribute="height" constant="420" id="aIK-Zu-Nvc"/>
                                                                             <constraint firstItem="PFU-rc-CDU" firstAttribute="top" secondItem="1bm-dc-TTI" secondAttribute="top" id="d7S-8i-j83"/>
@@ -13951,6 +13954,7 @@ to discard changes.</string>
         <image name="Addbag" width="19" height="18.666666030883789"/>
         <image name="Back" width="11.333333015441895" height="17.333333969116211"/>
         <image name="BackBtnWhite" width="11.333333015441895" height="17.333333969116211"/>
+        <image name="Blackstar" width="12" height="11.666666984558105"/>
         <image name="Button" width="175.66667175292969" height="56"/>
         <image name="CameraClick" width="84.333335876464844" height="84.333335876464844"/>
         <image name="CancleBtn" width="18" height="18"/>
@@ -14022,7 +14026,7 @@ to discard changes.</string>
         <image name="aa" width="25" height="26"/>
         <image name="addtoplan" width="21" height="21"/>
         <image name="bb" width="24" height="24"/>
-        <image name="bro" width="252.33332824707031" height="239"/>
+        <image name="bro" width="3840" height="2160"/>
         <image name="cartne" width="16" height="14"/>
         <image name="cc" width="24" height="24"/>
         <image name="dd" width="25" height="26"/>
@@ -14041,6 +14045,7 @@ to discard changes.</string>
         <image name="ss" width="33.333332061767578" height="33.666667938232422"/>
         <image name="star" width="12" height="11.666666984558105"/>
         <image name="toggleOff" width="34" height="15.666666984558105"/>
+        <image name="yellowStar" width="12" height="11.666666984558105"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -68,43 +68,47 @@ class SpendingonGroceriesVC: UIViewController, UITextFieldDelegate {
             .foregroundColor: UIColor.init(red: 6/255, green: 193/255, blue: 105/255, alpha: 1),
             .font: UIFont(name: "Montserrat-Bold", size: 32) ?? UIFont.systemFont(ofSize: 32)
         ]
+        TitleLbl.numberOfLines = 1
+        TitleLbl.adjustsFontSizeToFitWidth = true
+        TitleLbl.minimumScaleFactor = 0.7
+        TitleLbl.lineBreakMode = .byClipping
          
         if self.type == "MySelf"{
             self.ProgressLbl.text = "8/10"
             let progressVw = Float(8) / Float(10)
             progressView.progress = Float(progressVw)
-            
-            let helloString = NSAttributedString(string: "Spending on", attributes: Attributes1)
-            let worldString = NSAttributedString(string: " Groceries", attributes: Attributes2)
-            let fullString = NSMutableAttributedString()
-            fullString.append(helloString)
-            fullString.append(worldString)
-            self.TitleLbl.attributedText = fullString
+
+            let spendOnString = NSAttributedString(string: "Spending on ", attributes: Attributes1)
+            let groceryGreen = NSAttributedString(string: "Grocery", attributes: Attributes2)
+            let fullTitle = NSMutableAttributedString()
+            fullTitle.append(spendOnString)
+            fullTitle.append(groceryGreen)
+            self.TitleLbl.attributedText = fullTitle
             self.SubTitleLbl.text = "How much do you typically spend on \ngroceries per  week/month?"
-             
+
         }else if self.type == "Partner"{
             self.ProgressLbl.text = "9/11"
             let progressVw = Float(9) / Float(11)
             progressView.progress = Float(progressVw)
-             
-            let helloString = NSAttributedString(string: "Spending on", attributes: Attributes1)
-            let worldString = NSAttributedString(string: " Groceries", attributes: Attributes2)
-            let fullString = NSMutableAttributedString()
-            fullString.append(helloString)
-            fullString.append(worldString)
-            self.TitleLbl.attributedText = fullString
+
+            let spendOnString = NSAttributedString(string: "Spend on ", attributes: Attributes1)
+            let groceryGreen = NSAttributedString(string: "Grocery", attributes: Attributes2)
+            let fullTitle = NSMutableAttributedString()
+            fullTitle.append(spendOnString)
+            fullTitle.append(groceryGreen)
+            self.TitleLbl.attributedText = fullTitle
             self.SubTitleLbl.text = "How much do you normally spend on \ngroceries each week or month?"
         }else{
             self.ProgressLbl.text = "9/11"
             let progressVw = Float(9) / Float(11)
             progressView.progress = Float(progressVw)
-            
-            let helloString = NSAttributedString(string: "Spending on", attributes: Attributes1)
-            let worldString = NSAttributedString(string: " Groceries", attributes: Attributes2)
-            let fullString = NSMutableAttributedString()
-            fullString.append(helloString)
-            fullString.append(worldString)
-            self.TitleLbl.attributedText = fullString
+
+            let spendOnString = NSAttributedString(string: "Spend on ", attributes: Attributes1)
+            let groceryGreen = NSAttributedString(string: "Grocery", attributes: Attributes2)
+            let fullTitle = NSMutableAttributedString()
+            fullTitle.append(spendOnString)
+            fullTitle.append(groceryGreen)
+            self.TitleLbl.attributedText = fullTitle
             self.SubTitleLbl.text = "How much do you normally spend on \ngroceries each week or month?"
         }
         

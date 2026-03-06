@@ -27,6 +27,9 @@ class AddMoreVc: UIViewController {
     private var dropDown = DropDown()
     private var count = 1
     private var currentIndex = 0
+    private var img = ""
+    private var id = ""
+    private var unit: String = ""
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -91,10 +94,13 @@ class AddMoreVc: UIViewController {
                 if items.isEmpty {
                     self.dropDown.hide()
                 } else {
-                    self.dropDown.dataSource = items
+                    self.dropDown.dataSource = items.map{$0.name}
                     self.dropDown.show()
                     self.dropDown.selectionAction = { [weak self] (index: Int, item: String) in
                         self?.ItemNameTxtF.text = item
+                        self?.unit = items[index].unit
+                        self?.img = items[index].image
+                        self?.id = items[index].id
                     }
                 }
             }
@@ -174,10 +180,14 @@ class AddMoreVc: UIViewController {
             AlertControllerOnr(title: "", message: "Please enter item name.")
             return
         }
-        viewModel.addCustomIngredient(name: name, schID: count)
-        AddNewItemPopupV.isHidden = true
-        count = 1
+        viewModel.addCustomIngredient(name: name, schID: count,
+                                      id: self.id,
+                                      defultUnit:self.unit, img: self.img)
         ItemNameTxtF.text = ""
+        unit = ""
+        img = ""
+        id = ""
+        AddNewItemPopupV.isHidden = true
         SaveBtnO.isUserInteractionEnabled = true
         SaveBtnO.backgroundColor = #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)
     }

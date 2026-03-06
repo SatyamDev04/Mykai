@@ -21,7 +21,8 @@ class ModelClass: NSObject {
     var id : Int?
     var name : String = ""
     var selected : Bool = false
-    
+    var default_unit: String = ""
+    var image_url_backup : String = ""
     class func getBodyGoalsDetails(responseArray : [[String : Any]])-> [ModelClass] {
         
         var BodyGoalsDetails = [ModelClass]()
@@ -32,7 +33,8 @@ class ModelClass: NSObject {
             tempobj.id = tempDict.validatedValue("id", expected: Int() as AnyObject) as? Int
             tempobj.name = tempDict.validatedValue("name", expected: "" as AnyObject) as? String ?? ""
             tempobj.selected = tempDict.validatedValue("selected", expected: Bool() as AnyObject) as? Bool ?? Bool()
-            
+            tempobj.default_unit = tempDict.validatedValue("default_unit", expected: "" as AnyObject) as? String ?? "each"
+            tempobj.image_url_backup = tempDict.validatedValue("image_url_backup", expected: "" as AnyObject) as? String ?? ""
             BodyGoalsDetails.append(tempobj)
             
         }

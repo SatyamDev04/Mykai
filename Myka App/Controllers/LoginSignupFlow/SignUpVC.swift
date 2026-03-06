@@ -423,7 +423,7 @@ extension SignUpVC {
         params["allergies"] = onboardingData.MySelfSeldata[0].AllergensIngredients
         
         params["referral_from"] = StateMangerModelClass.shared.ReffCode
-        
+        params["affiliate_id"] = UserDetail.shared.getaflieateID()
         let delegate = AppDelegate.shared
                let token = delegate.deviceToken
                params["fcm_token"] = token
@@ -484,6 +484,7 @@ extension SignUpVC {
                            return
                        }
                        if (dict["success"] as? Bool) == true {
+                           
                            let response = dict["data"] as? NSDictionary ?? NSDictionary()
                            let UID = response["id"] as? Int ?? Int()
                            let token = response["token"] as? String ?? String()
@@ -495,7 +496,7 @@ extension SignUpVC {
                            if is_cooking_complete == 1 {
                                UserDetail.shared.setLoginSession(true)
                            }
-                           
+                           UserDetail.shared.setaflieateID("")
                            UserDetail.shared.setUserId("\(UID)")
                            UserDetail.shared.setTokenWith(token)
                            UserDetail.shared.setisSignInWith("true")

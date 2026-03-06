@@ -12,16 +12,12 @@ import SwiftyJSON
 class OtpVC: UIViewController {
     
     @IBOutlet var OTPView: DPOTPView!
-    
     @IBOutlet weak var TitleLbl: UILabel!
     @IBOutlet weak var SendOtponLbl: UILabel!
-    
     @IBOutlet weak var ResendBtnO: UIButton!
     @IBOutlet weak var ResendBgV: UIView!
-    
     @IBOutlet weak var CountLbl: UILabel!
     @IBOutlet weak var TimerBgV: UIView!
-    
     @IBOutlet var SuccessView: UIView!
     
     var isEmail_Phone: String = ""
@@ -45,16 +41,20 @@ class OtpVC: UIViewController {
         
         self.TimerBgV.isHidden = true
         
+        let semiboldFont = UIFont(name: "Montserrat-SemiBold", size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .semibold)
+
         let Attributes1: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.black
+            .foregroundColor: UIColor.black,
+            .font: semiboldFont
         ]
         let Attributes2: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.init(red: 6/255, green: 193/255, blue: 105/255, alpha: 1)
+            .foregroundColor: UIColor.init(red: 6/255, green: 193/255, blue: 105/255, alpha: 1),
+            .font: semiboldFont
         ]
         
         if isEmail_Phone == "email" {
             let helloString = NSAttributedString(string: "Please check your", attributes: Attributes1)
-            let worldString = NSAttributedString(string: " Email", attributes: Attributes2)
+            let worldString = NSAttributedString(string: " email", attributes: Attributes2)
             let fullString = NSMutableAttributedString()
             fullString.append(helloString)
             fullString.append(worldString)
@@ -63,7 +63,7 @@ class OtpVC: UIViewController {
             SendOtponLbl.text = "We have sent the code to email below \n\(email_Phone)"
         }else{
             let helloString = NSAttributedString(string: "Please check your", attributes: Attributes1)
-            let worldString = NSAttributedString(string: " Phone", attributes: Attributes2)
+            let worldString = NSAttributedString(string: " phone", attributes: Attributes2)
             let fullString = NSMutableAttributedString()
             fullString.append(helloString)
             fullString.append(worldString)
@@ -218,7 +218,7 @@ extension OtpVC {
         }
         
         params["referral_from"] = StateMangerModelClass.shared.ReffCode
-        
+        params["affiliate_id"] = UserDetail.shared.getaflieateID()
         let delegate = AppDelegate.shared
         let token = delegate.deviceToken
         params["fcm_token"] = token
@@ -307,7 +307,7 @@ extension OtpVC {
                     UserDetail.shared.setisSignInWith("true")
                     
                     UserDetail.shared.setUserType(userType)
-                    
+                    UserDetail.shared.setaflieateID("")
                     UserDetail.shared.setUserRefferalCode(ReferralCode)
                     
                     self.SuccessView.isHidden = false

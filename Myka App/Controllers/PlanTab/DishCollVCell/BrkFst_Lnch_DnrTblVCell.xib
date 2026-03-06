@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -61,7 +61,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="25" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="evC-9u-FsR">
-                                                        <rect key="frame" x="0.0" y="48.666666666666686" width="50" height="16"/>
+                                                        <rect key="frame" x="0.0" y="48.666666666666686" width="50" height="19.666666666666671"/>
                                                         <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -75,7 +75,6 @@
                                                     <constraint firstAttribute="trailing" secondItem="evC-9u-FsR" secondAttribute="trailing" id="S7V-et-DIX"/>
                                                     <constraint firstItem="evC-9u-FsR" firstAttribute="top" secondItem="6CI-rm-E17" secondAttribute="bottom" constant="14.67" id="UnO-pc-ALC"/>
                                                     <constraint firstItem="evC-9u-FsR" firstAttribute="leading" secondItem="sXO-Vc-8Sq" secondAttribute="leading" id="e5M-ZV-3HL"/>
-                                                    <constraint firstAttribute="bottom" secondItem="evC-9u-FsR" secondAttribute="bottom" constant="15.33" id="eRR-iL-2lw"/>
                                                     <constraint firstItem="6CI-rm-E17" firstAttribute="top" secondItem="sXO-Vc-8Sq" secondAttribute="top" constant="8" id="iVx-eN-Uby"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
@@ -115,7 +114,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="25" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Cf-vH-lAJ">
-                                                        <rect key="frame" x="0.0" y="48.666666666666686" width="50" height="16"/>
+                                                        <rect key="frame" x="0.0" y="48.666666666666686" width="50" height="19.666666666666671"/>
                                                         <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -124,7 +123,6 @@
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstItem="Muf-8b-q3o" firstAttribute="top" secondItem="vJM-aW-nVp" secondAttribute="top" constant="8" id="7ZA-KK-5aV"/>
-                                                    <constraint firstAttribute="bottom" secondItem="1Cf-vH-lAJ" secondAttribute="bottom" constant="15.33" id="Awr-6G-SHi"/>
                                                     <constraint firstItem="Muf-8b-q3o" firstAttribute="centerX" secondItem="vJM-aW-nVp" secondAttribute="centerX" id="FlZ-QV-aWy"/>
                                                     <constraint firstAttribute="trailing" secondItem="1Cf-vH-lAJ" secondAttribute="trailing" id="LBh-SK-Tgz"/>
                                                     <constraint firstAttribute="height" constant="80" id="VKL-P2-IXe"/>
@@ -169,7 +167,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="45" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P91-rU-3Tf">
-                                                        <rect key="frame" x="0.0" y="48.666666666666686" width="50" height="16.333333333333329"/>
+                                                        <rect key="frame" x="0.0" y="48.666666666666686" width="50" height="19.666666666666671"/>
                                                         <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -181,7 +179,6 @@
                                                     <constraint firstItem="h8j-NU-H45" firstAttribute="centerX" secondItem="Qck-Qv-yGw" secondAttribute="centerX" id="Idn-YF-nfA"/>
                                                     <constraint firstAttribute="width" constant="50" id="Qq8-Fj-L4U"/>
                                                     <constraint firstAttribute="height" constant="80" id="ZmZ-oh-nBL"/>
-                                                    <constraint firstAttribute="bottom" secondItem="P91-rU-3Tf" secondAttribute="bottom" constant="15" id="gjZ-MR-sHo"/>
                                                     <constraint firstAttribute="trailing" secondItem="P91-rU-3Tf" secondAttribute="trailing" id="hBH-ha-c3Q"/>
                                                     <constraint firstItem="h8j-NU-H45" firstAttribute="top" secondItem="Qck-Qv-yGw" secondAttribute="top" constant="8" id="mch-7K-Osq"/>
                                                     <constraint firstItem="P91-rU-3Tf" firstAttribute="top" secondItem="h8j-NU-H45" secondAttribute="bottom" constant="14.67" id="tvW-3u-gxf"/>
@@ -206,7 +203,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="euF-HM-wOA">
                                         <rect key="frame" x="273.66666666666669" y="0.0" width="91.333333333333314" height="138.33333333333334"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Protien" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X63-Mw-Asd">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Protein" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X63-Mw-Asd">
                                                 <rect key="frame" x="10" y="10.000000000000002" width="71.333333333333329" height="19.666666666666671"/>
                                                 <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -223,7 +220,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="35" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Tq-od-lxC">
-                                                        <rect key="frame" x="0.0" y="48.666666666666686" width="50" height="16.333333333333329"/>
+                                                        <rect key="frame" x="0.0" y="48.666666666666686" width="50" height="19.666666666666671"/>
                                                         <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="14"/>
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -232,7 +229,6 @@
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="Di9-El-VKC"/>
-                                                    <constraint firstAttribute="bottom" secondItem="4Tq-od-lxC" secondAttribute="bottom" constant="15" id="FXX-Dl-Acx"/>
                                                     <constraint firstItem="3Yn-tr-G0E" firstAttribute="centerX" secondItem="hGy-wS-u3h" secondAttribute="centerX" id="MPi-kS-aIq"/>
                                                     <constraint firstAttribute="height" constant="80" id="PeD-f4-Ofz"/>
                                                     <constraint firstAttribute="trailing" secondItem="4Tq-od-lxC" secondAttribute="trailing" id="t2v-RB-jvN"/>
@@ -281,7 +277,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </button>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Bread" translatesAutoresizingMaskIntoConstraints="NO" id="HwR-Op-9RU">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Bread" translatesAutoresizingMaskIntoConstraints="NO" id="HwR-Op-9RU">
                                 <rect key="frame" x="10" y="75.333333333333314" width="260" height="170"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="170" id="eFQ-Jn-rE9"/>
@@ -515,7 +511,7 @@
         <image name="Group 1171275580" width="27" height="27"/>
         <image name="Group 1171275592" width="27" height="27"/>
         <image name="Group 1171275594" width="26.666666030883789" height="27"/>
-        <image name="Group 1171276514" width="32" height="32"/>
+        <image name="Group 1171276514" width="33.666667938232422" height="33"/>
         <image name="Group 1171276545" width="27" height="27"/>
         <image name="MinusIcon" width="13" height="14"/>
         <image name="PlusIcon" width="13" height="14"/>

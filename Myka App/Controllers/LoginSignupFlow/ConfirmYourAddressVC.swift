@@ -7,6 +7,7 @@
 
 import UIKit
 import Alamofire
+import CoreLocation
 
 class ConfirmYourAddressVC: UIViewController {
     
@@ -44,7 +45,7 @@ class ConfirmYourAddressVC: UIViewController {
         self.StateTxtF.text = self.State
         self.AddressTxtF.text = self.Address
         self.PostalCodeTxtF.text = self.PostCode
-         
+        fetchCityFromCoordinates()
     }
     
     @IBAction func CrossBtn(_ sender: UIButton) {
@@ -83,6 +84,30 @@ class ConfirmYourAddressVC: UIViewController {
         return true
     }
     
+    func fetchCityFromCoordinates() {
+        let latitude = Double(AppLocation.lat) ?? 0.0
+        let longitude = Double(AppLocation.long) ?? 0.0
+        
+        guard latitude != 0.0 && longitude != 0.0 else { return }
+        
+        let location = CLLocation(latitude: latitude, longitude: longitude)
+        let geocoder = CLGeocoder()
+        
+        geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
+            guard let self = self else { return }
+            
+            if let place = placemarks?.first {
+                DispatchQueue.main.async {
+                    if self.CityTxtF.text?.isEmpty ?? true {
+                        self.CityTxtF.text = place.locality
+                    }
+                    if self.StateTxtF.text?.isEmpty ?? true {
+                        self.StateTxtF.text = place.administrativeArea
+                    }
+                }
+            }
+        }
+    }
 }
 
 extension ConfirmYourAddressVC {
@@ -121,7 +146,7 @@ extension ConfirmYourAddressVC {
             
             if dictData["success"] as? Bool == true{
                 if self.comesfrom == "Basket"{
-                    self.navigationController?.popToViewController(ofClass: BasketVC.self)
+                    self.navigationController?.popToViewController(ofClass: BasketNewVC.self)
                 }else if self.comesfrom == "CheckOutVC"{
                     let data:[String: String] = ["data": "Reload"]
                             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationName"), object: nil, userInfo: data)

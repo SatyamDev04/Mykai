@@ -38,17 +38,17 @@ final class AddMoreViewModel {
     }
     
     
-    func addCustomIngredient(name: String, schID: Int) {
+    func addCustomIngredient(name: String, schID: Int,id:String,defultUnit:String,img:String) {
         let product = Product(
             created_at: "",
             deleted_at: "",
             food_id: "",
-            id: nil,
+            id: Int(id),
             market_id: "",
             name: "",
             price: nil,
             pro_id: "",
-            pro_img: "",
+            pro_img: img,
             pro_name: name,
             pro_price: "",
             product_id: "",
@@ -57,7 +57,7 @@ final class AddMoreViewModel {
             unit_size: 0,
             updated_at: "",
             user_id: nil,
-            unit_of_measurement: "",
+            unit_of_measurement: defultUnit,
             is_checked: 0
         )
         ingredient.append(product)
@@ -155,26 +155,44 @@ final class AddMoreViewModel {
         var names: [String] = []
         var Status: [String] = []
         var schID: [String] = []
-        
+        var units: [String] = []
+        var productIds: [String] = []
+
         for idx in 0..<self.ingredient.count {
             let ServCount = self.ingredient[idx].sch_id ?? 1
             let name = self.ingredient[idx].pro_name ?? ""
-            let foodid = self.ingredient[idx].food_id ?? ""
-            
+            let foodid = "\(self.ingredient[idx].id ?? 0)"
+            let unit = self.ingredient[idx].unit_of_measurement ?? "each"
+            let productId = self.ingredient[idx].product_id ?? ""
+
             if foodid.isEmpty {
                 let uniqueNumber = generateUniqueFiveDigitNumber()
                 foodIds.append("\(uniqueNumber)")
-                names.append(name)
-                schID.append("\(ServCount)")
                 Status.append("3")
+            } else {
+                foodIds.append(foodid)
+                Status.append("1")
+            }
+
+            names.append(name)
+            schID.append("\(ServCount)")
+            productIds.append(productId)
+
+            if !unit.isEmpty {
+                units.append(unit)
+            } else {
+                units.append("each")
             }
         }
-        
+
         params["food_ids"] = foodIds
         params["sch_id"] = schID
         params["names"] = names
         params["status"] = Status
-        
+        params["unit"] = units
+        params["product_id"] = productIds
+        params["shopList"] = "1"
+        params["uri"] = "12345678910"
         onShowLoading?(true)
         let loginURL = baseURL.baseURL + appEndPoints.add_to_cart
         
@@ -199,12 +217,27 @@ final class AddMoreViewModel {
     }
     
     // Expose dislikes names for DropDown
-    func dislikesNames() -> [String] {
-        dislikesIngredientArr.map { $0.name ?? "" }
+    func dislikesNames() -> [DropdownItemsShoppingCart] {
+        var d = [DropdownItemsShoppingCart]()
+        
+        dislikesIngredientArr.forEach { item in
+            d.append(DropdownItemsShoppingCart(name:item.name , image: item.image_url_backup, id: "\(item.id ?? 0)", unit: item.default_unit))
+        }
+     
+        return d
+       
     }
     
     func dislikeAt(_ index: Int) -> ModelClass? {
         guard index >= 0 && index < dislikesIngredientArr.count else { return nil }
         return dislikesIngredientArr[index]
     }
+}
+
+struct DropdownItemsShoppingCart{
+    let name: String
+    let image: String
+    let id:String
+    let unit:String
+
 }

@@ -22,6 +22,7 @@ final class StateMangerModelClass {
     var ReffCode = ""
     var ProviderName = ""
     var ProviderImg = ""
+    var AffiliateID = ""
     var SearchClickFromPopup = false
 
     // Home Screen

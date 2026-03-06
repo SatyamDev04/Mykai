@@ -246,6 +246,18 @@ static let shared = UserDetail()
         return ""
     }
     
+    
+    func setaflieateID(_ sUserId:String) -> Void {
+        UserDefaults.standard.set(sUserId, forKey: UserKeys.affiliateCode.rawValue)
+        print(sUserId)
+    }
+    func getaflieateID() -> String {
+        if let userId = UserDefaults.standard.value(forKey: UserKeys.affiliateCode.rawValue) as? String
+        {
+            return userId
+        }
+        return ""
+    }
     func setimageSearch(_ sUserId:String) -> Void {
         UserDefaults.standard.set(sUserId, forKey: UserKeys.imageSearch.rawValue)
         print(sUserId)
@@ -293,6 +305,7 @@ enum UserKeys:String {
     case RefferalCode = "RefferalCode"
     case imageSearch = "imageSearch"
     case addmeal = "addmeal"
+    case affiliateCode = "affiliateCode"
     case favorite = "favorite"
     case urlSearch = "urlSearch"
     case iSfromSignup = "iSfromSignup"

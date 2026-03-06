@@ -150,11 +150,22 @@ extension MissingIngredientsVC: UITableViewDelegate, UITableViewDataSource {
             let img = MissingIngresientsArray[indexPath.row].image ?? ""
             cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
             cell.Img.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named:"No_Image"))
-             
-            let Qnt = MissingIngresientsArray[indexPath.row].quantity ?? 0
-            let roundedValue = roundedFormattedValue(Qnt, decimalPlaces: 2)
             
-            cell.QuentityLbl.text = "\(roundedValue) \(MissingIngresientsArray[indexPath.row].measure ?? "")"
+            let Qnt = Double(MissingIngresientsArray[indexPath.row].quantity?.stringValue() ?? "0") ?? 0
+            
+            let displayQuantity: String
+            if Qnt.truncatingRemainder(dividingBy: 1) == 0 {
+                displayQuantity = "\(Int(Qnt))"
+            } else {
+                displayQuantity = roundedFormattedValue(Qnt, decimalPlaces: 2)
+            }
+            
+            var measureText = MissingIngresientsArray[indexPath.row].measure ?? ""
+            measureText = measureText.replacingOccurrences(of: "each", with: "", options: .caseInsensitive)
+            measureText = measureText.replacingOccurrences(of: "few", with: "", options: .caseInsensitive)
+            measureText = measureText.trimmingCharacters(in: .whitespaces)
+            
+            cell.QuentityLbl.text = "\(displayQuantity) \(measureText)"
             
             if selectedIndex.contains(indexPath.row){
                 cell.CheckBtn.setImage(UIImage(named: "YellowCheck"), for: .normal)
@@ -172,10 +183,22 @@ extension MissingIngredientsVC: UITableViewDelegate, UITableViewDataSource {
             let img = AddedIngresientsArray[indexPath.row].image ?? ""
             cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
             cell.Img.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named:"No_Image"))
-             
-            let Qnt = AddedIngresientsArray[indexPath.row].quantity ?? 0
-            let roundedValue = roundedFormattedValue(Qnt, decimalPlaces: 2)
-            cell.QuentityLbl.text = "\(roundedValue) \(AddedIngresientsArray[indexPath.row].measure ?? "")"
+            
+            let Qnt = Double(AddedIngresientsArray[indexPath.row].quantity?.stringValue() ?? "0") ?? 0
+            
+            let displayQuantity: String
+            if Qnt.truncatingRemainder(dividingBy: 1) == 0 {
+                displayQuantity = "\(Int(Qnt))"
+            } else {
+                displayQuantity = roundedFormattedValue(Qnt, decimalPlaces: 2)
+            }
+            
+            var measureText = AddedIngresientsArray[indexPath.row].measure ?? ""
+            measureText = measureText.replacingOccurrences(of: "each", with: "", options: .caseInsensitive)
+            measureText = measureText.replacingOccurrences(of: "few", with: "", options: .caseInsensitive)
+            measureText = measureText.trimmingCharacters(in: .whitespaces)
+            
+            cell.QuentityLbl.text = "\(displayQuantity) \(measureText)"
             
             cell.CheckBtn.setImage(UIImage(named: "YellowCheck"), for: .normal)
             return cell
@@ -257,10 +280,10 @@ extension MissingIngredientsVC {
                     self.MissingIngredientTblV.reloadData()
                     self.AddedIngredientTblV.reloadData()
                     
-                    if self.MissingIngresientsArray.count == 0 {
-                        self.backAction()
-                        self.navigationController?.popViewController(animated: true)
-                    }
+//                    if self.MissingIngresientsArray.count == 0 {
+//                        self.backAction()
+//                        self.navigationController?.popViewController(animated: true)
+//                    }
                 }else{
                     let msg = d.message ?? ""
                     self.showToast(msg)
@@ -277,14 +300,15 @@ extension MissingIngredientsVC {
         var foodIds : [String] = []
         var names : [String] = []
         var Status : [String] = []
-        
+        var units : [String] = []
         for indx in selectedIndex{
-            let id = self.MissingIngresientsArray[indx].foodID  ?? ""
+            let id = self.MissingIngresientsArray[indx].id  ?? ""
             let name = self.MissingIngresientsArray[indx].food  ?? ""
-            
+            let unit = self.MissingIngresientsArray[indx].unit  ?? ""
             foodIds.append(id)
             names.append(name)
             Status.append("0")
+            units.append(unit)
         }
         
 //        let string = self.SelSearchAllRecipeArr[indexPath.row].recipe?.mealType?.first ?? ""
@@ -298,7 +322,7 @@ extension MissingIngredientsVC {
         params["status"] = Status
         params["uri"] = self.uri
         params["type"] = self.mealtype
-        
+        params["unit"] = units
       
         
         showIndicator(withTitle: "", and: "")
@@ -330,14 +354,15 @@ extension MissingIngredientsVC {
         var foodIds : [String] = []
         var names : [String] = []
         var Status : [String] = []
-        
+        var units : [String] = []
         for indx in selectedIndex{
-            let id = self.MissingIngresientsArray[indx].foodID  ?? ""
+            let id = self.MissingIngresientsArray[indx].id  ?? ""
             let name = self.MissingIngresientsArray[indx].food  ?? ""
-            
+            let unit = self.MissingIngresientsArray[indx].unit  ?? ""
             foodIds.append(id)
             names.append(name)
             Status.append("1")
+            units.append(unit)
         }
         
         params["food_ids"] = foodIds
@@ -346,6 +371,7 @@ extension MissingIngredientsVC {
         params["status"] = Status
         params["uri"] = self.uri
         params["type"] = self.mealtype
+        params["unit"] = units
         
         
         showIndicator(withTitle: "", and: "")

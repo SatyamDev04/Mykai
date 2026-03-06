@@ -78,11 +78,11 @@ class HomeVC: UIViewController, CLLocationManagerDelegate {
         self.SelectSuperMarketPopupV.frame = self.view.bounds
         self.view.addSubview(SelectSuperMarketPopupV)
         self.SelectSuperMarketPopupV.isHidden = true
-#if !DEBUG
-startSubscriptionTimer()
-#endif
-     
-        
+//#if !DEBUG
+//startSubscriptionTimer()
+//#endif
+//     
+        UserDetail.shared.setSubscriptionStatus("0")
         HomeService.shared.Api_To_get_SavedAddress(vc: self) { result in
             switch result {
             case .success(let allData):
@@ -219,7 +219,7 @@ startSubscriptionTimer()
                         UserDetail.shared.seturlSearch("\(urlSearch)")
                         UserDetail.shared.setimageSearch("\(imageSearch)")
                         UserDetail.shared.setSubscriptionStatus("\(SubscriptionStatus)")
-                        
+                        UserDetail.shared.setSubscriptionStatus("0")
                         if SubscriptionStatus == 1{// 1 means no subscription available.
                             self.StartTrailBgV.isHidden = false
                         }else{
@@ -394,8 +394,10 @@ extension HomeVC: UICollectionViewDelegate,UICollectionViewDataSource,UICollecti
                 cell.CheckBtn.tag = indexPath.row
                 cell.CheckBtn.addTarget(self, action: #selector(missingIngrenients(sender:)), for: .touchUpInside)
             }else{
-                cell.CheckBtn.isUserInteractionEnabled = false
                 cell.CheckImg.image = UIImage(named: "CheckFill")
+                cell.CheckBtn.isUserInteractionEnabled = true
+                cell.CheckBtn.tag = indexPath.row
+                cell.CheckBtn.addTarget(self, action: #selector(missingIngrenients(sender:)), for: .touchUpInside)
             }
             
             let imgUrl =  allRecipeData?.images?.small?.url ?? ""

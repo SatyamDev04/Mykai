@@ -58,7 +58,11 @@ class WebService {
         
     
         AF.request(reuestUrl, method: .post, parameters: parameters , encoding: URLEncoding.default, headers: headers).responseJSON { (responseData) in
-            
+            if let data = responseData.data,
+               let rawString = String(data: data, encoding: .utf8) {
+                print("RAW RESPONSE:")
+                print(rawString)
+            }
             if let data = responseData.data, let utf8Text = String(data: data, encoding: .utf8) {
              //   print("Data: \(utf8Text)") // original server data as UTF8 string
                 do{
@@ -148,7 +152,10 @@ class WebService {
                     
                     // Get json data
                     let json = try JSON(data: data)
-                    print(json)
+                    if !request.contains(s: "getSubscriptionDeltails"){
+                        print(json)
+                    }
+                    
                    // success(json, statusCode!)
                     if responseData.result != nil {
                         let swiftyJsonData = responseData.result as? [String : Any]
@@ -772,7 +779,14 @@ class WebService {
                         })
                         .responseJSON(completionHandler: { responseData in
                         //Do what ever you want to do with response
-                        print(responseData)
+                            print("================ API RESPONSE ================")
+                            print("STATUS CODE:", responseData.response?.statusCode ?? 0)
+                            
+                            if let data = responseData.data,
+                               let rawString = String(data: data, encoding: .utf8) {
+                                print("RAW RESPONSE:")
+                                print(rawString)
+                            }
                         if let data = responseData.data, let utf8Text = String(data: data, encoding: .utf8) {
                            // print("Data: \(utf8Text)") // original server data as UTF8 string
                             do{
@@ -1791,14 +1805,16 @@ class WebService {
                     } else {
                         VC.hideIndicator()
                         print(responseData.result)
-                        completionHandler([:], statusCode)
+                        completionHandler([:], 400)
                     }
                 } catch {
+                    completionHandler([:], 400)
                     print("Unexpected error: \(error).")
                     VC.hideIndicator()
                     AlertController.alert(title: "Message", message: "Could not connect to the server.")
                 }
             } else {
+                completionHandler([:], 400)
                 VC.hideIndicator()
                 AlertController.alert(title: "Message", message: "Could not connect to the server.")
             }

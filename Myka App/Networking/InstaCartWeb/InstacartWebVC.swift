@@ -31,14 +31,14 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
         let scanButtonStack = UIStackView()
         scanButtonStack.axis = .vertical
         scanButtonStack.alignment = .center
-        scanButtonStack.spacing = 6
+        scanButtonStack.spacing = 3
         scanButtonStack.isUserInteractionEnabled = true
         scanButtonStack.translatesAutoresizingMaskIntoConstraints = false
         return scanButtonStack
     }()
   
     let scanImageView = {
-        let scanImageView = UIImageView(image: UIImage(systemName: "barcode.viewfinder"))
+        let scanImageView = UIImageView(image: UIImage(named: "basket"))
         scanImageView.contentMode = .scaleAspectFit
         scanImageView.tintColor = .black
         return scanImageView
@@ -46,7 +46,7 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
     
     let scanLabel = {
         let scanLabel = UILabel()
-        scanLabel.text = "Scan basket To Calculate"
+        scanLabel.text = "Scan basket for total"
         scanLabel.font = .systemFont(ofSize: 14, weight: .medium)
         scanLabel.textAlignment = .center
         return scanLabel
@@ -108,7 +108,7 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
     }
 
     private func setupFooter() {
-        footer.backgroundColor = .secondarySystemBackground
+        footer.backgroundColor = .white
         footer.layer.shadowColor = UIColor.black.cgColor
         footer.layer.shadowOpacity = 0.08
         footer.layer.shadowRadius = 6
@@ -259,7 +259,7 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
         if webView.canGoBack {
             webView.goBack()
         } else {
-            navigationController?.popViewController(animated: true)
+            // DO NOT pop here — let parent controller handle stack replacement
             backButtonTapped?()
         }
     }
@@ -331,7 +331,7 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
 //                    guard let url = self.writeTemp(data, name: "instacart-full.pdf") else {
 //                        self.hideIndicator()
 //                        return}
-//                    
+//
 //                    guard let image = drawPDFfromURL(url: url, scale: 3.0) else {
 //                        self.hideIndicator()
 //                        return }
@@ -390,7 +390,7 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
                     let text = response
                     if let value = Double(text) {
                         print(String(format: "%.2f", value))
-                        self.scanLabel.text = ("TOTAL: \(String(format: "%.2f", value))")
+                        self.scanLabel.text = ("TOTAL : $\(String(format: "%.2f", value))")
                     }
                  
                    
@@ -415,7 +415,6 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
            
               if let url = URL(string: urlString) {
                   UIApplication.shared.open(url)
-                  self.navigationController?.popViewController(animated: false)
                   backButtonTapped?()
                   decisionHandler(.cancel)
               }
@@ -496,7 +495,7 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
             print("TOTAL:",total )
             
             DispatchQueue.main.async {
-                self.scanLabel.text = ("TOTAL:\(total)")
+                self.scanLabel.text = ("TOTAL : $\(total)")
                 self.hideIndicator()
             }
         }

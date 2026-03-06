@@ -44,8 +44,6 @@ class Tesco_MissingIngredientVC: UIViewController {
     
     func setupview(){
         let screenWidth = UIScreen.main.bounds.width
-        let datePicker = UIDatePicker()
-
        
         let toolBar = UIToolbar(frame: CGRect(x: 0.0, y: 0.0, width: screenWidth, height: 44.0))
         toolBar.sizeToFit()
@@ -62,7 +60,11 @@ class Tesco_MissingIngredientVC: UIViewController {
         datePicker.preferredDatePickerStyle = .wheels
         datePicker.datePickerMode = .date
 
-        
+        // Set today's date as default in MM/dd/yyyy format
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd/yyyy"
+        datePurchased.text = formatter.string(from: Date())
+
         datePicker.minimumDate = nil
         datePicker.maximumDate = Date()
         datePicker.backgroundColor = .white
@@ -87,6 +89,17 @@ class Tesco_MissingIngredientVC: UIViewController {
         dismissView.addGestureRecognizer(gesture)
         self.view.addSubview(self.viewForSubmitPurchaseDetails)
         self.viewForSubmitPurchaseDetails.isHidden = true
+        
+        // Configure cartTotal with fixed "$" at beginning
+        cartTotal.keyboardType = .decimalPad
+        
+        let dollarLabel = UILabel()
+        dollarLabel.text = "  $"
+        dollarLabel.font = cartTotal.font
+        dollarLabel.sizeToFit()
+        cartTotal.leftView = dollarLabel
+        cartTotal.leftViewMode = .always
+        
         missingIngredient = missingIngredient.map {
             var item = $0
             item.isSelected = false
@@ -96,7 +109,7 @@ class Tesco_MissingIngredientVC: UIViewController {
     @objc func datePurchasedDoneTapped() {
         if let picker = datePurchased.inputView as? UIDatePicker {
             let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd"
+            formatter.dateFormat = "MM/dd/yyyy"
             datePurchased.text = formatter.string(from: picker.date)
         }
         self.view.endEditing(true)
@@ -177,6 +190,11 @@ class Tesco_MissingIngredientVC: UIViewController {
 
         MissingIngredientTblV.reloadData()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        cartTotal.delegate = self
+    }
 }
 
 extension Tesco_MissingIngredientVC: UITableViewDelegate, UITableViewDataSource {
@@ -238,16 +256,16 @@ extension Tesco_MissingIngredientVC{
     
     func Api_StorePurchasedIngredients() {
         
+        // Send only selected ingredient IDs
         let ids = missingIngredient
-            .filter { !($0.isSelected ?? false) }
+            .filter { $0.isSelected ?? false }
             .compactMap { "\($0.id ?? 0)" }
 
-          
-        if ids.isEmpty {
-              checkPopupView.isHidden = false
-              return
-          }
-          
+        // If nothing selected, do not send anything
+//        if ids.isEmpty {
+//            print("No ingredient selected. Nothing to send.")
+//            return
+//        }
         
         print("IDs sending: \(ids)")
         
@@ -333,3 +351,26 @@ extension Tesco_MissingIngredientVC{
     }
 }
 
+extension Tesco_MissingIngredientVC: UITextFieldDelegate {
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        if textField == cartTotal {
+            
+            // Allow only numbers and decimal point
+            let allowedCharacters = CharacterSet(charactersIn: "0123456789.")
+            let characterSet = CharacterSet(charactersIn: string)
+            
+            if !allowedCharacters.isSuperset(of: characterSet) {
+                return false
+            }
+            
+            // Prevent multiple decimal points
+            if string == "." && textField.text?.contains(".") == true {
+                return false
+            }
+        }
+        
+        return true
+    }
+}

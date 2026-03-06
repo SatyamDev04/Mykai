@@ -33,7 +33,7 @@ class SubscriptionVC: UIViewController {
     @IBOutlet weak var RestoreBtnO: UIButton!
     
     
-    var titleTxtArr = ["Save Time, Save Money,\nEat Better", "Endless Meals to Explore", "Eat Smart, Every Day", "Maximum Savings, Zero Hassle", "Show Me the Money!"]
+    var titleTxtArr = ["Save Time, Save Money,Eat Better", "Endless Meals to Explore", "Eat Smart, Every Day", "Maximum Savings, Zero Hassle", "Show Me the Money!"]
     
     var PointTxtArr1 = ["Kai plans your meals, Compares store prices, And creates your cart so you don’t have to.", "Kai gives you access to over 80,000 recipes", "Kai helps you plan your week with recipes tailored to your preferences", "One tap, and all your weekly ingredients are in your cart ready for delivery", "Users save an average of $64 a week that’s an amazing $256* a month!"]
     
@@ -230,17 +230,17 @@ extension SubscriptionVC: UICollectionViewDelegate, UICollectionViewDataSource {
             cell.GifImageV.image = UIImage.gif(name: "Paywall Gift Wiggle")
              
             let Attributes1: [NSAttributedString.Key: Any] = [
-                .font: UIFont(name: "Inter Medium", size: 20.0) ?? UIFont.systemFont(ofSize: 20)
+                .font: UIFont(name: "Inter Medium", size: 18.0) ?? UIFont.systemFont(ofSize: 18)
             ]
             let Attributes2: [NSAttributedString.Key: Any] = [
-                .font: UIFont(name: "Inter Semi Bold", size: 20.0) ?? UIFont.systemFont(ofSize: 20)
+                .font: UIFont(name: "Inter Semi Bold", size: 18.0) ?? UIFont.systemFont(ofSize: 18)
             ]
              
                 let helloString = NSAttributedString(string: "You’ve got a gift from", attributes: Attributes1)
             
             var worldString = NSAttributedString()
             
-            if UserDetail.shared.getiSfromSignup() == true{
+            if !StateMangerModelClass.shared.ProviderName.isEmpty {
                 let imgUrl = URL(string: StateMangerModelClass.shared.ProviderImg) ?? nil
                 cell.ProfileImg.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "Prof"))
                 
@@ -256,7 +256,7 @@ extension SubscriptionVC: UICollectionViewDelegate, UICollectionViewDataSource {
                 
                 cell.UserCookBookLbl.text = "Kai’s secret cookbook"
                 
-                worldString = NSAttributedString(string: "\nKai", attributes: Attributes2)
+                worldString = NSAttributedString(string: " Kai", attributes: Attributes2)
             }
                 
                 let fullString = NSMutableAttributedString()

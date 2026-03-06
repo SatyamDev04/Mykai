@@ -67,6 +67,8 @@ class DinnerVc: UIViewController {
     //
  
     var hasReachedEnd = false
+    var currentPage: Int = 1
+    var isLoading: Bool = false
     var lastContentOffset: CGFloat = 0
   
     override func viewDidLoad() {
@@ -91,10 +93,12 @@ class DinnerVc: UIViewController {
         setupTableView()
         
       //  self.Api_To_GetAllRecipe()
+        self.currentPage = 1
+        self.hasReachedEnd = false
         if comesfrom != "All_IngredientsVC"{
             self.Api_To_GetAllMealsRecipe(Serach: self.titleTxt)
         }else{
-            self.Api_To_GetAllMealsRecipe(Serach: self.SelectedIngNames)   
+            self.Api_To_GetAllMealsRecipe(Serach: self.SelectedIngNames)
         }
        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
@@ -177,7 +181,7 @@ class DinnerVc: UIViewController {
     
     @IBAction func CartBtn(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Basket", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "BasketVC") as! BasketVC
+        let vc = storyboard.instantiateViewController(withIdentifier: "BasketNewVC") as! BasketNewVC
         vc.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -395,10 +399,11 @@ extension DinnerVc: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
 
         if isScrollingDown {
             // Reached near the bottom
-            if offsetY >= contentHeight - frameHeight - buffer && !hasReachedEnd {
-                hasReachedEnd = true
+            if offsetY >= contentHeight - frameHeight - buffer {
                 print("Reached bottom")
-                self.Api_To_GetAllMealsRecipe(Serach: self.titleTxt)
+                if !self.hasReachedEnd {
+                    self.Api_To_GetAllMealsRecipe(Serach: self.titleTxt)
+                }
             }
         } else {
             // Detect scrolling out of bottom
@@ -546,28 +551,28 @@ extension DinnerVc {
 extension DinnerVc {
 //    func Api_To_GetAllRecipe(){
 //        var params = [String: Any]()
-//        
+//
 //        params["q"] = self.titleTxt
-//        
-//        
+//
+//
 //        let token  = UserDetail.shared.getTokenWith()
-//        
+//
 //        let headers: HTTPHeaders = [
 //            "Authorization": "Bearer \(token)"
 //        ]
-//        
+//
 //        showIndicator(withTitle: "", and: "")
-//        
+//
 //        let loginURL = baseURL.baseURL + appEndPoints.all_recipe
 //        print(params,"Params")
 //        print(loginURL,"loginURL")
-//        
+//
 //        WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, headers: headers, withCompletion: { (json, statusCode) in
-//            
+//
 //            self.hideIndicator()
-//            
+//
 //            let data = try! json.rawData()
-//            
+//
 //            do{
 //                let d = try JSONDecoder().decode(PlanModelClass.self, from: data)
 //                if d.success == true {
@@ -575,7 +580,7 @@ extension DinnerVc {
 //                        self.AllRecipeSelItem = list
 //                    }
 //                }else{
-//                 
+//
 //                    let msg = d.message ?? ""
 //                    self.showToast(msg)
 //                }
@@ -588,7 +593,14 @@ extension DinnerVc {
 
 extension DinnerVc {
     func Api_To_GetAllMealsRecipe(Serach: String){
+        if isLoading { return }
+        isLoading = true
         var params = [String: Any]()
+        
+        let existingIds: [String] = self.SearchAllRecipeArr.compactMap { $0.recipe?.uri }
+        if !existingIds.isEmpty {
+            params["ids"] = existingIds
+        }
         
         var mealTypeArray: [String] = []
         var healthArray: [String] = []
@@ -631,13 +643,14 @@ extension DinnerVc {
                 params["calories"] = highestNutrition
             }
         }else if comesfrom == "Mealtype"{
-            params["mealType"] = Serach
+            params["mealType"] = [Serach]
         }else if comesfrom == "PopularCat"{
             params["dishType"] = Serach
         }else{
             params["q"] = Serach
         }
-      
+        
+        params["page"] = currentPage
         showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.recipe
@@ -656,40 +669,55 @@ extension DinnerVc {
                 let d = try JSONDecoder().decode(SearchModelClass.self, from: data)
                 if d.success == true {
                     if let list = d.data, list.recipes != nil {
- 
-                        let allData = list.recipes ?? []
-                        self.SearchAllRecipeArr = allData
-//                        let uniqueRecipes = Array(
-//                            Dictionary(grouping: allData) { $0.recipe?.label ?? "" }
-//                                .values
-//                                .compactMap { $0.first }
-//                        )
-
-                        // Assign back to your array if needed
-//                        self.SearchAllRecipeArr.append(contentsOf: uniqueRecipes)
+                        let newData = list.recipes ?? []
                         
-                        self.SearchAllRecipeArr = Array(
-                            Dictionary(grouping: self.SearchAllRecipeArr) { $0.recipe?.label ?? "" }
-                                .values
-                                .compactMap { $0.first }
-                        )
-                        self.hasReachedEnd = false
+                        if self.currentPage == 1 {
+                            self.SearchAllRecipeArr.removeAll()
+                        }
                         
+                        // Filter only truly NEW items (avoid reshuffling old data)
+                        var freshItems: [RecipeElement] = []
+                        
+                        for item in newData {
+                            if let uri = item.recipe?.uri {
+                                let alreadyExists = self.SearchAllRecipeArr.contains {
+                                    $0.recipe?.uri == uri
+                                }
+                                if !alreadyExists {
+                                    freshItems.append(item)
+                                }
+                            }
+                        }
+                        
+                        // If no new unique items came → stop pagination
+                        if freshItems.isEmpty {
+                            self.hasReachedEnd = true
+                        } else {
+                            self.SearchAllRecipeArr.append(contentsOf: freshItems)
+                            self.currentPage += 1
+                        }
+                        if freshItems.isEmpty {
+                            print("Backend is repeating same page")
+                        }
                         if self.SearchAllRecipeArr.count == 0{
                             self.CollV.setEmptyMessage("No recipe yet.", UIImage())
                         }else{
                             self.CollV.setEmptyMessage("", UIImage())
                         }
                     }
-                    
+                  
+                    self.isLoading = false
                     self.CollV.reloadData()
+                   
                 }else{
+                    self.isLoading = false
                     self.SearchAllRecipeArr.removeAll()
                     let msg = d.message ?? ""
                     self.showToast(msg)
                 }
             }catch{
                 print(error)
+                self.isLoading = false
             }
         })
     }
@@ -824,7 +852,7 @@ extension DinnerVc {
                      
                     self.ChoosedaysTblV.reloadData()
                     self.ChooseMealTypeTblV.reloadData()
-//                    
+//
                     
                     self.SelUri = ""
                     

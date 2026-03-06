@@ -200,7 +200,7 @@ struct HomeDataModel: Codable {
     // MARK: - Ingredient
     struct IngredientHome: Codable {
         let text: String?
-        let quantity: String?
+        let quantity: StringOrNumber?
         let measure: String?
         let food: String?
         let weight: Double?
@@ -216,7 +216,7 @@ struct HomeDataModel: Codable {
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.text = try container.decodeIfPresent(String.self, forKey: .text)
-            self.quantity = try container.decodeIfPresent(String.self, forKey: .quantity)
+            self.quantity = try container.decodeIfPresent(StringOrNumber.self, forKey: .quantity)
             self.measure = try container.decodeIfPresent(String.self, forKey: .measure)
             self.food = try container.decodeIfPresent(String.self, forKey: .food)
             self.weight = try container.decodeIfPresent(Double.self, forKey: .weight)

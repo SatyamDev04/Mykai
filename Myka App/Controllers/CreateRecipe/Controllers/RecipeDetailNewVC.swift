@@ -401,7 +401,7 @@ class RecipeDetailNewVC: UIViewController {
         let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetail1VC") as! RecipeDetail1VC
      
         vc.MealType = self.MealType
-        vc.RecipeDetailsData = self.RecipeDetailsData 
+        vc.RecipeDetailsData = self.RecipeDetailsData
         vc.RecipeListArr = self.recipeArr
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -827,9 +827,23 @@ extension RecipeDetailNewVC{
                                 if header == "Recipe"{
                                     header = ""
                                 }
-                                self.addIngredient(Header: header, data: IngredientDataModel(name: ingredient.name, quantity: ingredient.quantity, unit: ingredient.measure, img: ingredient.image,isSelected: true))
-                                
-                               
+
+                                var ingredientModel = IngredientDataModel(
+                                    name: ingredient.name,
+                                    quantity: ingredient.quantity?.stringValue(),
+                                    unit: ingredient.measure,
+                                    img: ingredient.image,
+                                    isSelected: true
+                                )
+
+                                // ---- PRESERVE FULL INGREDIENT META (VERY IMPORTANT) ----
+                                ingredientModel.food = ingredient.food
+                                ingredientModel.foodCategory = ingredient.category
+                                ingredientModel.id = ingredient.id
+                                ingredientModel.ingredient_cost = ingredient.ingredientCost
+                                ingredientModel.measure = ingredient.measure
+
+                                self.addIngredient(Header: header, data: ingredientModel)
                             }
                         }
                         self.baseIngredientData = self.tblVIngredientData
@@ -955,11 +969,25 @@ extension RecipeDetailNewVC{
 
         for item in selectedIngredients {
 
+            // ---- CLEAN IMAGE STRING ----
+            var cleanImage = (item.image ?? item.img ?? "")
+            cleanImage = cleanImage
+                .replacingOccurrences(of: "%22", with: "")
+                .replacingOccurrences(of: "\"", with: "")
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+
+            // ---- CONVERT QUANTITY TO NUMBER ----
+            let quantityValue = Double(item.quantity ?? "") ?? 0
+
+            // ---- SKIP INVALID INGREDIENT ----
+            let nameValue = (item.name ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+            if nameValue.isEmpty { continue }
+
             let dict: [String: Any] = [
-                "name": item.name ?? "",
-                "image": item.image ?? item.img ?? "",
+                "name": nameValue,
+                "image": cleanImage,
                 "food": item.food ?? "",
-                "quantity": item.quantity ?? "",
+                "quantity": quantityValue,
                 "ingredient_cost": item.ingredient_cost ?? "",
                 "foodCategory": item.foodCategory ?? "",
                 "measure": item.measure ?? "",
@@ -970,39 +998,54 @@ extension RecipeDetailNewVC{
             jsonArray.append(dict)
         }
 
+        guard !jsonArray.isEmpty else {
+            AlertControllerOnr(title: "", message: "No valid ingredients to add.")
+            return
+        }
+
         let paramsDict: [String: Any] = [
-            "ingredients": jsonArray,
+            "ingredients": jsonArray,     // flat array (NOT nested)
             "serving": self.ServCount,
             "uri": self.uri,
             "type": self.MealType
         ]
 
+        // ---- VALIDATE JSON BEFORE SENDING ----
+        guard JSONSerialization.isValidJSONObject(paramsDict) else {
+            print("❌ Invalid JSON payload")
+            return
+        }
+
+        // ---- DEBUG PRINT (VERY IMPORTANT) ----
+        if let debugData = try? JSONSerialization.data(withJSONObject: paramsDict, options: .prettyPrinted),
+           let debugString = String(data: debugData, encoding: .utf8) {
+            print("\n✅ FINAL ADD TO BASKET JSON:\n", debugString)
+        }
+
         showIndicator(withTitle: "", and: "")
 
         let loginURL = baseURL.baseURL + appEndPoints.ingredient_basket
-        print(paramsDict, "Params")
-        print(loginURL, "loginURL")
+
         if let jsonData = JSONStringEncoder().encode(paramsDict) {
-            
+
             WebService.shared.postServiceRaw(loginURL, VC: self, jsonData: jsonData) { (json, statusCode) in
                 self.hideIndicator()
-                
+
                 guard let dictData = json.dictionaryObject else {
                     return
                 }
-                
+
                 let Msg = dictData["message"] as? String ?? ""
-                
+
                 if dictData["success"] as? Bool == true {
                     self.backAction()
                     self.navigationController?.popViewController(animated: true)
                     self.navigationController?.showToast("Added to basket.")
-                    
                 } else {
                     self.showToast(Msg)
                 }
             }
-        }else{
+        } else {
             print("Failed to encode JSON.")
             self.hideIndicator()
             self.showToast("An error occurred while preparing the request.")
@@ -1026,24 +1069,36 @@ extension RecipeDetailNewVC{
         }
         
         // ---------- BASE INGREDIENT (original quantity) ----------
-        let baseIngredient = IngredientDataModel(
+        var baseIngredient = IngredientDataModel(
             name: ingredientName,
             quantity: formatQuantity(baseQty),   // original
             unit: unitText,
             img: imgStr,
             isSelected: true
         )
+        // ---- COPY FULL META ----
+        baseIngredient.food = data.food
+        baseIngredient.foodCategory = data.foodCategory
+        baseIngredient.id = data.id
+        baseIngredient.ingredient_cost = data.ingredient_cost
+        baseIngredient.measure = data.measure
         
         // ---------- DISPLAY INGREDIENT (serving applied) ----------
         let finalQty = baseQty * Double(ServCount)
         
-        let displayIngredient = IngredientDataModel(
+        var displayIngredient = IngredientDataModel(
             name: ingredientName,
             quantity: formatQuantity(finalQty),
             unit: unitText,
             img: imgStr,
             isSelected: true
         )
+        // ---- COPY FULL META ----
+        displayIngredient.food = data.food
+        displayIngredient.foodCategory = data.foodCategory
+        displayIngredient.id = data.id
+        displayIngredient.ingredient_cost = data.ingredient_cost
+        displayIngredient.measure = data.measure
         
         DispatchQueue.main.async {
             

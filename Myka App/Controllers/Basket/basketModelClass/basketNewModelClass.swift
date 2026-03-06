@@ -36,7 +36,7 @@ struct BillingNew: Codable {
 struct WelcomeIngredient: Codable {
     let schID: Int?
     let proPrice: String?
-    let servings: Int?
+    let servings: String?
     let foodCategory: String?
     let marketID: Int?
     let foodID: String?
@@ -50,7 +50,7 @@ struct WelcomeIngredient: Codable {
     let isChecked: Int?
     let proName: String?
     let status: Int?
-    let unitOfMeasurement: String?
+    var unitOfMeasurement: String?
     let id: Int?
     let deletedAt: String?
     let food: String?
@@ -158,7 +158,8 @@ struct DataRecipe: Codable {
     let cookware: [Cookware]?
     let isPublic: Int?
     let cuisine: String?
-    let calories, prepTime: Int?
+    let prepTime: Int?
+    let calories: Double?
 
     enum CodingKeys: String, CodingKey {
         case reviewsCount = "reviews_count"
@@ -281,7 +282,7 @@ struct RecipeIngredienNew: Codable {
 //        case createdAt = "created_at"
 //        case text
 //        case stepOrder = "step_order"
-//        case updatedAt = "updated_at"
+//        case updatedAt = "updated_at"n m
 //        case createdOn = "created_on"
 //    }
 //}

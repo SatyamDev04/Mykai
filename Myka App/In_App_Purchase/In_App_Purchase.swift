@@ -116,10 +116,10 @@ extension IAPManager: SKPaymentTransactionObserver {
                 "receipt_data": receiptString
             ]
             
-            // Notify with receipt data
-           // if isSubscription_purchased == false{
+           // Notify with receipt data
+          // if isSubscription_purchased == false{
                 let data:[String: String] = ["data": "Purchase successful", "Receipt": receiptString]
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationName"), object: nil, userInfo: data)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PurchaseNotification"), object: nil, userInfo: data)
           //      isSubscription_purchased = true
          //   }
         }
@@ -168,7 +168,7 @@ extension IAPManager: SKPaymentTransactionObserver {
             // Notify with receipt data
             // if isSubscription_purchased == false{
             let data:[String: String] = ["data": "Purchase successful", "Receipt": receiptString]
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationName"), object: nil, userInfo: data)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PurchaseNotification"), object: nil, userInfo: data)
         }
             SKPaymentQueue.default().finishTransaction(transaction)
         

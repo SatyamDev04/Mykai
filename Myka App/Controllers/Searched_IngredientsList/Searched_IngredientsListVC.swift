@@ -163,7 +163,7 @@ extension Searched_IngredientsListVC:  UITableViewDataSource, UITableViewDelegat
         cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
         cell.Img.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named:"No_Image"))
          
-        let Qnt = Double(self.SearchbyUrlList.ingredients?[indexPath.row].quantity ?? "") ?? 0.0
+        let Qnt = Double(self.SearchbyUrlList.ingredients?[indexPath.row].quantity?.stringValue() ?? "") ?? 0.0
         let roundedValue = roundedFormattedValue(Qnt, decimalPlaces: 2)
         cell.QuentityLbl.text = "\(roundedValue) \(self.SearchbyUrlList.ingredients?[indexPath.row].measure ?? "")"
          

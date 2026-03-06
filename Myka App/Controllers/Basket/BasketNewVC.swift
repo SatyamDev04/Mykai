@@ -44,6 +44,9 @@ class BasketNewVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var checkoutInstacartBtnO: UIButton!
   
     @IBOutlet var DisabledView: UIView!
+
+    // MARK: - Empty State View
+    private var emptyStateView: UIView?
   
     // MARK: - Properties
     var mapView = GMSMapView()
@@ -97,7 +100,7 @@ class BasketNewVC: UIViewController, UITextFieldDelegate {
         self.checkoutInstacartBtnO.isUserInteractionEnabled = true
         self.checkoutInstacartBtnO.backgroundColor = UIColor(red: 0.0235, green: 0.7569, blue: 0.4118, alpha: 1.0)
 //        let SubscriptionStatus = Int(UserDetail.shared.getSubscriptionStatus())
-//        
+//
 //        if SubscriptionStatus == 1{
 //            self.AddressPopupView.isHidden = true
 //        }else{
@@ -127,6 +130,7 @@ class BasketNewVC: UIViewController, UITextFieldDelegate {
         self.HomeIMg.image = UIImage(named: "HomeIcon")
         self.WorkImg.tintColor = #colorLiteral(red: 0.5882352941, green: 0.6666666667, blue: 0.631372549, alpha: 1)
         
+        setupEmptyStateView()
         setupCollectionView()
        
         self.IngredientsTblV.register(UINib(nibName: "IngridenttTblVCell", bundle: nil), forCellReuseIdentifier: "IngridenttTblVCell")
@@ -158,10 +162,12 @@ class BasketNewVC: UIViewController, UITextFieldDelegate {
     // Observe value changes for the contentSize property to adjust height constraint dynamically
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "contentSize", let tableView = object as? UITableView {
-            if tableView.tag == 1 {
-                IngredientsTblVH.constant = tableView.contentSize.height
-            } else if tableView.tag == 2 {
-                AddressTblVH.constant = tableView.contentSize.height
+            DispatchQueue.main.async {
+                if tableView.tag == 1 {
+                    self.IngredientsTblVH.constant = tableView.contentSize.height
+                } else if tableView.tag == 2 {
+                    self.AddressTblVH.constant = tableView.contentSize.height
+                }
             }
         }
     }
@@ -185,7 +191,7 @@ class BasketNewVC: UIViewController, UITextFieldDelegate {
             self.DisabledView.isHidden = true
         }
       
-//        self.Api_To_get_SavedAddress()
+      self.Api_To_get_SavedAddress()
     }
     
     // MARK: - UI Setup & Helpers
@@ -344,7 +350,7 @@ class BasketNewVC: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func checkoutBtn(_ sender: UIButton) {
-        self.Api_To_get_SavedAddress()
+        self.Api_To_get_SavedAddress(hideOrNot: false)
         
     }
     
@@ -685,7 +691,7 @@ extension BasketNewVC: UITableViewDelegate, UITableViewDataSource {
             if self.BasketListArr.ingredient?.contains(where: { $0.isSelected ?? false }) == true {
                 print("Something is selected")
                 checkoutInstacartBtnO.isUserInteractionEnabled = true
-                checkoutInstacartBtnO.backgroundColor = #colorLiteral(red: 0.9854765534, green: 0.5848969817, blue: 0.1648380458, alpha: 1)
+               // checkoutInstacartBtnO.backgroundColor = #colorLiteral(red: 0.9854765534, green: 0.5848969817, blue: 0.1648380458, alpha: 1)
             } else {
                 print("Nothing selected")
                 checkoutInstacartBtnO.isUserInteractionEnabled = false
@@ -712,10 +718,137 @@ extension BasketNewVC: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-// MARK: - Business Logic & Network
+    // MARK: - Empty State Setup
 extension BasketNewVC{
     
-    /// Recalculates ingredient quantities based on the current servings of recipes and merges duplicates by name and unit.
+    private func setupEmptyStateView() {
+        let emptyView = UIView(frame: CGRect(x: 0, y: 100, width: view.frame.width, height: view.frame.height - 100))
+        emptyView.backgroundColor = .white
+        emptyView.isHidden = true
+        
+        // First Image (200x200)
+        let topImageView = UIImageView()
+        topImageView.translatesAutoresizingMaskIntoConstraints = false
+        topImageView.contentMode = .scaleAspectFit
+        topImageView.image = UIImage(named: "basket_empty") // 🔹 Add your first image name here
+        
+        // Second Image (below first image)
+        let bottomImageView = UIImageView()
+        bottomImageView.translatesAutoresizingMaskIntoConstraints = false
+        bottomImageView.contentMode = .scaleAspectFit
+        bottomImageView.image = UIImage(named: "plan_meals_button") // 🔹 Add your second image name here
+        bottomImageView.isUserInteractionEnabled = true
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(emptyBottomImageTapped))
+        bottomImageView.addGestureRecognizer(tapGesture)
+        
+        emptyView.addSubview(topImageView)
+        emptyView.addSubview(bottomImageView)
+        
+        NSLayoutConstraint.activate([
+            
+            // Top Image Constraints
+            topImageView.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor),
+            topImageView.centerYAnchor.constraint(equalTo: emptyView.centerYAnchor, constant: -80),
+            topImageView.widthAnchor.constraint(equalToConstant: 200),
+            topImageView.heightAnchor.constraint(equalToConstant: 200),
+            
+            // Bottom Image Constraints
+            bottomImageView.topAnchor.constraint(equalTo: topImageView.bottomAnchor, constant: 10),
+            bottomImageView.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor),
+            bottomImageView.widthAnchor.constraint(equalToConstant: 150),
+            bottomImageView.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        self.view.addSubview(emptyView)
+        self.view.bringSubviewToFront(emptyView)
+        
+        self.emptyStateView = emptyView
+    }
+    
+    private func updateEmptyState() {
+        let subscriptionStatus = Int(UserDetail.shared.getSubscriptionStatus())
+        let recipeCount = BasketListArr.recipe?.count ?? 0
+        
+        if subscriptionStatus == 0 && recipeCount == 0 {
+            emptyStateView?.isHidden = false
+            self.view.bringSubviewToFront(emptyStateView!)
+        } else {
+            emptyStateView?.isHidden = true
+        }
+    }
+
+    @objc private func emptyBottomImageTapped() {
+        self.tabBarController?.selectedIndex = 3
+    }
+}
+
+// MARK: - Business Logic & Network
+extension BasketNewVC{
+
+    enum UnitCategory {
+        case weight
+        case volume
+        case count
+        case unknown
+    }
+
+    func normalizeUnit(_ unit: String) -> String {
+        let u = unit.lowercased()
+        switch u {
+        // Weight
+        case "kg", "kilogram", "kilograms": return "kg"
+        case "g", "gram", "grams": return "g"
+        case "mg", "milligram", "milligrams": return "mg"
+        case "lb", "pound", "pounds": return "lb"
+        case "oz", "ounce", "ounces": return "oz"
+        
+        // Volume
+        case "ml", "milliliter", "milliliters": return "ml"
+        case "l", "liter", "liters": return "l"
+        case "cup", "cups": return "cup"
+        case "tbsp", "tablespoon", "tablespoons": return "tbsp"
+        case "tsp", "teaspoon", "teaspoons": return "tsp"
+        
+        case "each": return "each"
+        default: return u
+        }
+    }
+
+    func unitCategory(for unit: String) -> UnitCategory {
+        switch unit {
+        case "kg", "g", "mg", "lb", "oz":
+            return .weight
+        case "ml", "l", "cup", "tbsp", "tsp":
+            return .volume
+        case "each":
+            return .count
+        default:
+            return .unknown
+        }
+    }
+
+    func convertToBaseUnit(quantity: Double, unit: String) -> (Double, String) {
+        switch unit {
+        // Weight → grams
+        case "kg": return (quantity * 1000, "g")
+        case "g": return (quantity, "g")
+        case "mg": return (quantity / 1000, "g")
+        case "lb": return (quantity * 453.592, "g")
+        case "oz": return (quantity * 28.3495, "g")
+        
+        // Volume → ml
+        case "l": return (quantity * 1000, "ml")
+        case "ml": return (quantity, "ml")
+        case "cup": return (quantity * 240, "ml")
+        case "tbsp": return (quantity * 15, "ml")
+        case "tsp": return (quantity * 5, "ml")
+        
+        case "each": return (quantity, "each")
+        default: return (quantity, unit)
+        }
+    }
+    
+    /// Recalculates ingredient quantities based on the current servings of recipes and merges duplicates by name (after unit normalization and conversion).
     func recalculateAndMergeIngredients() {
         
         guard let recipes = BasketListArr.recipe else { return }
@@ -726,43 +859,44 @@ extension BasketNewVC{
             
             guard
                 let baseQty = ingredient.quantity,
-                baseQty > 0,
-                let baseServing = ingredient.servings,
-                baseServing > 0,
-                let productId = ingredient.productID
+                let baseServing = Int(ingredient.servings ?? "1"),
+                baseServing > 0
             else { continue }
             
-            // 🔹 Find current serving of that recipe
-            let currentServing = Double(
-                recipes.first(where: { $0.uri == productId })?.serving ?? "1"
-            ) ?? 1.0
-            
-          //  let scaledQty = (Double(baseQty) / Double(baseServing)) * currentServing
-            let scaledQty = Double(baseQty) * currentServing
-            // 🔹 Merge Key (Name + Unit)
             let nameKey = (ingredient.name ?? "")
                 .lowercased()
                 .trimmingCharacters(in: .whitespacesAndNewlines)
             
-            let unitKey = (ingredient.unitOfMeasurement ?? "")
-                .lowercased()
+            // Proper serving scaling
+            let currentServing = Double(
+                recipes.first(where: { $0.uri == ingredient.productID })?.serving ?? "1"
+            ) ?? 1.0
             
-            let key = nameKey + "_" + unitKey
+            let scaledQty = (Double(baseQty) / Double(baseServing)) * currentServing
+            
+            let normalizedUnit = normalizeUnit(ingredient.unitOfMeasurement ?? "")
+            let (baseConvertedQty, baseUnit) = convertToBaseUnit(quantity: scaledQty, unit: normalizedUnit)
+            
+            // Merge by name only (safe because converted to base unit)
+            let key = nameKey
             
             if var existing = mergedDict[key] {
-                existing.quantity = (existing.quantity ?? 0) + Int(scaledQty)
+                let existingQty = Double(existing.quantity ?? 0)
+                existing.quantity = Int(existingQty + baseConvertedQty)
+                existing.unitOfMeasurement = baseUnit
                 mergedDict[key] = existing
             } else {
                 var newIngredient = ingredient
-                newIngredient.quantity = Int(scaledQty)
+                newIngredient.quantity = Int(baseConvertedQty)
+                newIngredient.unitOfMeasurement = baseUnit
                 mergedDict[key] = newIngredient
             }
         }
         
         BasketListArr.ingredient = Array(mergedDict.values)
         
-        for i in 0..<(self.BasketListArr.ingredient?.count ?? 0){
-            self.BasketListArr.ingredient?[i].isSelected = true
+        for i in 0..<(BasketListArr.ingredient?.count ?? 0) {
+            BasketListArr.ingredient?[i].isSelected = true
         }
         
         DispatchQueue.main.async {
@@ -832,11 +966,18 @@ extension BasketNewVC{
                   let url = data["products_link_url"] as? String else {return}
             let vc = InstacartContainerVC()
             vc.urlString = url
-            vc.backButtonTapped = {
+            vc.backButtonTapped = { [weak self] in
+                guard let self = self else { return }
+                
                 let storyboard = UIStoryboard(name: "Basket", bundle: nil)
-                let vc = storyboard.instantiateViewController(withIdentifier: "Tesco_MissingIngredientVC") as! Tesco_MissingIngredientVC
-                vc.missingIngredient = self.BasketListArr.ingredient ?? []
-                self.navigationController?.pushViewController(vc, animated: false)
+                let missingVC = storyboard.instantiateViewController(withIdentifier: "Tesco_MissingIngredientVC") as! Tesco_MissingIngredientVC
+                missingVC.missingIngredient = self.BasketListArr.ingredient ?? []
+                
+                if var stack = self.navigationController?.viewControllers {
+                    stack.removeLast() // Remove InstacartContainerVC
+                    stack.append(missingVC)
+                    self.navigationController?.setViewControllers(stack, animated: false)
+                }
             }
             self.navigationController?.pushViewController(vc, animated: false)
         }
@@ -860,9 +1001,9 @@ extension BasketNewVC{
         let params:JSONDictionary = [:]
         
         showIndicator(withTitle: "", and: "")
-        if UserDetail.shared.getSubscriptionStatus() == "0"{
-            showIndicator(withTitle: "", and: "")
-        }
+//        if UserDetail.shared.getSubscriptionStatus() == "0"{
+//            showIndicator(withTitle: "", and: "")
+//        }
          
         let loginURL = baseURL.baseURL + appEndPoints.get_basketlist
         print(params,"Params")
@@ -903,7 +1044,7 @@ extension BasketNewVC{
                     self.yourRecipeCollV.reloadData()
                     // self.IngredientsTblV.reloadData()
                     self.recalculateAndMergeIngredients()
-                     
+                    self.updateEmptyState()
                 }else{
                     let msg = d.message ?? ""
           
@@ -944,7 +1085,7 @@ extension BasketNewVC{
     }
     
     //get-address
-    func Api_To_get_SavedAddress(){
+    func Api_To_get_SavedAddress(hideOrNot:Bool = true){
         
       //  showIndicator(withTitle: "", and: "")
         
@@ -999,7 +1140,7 @@ extension BasketNewVC{
                     }
                     
                     self.AddressTblV.reloadData()
-                    self.AddressPopupView.isHidden = false
+                    self.AddressPopupView.isHidden = hideOrNot
 //                    DispatchQueue.main.asyncAfter(deadline: .now()){
 //                        self.getBasketListData()
 //                        }
@@ -1102,6 +1243,7 @@ extension BasketNewVC{
                 self.BasketListArr.recipe?.remove(at: index ?? 0)
                 self.yourRecipeCollV.reloadData()
                 self.getBasketListData()
+                self.updateEmptyState()
             }else{
                 let responseMessage = dictData["message"] as! String
                 self.showToast(responseMessage)
@@ -1348,3 +1490,4 @@ extension BasketNewVC: CLLocationManagerDelegate,GMSMapViewDelegate {
         // addressLabel.lock()
     }
 }
+

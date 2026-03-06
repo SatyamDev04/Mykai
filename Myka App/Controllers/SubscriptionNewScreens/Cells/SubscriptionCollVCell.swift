@@ -23,7 +23,7 @@ class SubscriptionCollVCell: UICollectionViewCell {
     
     @IBOutlet weak var LifeTimeLbl: UILabel!
     
-    @IBOutlet weak var GiftIconTopConst: NSLayoutConstraint!
+    //@IBOutlet weak var GiftIconTopConst: NSLayoutConstraint!
     
     @IBOutlet weak var GIFBottomConst: NSLayoutConstraint!
     
@@ -47,20 +47,20 @@ class SubscriptionCollVCell: UICollectionViewCell {
             let modelName = UIDevice.modelName
             print(modelName, "modelName")
             if modelName.contains(find: "mini"){//"iPhone 12 mini"{
-                self.GiftIconTopConst.constant = 10
+               // self.GiftIconTopConst.constant = 10
                 self.GIFBottomConst.constant = 15
             }else if modelName.contains(find: "Max"){
-                self.GiftIconTopConst.constant = 45
+                //self.GiftIconTopConst.constant = 45
                 self.GIFBottomConst.constant = 45
             }else if modelName.contains(find: "Pro"){
-                self.GiftIconTopConst.constant = 45
+               // self.GiftIconTopConst.constant = 45
                 self.GIFBottomConst.constant = 45
             }else{
-                self.GiftIconTopConst.constant = 40
+               // self.GiftIconTopConst.constant = 40
                 self.GIFBottomConst.constant = 40
             }
         }else{
-            self.GiftIconTopConst.constant = 10
+          //  self.GiftIconTopConst.constant = 10
             self.GIFBottomConst.constant = 15
         }
     }

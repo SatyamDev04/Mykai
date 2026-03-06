@@ -103,7 +103,8 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         ingredientFinalLbl.isUserInteractionEnabled = true
         ingredientFinalLbl.addGestureRecognizer(tapGesture)
       
-        
+        addIngredientAmoutTF.keyboardType = .decimalPad
+        updateNextRecipeStepLabel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -269,6 +270,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         viewModel.onRecipeStepsChanged = { [weak self] in
             DispatchQueue.main.async {
                 self?.recipeTblV.reloadData()
+                self?.updateNextRecipeStepLabel()
             }
         }
     }
@@ -516,45 +518,63 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     private enum Tab { case ingredient, cookware, recipe }
     
     private func setActiveTab(_ tab: Tab) {
+
+        // reset fonts first
+        IngredientLbl.font = UIFont(name: "Poppins-Regular", size: 16)
+        CookwareLbl.font = UIFont(name: "Poppins-Regular", size: 16)
+        recipeLbl.font = UIFont(name: "Poppins-Regular", size: 16)
+
         switch tab {
+            
         case .ingredient:
-            self.IngredientLbl.backgroundColor = UIColor(red: 254/255, green: 159/255, blue: 69/255, alpha: 1)
-            self.CookwareLbl.backgroundColor = UIColor(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
-            self.recipeLbl.backgroundColor = UIColor(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
             
-            self.IngredientLbl.textColor = .white
-            self.CookwareLbl.textColor = UIColor(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
-            self.recipeLbl.textColor = UIColor(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
-            
-            self.ingredientBgV.isHidden = false
-            self.cookwareBgV.isHidden = true
-            self.recipeBgV.isHidden = true
-            
+            IngredientLbl.font = UIFont(name: "Poppins-SemiBold", size: 16)
+
+            IngredientLbl.backgroundColor = UIColor(red: 254/255, green: 159/255, blue: 69/255, alpha: 1)
+            CookwareLbl.backgroundColor = UIColor(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
+            recipeLbl.backgroundColor = UIColor(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
+
+            IngredientLbl.textColor = .white
+            CookwareLbl.textColor = UIColor(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
+            recipeLbl.textColor = UIColor(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
+
+            ingredientBgV.isHidden = false
+            cookwareBgV.isHidden = true
+            recipeBgV.isHidden = true
+
+
         case .cookware:
-            self.IngredientLbl.backgroundColor = UIColor(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
-            self.CookwareLbl.backgroundColor = UIColor(red: 254/255, green: 159/255, blue: 69/255, alpha: 1)
-            self.recipeLbl.backgroundColor = UIColor(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
             
-            self.IngredientLbl.textColor = UIColor(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
-            self.CookwareLbl.textColor = .white
-            self.recipeLbl.textColor = UIColor(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
-            
-            self.ingredientBgV.isHidden = true
-            self.cookwareBgV.isHidden = false
-            self.recipeBgV.isHidden = true
-            
+            CookwareLbl.font = UIFont(name: "Poppins-SemiBold", size: 16)
+
+            IngredientLbl.backgroundColor = UIColor(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
+            CookwareLbl.backgroundColor = UIColor(red: 254/255, green: 159/255, blue: 69/255, alpha: 1)
+            recipeLbl.backgroundColor = UIColor(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
+
+            IngredientLbl.textColor = UIColor(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
+            CookwareLbl.textColor = .white
+            recipeLbl.textColor = UIColor(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
+
+            ingredientBgV.isHidden = true
+            cookwareBgV.isHidden = false
+            recipeBgV.isHidden = true
+
+
         case .recipe:
-            self.IngredientLbl.backgroundColor = UIColor(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
-            self.CookwareLbl.backgroundColor = UIColor(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
-            self.recipeLbl.backgroundColor = UIColor(red: 254/255, green: 159/255, blue: 69/255, alpha: 1)
             
-            self.IngredientLbl.textColor = UIColor(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
-            self.CookwareLbl.textColor = UIColor(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
-            self.recipeLbl.textColor = .white
-            
-            self.ingredientBgV.isHidden = true
-            self.cookwareBgV.isHidden = true
-            self.recipeBgV.isHidden = false
+            recipeLbl.font = UIFont(name: "Poppins-SemiBold", size: 16)
+
+            IngredientLbl.backgroundColor = UIColor(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
+            CookwareLbl.backgroundColor = UIColor(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
+            recipeLbl.backgroundColor = UIColor(red: 254/255, green: 159/255, blue: 69/255, alpha: 1)
+
+            IngredientLbl.textColor = UIColor(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
+            CookwareLbl.textColor = UIColor(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
+            recipeLbl.textColor = .white
+
+            ingredientBgV.isHidden = true
+            cookwareBgV.isHidden = true
+            recipeBgV.isHidden = false
         }
     }
     
@@ -570,65 +590,139 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     @objc func addRecipeDoneClicked(_ sender: Any) {
         addRecipe()
     }
-//    private func textFieldDidEndEditing(_ textField: UITextField) {
-//        viewModel.saveDraft()
-//    }
-//
-//    private func textViewDidChange(_ textView: UITextView) {
-//        viewModel.saveDraft()
-//    }
+
 }
 
 // MARK: - UITextFieldDelegate
 extension CreateRecipeNewVC: UITextFieldDelegate{
     
     private func makeFractionToolbar() -> UIView {
-        let toolbar = UIToolbar()
-        toolbar.sizeToFit()
-        
-        let fractions = ["1/2", "1/3", "1/4", "1/8", "2/3",]
-        
-        var items: [UIBarButtonItem] = []
-        
+
+        let container = UIView()
+        container.backgroundColor = .systemBackground
+        container.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50)
+
+        let fractions = ["1/2","1/3","1/4","1/8","2/3"]
+
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.distribution = .fillEqually
+        stack.spacing = 10
+        stack.translatesAutoresizingMaskIntoConstraints = false
+
         for frac in fractions {
-            let button = UIBarButtonItem(
-                title: frac,
-                style: .plain,
-                target: self,
-                action: #selector(fractionTapped(_:))
-            )
-            items.append(button)
+
+            let button = UIButton(type: .system)
+            button.setTitle(frac, for: .normal)
+
+            button.backgroundColor = UIColor.systemGray6
+            button.layer.cornerRadius = 16
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+
+            button.addAction(UIAction { _ in
+                self.fractionTapped(frac)
+            }, for: .touchUpInside)
+
+            stack.addArrangedSubview(button)
         }
-        
-     
-        items.append(UIBarButtonItem.fixedSpace(1))
-        
-        let done = UIBarButtonItem(
-            title: "Done",
-            style: .done,
-            target: self,
-            action: #selector(doneTapped)
-        )
-        items.append(done)
-        
-        toolbar.items = items
-        return toolbar
+
+        let doneButton = UIButton(type: .system)
+        doneButton.setTitle("Done", for: .normal)
+        doneButton.backgroundColor = .systemBlue
+        doneButton.setTitleColor(.white, for: .normal)
+        doneButton.layer.cornerRadius = 16
+
+        doneButton.addAction(UIAction { _ in
+            self.doneTapped()
+        }, for: .touchUpInside)
+
+        stack.addArrangedSubview(doneButton)
+
+        container.addSubview(stack)
+
+        NSLayoutConstraint.activate([
+            stack.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 12),
+            stack.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -12),
+            stack.topAnchor.constraint(equalTo: container.topAnchor, constant: 6),
+            stack.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -6)
+        ])
+
+        return container
     }
     
-    @objc private func fractionTapped(_ sender: UIBarButtonItem) {
-        guard let text = sender.title else { return }
-        
-        if let tf = addIngredientAmoutTF {
-            if tf.isFirstResponder {
-                if let range = tf.selectedTextRange {
-                    tf.replace(range, withText: text)
-                } else {
-                    tf.text = (tf.text ?? "") + text
-                }
-            } else {
-                tf.text = text
+//    private func makeFractionToolbar() -> UIView {
+//        
+//        let toolbar = UIToolbar()
+//        toolbar.sizeToFit()
+//        
+//        let fractions = ["1/2", "1/3", "1/4", "1/8", "2/3"]
+//        
+//        var items: [UIBarButtonItem] = []
+//        
+//        for (index, frac) in fractions.enumerated() {
+//            
+//            let button = UIBarButtonItem(
+//                title: frac,
+//                style: .plain,
+//                target: self,
+//                action: #selector(fractionTapped(_:))
+//            )
+//            
+//            items.append(button)
+//            
+//            // add spacing between buttons
+//            if index < fractions.count - 1 {
+//                items.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+//            }
+//        }
+//        
+//        // spacing before Done
+//        items.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+//        
+//        let done = UIBarButtonItem(
+//            title: "Done",
+//            style: .done,
+//            target: self,
+//            action: #selector(doneTapped)
+//        )
+//        
+//        items.append(done)
+//        
+//        toolbar.items = items
+//        
+//        return toolbar
+//    }
+    
+    private func fractionTapped(_ fraction: String) {
+
+        if let decimal = convertFractionToDecimal(fraction) {
+            addIngredientAmoutTF.text = String(format: "%.2f", decimal)
+        }
+    }
+    
+    func convertFractionToDecimal(_ text: String) -> Double? {
+
+        let trimmed = text.trimmingCharacters(in: .whitespaces)
+
+        if trimmed.contains(" ") {
+            let parts = trimmed.split(separator: " ")
+            if parts.count == 2,
+               let whole = Double(parts[0]),
+               let fraction = convertFractionToDecimal(String(parts[1])) {
+                return whole + fraction
             }
         }
+
+        if trimmed.contains("/") {
+            let parts = trimmed.split(separator: "/")
+            if parts.count == 2,
+               let numerator = Double(parts[0]),
+               let denominator = Double(parts[1]) {
+                return numerator / denominator
+            }
+        }
+
+        return Double(trimmed)
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
@@ -771,11 +865,13 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
          
             if title == "Recipe" || title.isEmpty{
                 cell.type = .normal
-                cell.stepLbl.text = "Step - \(indexPath.section + 1)"
+                let stepNumber = globalStepNumber(for: indexPath)
+                cell.stepLbl.text = "Step - \(stepNumber)"
                 
             }else{
-                cell.type = .withHeader
-                cell.stepLbl.text = "Step - \(indexPath.row + 1)"
+                cell.type = .normal
+                let stepNumber = globalStepNumber(for: indexPath)
+                cell.stepLbl.text = "Step - \(stepNumber)"
                 
             }
             
@@ -848,6 +944,20 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
         }
         return 0
     }
+    func tableView(_ tableView: UITableView,
+                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath)
+    -> UISwipeActionsConfiguration? {
+
+        guard tableView == ingredientTblV else { return nil }
+
+        let delete = UIContextualAction(style: .destructive, title: "") { [weak self] _, _, completion in
+            self?.viewModel.removeIngredient(at: indexPath)
+            completion(true)
+        }
+
+        delete.image = UIImage(systemName: "trash")
+        return UISwipeActionsConfiguration(actions: [delete])
+    }
 }
 
 
@@ -862,6 +972,9 @@ extension CreateRecipeNewVC {
         
         let ingredientName = addIngredientTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         let amountText = addIngredientAmoutTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+//        let amountText = addIngredientAmoutTF.text ?? ""
+
+        let decimalAmount = convertFractionToDecimal(amountText) ?? 0
         let unitText = addIngredientMesurementTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         let imgStr = addIngredientImgStr.trimmingCharacters(in: .whitespacesAndNewlines)
         let headerText = ingredientHeaderTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
@@ -869,7 +982,7 @@ extension CreateRecipeNewVC {
             return
         }
         
-        viewModel.addIngredient(name: ingredientName, quantity: amountText, unit: unitText, img: imgStr, header: headerText)
+        viewModel.addIngredient(name: ingredientName, quantity: "\(decimalAmount)", unit: unitText, img: imgStr, header: headerText)
         
         DispatchQueue.main.async {
             self.addIngredientAmoutTF.text = ""
@@ -903,13 +1016,38 @@ extension CreateRecipeNewVC {
         }
         
         viewModel.addRecipeStep(instruction: recipeName, header: headerText)
-        
+        updateNextRecipeStepLabel()
         DispatchQueue.main.async {
             self.recipeHeaderV.isHidden = true
             self.recipeHeaderTF.text = ""
             self.addrecipeTxtV.text = ""
             // reload triggered by viewModel closure
         }
+    }
+    func updateNextRecipeStepLabel() {
+
+        var totalSteps = 0
+        let sections = viewModel.numberOfSections(for: .recipe)
+
+        for section in 0..<sections {
+            totalSteps += viewModel.numberOfRows(in: section, for: .recipe)
+        }
+
+        let nextStep = totalSteps + 1
+        recipeStepLbl.text = "Step-\(nextStep)"
+    }
+    
+    func globalStepNumber(for indexPath: IndexPath) -> Int {
+
+        var step = 0
+
+        for section in 0..<indexPath.section {
+            step += viewModel.numberOfRows(in: section, for: .recipe)
+        }
+
+        step += indexPath.row + 1
+
+        return step
     }
     
     func saveRecipe(type: String, sourceUrl: String? = nil,uri:String? = nil) {
@@ -985,16 +1123,18 @@ extension CreateRecipeNewVC {
             guard let self = self else { return }
             
             if (200...201).contains(statusCode) {
-                if let dict = json.dictionaryObject {
-                    let status = dict["status"] as? String ?? ""
+                if let dict = json.dictionaryObject,let status = (dict["success"] as? Bool ),status{
+                    
+                    
+                    self.showOkAlertWithHandler(title: "", "Recipe uploaded successfully!") {
+                        RecipeDraftManager.clear()
+                        //  self.navigationController?.popToViewController(ofClass: HomeVC.self)
+                        self.tabBarController?.tabBar.isHidden = false
+                        self.tabBarController?.selectedIndex = 3
+                    }
+                }else{
+                    self.showAlert(for: "Failed to upload recipe. Status: \(statusCode)")
                 }
-                self.showOkAlertWithHandler(title: "", "Recipe uploaded successfully!") {
-                    RecipeDraftManager.clear()
-                  //  self.navigationController?.popToViewController(ofClass: HomeVC.self)
-                    self.tabBarController?.tabBar.isHidden = false
-                    self.tabBarController?.selectedIndex = 3
-                }
-                
             } else {
                 self.showAlert(for: "Failed to upload recipe. Status: \(statusCode)")
             }
@@ -1086,102 +1226,169 @@ extension CreateRecipeNewVC {
     }
     
     func bindViewmodel() {
-        viewModel.didReceiveDropDownData = { [weak self] dropDownItems,type in
+        
+        viewModel.didReceiveDropDownData = { [weak self] dropDownItems, type in
             guard let self = self else { return }
-            if type == "1"{
+            
+            if type == "1" {
+                
+                let query = self.addIngredientTF.text?.lowercased() ?? ""
+                
+                // Assign API results
                 self.viewModel.ingredentDropDownArr = dropDownItems
+                var uniqueIngredients: [IngredientCRData] = []
+                var seenNames = Set<String>()
+
+                for item in self.viewModel.ingredentDropDownArr {
+                    let name = item.name?.lowercased() ?? ""
+                    
+                    if !seenNames.contains(name) {
+                        seenNames.insert(name)
+                        uniqueIngredients.append(item)
+                    }
+                }
+
+                self.viewModel.ingredentDropDownArr = uniqueIngredients
+                // Improved sorting (exact → prefix → contains → alphabetical)
+                self.viewModel.ingredentDropDownArr.sort { a, b in
+                    
+                    let aName = a.name?.lowercased() ?? ""
+                    let bName = b.name?.lowercased() ?? ""
+                    
+                    if aName == query { return true }
+                    if bName == query { return false }
+                    
+                    if aName.hasPrefix(query) && !bName.hasPrefix(query) { return true }
+                    if bName.hasPrefix(query) && !aName.hasPrefix(query) { return false }
+                    
+                    if aName.contains(query) && !bName.contains(query) { return true }
+                    if bName.contains(query) && !aName.contains(query) { return false }
+                    
+                    return aName < bName
+                }
                 
                 DispatchQueue.main.async {
+                    
+                    // Close keyboard so dropdown is visible
+                    self.addIngredientTF.resignFirstResponder()
+                    
                     let items = self.viewModel.ingredentDropDownArr.map { $0.name ?? "" }
-                    let units = self.viewModel.ingredentDropDownArr.map {$0.unitName ?? "" }
                     
                     if items.isEmpty {
                         self.searchInDropDown.hide()
-                    } else {
-                        self.searchInDropDown.dataSource = items
-                        self.searchInDropDown.show()
-                        self.searchInDropDown.width = self.addIngredientTF.frame.width
-                        self.searchInDropDown.selectionAction = { [weak self] (index: Int, item: String) in
-                            guard let self = self else { return }
-                            guard self.viewModel.ingredentDropDownArr.indices.contains(index) else {
-                                print("DropDown selection index \(index) out of range for ingredentDropDownArr (count: \(self.viewModel.ingredentDropDownArr.count))")
-                                return
-                            }
-                            let selectedIngredient = self.viewModel.ingredentDropDownArr[index]
-                            let imageURL = selectedIngredient.imageURL ?? ""
-                            DispatchQueue.main.async {
-                                self.ingredientFinalLbl.text = item
-                                self.addIngredientTF.text = item
-                                self.addIngredientMesurementTF.text = self.viewModel.ingredentDropDownArr[index].unitName ?? ""
-                                self.addIngredientImgStr = imageURL
-                                self.addIngredient()
-                            }
+                        return
+                    }
+                    
+                    self.searchInDropDown.dataSource = items
+                    self.searchInDropDown.width = self.addIngredientTF.frame.width
+                    self.searchInDropDown.show()
+                    
+                    self.searchInDropDown.selectionAction = { [weak self] (index: Int, item: String) in
+                        guard let self = self else { return }
+                        
+                        guard self.viewModel.ingredentDropDownArr.indices.contains(index) else {
+                            print("DropDown index \(index) out of range")
+                            return
+                        }
+                        
+                        let selectedIngredient = self.viewModel.ingredentDropDownArr[index]
+                        let imageURL = selectedIngredient.imageURL ?? ""
+                        
+                        DispatchQueue.main.async {
+                            self.ingredientFinalLbl.text = item
+                            self.addIngredientTF.text = item
+                            self.addIngredientMesurementTF.text = selectedIngredient.unitName ?? ""
+                            self.addIngredientImgStr = imageURL
+                            self.addIngredient()
                         }
                     }
                 }
-            }else if type == "2"{
+                
+            } else if type == "2" {
+                
                 self.viewModel.cookwareDropDownArr = dropDownItems
+                
                 DispatchQueue.main.async {
+                    
+                    // Correct keyboard closing
+                    self.addCookWareTF.resignFirstResponder()
+                    
                     let items = self.viewModel.cookwareDropDownArr.map { $0.name ?? "" }
                     
                     if items.isEmpty {
                         self.searchCookDropDown.hide()
-                    } else {
-                        self.searchCookDropDown.dataSource = items
-                        self.searchCookDropDown.show()
-                        self.searchCookDropDown.width = self.addCookWareTF.frame.width
-                        self.searchCookDropDown.selectionAction = { [weak self] (index: Int, item: String) in
-                            guard let self = self else { return }
-                            guard self.viewModel.cookwareDropDownArr.indices.contains(index) else {
-                                print("DropDown selection index \(index) out of range for ingredentDropDownArr (count: \(self.viewModel.cookwareDropDownArr.count))")
-                                return
-                            }
-                            
-                            let selectedIngredient = self.viewModel.cookwareDropDownArr[index]
-                            let imageURL = selectedIngredient.imageURL ?? ""
-                            DispatchQueue.main.async {
-                                self.addCookwareImgStr = imageURL
-                                self.addCookWareTF.text = item
-                                self.viewModel.addCookware(name: item, img: imageURL,header: "")
-                                self.searchCookDropDown.hide()
-                                self.addCookWareTF.text = ""
-                            }
+                        return
+                    }
+                    
+                    self.searchCookDropDown.dataSource = items
+                    self.searchCookDropDown.width = self.addCookWareTF.frame.width
+                    self.searchCookDropDown.show()
+                    
+                    self.searchCookDropDown.selectionAction = { [weak self] (index: Int, item: String) in
+                        guard let self = self else { return }
+                        
+                        guard self.viewModel.cookwareDropDownArr.indices.contains(index) else {
+                            print("DropDown index \(index) out of range")
+                            return
+                        }
+                        
+                        let selectedCookware = self.viewModel.cookwareDropDownArr[index]
+                        let imageURL = selectedCookware.imageURL ?? ""
+                        
+                        DispatchQueue.main.async {
+                            self.addCookwareImgStr = imageURL
+                            self.addCookWareTF.text = item
+                            self.viewModel.addCookware(name: item, img: imageURL, header: "")
+                            self.searchCookDropDown.hide()
+                            self.addCookWareTF.text = ""
                         }
                     }
                 }
             }
         }
         
+        
+        // MARK: Units Dropdown
         viewModel.didReceiveImperialUnits = { [weak self] unitsArr in
             guard let self = self else { return }
+            
             self.viewModel.ingredentUnitArr = unitsArr
+            
             DispatchQueue.main.async {
-                let items = self.viewModel.ingredentUnitArr.map { $0.unitName ?? "" }
+                
+                let items = unitsArr.map { $0.unitName ?? "" }
+                
                 if items.isEmpty {
                     self.ingredientUnitDropDown.hide()
-                } else {
-                    self.ingredientUnitDropDown.dataSource = items
-                    self.ingredientUnitDropDown.direction = .bottom
-                    self.ingredientUnitDropDown.anchorView = self.addIngredientMesurementTF
-                    self.ingredientUnitDropDown.bottomOffset = CGPoint(x: 0, y: self.addIngredientMesurementTF.frame.size.height)
-                    self.ingredientUnitDropDown.show()
-                    self.ingredientUnitDropDown.width = self.addIngredientMesurementTF.frame.width
-                    self.ingredientUnitDropDown.selectionAction = { [weak self] (index: Int, item: String) in
-                        self?.addIngredientMesurementTF.text = item
-                        self?.addIngredient()
-                    }
+                    return
+                }
+                
+                self.ingredientUnitDropDown.dataSource = items
+                self.ingredientUnitDropDown.direction = .bottom
+                self.ingredientUnitDropDown.anchorView = self.addIngredientMesurementTF
+                self.ingredientUnitDropDown.bottomOffset = CGPoint(x: 0, y: self.addIngredientMesurementTF.frame.height)
+                self.ingredientUnitDropDown.width = self.addIngredientMesurementTF.frame.width
+                self.ingredientUnitDropDown.show()
+                
+                self.ingredientUnitDropDown.selectionAction = { [weak self] (index: Int, item: String) in
+                    self?.addIngredientMesurementTF.text = item
+                    self?.addIngredient()
                 }
             }
         }
+        
+        
+        // MARK: CookBook Data
         viewModel.didReceiveCookBookData = { [weak self] data in
-            guard let self = self else { return }
-            self.cookBooksData = data
-        }
-        viewModel.didReceiveError = { [weak self] error in
-            print("ViewModel API error: \(String(describing: error))")
-            self?.showAlert(for:String(describing: error))
+            self?.cookBooksData = data
         }
         
+        
+        // MARK: Error
+        viewModel.didReceiveError = { [weak self] error in
+            print("ViewModel API error: \(String(describing: error))")
+            self?.showAlert(for: String(describing: error))
+        }
     }
      
 }

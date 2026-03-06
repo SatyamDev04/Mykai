@@ -1158,9 +1158,6 @@ PODS:
     - GoogleUtilities/Environment (~> 8.0)
     - GoogleUtilities/UserDefaults (~> 8.0)
     - PromisesObjC (~> 2.4)
-  - AppsFlyerFramework (6.15.3):
-    - AppsFlyerFramework/Main (= 6.15.3)
-  - AppsFlyerFramework/Main (6.15.3)
   - Blurberry (0.1.0)
   - BoringSSL-GRPC (0.0.36):
     - BoringSSL-GRPC/Implementation (= 0.0.36)
@@ -1497,7 +1494,6 @@ DEPENDENCIES:
   - AdvancedPageControl
   - Alamofire
   - AppAuth
-  - AppsFlyerFramework
   - Blurberry
   - Charts
   - Cosmos
@@ -1539,7 +1535,6 @@ SPEC REPOS:
     - Alamofire
     - AppAuth
     - AppCheckCore
-    - AppsFlyerFramework
     - Blurberry
     - BoringSSL-GRPC
     - Charts
@@ -1610,7 +1605,6 @@ SPEC CHECKSUMS:
   Alamofire: 7193b3b92c74a07f85569e1a6c4f4237291e7496
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   AppCheckCore: cc8fd0a3a230ddd401f326489c99990b013f0c4f
-  AppsFlyerFramework: ad7ff0d22aa36c7f8cc4f71a5424e19b89ccb8ae
   Blurberry: 361c1a4778ea0c46da25716b03d1344a4cf8fe01
   BoringSSL-GRPC: ca6a8e5d04812fce8ffd6437810c2d46f925eaeb
   Charts: ce0768268078eee0336f122c3c4ca248e4e204c5
@@ -1674,6 +1668,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: f5b1bf1cd8dd53cd25887ac0eabcfd92301c6a5a
   TTGTagCollectionView: 0d4625aaf7ee3ad755c39d549368a4ce69bd17d1
 
-PODFILE CHECKSUM: 894e7b9b67a86cf07fbefb27014fdefbbbd321cf
+PODFILE CHECKSUM: 2a8162e4bf2679fff679397e2e62ac970895ba10
 
 COCOAPODS: 1.16.2

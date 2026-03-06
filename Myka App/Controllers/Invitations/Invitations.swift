@@ -195,7 +195,7 @@ class Invitations: UIViewController {
     func generateInviteLink(completion: @escaping (String) -> Void) {
         let tempID = AppsFlyerLib().appleAppID
  
-        let baseURL = "https://mykaimealplanner.onelink.me/mPqu/"
+        let baseURL = "https://mykai.onelink.me/mPqu/"
         
         let add = AppsFlyerLib()
       

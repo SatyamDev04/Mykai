@@ -557,7 +557,7 @@ extension LoginVC {
  
         
         params["referral_from"] = StateMangerModelClass.shared.ReffCode
-        
+        params["affiliate_id"] = UserDetail.shared.getaflieateID()
         let loginURL = baseURL.baseURL + appEndPoints.social_login
         
         print("*************************Params******************************")
@@ -617,6 +617,7 @@ extension LoginVC {
                            return
                        }
                        if (dict["success"] as? Bool) == true {
+                           UserDetail.shared.setaflieateID("")
                            let response = dict["data"] as? NSDictionary ?? NSDictionary()
                            let UID = response["id"] as? Int ?? Int()
                            let token = response["token"] as? String ?? String()
