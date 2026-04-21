@@ -200,13 +200,13 @@ class planService {
                 dateformatter.dateFormat = "EEEE" // Full day name, e.g., "Monday"
                 let dayOfWeek = dateformatter.string(from: date)
              
-                    print("\(dayOfWeek), \(Sdate) is selected!")
+//                    print("\(dayOfWeek), \(Sdate) is selected!")
                     
                 let dictionary1: [String: String] = ["date": Sdate, "day": dayOfWeek]
                     SerArray.append(dictionary1)
             
             
-            print(SerArray)
+//            print(SerArray)
             
             
                 let paramsDict: [String: Any] = [
@@ -339,9 +339,9 @@ class planService {
                         return
                     }
                
-                    print(encodingResult.data!)
+//                    print(encodingResult.data!)
                     let value = try JSON(data: encodingResult.data!)
-                    print(JSON(value))
+//                    print(JSON(value))
                     
                     guard  let dict = value.dictionaryObject else {
                         return

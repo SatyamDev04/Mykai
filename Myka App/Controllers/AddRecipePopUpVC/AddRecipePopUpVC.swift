@@ -23,10 +23,8 @@ class AddRecipePopUpVC: UIViewController {
     @IBOutlet weak var TblBGV: UIView!
     @IBOutlet weak var BgV: UIView!
     
-    var SearchRecipeData = [AddRecipeModel(name: "Add a Recipe from Web", image: UIImage(named: "web")!), AddRecipeModel(name: "Create New Recipe", image: UIImage(named: "Create")!)/*, AddRecipeModel(name: "Add Recipe from Image", image: UIImage(named: "Add")!)*/]
-    //
-    
-    //  var model: VNCoreMLModel!
+    var SearchRecipeData = [AddRecipeModel(name: "Add a Recipe from Web", image: UIImage(named: "web")!), AddRecipeModel(name: "Create New Recipe", image: UIImage(named: "Create")!)]
+   
     
     var SelItem = ""
     
@@ -42,8 +40,7 @@ class AddRecipePopUpVC: UIViewController {
         self.SearchRecipeTblV.delegate = self
         self.SearchRecipeTblV.dataSource = self
         self.SearchRecipeTblV.separatorStyle = .none
-        //
-        
+      
         let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         SearchRecipePopUpV.addGestureRecognizer(tapGesture2)
     }
@@ -113,43 +110,10 @@ extension AddRecipePopUpVC: UITableViewDelegate, UITableViewDataSource {
             
             let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeNewVC") as! CreateRecipeNewVC
-//            vc.comesfrom = "AddRecipe"
-//            vc.backAction = {
-//                self.tabBarController?.tabBar.isHidden = false
-//                self.ToDismissPopUp()
-//                //                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3){
-//                //                        self.SearchRecipePopUpV.isHidden = true
-//            }
-            //                }
+
             
             self.navigationController?.pushViewController(vc, animated: true)
             
-        }else{
-            let SubscriptionStatus = Int(UserDetail.shared.getSubscriptionStatus())
-            
-            if SubscriptionStatus == 1{
-                let addtoplanStatus = Int(UserDetail.shared.getimageSearch()) ?? 0
-                guard addtoplanStatus <= 2 else {
-                    SubscriptionPopUp ()
-                    return
-                }
-            }
-            
-            let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "CameraVC") as! CameraVC
-            vc.hidesBottomBarWhenPushed = true
-            vc.backAction = { selImg in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3){
-                    self.SearchRecipePopUpV.isHidden = true
-                    let imgdata = selImg
-                    
-                    //     self.recognizeTextInImage(imgdata)
-                    let base64String = self.convertImageToBase64(image: imgdata) ?? ""
-                    self.recognizeImage(base64Image: base64String)
-                    
-                }
-            }
-            self.navigationController?.pushViewController(vc, animated: true)
         }
         
     }
@@ -186,18 +150,14 @@ extension AddRecipePopUpVC: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension AddRecipePopUpVC{
-    // Recognize Image using Vision API
+   
     func recognizeImage(base64Image: String) {
-        // Show loading indicator (implement your own method here)
-        self.showIndicator(withTitle: "", and: "")
         
-        // Set up Vision API request
+        self.showIndicator(withTitle: "", and: "")
         let features = [Feature(type: "WEB_DETECTION", maxResults: 1)]
         let image = Image(content: base64Image)
         let request1 = Request(image: image, features: features)
         let visionRequest = VisionRequest(requests: [request1])
-        
-        // Set up URL and API key
         let apiKey = "AIzaSyCjOLbQCG6foFlN05JOFKBpjNqV8DE9vi8"
         guard let url = URL(string: "https://vision.googleapis.com/v1/images:annotate?key=\(apiKey)") else { return }
         
@@ -213,10 +173,8 @@ extension AddRecipePopUpVC{
             return
         }
         
-        // Execute the request using URLSession
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
-                // Dismiss loading indicator
                 self.hideIndicator()
                 
                 if let error = error {
@@ -236,7 +194,7 @@ extension AddRecipePopUpVC{
                     
                     if let webDetection = visionResponse.responses.first?.webDetection,
                        let webEntity = webDetection.webEntities.first?.description {
-                        // Navigate to next screen with the description of the first web entity
+                      
                         let bundle = webEntity
                         
                         self.showToast(bundle)
@@ -244,17 +202,7 @@ extension AddRecipePopUpVC{
                         let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
                         let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeNewVC") as! CreateRecipeNewVC
                         
-//                        vc.comesfrom = "AddRecipeImage"
-//                        vc.ImgItemName = "\(bundle)"
-//                        vc.backAction = {
-//                            
-//                            self.tabBarController?.tabBar.isHidden = false
-//                            self.ToDismissPopUp()
-//                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3){
-//                                //  self.SearchRecipePopUpV.isHidden = true
-//                            }
-//                        }
-                        
+
                         
                         self.navigationController?.pushViewController(vc, animated: true)
                         

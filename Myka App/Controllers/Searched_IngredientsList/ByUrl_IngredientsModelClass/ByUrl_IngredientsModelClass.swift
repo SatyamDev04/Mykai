@@ -134,6 +134,36 @@ struct URLIngredient: Codable {
         case imageURL = "image_url"
         case unit
     }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        if let quantityValue = try? container.decodeIfPresent(StringOrNumber.self, forKey: .quantity) {
+            quantity = quantityValue.stringValue()
+        } else {
+            quantity = try container.decodeIfPresent(String.self, forKey: .quantity)
+        }
+        measure = try container.decodeIfPresent(String.self, forKey: .measure)
+        image = try container.decodeIfPresent(String.self, forKey: .image)
+        orderIndex = try container.decodeIfPresent(Int.self, forKey: .orderIndex)
+        measureImperial = try container.decodeIfPresent(String.self, forKey: .measureImperial)
+        id = try container.decodeIfPresent(String.self, forKey: .id)
+        searchKey = try container.decodeIfPresent(String.self, forKey: .searchKey)
+        header = try container.decodeIfPresent(String.self, forKey: .header)
+        updatedAt = try container.decodeIfPresent(String.self, forKey: .updatedAt)
+        category = try container.decodeIfPresent(String.self, forKey: .category)
+        measurementUnitsImperialID = try container.decodeIfPresent(StringOrNumber.self, forKey: .measurementUnitsImperialID)
+        createdOn = try container.decodeIfPresent(String.self, forKey: .createdOn)
+        ingredientCost = try container.decodeIfPresent(String.self, forKey: .ingredientCost)
+        ingredientID = try container.decodeIfPresent(Int.self, forKey: .ingredientID)
+        recipeID = try container.decodeIfPresent(String.self, forKey: .recipeID)
+        food = try container.decodeIfPresent(String.self, forKey: .food)
+        text = try container.decodeIfPresent(String.self, forKey: .text)
+        createdAt = try container.decodeIfPresent(String.self, forKey: .createdAt)
+        imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)
+        unit = try container.decodeIfPresent(String.self, forKey: .unit)
+    }
 }
 
 // MARK: - Instruction

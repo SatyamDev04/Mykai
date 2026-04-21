@@ -2239,7 +2239,7 @@ day?</string>
                                                             <constraint firstAttribute="bottom" secondItem="Gkq-cX-neU" secondAttribute="bottom" id="yMf-is-VBv"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WZE-sV-V6w">
+                                                    <view tag="10" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WZE-sV-V6w">
                                                         <rect key="frame" x="0.0" y="260" width="393" height="260.33333333333326"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZNp-nH-VSt">
@@ -2331,7 +2331,7 @@ day?</string>
                                                             <constraint firstItem="9AK-VH-xkm" firstAttribute="top" secondItem="ZNp-nH-VSt" secondAttribute="bottom" constant="20" id="uIA-F0-QcI"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4gw-uv-14p">
+                                                    <view tag="11" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4gw-uv-14p">
                                                         <rect key="frame" x="0.0" y="520.33333333333337" width="393" height="85"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="sCJ-Vq-COG">
@@ -2535,6 +2535,7 @@ day?</string>
                         <outlet property="MissingIngredientTblV" destination="9AK-VH-xkm" id="7hx-fk-Qqj"/>
                         <outlet property="MissingIngredientTblVH" destination="IIk-5u-dEa" id="gOi-XD-Xnn"/>
                         <outlet property="SelectAllBtnO" destination="aMp-Qb-DOe" id="Ea1-nr-Ehr"/>
+                        <outlet property="purchasedLbl" destination="Sul-Nm-Zim" id="L8J-wz-jHf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ian-ZI-Bq3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -5476,7 +5477,7 @@ OFF My-Kai. </string>
                                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cn3-Y3-0K6">
                                                                 <rect key="frame" x="25" y="0.0" width="343" height="220"/>
                                                                 <subviews>
-                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="No_Image" translatesAutoresizingMaskIntoConstraints="NO" id="fEz-PA-bEd">
+                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="No_Image" translatesAutoresizingMaskIntoConstraints="NO" id="fEz-PA-bEd">
                                                                         <rect key="frame" x="0.0" y="0.0" width="343" height="220"/>
                                                                     </imageView>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NIf-nd-g7g">

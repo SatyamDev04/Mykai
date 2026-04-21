@@ -29,7 +29,7 @@ final class SplashViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-
+    private static var hasPlayedAudio = false
     // MARK: - Audio
     private var audioPlayer: AVAudioPlayer?
     var comesFrom = ""
@@ -38,9 +38,12 @@ final class SplashViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupAudio()
+//        playSplash()
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         playSplash()
     }
-
     // MARK: - UI Setup
     private func setupUI() {
         view.backgroundColor = .white
@@ -69,7 +72,7 @@ final class SplashViewController: UIViewController {
     // MARK: - Audio Setup
     private func setupAudio() {
         guard let url = Bundle.main.url(forResource: "splash_sound", withExtension: "mp3") else {
-            print("❌ splash_sound.mp3 not found")
+            print("splash_sound.mp3 not found")
             return
         }
 
@@ -77,20 +80,23 @@ final class SplashViewController: UIViewController {
             audioPlayer = try AVAudioPlayer(contentsOf: url)
             audioPlayer?.prepareToPlay()
         } catch {
-            print("❌ Audio error:", error.localizedDescription)
+            print("Audio error:", error.localizedDescription)
         }
     }
 
     // MARK: - Play Splash
     private func playSplash() {
-
-        // Android: onAnimationStart
-        audioPlayer?.play()
-
+        
+        if !Self.hasPlayedAudio {
+            Self.hasPlayedAudio = true
+            
+            audioPlayer?.stop()
+            audioPlayer?.currentTime = 0
+            audioPlayer?.play()
+        }
+        
         animationView.play { [weak self] finished in
             guard finished else { return }
-
-            // Android: onAnimationEnd
             self?.navigateNext()
         }
     }

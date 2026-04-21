@@ -41,6 +41,7 @@ class Shopping_ListVC: UIViewController, UITextFieldDelegate {
     
     var ShoppingListArr: basketModelData?
     
+    var originalIngredients: [Product] = []
     
     
     override func viewDidLoad() {
@@ -196,8 +197,10 @@ extension Shopping_ListVC: UICollectionViewDelegate, UICollectionViewDataSource,
            cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
            cell.Img.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "No_Image"))
            
-           cell.ServCountLbl.text = "Serves \(ShoppingListArr?.recipe?[indexPath.row].serving ?? "1")"
-
+//           cell.ServCountLbl.text = "Serves \(ShoppingListArr?.recipe?[indexPath.row].serving ?? "1")"
+           let serv1 = Int(ShoppingListArr?.recipe?[indexPath.item].serving ?? "1") ?? 1
+           let serv2 = ShoppingListArr?.recipe?[indexPath.item].data?.recipe?.servings ?? 0
+           cell.ServCountLbl.text = "Serves \(serv1 * serv2)"
            
            cell.MinusBtn.tag = indexPath.item
            cell.MinusBtn.addTarget(self, action: #selector(RecipeServCountMinusBtn(_:)), for: .touchUpInside)
@@ -212,31 +215,79 @@ extension Shopping_ListVC: UICollectionViewDelegate, UICollectionViewDataSource,
        }
     
     
+//    @objc func RecipeServCountMinusBtn(_ sender: UIButton) {
+//        var ServCount = Int(ShoppingListArr?.recipe?[sender.tag].serving ?? "1") ?? 1
+//        guard ServCount > 1 else{
+//            return
+//        }
+//        
+//        ServCount -= 1
+//        
+//        ShoppingListArr?.recipe?[sender.tag].serving = "\(ServCount)"
+//        self.yourRecipeCollV.reloadData()
+//        
+//        let uri = ShoppingListArr?.recipe?[sender.tag].uri ?? ""
+//        self.Api_To_Plus_Minus_ServesCount(uri: uri, Quenty: "\(ServCount)", type: ShoppingListArr?.recipe?[sender.tag].type ?? "")
+//    }
+//    
+//    @objc func RecipeServCountPlusBtn(_ sender: UIButton) {
+//        var ServCount = Int(ShoppingListArr?.recipe?[sender.tag].serving ?? "1") ?? 1
+//        ServCount += 1
+//        ShoppingListArr?.recipe?[sender.tag].serving = "\(ServCount)"
+//        self.yourRecipeCollV.reloadData()
+//        
+//        let uri = ShoppingListArr?.recipe?[sender.tag].uri ?? ""
+//        self.Api_To_Plus_Minus_ServesCount(uri: uri, Quenty: "\(ServCount)", type: ShoppingListArr?.recipe?[sender.tag].type ?? "")
+//    }
+    
     @objc func RecipeServCountMinusBtn(_ sender: UIButton) {
+        
         var ServCount = Int(ShoppingListArr?.recipe?[sender.tag].serving ?? "1") ?? 1
-        guard ServCount > 1 else{
-            return
-        }
+        guard ServCount > 1 else { return }
         
         ServCount -= 1
-        
         ShoppingListArr?.recipe?[sender.tag].serving = "\(ServCount)"
+        
+        // ✅ ADD THIS
+        updateIngredientServings(for: sender.tag, newServing: ServCount)
+        
         self.yourRecipeCollV.reloadData()
         
+        // ✅ ADD THIS
+        self.recalculateAndMergeIngredients()
+        
+        // ✅ API CALL
         let uri = ShoppingListArr?.recipe?[sender.tag].uri ?? ""
-        self.Api_To_Plus_Minus_ServesCount(uri: uri, Quenty: "\(ServCount)", type: ShoppingListArr?.recipe?[sender.tag].type ?? "")
+        let typ = ShoppingListArr?.recipe?[sender.tag].type ?? ""
+        
+        if let result = typ.components(separatedBy: "/").first {
+            self.Api_To_Plus_Minus_ServesCount(uri: uri, Quenty: "\(ServCount)", type: result)
+        }
     }
     
     @objc func RecipeServCountPlusBtn(_ sender: UIButton) {
+        
         var ServCount = Int(ShoppingListArr?.recipe?[sender.tag].serving ?? "1") ?? 1
         ServCount += 1
+        
         ShoppingListArr?.recipe?[sender.tag].serving = "\(ServCount)"
+        
+        // ✅ ADD THIS
+        updateIngredientServings(for: sender.tag, newServing: ServCount)
+        
         self.yourRecipeCollV.reloadData()
         
+        // ✅ ADD THIS
+        self.recalculateAndMergeIngredients()
+        
+        // ✅ API CALL
         let uri = ShoppingListArr?.recipe?[sender.tag].uri ?? ""
-        self.Api_To_Plus_Minus_ServesCount(uri: uri, Quenty: "\(ServCount)", type: ShoppingListArr?.recipe?[sender.tag].type ?? "")
+        let typ = ShoppingListArr?.recipe?[sender.tag].type ?? ""
+        
+        if let result = typ.components(separatedBy: "/").first {
+            self.Api_To_Plus_Minus_ServesCount(uri: uri, Quenty: "\(ServCount)", type: result)
+        }
     }
-    
     
     @objc func removeBtnClick(_ sender: UIButton)   {
         let storyboard = UIStoryboard(name: "Basket", bundle: nil)
@@ -315,7 +366,6 @@ extension Shopping_ListVC: UITableViewDelegate, UITableViewDataSource {
             
             let text = "\(ShoppingListArr?.ingredient?[indexPath.row].name ?? "")\nNot Available"
 
-            
             let attributedString = NSMutableAttributedString(string: text)
 
           
@@ -330,16 +380,34 @@ extension Shopping_ListVC: UITableViewDelegate, UITableViewDataSource {
                 attributedString.addAttribute(.foregroundColor, value: UIColor.gray, range: nsRange)
             }
 
-         
             cell.NameLbl.attributedText = attributedString
              
         }else{
-            cell.NameLbl.text = ShoppingListArr?.ingredient?[indexPath.row].pro_name ?? ""
+            cell.NameLbl.text = ShoppingListArr?.ingredient?[indexPath.row].name ?? ""
         }
         
         cell.MinusBtn.tag = indexPath.row
         cell.MinusBtn.addTarget(self, action: #selector(IngServCountMinusBtn(_:)), for: .touchUpInside)
-        cell.QuantityLbl.text = "\(ShoppingListArr?.ingredient?[indexPath.row].unit_size ?? 1) \(ShoppingListArr?.ingredient?[indexPath.row].unit_of_measurement ?? "")"
+        let qtyValue: Double = {
+            if let qty = self.ShoppingListArr?.ingredient?[indexPath.row].quantity, qty > 0 {
+                return Double(qty)
+            } else {
+                return 1.0
+            }
+        }()
+        let unit = (self.ShoppingListArr?.ingredient?[indexPath.row].unit_of_measurement ?? "").lowercased()
+        let formatted = qtyValue.truncatingRemainder(dividingBy: 1) == 0
+            ? String(format: "%.0f", qtyValue)
+            : String(format: "%.2f", qtyValue)
+        let hiddenUnits = ["each"]
+
+        if hiddenUnits.contains(unit) {
+            cell.QuantityLbl.text = formatted
+        } else {
+            cell.QuantityLbl.text = "\(formatted) \(unit)"
+        }
+        
+//        cell.QuantityLbl.text = "\(ShoppingListArr?.ingredient?[indexPath.row].unit_size ?? 1) \(ShoppingListArr?.ingredient?[indexPath.row].unit_of_measurement ?? "")"
         cell.PlusBtn.tag = indexPath.row
         cell.PlusBtn.addTarget(self, action: #selector(IngServCountPlusBtn(_:)), for: .touchUpInside)
         if ShoppingListArr?.ingredient?[indexPath.row].is_checked == 0 {
@@ -485,6 +553,9 @@ extension Shopping_ListVC{
                     
                     self.ShoppingListArr = allData ?? basketModelData()
                     
+                    // ✅ ADD THIS
+                    self.originalIngredients = self.ShoppingListArr?.ingredient ?? []
+                    
                     if self.ShoppingListArr?.recipe?.count ?? 0 > 0 {
                         self.YourRecipeBgV.isHidden = false
                     }else{
@@ -497,6 +568,7 @@ extension Shopping_ListVC{
                             self.ShoppingListArr = shopping
                         }
                     }
+                    self.recalculateAndMergeIngredients()
                     self.sortIngredientsByCheckedStatus()
                     self.yourRecipeCollV.reloadData()
                     self.IngredientsTblV.reloadData()
@@ -670,3 +742,54 @@ extension Shopping_ListVC{
     
     }
 
+extension Shopping_ListVC{
+    func updateIngredientServings(for recipeIndex: Int, newServing: Int) {
+        
+        guard let recipe = ShoppingListArr?.recipe?[recipeIndex] else { return }
+        
+        let recipeId = recipe.uri ?? ""
+        
+        for i in 0..<originalIngredients.count {
+            if originalIngredients[i].product_id == recipeId {
+                originalIngredients[i].servings = "\(newServing)"
+            }
+        }
+    }
+    
+    func recalculateAndMergeIngredients() {
+        
+        var mergedDict: [String: Product] = [:]
+
+        for ingredient in originalIngredients {
+            
+            let qty = Double(ingredient.quantity ?? 1)
+            let servings = Double(ingredient.servings ?? "1") ?? 1.0
+            
+            // ✅ MAIN LOGIC
+            let scaledQty = qty * servings
+            
+            let key = (ingredient.name ?? "")
+                .lowercased()
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            if var existing = mergedDict[key] {
+                existing.quantity = (existing.quantity ?? 0) + round(scaledQty)
+                mergedDict[key] = existing
+            } else {
+                var newIngredient = ingredient
+                newIngredient.quantity = round(scaledQty)
+                mergedDict[key] = newIngredient
+            }
+        }
+        
+        // ✅ SORT (optional but nice)
+        ShoppingListArr?.ingredient = Array(mergedDict.values).sorted {
+            ($0.name ?? "") < ($1.name ?? "")
+        }
+        
+        DispatchQueue.main.async {
+            self.IngredientsTblV.reloadData()
+        }
+    }
+    
+}

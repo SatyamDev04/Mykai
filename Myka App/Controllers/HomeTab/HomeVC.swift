@@ -488,7 +488,7 @@ extension HomeVC: UICollectionViewDelegate,UICollectionViewDataSource,UICollecti
             if let result = string.components(separatedBy: ",").first {
                 vc.MealType = result.firstUppercased()
             }
-            vc.ServCount = recipeCookedData[indexPath.row].recipe?.servings ?? 1
+            vc.ServCount = recipeCookedData[indexPath.row].servings ?? 1
             vc.Id = "\(recipeCookedData[indexPath.row].id ?? 0)"
             vc.type = "0"
             vc.hidesBottomBarWhenPushed = true

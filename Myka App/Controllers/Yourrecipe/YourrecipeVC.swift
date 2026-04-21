@@ -16,7 +16,8 @@ class YourrecipeVC: UIViewController {
     @IBOutlet weak var DinnerCollV: UICollectionView!
     @IBOutlet weak var SnacksCollV: UICollectionView!
     @IBOutlet weak var TeatimeCollV: UICollectionView!
-     
+    @IBOutlet weak var dessertCollV: UICollectionView!
+    
     @IBOutlet weak var NoOrderLbl: UILabel!
     
     @IBOutlet weak var BreakFastBgV: UIView!
@@ -24,6 +25,7 @@ class YourrecipeVC: UIViewController {
     @IBOutlet weak var DinnerBgV: UIView!
     @IBOutlet weak var SnacksBgV: UIView!
     @IBOutlet weak var TeatimeBgV: UIView!
+    @IBOutlet weak var DessertBgV: UIView!
     
     var AllRecipeSelItem = YourRecipeModel()
     
@@ -43,11 +45,14 @@ class YourrecipeVC: UIViewController {
         
         TeatimeCollV.register(UINib(nibName: "YouRecipeCollVCell", bundle: nil), forCellWithReuseIdentifier: "YouRecipeCollVCell")
         
+        dessertCollV.register(UINib(nibName: "YouRecipeCollVCell", bundle: nil), forCellWithReuseIdentifier: "YouRecipeCollVCell")
+        
         setupCollectionView(collectionView: BreakfastCollV)
         setupCollectionView(collectionView: LunchCollV)
         setupCollectionView(collectionView: DinnerCollV)
         setupCollectionView(collectionView: SnacksCollV)
         setupCollectionView(collectionView: TeatimeCollV)
+        setupCollectionView(collectionView: dessertCollV)
         
         self.NoOrderLbl.isHidden = true
         
@@ -84,9 +89,11 @@ extension YourrecipeVC: UICollectionViewDelegate, UICollectionViewDataSource, UI
             return self.AllRecipeSelItem.dinner?.count ?? 0
         }else if collectionView == SnacksCollV{
             return self.AllRecipeSelItem.snacks?.count ?? 0
-        }else{
+        }else if collectionView == TeatimeCollV {
             return self.AllRecipeSelItem.Teatime?.count ?? 0
-       }
+        }else{
+            return self.AllRecipeSelItem.dessert?.count ?? 0
+        }
        }
        
        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -101,7 +108,11 @@ extension YourrecipeVC: UICollectionViewDelegate, UICollectionViewDataSource, UI
                cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
                cell.Img.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
                
-               cell.ServCountLbl.text = "Serves \(self.AllRecipeSelItem.breakfast?[indexPath.item].serving ?? "1")"
+               let serv1 = Int(self.AllRecipeSelItem.breakfast?[indexPath.item].serving ?? "1") ?? 1
+               let serv2 = self.AllRecipeSelItem.breakfast?[indexPath.item].data?.recipe?.servings ?? 0
+               cell.ServCountLbl.text = "Serves \(serv1 * serv2)"
+               
+//               cell.ServCountLbl.text = "Serves \(self.AllRecipeSelItem.breakfast?[indexPath.item].serving ?? "1")"
                 
                cell.RemoveBtn.tag = indexPath.item
                cell.RemoveBtn.addTarget(self, action: #selector(BreakFastremoveBtnClick(_:)), for: .touchUpInside)
@@ -123,7 +134,11 @@ extension YourrecipeVC: UICollectionViewDelegate, UICollectionViewDataSource, UI
                cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
                cell.Img.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
                
-               cell.ServCountLbl.text = "Serves \(self.AllRecipeSelItem.lunch?[indexPath.item].serving ?? "1")"
+               let serv1 = Int(self.AllRecipeSelItem.lunch?[indexPath.item].serving ?? "1") ?? 1
+               let serv2 = self.AllRecipeSelItem.lunch?[indexPath.item].data?.recipe?.servings ?? 0
+               cell.ServCountLbl.text = "Serves \(serv1 * serv2)"
+               
+//               cell.ServCountLbl.text = "Serves \(self.AllRecipeSelItem.lunch?[indexPath.item].serving ?? "1")"
                 
                cell.RemoveBtn.tag = indexPath.item
                cell.RemoveBtn.addTarget(self, action: #selector(LunchremoveBtnClick(_:)), for: .touchUpInside)
@@ -145,7 +160,11 @@ extension YourrecipeVC: UICollectionViewDelegate, UICollectionViewDataSource, UI
                cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
                cell.Img.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
                
-               cell.ServCountLbl.text = "Serves \(self.AllRecipeSelItem.dinner?[indexPath.item].serving ?? "1")"
+               let serv1 = Int(self.AllRecipeSelItem.dinner?[indexPath.item].serving ?? "1") ?? 1
+               let serv2 = self.AllRecipeSelItem.dinner?[indexPath.item].data?.recipe?.servings ?? 0
+               cell.ServCountLbl.text = "Serves \(serv1 * serv2)"
+               
+//               cell.ServCountLbl.text = "Serves \(self.AllRecipeSelItem.dinner?[indexPath.item].serving ?? "1")"
                 
                cell.RemoveBtn.tag = indexPath.item
                cell.RemoveBtn.addTarget(self, action: #selector(DinnerremoveBtnClick(_:)), for: .touchUpInside)
@@ -167,7 +186,11 @@ extension YourrecipeVC: UICollectionViewDelegate, UICollectionViewDataSource, UI
                cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
                cell.Img.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
                
-               cell.ServCountLbl.text = "Serves \(self.AllRecipeSelItem.snacks?[indexPath.item].serving ?? "1")"
+               let serv1 = Int(self.AllRecipeSelItem.snacks?[indexPath.item].serving ?? "1") ?? 1
+               let serv2 = self.AllRecipeSelItem.snacks?[indexPath.item].data?.recipe?.servings ?? 0
+               cell.ServCountLbl.text = "Serves \(serv1 * serv2)"
+               
+//               cell.ServCountLbl.text = "Serves \(self.AllRecipeSelItem.snacks?[indexPath.item].serving ?? "1")"
                 
                cell.RemoveBtn.tag = indexPath.item
                cell.RemoveBtn.addTarget(self, action: #selector(SnacksremoveBtnClick(_:)), for: .touchUpInside)
@@ -179,7 +202,7 @@ extension YourrecipeVC: UICollectionViewDelegate, UICollectionViewDataSource, UI
                cell.plusBtn.addTarget(self, action: #selector(SnacksServCountPlusBtn(_:)), for: .touchUpInside)
                
                return cell
-           }else{
+           }else if collectionView == TeatimeCollV{
                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "YouRecipeCollVCell", for: indexPath) as! YouRecipeCollVCell
                
                cell.Namelbl.text =  self.AllRecipeSelItem.Teatime?[indexPath.item].data?.recipe?.label ?? ""
@@ -189,7 +212,11 @@ extension YourrecipeVC: UICollectionViewDelegate, UICollectionViewDataSource, UI
                cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
                cell.Img.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
                
-               cell.ServCountLbl.text = "Serves \(self.AllRecipeSelItem.Teatime?[indexPath.item].serving ?? "1")"
+               let serv1 = Int(self.AllRecipeSelItem.Teatime?[indexPath.item].serving ?? "1") ?? 1
+               let serv2 = self.AllRecipeSelItem.Teatime?[indexPath.item].data?.recipe?.servings ?? 0
+               cell.ServCountLbl.text = "Serves \(serv1 * serv2)"
+               
+//               cell.ServCountLbl.text = "Serves \(self.AllRecipeSelItem.Teatime?[indexPath.item].serving ?? "1")"
                 
                cell.RemoveBtn.tag = indexPath.item
                cell.RemoveBtn.addTarget(self, action: #selector(TeaTimeremoveBtnClick(_:)), for: .touchUpInside)
@@ -199,6 +226,32 @@ extension YourrecipeVC: UICollectionViewDelegate, UICollectionViewDataSource, UI
                
                cell.plusBtn.tag = indexPath.row
                cell.plusBtn.addTarget(self, action: #selector(TeatimeServCountPlusBtn(_:)), for: .touchUpInside)
+               
+               return cell
+           }else{
+               let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "YouRecipeCollVCell", for: indexPath) as! YouRecipeCollVCell
+               
+               cell.Namelbl.text =  self.AllRecipeSelItem.dessert?[indexPath.item].data?.recipe?.label ?? ""
+           //    cell.PriceLbl.text = ""
+               let img = self.AllRecipeSelItem.dessert?[indexPath.item].data?.recipe?.images?.small?.url ?? ""
+               let ImgUrl = URL(string: img)
+               cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
+               cell.Img.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
+               
+               let serv1 = Int(self.AllRecipeSelItem.dessert?[indexPath.item].serving ?? "1") ?? 1
+               let serv2 = self.AllRecipeSelItem.dessert?[indexPath.item].data?.recipe?.servings ?? 0
+               cell.ServCountLbl.text = "Serves \(serv1 * serv2)"
+               
+//               cell.ServCountLbl.text = "Serves \(self.AllRecipeSelItem.dessert?[indexPath.item].serving ?? "1")"
+                
+               cell.RemoveBtn.tag = indexPath.item
+               cell.RemoveBtn.addTarget(self, action: #selector(dessertremoveBtnClick(_:)), for: .touchUpInside)
+               
+               cell.MinusBtn.tag = indexPath.row
+               cell.MinusBtn.addTarget(self, action: #selector(dessertServCountMinusBtn(_:)), for: .touchUpInside)
+               
+               cell.plusBtn.tag = indexPath.row
+               cell.plusBtn.addTarget(self, action: #selector(dessertServCountPlusBtn(_:)), for: .touchUpInside)
                
                return cell
            }
@@ -321,6 +374,35 @@ extension YourrecipeVC: UICollectionViewDelegate, UICollectionViewDataSource, UI
     }
     
     
+    @objc func dessertServCountMinusBtn(_ sender: UIButton) {
+        var ServCount = Int(self.AllRecipeSelItem.dessert?[sender.tag].serving ?? "1") ?? 1
+        guard ServCount > 1 else{
+            return
+        }
+         ServCount -= 1
+        self.AllRecipeSelItem.dessert?[sender.tag].serving = "\(ServCount)"
+        self.dessertCollV.reloadData()
+        
+        let uri = self.AllRecipeSelItem.dessert?[sender.tag].uri ?? ""
+        self.Api_To_Plus_Minus_ServesCount(uri: uri, Quenty: "\(ServCount)", type: "Brunch")
+    }
+    
+    @objc func dessertServCountPlusBtn(_ sender: UIButton) {
+        var ServCount = Int(self.AllRecipeSelItem.dessert?[sender.tag].serving ?? "1") ?? 1
+         ServCount += 1
+        self.AllRecipeSelItem.dessert?[sender.tag].serving = "\(ServCount)"
+        self.dessertCollV.reloadData()
+        
+        let uri = self.AllRecipeSelItem.dessert?[sender.tag].uri ?? ""
+        self.Api_To_Plus_Minus_ServesCount(uri: uri, Quenty: "\(ServCount)", type: "Brunch")
+    }
+    
+    
+    
+    @objc func dessertremoveBtnClick(_ sender: UIButton)   {
+        let id = self.AllRecipeSelItem.dessert?[sender.tag].basketID ?? 0
+        removeBtnClick(id: "\(id)", type: "Dessert", indx: sender.tag)
+    }
     
     @objc func BreakFastremoveBtnClick(_ sender: UIButton)   {
         let id = self.AllRecipeSelItem.breakfast?[sender.tag].basketID ?? 0
@@ -535,7 +617,13 @@ extension YourrecipeVC {
                 self.TeatimeBgV.isHidden = false
             }
             
-            if self.AllRecipeSelItem.breakfast?.count ?? 0 == 0 && self.AllRecipeSelItem.lunch?.count ?? 0 == 0 && self.AllRecipeSelItem.dinner?.count ?? 0 == 0 && self.AllRecipeSelItem.snacks?.count ?? 0 == 0 && self.AllRecipeSelItem.Teatime?.count ?? 0 == 0{
+            if self.AllRecipeSelItem.dessert?.count ?? 0 == 0{
+                self.DessertBgV.isHidden = true
+            }else{
+                self.DessertBgV.isHidden = false
+            }
+            
+            if self.AllRecipeSelItem.breakfast?.count ?? 0 == 0 && self.AllRecipeSelItem.lunch?.count ?? 0 == 0 && self.AllRecipeSelItem.dinner?.count ?? 0 == 0 && self.AllRecipeSelItem.snacks?.count ?? 0 == 0 && self.AllRecipeSelItem.Teatime?.count ?? 0 == 0 && self.AllRecipeSelItem.dessert?.count ?? 0 == 0{
                 self.NoOrderLbl.isHidden = false
             }else{
                 self.NoOrderLbl.isHidden = true
@@ -546,6 +634,7 @@ extension YourrecipeVC {
             self.DinnerCollV.reloadData()
             self.SnacksCollV.reloadData()
             self.TeatimeCollV.reloadData()
+            self.dessertCollV.reloadData()
         }
     
     func Api_To_Plus_Minus_ServesCount(uri:String, Quenty:String, type:String){

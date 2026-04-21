@@ -21,13 +21,15 @@ struct YourRecipeModel: Codable {
     var dinner, lunch: [DinnerList]?
     var Teatime: [DinnerList]?
     var snacks: [DinnerList]?
-
+    var dessert: [DinnerList]?
+    
     enum CodingKeys: String, CodingKey {
         case breakfast = "Breakfast"
         case dinner = "Dinner"
         case lunch = "Lunch"
         case Teatime = "Brunch"
         case snacks = "Snacks"
+        case dessert = "Dessert"
     }
 }
 

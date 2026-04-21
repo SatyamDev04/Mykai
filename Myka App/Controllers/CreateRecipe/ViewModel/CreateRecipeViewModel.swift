@@ -612,11 +612,12 @@ final class CreateRecipeViewModel {
     func fillImportedData(from importedData: RecipeURL?) {
         guard let recipe = importedData else { return }
 
-        self.title = recipe.label ?? ""
+        self.title = recipe.label.capitalizeFirstLetterOnly()
+        self.servings =   "\(recipe.servings?.stringValue() ?? "") servings"
         // MARK: - Ingredients
         let importedIngredients: [IngredientDataModel] = recipe.ingredients?.map { item in
             IngredientDataModel(
-                name: item.name,
+                name: item.name?.capitalizeFirstLetterOnly(),
                 quantity: item.quantity,
                 unit: item.unit ?? item.measure,
                 img: item.image ?? item.imageURL ?? "",
@@ -687,5 +688,10 @@ final class CreateRecipeViewModel {
                 recipe: importedSteps
             )
         ]
+    }
+}
+extension String {
+    func capitalizeFirstLetterOnly() -> String {
+        return prefix(1).uppercased() + dropFirst().lowercased()
     }
 }

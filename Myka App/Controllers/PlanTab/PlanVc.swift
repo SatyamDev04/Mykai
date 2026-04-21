@@ -1213,7 +1213,9 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))g"
             
             
-            cell.ServCountLbl.text = "\(self.AllDataList.breakfast?[indexPath.item].servings ?? 0) Servings"
+            let serv1 = self.AllDataList.breakfast?[indexPath.item].servings ?? 1
+            let serv2 = self.AllDataList.breakfast?[indexPath.item].recipe?.servings ?? 0
+            cell.ServCountLbl.text = "\(serv1 * serv2) Servings"
             
             let img = self.AllDataList.breakfast?[indexPath.item].recipe?.images?.small?.url ?? ""
             cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
@@ -1248,7 +1250,9 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             let carbs = self.AllDataList.dessert?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
             cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))g"
             
-            cell.ServCountLbl.text = "\(self.AllDataList.dessert?[indexPath.item].servings ?? 0) Servings"
+            let serv1 = self.AllDataList.dessert?[indexPath.item].servings ?? 1
+            let serv2 = self.AllDataList.dessert?[indexPath.item].recipe?.servings ?? 0
+            cell.ServCountLbl.text = "\(serv1 * serv2) Servings"
             
             let img = self.AllDataList.dessert?[indexPath.item].recipe?.images?.small?.url ?? ""
             cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
@@ -1280,8 +1284,9 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             let carbs = self.AllDataList.lunch?[indexPath.item].recipe?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
             cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))g"
             
-            
-            cell.ServCountLbl.text = "\(self.AllDataList.lunch?[indexPath.item].servings ?? 0) Servings"
+            let serv1 = self.AllDataList.lunch?[indexPath.item].servings ?? 1
+            let serv2 = self.AllDataList.lunch?[indexPath.item].recipe?.servings ?? 0
+            cell.ServCountLbl.text = "\(serv1 * serv2) Servings"
             
             let img = self.AllDataList.lunch?[indexPath.item].recipe?.images?.small?.url ?? ""
             cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
@@ -1315,7 +1320,9 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))g"
             
             
-            cell.ServCountLbl.text = "\(self.AllDataList.dinner?[indexPath.item].servings ?? 0) Servings"
+            let serv1 = self.AllDataList.dinner?[indexPath.item].servings ?? 1
+            let serv2 = self.AllDataList.dinner?[indexPath.item].recipe?.servings ?? 0
+            cell.ServCountLbl.text = "\(serv1 * serv2) Servings"
             
             let img = self.AllDataList.dinner?[indexPath.item].recipe?.images?.small?.url ?? ""
             cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
@@ -1349,7 +1356,9 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))g"
             
             
-            cell.ServCountLbl.text = "\(self.AllDataList.teatime?[indexPath.item].servings ?? 0) Servings"
+            let serv1 = self.AllDataList.teatime?[indexPath.item].servings ?? 1
+            let serv2 = self.AllDataList.teatime?[indexPath.item].recipe?.servings ?? 0
+            cell.ServCountLbl.text = "\(serv1 * serv2) Servings"
             
             let img = self.AllDataList.teatime?[indexPath.item].recipe?.images?.small?.url ?? ""
             cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
@@ -1383,7 +1392,9 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.Carbslbl.text = "\(Int(carbs?.value.quantity ?? 0))g"
             
             
-            cell.ServCountLbl.text = "\(self.AllDataList.snacks?[indexPath.item].servings ?? 0) Servings"
+            let serv1 = self.AllDataList.snacks?[indexPath.item].servings ?? 1
+            let serv2 = self.AllDataList.snacks?[indexPath.item].recipe?.servings ?? 0
+            cell.ServCountLbl.text = "\(serv1 * serv2) Servings"
             
             let img = self.AllDataList.snacks?[indexPath.item].recipe?.images?.small?.url ?? ""
             cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
@@ -2775,44 +2786,44 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         default: return
         }
 
-        let merged = current + newData
+        let existingURIs = Set(current.compactMap { $0.recipe?.uri })
 
-        let unique = Array(
-            Dictionary(grouping: merged, by: { $0.recipe?.uri ?? "" })
-                .compactMap { $0.value.first }
-        )
+        let filteredNew = newData.filter {
+            guard let uri = $0.recipe?.uri else { return false }
+            return !existingURIs.contains(uri)
+        }
+
+        let updated = current + filteredNew
 
         switch meal {
         case "Breakfast":
-            AllRecipeSelItem.recipes?.breakfast = unique
+            AllRecipeSelItem.recipes?.breakfast = updated
             BreakFastCollV.reloadData()
 
         case "Lunch":
-            AllRecipeSelItem.recipes?.lunch = unique
+            AllRecipeSelItem.recipes?.lunch = updated
             LunchCollV.reloadData()
 
         case "Dinner":
-            AllRecipeSelItem.recipes?.dinner = unique
+            AllRecipeSelItem.recipes?.dinner = updated
             DinnerCollV.reloadData()
 
         case "Snacks":
-            AllRecipeSelItem.recipes?.Snack = unique
+            AllRecipeSelItem.recipes?.Snack = updated
             SnacksCollV.reloadData()
 
         case "Dessert":
-            AllRecipeSelItem.recipes?.Dessert = unique
+            AllRecipeSelItem.recipes?.Dessert = updated
             dessertCollV.reloadData()
 
         case "Teatime":
-            AllRecipeSelItem.recipes?.Teatime = unique
+            AllRecipeSelItem.recipes?.Teatime = updated
             TeaTimeCollV.reloadData()
 
         default:
             break
         }
     }
-
-    
     
     func apiMealType(from meal: String) -> String {
         switch meal {
@@ -2829,7 +2840,6 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             "meal_type": mealType
         ]
 
-        // 🔥 Send already loaded recipe URIs to prevent duplicate pagination data
         var existingItems: [Breakfast] = []
 
         switch mealType {
@@ -2861,7 +2871,6 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
                    
                     let jsonData: Data
 
-                    // ✅ SAFELY HANDLE RESPONSE TYPE
                     if let data = json as? Data {
                         jsonData = data
                     } else if let dict = json.dictionaryObject{

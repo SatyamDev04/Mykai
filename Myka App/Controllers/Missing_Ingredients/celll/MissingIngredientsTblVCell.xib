@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -27,7 +27,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xxq-GG-IO6">
-                        <rect key="frame" x="3" y="3" width="379" height="85"/>
+                        <rect key="frame" x="3" y="3" width="379" height="79.333333333333329"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pbt-yy-DH4">
                                 <rect key="frame" x="349" y="32.666666666666664" width="20" height="20"/>
@@ -44,7 +44,7 @@
                                 <state key="selected" image="YellowCheck"/>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KU4-JY-aF8">
-                                <rect key="frame" x="15" y="10" width="75" height="75"/>
+                                <rect key="frame" x="10" y="10" width="75" height="75"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Oilimage" translatesAutoresizingMaskIntoConstraints="NO" id="Wdq-nU-P7y">
                                         <rect key="frame" x="0.0" y="-5" width="75" height="75"/>
@@ -69,14 +69,14 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Olive Oil" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5tY-8c-Poa">
-                                <rect key="frame" x="105" y="21" width="198" height="22.666666666666671"/>
+                                <rect key="frame" x="100" y="21" width="229" height="22.666666666666671"/>
                                 <fontDescription key="fontDescription" name="Poppins-Bold" family="Poppins" pointSize="16"/>
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 Tbsp" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MFW-gv-gyx">
-                                <rect key="frame" x="105" y="46.666666666666664" width="208" height="22.666666666666664"/>
-                                <fontDescription key="fontDescription" name="Poppins-SemiBold" family="Poppins" pointSize="16"/>
+                                <rect key="frame" x="100" y="46.666666666666664" width="213" height="17"/>
+                                <fontDescription key="fontDescription" name="Poppins-SemiBold" family="Poppins" pointSize="12"/>
                                 <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -90,10 +90,10 @@
                             <constraint firstItem="5tY-8c-Poa" firstAttribute="leading" secondItem="KU4-JY-aF8" secondAttribute="trailing" constant="15" id="KpK-Po-aYx"/>
                             <constraint firstItem="Pbt-yy-DH4" firstAttribute="centerY" secondItem="Wdq-nU-P7y" secondAttribute="centerY" id="QgB-z8-Bma"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="KU4-JY-aF8" secondAttribute="bottom" id="W5C-Vi-6U9"/>
-                            <constraint firstAttribute="trailing" secondItem="5tY-8c-Poa" secondAttribute="trailing" constant="76" id="YuK-bH-8sf"/>
                             <constraint firstItem="5tY-8c-Poa" firstAttribute="top" secondItem="xxq-GG-IO6" secondAttribute="top" constant="21" id="aIS-eZ-Bsr"/>
                             <constraint firstItem="MFW-gv-gyx" firstAttribute="leading" secondItem="KU4-JY-aF8" secondAttribute="trailing" constant="15" id="b2Y-hL-kca"/>
-                            <constraint firstItem="KU4-JY-aF8" firstAttribute="leading" secondItem="xxq-GG-IO6" secondAttribute="leading" constant="15" id="e5u-hx-SkY"/>
+                            <constraint firstItem="KU4-JY-aF8" firstAttribute="leading" secondItem="xxq-GG-IO6" secondAttribute="leading" constant="10" id="e5u-hx-SkY"/>
+                            <constraint firstItem="Pbt-yy-DH4" firstAttribute="leading" secondItem="5tY-8c-Poa" secondAttribute="trailing" constant="20" id="r2w-bV-Oiy"/>
                             <constraint firstAttribute="bottom" secondItem="MFW-gv-gyx" secondAttribute="bottom" constant="15.666666666666686" id="xQ0-ub-NNB"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>

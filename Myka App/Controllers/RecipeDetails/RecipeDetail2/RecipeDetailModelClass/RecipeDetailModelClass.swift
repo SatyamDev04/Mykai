@@ -1,9 +1,7 @@
 //
 //  RecipeDetailModelClass.swift
 //  Myka App
-//
 //  Created by YES IT Labs on 16/01/25.
-//
 
 import Foundation
 
@@ -22,9 +20,10 @@ struct RecipeDetailModel: Codable {
     var isLike: Int?
     var review: Double?
     var review_number: Int?
+    var servings:StringOrNumber?
     
     enum CodingKeys: String, CodingKey {
-        case recipe
+        case recipe,servings
         case links = "_links"
         case isLike = "is_like"
         case review = "review"
@@ -53,9 +52,10 @@ struct RecipeDetail: Codable {
     var dishType: [String?]?
     var totalNutrients, totalDaily: [String: Total]?
     var digest: [Digest]?
-//    var instructionLines: [String?]?
+//  var instructionLines: [String?]?
     var createdType: String?
     var source_url: String?
+    var servings:StringOrNumber?
 }
 
 // MARK: - Cookware

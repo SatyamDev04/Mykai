@@ -216,13 +216,14 @@ struct RecipeIngredient: Codable {
     let unit: String?
     let searchKey: String?
     let createdAt: String?
-    let createdOn, text, quantity: String?
+    let createdOn, text: String?
     let imageURL: String?
     let id: String?
     let measure: String?
     let measureImperial, food: String?
     let updatedAt: String?
     let orderIndex: Int?
+    let quantity: StringOrNumber?
     let recipeID: String?
 
     enum CodingKeys: String, CodingKey {

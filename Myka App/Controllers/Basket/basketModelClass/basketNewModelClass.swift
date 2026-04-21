@@ -36,7 +36,7 @@ struct BillingNew: Codable {
 struct WelcomeIngredient: Codable {
     let schID: Int?
     let proPrice: String?
-    let servings: String?
+    var servings: String?
     let foodCategory: String?
     let marketID: Int?
     let foodID: String?
@@ -82,6 +82,37 @@ struct WelcomeIngredient: Codable {
         case updatedAt = "updated_at"
         case unitSize = "unit_size"
         case isSelected
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        schID = try container.decodeIfPresent(Int.self, forKey: .schID)
+        proPrice = try Self.decodeString(from: container, forKey: .proPrice)
+        servings = try Self.decodeString(from: container, forKey: .servings)
+        foodCategory = try container.decodeIfPresent(String.self, forKey: .foodCategory)
+        marketID = try container.decodeIfPresent(Int.self, forKey: .marketID)
+        foodID = try Self.decodeString(from: container, forKey: .foodID)
+        image = try container.decodeIfPresent(String.self, forKey: .image)
+        userID = try container.decodeIfPresent(Int.self, forKey: .userID)
+        productID = try Self.decodeString(from: container, forKey: .productID)
+        price = try Self.decodeString(from: container, forKey: .price)
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        quantity = try Self.decodeInt(from: container, forKey: .quantity)
+        measure = try container.decodeIfPresent(String.self, forKey: .measure)
+        createdAt = try container.decodeIfPresent(String.self, forKey: .createdAt)
+        isChecked = try container.decodeIfPresent(Int.self, forKey: .isChecked)
+        proName = try container.decodeIfPresent(String.self, forKey: .proName)
+        status = try container.decodeIfPresent(Int.self, forKey: .status)
+        unitOfMeasurement = try Self.decodeString(from: container, forKey: .unitOfMeasurement)
+        id = try container.decodeIfPresent(Int.self, forKey: .id)
+        deletedAt = try container.decodeIfPresent(String.self, forKey: .deletedAt)
+        food = try container.decodeIfPresent(String.self, forKey: .food)
+        proImg = try container.decodeIfPresent(String.self, forKey: .proImg)
+        updatedAt = try container.decodeIfPresent(String.self, forKey: .updatedAt)
+        unitSize = try Self.decodeInt(from: container, forKey: .unitSize)
+        isSelected = try container.decodeIfPresent(Bool.self, forKey: .isSelected) ?? false
+        isVisible = true
     }
 }
 
@@ -194,6 +225,59 @@ struct DataRecipe: Codable {
         case cuisine, calories
         case prepTime = "prep_time"
     }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        reviewsCount = try container.decodeIfPresent(Int.self, forKey: .reviewsCount)
+        mealType = try container.decodeIfPresent([String].self, forKey: .mealType)
+        recipeMealType = try Self.decodeString(from: container, forKey: .recipeMealType)
+        id = try Self.decodeString(from: container, forKey: .id)
+        imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)
+        createdOn = try container.decodeIfPresent(String.self, forKey: .createdOn)
+        createdAt = try container.decodeIfPresent(String.self, forKey: .createdAt)
+        dishType = try container.decodeIfPresent([String?].self, forKey: .dishType)
+        description = try container.decodeIfPresent(String.self, forKey: .description)
+        totalDaily = try container.decodeIfPresent(TotalNew.self, forKey: .totalDaily)
+        fingerprint = try container.decodeIfPresent(String.self, forKey: .fingerprint)
+        videoURL = try container.decodeIfPresent(String.self, forKey: .videoURL)
+        preparedWeightG = try Self.decodeInt(from: container, forKey: .preparedWeightG)
+        servings = try Self.decodeInt(from: container, forKey: .servings)
+        macros = try container.decodeIfPresent(String.self, forKey: .macros)
+        sourceType = try container.decodeIfPresent(String.self, forKey: .sourceType)
+        dietLabels = try container.decodeIfPresent([String].self, forKey: .dietLabels)
+        updatedAt = try container.decodeIfPresent(String.self, forKey: .updatedAt)
+        estimatedPrice = try Self.decodeString(from: container, forKey: .estimatedPrice)
+        popularCategory = try container.decodeIfPresent([String].self, forKey: .popularCategory)
+        ingredients = try container.decodeIfPresent([RecipeIngredienNew].self, forKey: .ingredients)
+        image = try container.decodeIfPresent(String.self, forKey: .image)
+        yield = try Self.decodeInt(from: container, forKey: .yield)
+        recipeTotalTime = try Self.decodeInt(from: container, forKey: .recipeTotalTime)
+        cuisineType = try container.decodeIfPresent([String].self, forKey: .cuisineType)
+        difficulty = try container.decodeIfPresent(String.self, forKey: .difficulty)
+        instructionLines = try container.decodeIfPresent([String].self, forKey: .instructionLines)
+        label = try container.decodeIfPresent(String.self, forKey: .label)
+        keywords = try Self.decodeString(from: container, forKey: .keywords)
+        totalTime = try Self.decodeInt(from: container, forKey: .totalTime)
+        userID = try container.decodeIfPresent(Int.self, forKey: .userID)
+        totalNutrients = try container.decodeIfPresent(Total.self, forKey: .totalNutrients)
+        ratingsAvg = try Self.decodeString(from: container, forKey: .ratingsAvg)
+        images = try container.decodeIfPresent(Images.self, forKey: .images)
+        sourceURL = try container.decodeIfPresent(String.self, forKey: .sourceURL)
+        uri = try container.decodeIfPresent(String.self, forKey: .uri)
+        ingredientCostTotal = try Self.decodeString(from: container, forKey: .ingredientCostTotal)
+        instructions = try container.decodeIfPresent([Instruction].self, forKey: .instructions)
+        micronutrients = try Self.decodeString(from: container, forKey: .micronutrients)
+        ingredientLines = try container.decodeIfPresent([String].self, forKey: .ingredientLines)
+        source = try container.decodeIfPresent(String.self, forKey: .source)
+        imageURLBackup = try container.decodeIfPresent(String.self, forKey: .imageURLBackup)
+        url = try container.decodeIfPresent(String.self, forKey: .url)
+        cookware = try container.decodeIfPresent([Cookware].self, forKey: .cookware)
+        isPublic = try Self.decodeInt(from: container, forKey: .isPublic)
+        cuisine = try container.decodeIfPresent(String.self, forKey: .cuisine)
+        prepTime = try Self.decodeInt(from: container, forKey: .prepTime)
+        calories = try Self.decodeDouble(from: container, forKey: .calories)
+    }
 }
 
 // MARK: - Cookware
@@ -262,6 +346,66 @@ struct RecipeIngredienNew: Codable {
         case updatedAt = "updated_at"
         case orderIndex = "order_index"
         case recipeID = "recipe_id"
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        ingredientID = try container.decodeIfPresent(Int.self, forKey: .ingredientID)
+        measurementUnitsImperialID = try Self.decodeInt(from: container, forKey: .measurementUnitsImperialID)
+        category = try container.decodeIfPresent(String.self, forKey: .category)
+        image = try container.decodeIfPresent(String.self, forKey: .image)
+        ingredientCost = try Self.decodeString(from: container, forKey: .ingredientCost)
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        unit = try Self.decodeString(from: container, forKey: .unit)
+        searchKey = try container.decodeIfPresent(String.self, forKey: .searchKey)
+        createdAt = try container.decodeIfPresent(String.self, forKey: .createdAt)
+        createdOn = try container.decodeIfPresent(String.self, forKey: .createdOn)
+        text = try container.decodeIfPresent(String.self, forKey: .text)
+        quantity = try Self.decodeString(from: container, forKey: .quantity)
+        imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)
+        id = try Self.decodeString(from: container, forKey: .id)
+        measure = try Self.decodeString(from: container, forKey: .measure)
+        measureImperial = try Self.decodeString(from: container, forKey: .measureImperial)
+        food = try container.decodeIfPresent(String.self, forKey: .food)
+        updatedAt = try container.decodeIfPresent(String.self, forKey: .updatedAt)
+        orderIndex = try container.decodeIfPresent(Int.self, forKey: .orderIndex)
+        recipeID = try Self.decodeString(from: container, forKey: .recipeID)
+    }
+}
+
+private extension Decodable {
+    static func decodeString<K: CodingKey>(from container: KeyedDecodingContainer<K>, forKey key: K) throws -> String? {
+        if let stringValue = try? container.decodeIfPresent(String.self, forKey: key) {
+            return stringValue
+        }
+        if let mixedValue = try? container.decodeIfPresent(StringOrNumber.self, forKey: key) {
+            return mixedValue.stringValue()
+        }
+        return nil
+    }
+
+    static func decodeInt<K: CodingKey>(from container: KeyedDecodingContainer<K>, forKey key: K) throws -> Int? {
+        if let intValue = try? container.decodeIfPresent(Int.self, forKey: key) {
+            return intValue
+        }
+        if let mixedValue = try? container.decodeIfPresent(StringOrNumber.self, forKey: key) {
+            return Int(mixedValue.stringValue() ?? "")
+        }
+        return nil
+    }
+
+    static func decodeDouble<K: CodingKey>(from container: KeyedDecodingContainer<K>, forKey key: K) throws -> Double? {
+        if let doubleValue = try? container.decodeIfPresent(Double.self, forKey: key) {
+            return doubleValue
+        }
+        if let intValue = try? container.decodeIfPresent(Int.self, forKey: key) {
+            return Double(intValue ?? 0)
+        }
+        if let mixedValue = try? container.decodeIfPresent(StringOrNumber.self, forKey: key) {
+            return Double(mixedValue.stringValue() ?? "")
+        }
+        return nil
     }
 }
 

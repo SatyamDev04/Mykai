@@ -14,7 +14,6 @@ class DinnerVc: UIViewController {
     @IBOutlet weak var TitleLbl: UILabel!
     @IBOutlet weak var CollV: UICollectionView!
     
-    
     // for Choosedays popup
     @IBOutlet var ChoosedaysPopupV: UIView!
     @IBOutlet weak var ChoosedaysTblV: UITableView!
@@ -352,7 +351,13 @@ extension DinnerVc: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
         
        
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
+        let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetailNewVC") as! RecipeDetailNewVC
+        vc.MealType = self.titleTxt
+        vc.uri = self.SearchAllRecipeArr[indexPath.item].recipe?.uri ?? ""
+        vc.Id = ""
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
     }
  
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -597,6 +602,29 @@ extension DinnerVc {
         isLoading = true
         var params = [String: Any]()
         
+//        var existingItems: [Breakfast] = []
+//
+//        switch mealType {
+//        case "Breakfast":
+//            existingItems = self.AllRecipeSelItem.recipes?.breakfast ?? []
+//        case "Lunch":
+//            existingItems = self.AllRecipeSelItem.recipes?.lunch ?? []
+//        case "Dinner":
+//            existingItems = self.AllRecipeSelItem.recipes?.dinner ?? []
+//        case "Snacks":
+//            existingItems = self.AllRecipeSelItem.recipes?.Snack ?? []
+//        case "Dessert":
+//            existingItems = self.AllRecipeSelItem.recipes?.Dessert ?? []
+//        case "Brunch":
+//            existingItems = self.AllRecipeSelItem.recipes?.Teatime ?? []
+//        default:
+//            break
+//        }
+//
+//        let existingIds = existingItems.compactMap { $0.recipe?.uri }
+//        if !existingIds.isEmpty {
+//            params["ids"] = existingIds   // use "ids[]" if backend expects array format
+//        }
         let existingIds: [String] = self.SearchAllRecipeArr.compactMap { $0.recipe?.uri }
         if !existingIds.isEmpty {
             params["ids"] = existingIds

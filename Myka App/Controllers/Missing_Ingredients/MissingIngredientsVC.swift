@@ -25,7 +25,7 @@ class MissingIngredientsVC: UIViewController {
     @IBOutlet weak var MissingIngredientTblVH: NSLayoutConstraint!
     @IBOutlet weak var AddedIngredientTblVH: NSLayoutConstraint!
     @IBOutlet weak var Added_IngredientsBgV: UIView!
-    
+    @IBOutlet weak var purchasedLbl: UILabel!
     var MissingIngresientsArray = [MissingIngModel]()
     var AddedIngresientsArray = [MissingIngModel]()
     
@@ -145,11 +145,18 @@ extension MissingIngredientsVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == self.MissingIngredientTblV {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MissingIngredientsTblVCell", for: indexPath) as! MissingIngredientsTblVCell
-            cell.NameLbl.text = MissingIngresientsArray[indexPath.row].food
+            cell.NameLbl.text = MissingIngresientsArray[indexPath.row].name
             
-            let img = MissingIngresientsArray[indexPath.row].image ?? ""
+//            let img = MissingIngresientsArray[indexPath.row].image ?? ""
             cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-            cell.Img.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named:"No_Image"))
+            if let img = MissingIngresientsArray[indexPath.row].image_url, !img.isEmpty {
+                cell.Img.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
+            }else{
+                cell.Img.sd_setImage(with: URL(string: MissingIngresientsArray[indexPath.row].image ?? ""), placeholderImage: UIImage(named: "No_Image"))
+            }
+            
+           
+//            cell.Img.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named:"No_Image"))
             
             let Qnt = Double(MissingIngresientsArray[indexPath.row].quantity?.stringValue() ?? "0") ?? 0
             
@@ -280,10 +287,18 @@ extension MissingIngredientsVC {
                     self.MissingIngredientTblV.reloadData()
                     self.AddedIngredientTblV.reloadData()
                     
-//                    if self.MissingIngresientsArray.count == 0 {
-//                        self.backAction()
-//                        self.navigationController?.popViewController(animated: true)
-//                    }
+                  if self.MissingIngresientsArray.count == 0 {
+                      
+                      self.view.viewWithTag(10)?.isHidden = true
+                      self.view.viewWithTag(11)?.isHidden = true
+                      self.purchasedLbl.text = "All Ingredients have been purchased"
+                      
+                    //   self.backAction()
+                     //  self.navigationController?.popViewController(animated: true)
+                  }else{
+                      self.view.viewWithTag(10)?.isHidden = false
+                      self.view.viewWithTag(11)?.isHidden = false
+                  }
                 }else{
                     let msg = d.message ?? ""
                     self.showToast(msg)

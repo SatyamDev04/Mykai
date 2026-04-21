@@ -17,6 +17,7 @@ class HSAppleSignIn : NSObject {
 //    static let shared = HSAppleSignIn()
     
     var appleSignInBlock:AppleSignInBlock!
+    weak var presentationWindow: UIWindow?
     
     override init() {
         
@@ -72,8 +73,9 @@ extension HSAppleSignIn:ASAuthorizationControllerPresentationContextProviding, A
             
         }
     }
-    func didTapLoginWithApple1(completionBlock:AppleSignInBlock)
+    func didTapLoginWithApple1(from window: UIWindow?, completionBlock:AppleSignInBlock)
     {
+        presentationWindow = window
         appleSignInBlock = completionBlock
         if #available(iOS 13.0, *) {
             let request = ASAuthorizationAppleIDProvider().createRequest()
@@ -88,7 +90,18 @@ extension HSAppleSignIn:ASAuthorizationControllerPresentationContextProviding, A
     }
     @available(iOS 13.0, *)
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        return UIApplication.topViewController()?.view.window ?? UIView().window!
+        if let presentationWindow = presentationWindow {
+            return presentationWindow
+        }
+
+        if let keyWindow = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .flatMap({ $0.windows })
+            .first(where: { $0.isKeyWindow }) {
+            return keyWindow
+        }
+
+        return ASPresentationAnchor()
     }
     
     
@@ -123,8 +136,17 @@ extension HSAppleSignIn:ASAuthorizationControllerPresentationContextProviding, A
     
     @available(iOS 13.0, *)
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        if (error as NSError).code != 1001{
-            appleSignInBlock?(nil,error.localizedDescription)
+        let nsError = error as NSError
+
+        if nsError.code == ASAuthorizationError.canceled.rawValue {
+            return
         }
+
+        if nsError.code == ASAuthorizationError.unknown.rawValue {
+            appleSignInBlock?(nil,"Apple Sign In is temporarily unavailable. Please try again.")
+            return
+        }
+
+        appleSignInBlock?(nil,error.localizedDescription)
     }
 }

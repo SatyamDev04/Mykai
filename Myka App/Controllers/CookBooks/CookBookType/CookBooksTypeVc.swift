@@ -360,7 +360,7 @@ extension CookBooksTypeVc: UICollectionViewDelegate, UICollectionViewDataSource 
         vc.MealType = "\(type)".firstUppercased()
         vc.uri = self.cookBookDataArr[indexPath.item].data?.recipe?.uri ?? ""
         vc.Id = "\(self.cookBookDataArr[indexPath.item].id ?? 0)"
-        vc.ServCount = Int(cookBookDataArr[indexPath.row].data?.recipe?.yield ?? 0)
+        vc.ServCount = 1
         vc.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(vc, animated: true)
     }

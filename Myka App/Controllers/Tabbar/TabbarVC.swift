@@ -171,50 +171,69 @@ class TabbarVC: UITabBarController, UITabBarControllerDelegate {
         }
     }
     
+//    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+//           // Get the index of the currently selected tab
+//           guard let currentIndex = viewControllers?.firstIndex(of: selectedViewController!) else {
+//               return true
+//           }
+//
+//           // Get the index of the tab being tapped
+//           guard let targetIndex = viewControllers?.firstIndex(of: viewController) else {
+//               return true
+//           }
+//
+////            Allow switching only if the target tab is not the second tab
+//        //
+//        if currentIndex == 0 && targetIndex == 2 {
+//            
+//            let data: [String: String] = ["data": "AddRecipePopup"]
+//            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationNameAddRecipeH"), object: nil, userInfo: data)
+//            return false // Prevent switching
+//        }
+//        
+//        if currentIndex == 1 && targetIndex == 2 {
+//            let data: [String: String] = ["data": "AddRecipePopup"]
+//            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationNameAddRecipeS"), object: nil, userInfo: data)
+//            return false // Prevent switching
+//        }
+//        
+//        if currentIndex == 3 && targetIndex == 2 {
+//            let data: [String: String] = ["data": "AddRecipePopup"]
+//            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationNameAddRecipeP"), object: nil, userInfo: data)
+//            return false // Prevent switching
+//        }
+//        
+//        if currentIndex == 4 && targetIndex == 2 {
+//            let data: [String: String] = ["data": "AddRecipePopup"]
+//            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationNameAddRecipeY"), object: nil, userInfo: data)
+//            return false // Prevent switching
+//        }
+//        
+//     
+//        removeGreenDotAndHalfCircle()
+//        addGreenDotToTabBarItem(at: targetIndex)
+//        
+//           return true
+//       }
+   
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-           // Get the index of the currently selected tab
-           guard let currentIndex = viewControllers?.firstIndex(of: selectedViewController!) else {
-               return true
-           }
 
-           // Get the index of the tab being tapped
-           guard let targetIndex = viewControllers?.firstIndex(of: viewController) else {
-               return true
-           }
+        guard let targetIndex = viewControllers?.firstIndex(of: viewController) else {
+            return true
+        }
 
-//            Allow switching only if the target tab is not the second tab
-        //
-        if currentIndex == 0 && targetIndex == 2 {
-            let data: [String: String] = ["data": "AddRecipePopup"]
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationNameAddRecipeH"), object: nil, userInfo: data)
-            return false // Prevent switching
+        // ✅ If middle tab tapped
+        if targetIndex == 2 {
+            openAddRecipePopup()
+            return false // ❌ Prevent tab switch
         }
-        
-        if currentIndex == 1 && targetIndex == 2 {
-            let data: [String: String] = ["data": "AddRecipePopup"]
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationNameAddRecipeS"), object: nil, userInfo: data)
-            return false // Prevent switching
-        }
-        
-        if currentIndex == 3 && targetIndex == 2 {
-            let data: [String: String] = ["data": "AddRecipePopup"]
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationNameAddRecipeP"), object: nil, userInfo: data)
-            return false // Prevent switching
-        }
-        
-        if currentIndex == 4 && targetIndex == 2 {
-            let data: [String: String] = ["data": "AddRecipePopup"]
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationNameAddRecipeY"), object: nil, userInfo: data)
-            return false // Prevent switching
-        }
-        
-     
+
+        // Normal flow
         removeGreenDotAndHalfCircle()
         addGreenDotToTabBarItem(at: targetIndex)
-        
-           return true
-       }
-   
+
+        return true
+    }
 
     // Call this when a tab is selected
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
@@ -230,6 +249,30 @@ class TabbarVC: UITabBarController, UITabBarControllerDelegate {
                 rootView.popToRootViewController(animated: false)
           //  }
         }
+    }
+    
+    func openAddRecipePopup() {
+        
+        guard let selectedNav = self.selectedViewController as? UINavigationController,
+              let topVC = selectedNav.topViewController else { return }
+        
+        let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "AddRecipePopUpVC") as! AddRecipePopUpVC
+
+        vc.BackAction = { [weak self] _ in
+            self?.tabBar.isHidden = false
+//            vc?.view.removeFromSuperview()   // ✅ THIS LINE MISSING
+//            topVC.removeChild()
+        }
+        // ✅ Hide tabbar
+        self.tabBar.isHidden = true
+
+        // ✅ Add as child (same as your existing flow)
+        topVC.addChild(vc)
+        vc.view.frame = topVC.view.bounds
+        topVC.view.addSubview(vc.view)
+        topVC.view.bringSubviewToFront(vc.view)
+        vc.didMove(toParent: topVC)
     }
     
 //    func reinitializeTabAtIndex(_ index: Int) {

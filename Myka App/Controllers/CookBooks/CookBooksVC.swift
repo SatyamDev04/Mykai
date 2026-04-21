@@ -455,14 +455,12 @@ extension CookBooksVC: UICollectionViewDelegate, UICollectionViewDataSource ,UIC
                 vc.MealType = "\(type)".firstUppercased()
                 vc.uri = favCookBookDataArr[indexPath.row].data?.recipe?.uri ?? ""
                 vc.Id = "\(favCookBookDataArr[indexPath.row].id ?? 0)"
-                vc.ServCount = Int(favCookBookDataArr[indexPath.row].data?.recipe?.yield ?? 0)
+                vc.ServCount = 1
                 vc.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         }
      
-        
-        
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
             if collectionView == TopCollV{
                 return CGSize(width: collectionView.frame.width/4 - 5, height: collectionView.frame.height)

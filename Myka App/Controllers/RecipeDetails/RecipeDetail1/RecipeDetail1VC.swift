@@ -99,10 +99,16 @@ extension RecipeDetail1VC: UITableViewDelegate, UITableViewDataSource {
         let val = self.RecipeDetailsData.first?.recipe
         
         cell.NameLbl.text = val?.ingredients?[indexPath.row].name
-        
-        let img = val?.ingredients?[indexPath.row].image ?? ""
         cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-        cell.Img.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
+        
+        if let img = val?.ingredients?[indexPath.row].imageURL, !img.isEmpty {
+            cell.Img.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
+        }else{
+            cell.Img.sd_setImage(with: URL(string: val?.ingredients?[indexPath.row].image ?? ""), placeholderImage: UIImage(named: "No_Image"))
+        }
+        
+//        let img = val?.ingredients?[indexPath.row].imageURL ?? ""
+        
         
          let quantityString = val?.ingredients?[indexPath.row].quantity
 

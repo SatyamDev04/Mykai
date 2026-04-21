@@ -40,7 +40,7 @@ struct Product: Codable {
        let updated_at: String?
        let user_id: Int?
        let unit_of_measurement:String?
-    
+        var servings : String?
        var is_checked:Int
 }
 

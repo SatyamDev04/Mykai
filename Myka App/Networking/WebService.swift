@@ -9,6 +9,90 @@ import Network
 
 var unauthorisedCalled = false
 
+final class NetworkDebugLogger {
+    static let shared = NetworkDebugLogger()
+
+    private let fileManager = FileManager.default
+    private let queue = DispatchQueue(label: "com.myka.network-debug-logger", qos: .utility)
+    private let fileName = "debug_network.log"
+
+    private init() {}
+
+    private var logFileURL: URL? {
+        guard let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            return nil
+        }
+
+        return documentsDirectory.appendingPathComponent(fileName)
+    }
+
+    func logRequest(
+        method: String,
+        url: String,
+        parameters: [String: Any]?,
+        headers: HTTPHeaders,
+        response: AFDataResponse<Any>
+    ) {
+        queue.async {
+            let timestamp = ISO8601DateFormatter().string(from: Date())
+            let statusCode = response.response?.statusCode ?? -1
+            let responseBody = Self.stringFromData(response.data) ?? "No response body"
+            let errorDescription = response.error?.localizedDescription ?? "None"
+            let logEntry = """
+
+            [\(timestamp)]
+            Method: \(method)
+            URL: \(url)
+            Parameters: \(Self.prettyPrintedJSONObject(parameters) ?? "nil")
+            Headers: \(headers.dictionary)
+            Status Code: \(statusCode)
+            Error: \(errorDescription)
+            Response:
+            \(responseBody)
+            --------------------------------------------------
+            """
+
+            self.append(logEntry)
+            print("Network log saved at: \(self.logFileURL?.path ?? "Unavailable path")")
+        }
+    }
+
+    private func append(_ text: String) {
+        guard let fileURL = logFileURL else { return }
+
+        if !fileManager.fileExists(atPath: fileURL.path) {
+            fileManager.createFile(atPath: fileURL.path, contents: nil)
+        }
+
+        guard let data = text.data(using: .utf8) else { return }
+
+        do {
+            let handle = try FileHandle(forWritingTo: fileURL)
+            defer { try? handle.close() }
+            try handle.seekToEnd()
+            try handle.write(contentsOf: data)
+        } catch {
+            print("Failed to write network debug log: \(error.localizedDescription)")
+        }
+    }
+
+    private static func stringFromData(_ data: Data?) -> String? {
+        guard let data = data else { return nil }
+        return String(data: data, encoding: .utf8) ?? data.base64EncodedString()
+    }
+
+    private static func prettyPrintedJSONObject(_ object: Any?) -> String? {
+        guard let object = object else { return nil }
+        guard JSONSerialization.isValidJSONObject(object),
+              let data = try? JSONSerialization.data(withJSONObject: object, options: [.prettyPrinted]),
+              let string = String(data: data, encoding: .utf8) else {
+            return String(describing: object)
+        }
+
+        return string
+    }
+}
+
 class WebService {
  
     
@@ -58,6 +142,13 @@ class WebService {
         
     
         AF.request(reuestUrl, method: .post, parameters: parameters , encoding: URLEncoding.default, headers: headers).responseJSON { (responseData) in
+            NetworkDebugLogger.shared.logRequest(
+                method: "POST",
+                url: reuestUrl,
+                parameters: parameters,
+                headers: headers,
+                response: responseData
+            )
             if let data = responseData.data,
                let rawString = String(data: data, encoding: .utf8) {
                 print("RAW RESPONSE:")
@@ -140,6 +231,13 @@ class WebService {
         
     
         AF.request(reuestUrl, method: .post, parameters: parameters , encoding: URLEncoding.default, headers: headers).responseJSON { (responseData) in
+            NetworkDebugLogger.shared.logRequest(
+                method: "POST",
+                url: reuestUrl,
+                parameters: parameters,
+                headers: headers,
+                response: responseData
+            )
             
             if let data = responseData.data, let utf8Text = String(data: data, encoding: .utf8) {
             //    print("Data: \(utf8Text)") // original server data as UTF8 string
@@ -254,6 +352,13 @@ class WebService {
 
     })
     .responseJSON(completionHandler: { responseData in
+            NetworkDebugLogger.shared.logRequest(
+                method: "POST_MULTIPART",
+                url: request,
+                parameters: parameters,
+                headers: headers,
+                response: responseData
+            )
             
             if let data = responseData.data, let utf8Text = String(data: data, encoding: .utf8) {
         //        print("Data: \(utf8Text)") // original server data as UTF8 string
@@ -326,6 +431,13 @@ class WebService {
       //  urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         AF.request(urlRequest).responseJSON { (responseData) in
+            NetworkDebugLogger.shared.logRequest(
+                method: "POST_RAW",
+                url: requestUrl,
+                parameters: jsonData.flatMap { String(data: $0, encoding: .utf8) }.map { ["rawBody": $0] },
+                headers: headers,
+                response: responseData
+            )
             if let data = responseData.data, let utf8Text = String(data: data, encoding: .utf8) {
                 //print("Data: \(utf8Text)") // Original server data as UTF8 string
                 do {
@@ -390,6 +502,13 @@ class WebService {
         }
         
         AF.request(reuestUrl, method: .post, parameters: parameters, encoding: encodingFormat, headers: headers).responseJSON{ (responseData) in
+            NetworkDebugLogger.shared.logRequest(
+                method: "POST",
+                url: reuestUrl,
+                parameters: parameters,
+                headers: headers,
+                response: responseData
+            )
             
             if let data = responseData.data, let utf8Text = String(data: data, encoding: .utf8) {
               //  print("Data: \(utf8Text)") // original server data as UTF8 string

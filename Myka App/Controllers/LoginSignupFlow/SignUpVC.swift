@@ -84,7 +84,7 @@ class SignUpVC: UIViewController {
     }
     
     @IBAction func AppleLogiinBtn(_ sender: UIButton) {
-        appleSignIn.didTapLoginWithApple1 { (userInfo, message) in
+        appleSignIn.didTapLoginWithApple1(from: self.view.window) { (userInfo, message) in
             if let userInfo = userInfo{
                 print(userInfo.email)
                 print(userInfo.userid)

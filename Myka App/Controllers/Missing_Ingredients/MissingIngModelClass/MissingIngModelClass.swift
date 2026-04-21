@@ -18,10 +18,10 @@ struct MissingIngModelClass: Codable {
 struct MissingIngModel: Codable {
     var text: String?
     var quantity: StringOrNumber?
-    var measure, food: String?
+    var measure, food, name: String?
     var weight: Double?
     var foodCategory, foodID: String?
-    var image: String?
+    var image, image_url: String?
     var isMissing: Int?
     var id: String?
     var unit:String?
@@ -29,7 +29,7 @@ struct MissingIngModel: Codable {
     enum CodingKeys: String, CodingKey {
         case text, quantity, measure, food, weight, foodCategory,id,unit
         case foodID = "foodId"
-        case image
+        case image, name, image_url
         case isMissing = "is_missing"
     }
 }

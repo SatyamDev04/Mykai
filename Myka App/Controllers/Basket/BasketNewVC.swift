@@ -434,8 +434,12 @@ extension BasketNewVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
         cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
         cell.Img.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "No_Image"))
                
-        cell.ServCountLbl.text = "Serves \(BasketListArr.recipe?[indexPath.item].serving ?? "0")"
+//        cell.ServCountLbl.text = "Serves \(BasketListArr.recipe?[indexPath.item].serving ?? "0")"
                
+        let serv1 = Int(BasketListArr.recipe?[indexPath.item].serving ?? "1") ?? 1
+        let serv2 = BasketListArr.recipe?[indexPath.item].data?.recipe?.servings ?? 0
+        cell.ServCountLbl.text = "Serves \(serv1 * serv2)"
+        
         cell.MinusBtn.tag = indexPath.row
         cell.MinusBtn.addTarget(self, action: #selector(ServCountMinusBtn(_:)), for: .touchUpInside)
                
@@ -448,35 +452,100 @@ extension BasketNewVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
         return cell
     }
     
+//    @objc func ServCountMinusBtn(_ sender: UIButton) {
+//        var ServCount = Int(BasketListArr.recipe?[sender.tag].serving ?? "1") ?? 1
+//        
+//        guard ServCount > 1 else { return }
+//        
+//        ServCount -= 1
+//        
+//        BasketListArr.recipe?[sender.tag].serving = "\(ServCount)"
+//        
+//        // ✅ STEP 1 (ADD THIS)
+//        updateIngredientServings(for: sender.tag, newServing: ServCount)
+//        
+//        self.yourRecipeCollV.reloadData()
+//        
+//        // ✅ STEP 2
+//        self.recalculateAndMergeIngredients()
+//    }
+    
     @objc func ServCountMinusBtn(_ sender: UIButton) {
+        
         var ServCount = Int(BasketListArr.recipe?[sender.tag].serving ?? "1") ?? 1
-        guard ServCount > 1 else{
-            return
-        }
+        guard ServCount > 1 else { return }
+        
         ServCount -= 1
         BasketListArr.recipe?[sender.tag].serving = "\(ServCount)"
+        
+        // ✅ STEP 1: Update ingredient servings
+        updateIngredientServings(for: sender.tag, newServing: ServCount)
+        
+        // ✅ STEP 2: Reload UI
         self.yourRecipeCollV.reloadData()
+        
+        // ✅ STEP 3: Recalculate ingredients
         self.recalculateAndMergeIngredients()
+        
+        // ✅ STEP 4: HIT API (ADD THIS)
         let uri = BasketListArr.recipe?[sender.tag].uri ?? ""
         let typ = BasketListArr.recipe?[sender.tag].type ?? ""
         
         if let result = typ.components(separatedBy: "/").first {
-            self.Api_To_Plus_Minus_ServesCount(uri: uri, Quenty: "\(ServCount)", type: result)
+            self.Api_To_Plus_Minus_ServesCount(
+                uri: uri,
+                Quenty: "\(ServCount)",
+                type: result,
+                index: sender.tag
+            )
         }
     }
     
     @objc func ServCountPlusBtn(_ sender: UIButton) {
+        
         var ServCount = Int(BasketListArr.recipe?[sender.tag].serving ?? "1") ?? 1
         ServCount += 1
+        
         BasketListArr.recipe?[sender.tag].serving = "\(ServCount)"
+        
+        // ✅ STEP 1: Update ingredient servings
+        updateIngredientServings(for: sender.tag, newServing: ServCount)
+        
+        // ✅ STEP 2: Reload UI
         self.yourRecipeCollV.reloadData()
+        
+        // ✅ STEP 3: Recalculate ingredients
         self.recalculateAndMergeIngredients()
+        
+        // ✅ STEP 4: HIT API (ADD THIS)
         let uri = BasketListArr.recipe?[sender.tag].uri ?? ""
         let typ = BasketListArr.recipe?[sender.tag].type ?? ""
+        
         if let result = typ.components(separatedBy: "/").first {
-            self.Api_To_Plus_Minus_ServesCount(uri: uri, Quenty: "\(ServCount)", type: typ)
+            self.Api_To_Plus_Minus_ServesCount(
+                uri: uri,
+                Quenty: "\(ServCount)",
+                type: result,
+                index: sender.tag
+            )
         }
     }
+    
+//    @objc func ServCountPlusBtn(_ sender: UIButton) {
+//        var ServCount = Int(BasketListArr.recipe?[sender.tag].serving ?? "1") ?? 1
+//        ServCount += 1
+//        
+//        BasketListArr.recipe?[sender.tag].serving = "\(ServCount)"
+//        
+//        // ✅ STEP 1 (ADD THIS)
+//        updateIngredientServings(for: sender.tag, newServing: ServCount)
+//        
+//        self.yourRecipeCollV.reloadData()
+//        
+//        // ✅ STEP 2
+//        self.recalculateAndMergeIngredients()
+//        
+//    }
     
     @objc func removeBtnClick(_ sender: UIButton)   {
         let storyboard = UIStoryboard(name: "Basket", bundle: nil)
@@ -492,6 +561,16 @@ extension BasketNewVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
         vc.didMove(toParent: self)
     }
     
+    func updateIngredientServings(for recipeIndex: Int, newServing: Int) {
+        
+        let recipeId = BasketListArr.recipe?[recipeIndex].uri ?? ""
+
+        for i in 0..<originalIngredients.count {
+            if originalIngredients[i].productID == recipeId {
+                originalIngredients[i].servings = "\(newServing)"
+            }
+        }
+    }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
@@ -784,36 +863,36 @@ extension BasketNewVC{
 
 // MARK: - Business Logic & Network
 extension BasketNewVC{
-
+    
     enum UnitCategory {
         case weight
         case volume
         case count
         case unknown
     }
-
+    
     func normalizeUnit(_ unit: String) -> String {
         let u = unit.lowercased()
         switch u {
-        // Weight
+            // Weight
         case "kg", "kilogram", "kilograms": return "kg"
         case "g", "gram", "grams": return "g"
         case "mg", "milligram", "milligrams": return "mg"
         case "lb", "pound", "pounds": return "lb"
         case "oz", "ounce", "ounces": return "oz"
-        
-        // Volume
+            
+            // Volume
         case "ml", "milliliter", "milliliters": return "ml"
         case "l", "liter", "liters": return "l"
         case "cup", "cups": return "cup"
         case "tbsp", "tablespoon", "tablespoons": return "tbsp"
         case "tsp", "teaspoon", "teaspoons": return "tsp"
-        
+            
         case "each": return "each"
         default: return u
         }
     }
-
+    
     func unitCategory(for unit: String) -> UnitCategory {
         switch unit {
         case "kg", "g", "mg", "lb", "oz":
@@ -826,74 +905,95 @@ extension BasketNewVC{
             return .unknown
         }
     }
-
+    
     func convertToBaseUnit(quantity: Double, unit: String) -> (Double, String) {
         switch unit {
-        // Weight → grams
+            // Weight → grams
         case "kg": return (quantity * 1000, "g")
         case "g": return (quantity, "g")
         case "mg": return (quantity / 1000, "g")
         case "lb": return (quantity * 453.592, "g")
         case "oz": return (quantity * 28.3495, "g")
-        
-        // Volume → ml
+            
+            // Volume → ml
         case "l": return (quantity * 1000, "ml")
         case "ml": return (quantity, "ml")
         case "cup": return (quantity * 240, "ml")
         case "tbsp": return (quantity * 15, "ml")
         case "tsp": return (quantity * 5, "ml")
-        
+            
         case "each": return (quantity, "each")
         default: return (quantity, unit)
         }
     }
     
-    /// Recalculates ingredient quantities based on the current servings of recipes and merges duplicates by name (after unit normalization and conversion).
+    //    func recalculateAndMergeIngredients() {
+    //
+    //        var mergedDict: [String: WelcomeIngredient] = [:]
+    //
+    //        for ingredient in originalIngredients {
+    //
+    //            let qty = Double(ingredient.quantity ?? 1)
+    //            let servings = Double(ingredient.servings ?? "1") ?? 1.0
+    //
+    //            // ✅ Android logic
+    //            let scaledQty = qty * servings
+    //
+    //            let key = (ingredient.name ?? "")
+    //                .lowercased()
+    //                .trimmingCharacters(in: .whitespacesAndNewlines)
+    //
+    //            if var existing = mergedDict[key] {
+    //                existing.quantity = (existing.quantity ?? 0) + Int(scaledQty)
+    //                mergedDict[key] = existing
+    //            } else {
+    //                var newIngredient = ingredient
+    //                newIngredient.quantity = Int(scaledQty)
+    //                mergedDict[key] = newIngredient
+    //            }
+    //        }
+    //
+    //        BasketListArr.ingredient = Array(mergedDict.values)
+    //
+    //        for i in 0..<(BasketListArr.ingredient?.count ?? 0) {
+    //            BasketListArr.ingredient?[i].isSelected = true
+    //        }
+    //
+    //        DispatchQueue.main.async {
+    //            self.IngredientsTblV.reloadData()
+    //        }
+    //    }
+    
     func recalculateAndMergeIngredients() {
         
-        guard let recipes = BasketListArr.recipe else { return }
-        
         var mergedDict: [String: WelcomeIngredient] = [:]
-        
+
         for ingredient in originalIngredients {
             
-            guard
-                let baseQty = ingredient.quantity,
-                let baseServing = Int(ingredient.servings ?? "1"),
-                baseServing > 0
-            else { continue }
+            let qty = Double(ingredient.quantity ?? 1)
             
-            let nameKey = (ingredient.name ?? "")
+            let baseQty = Double(ingredient.quantity ?? 1) // original from API
+            let servings = Double(ingredient.servings ?? "1") ?? 1.0
+
+            let scaledQty = baseQty * servings
+            
+            let key = (ingredient.name ?? "")
                 .lowercased()
                 .trimmingCharacters(in: .whitespacesAndNewlines)
             
-            // Proper serving scaling
-            let currentServing = Double(
-                recipes.first(where: { $0.uri == ingredient.productID })?.serving ?? "1"
-            ) ?? 1.0
-            
-            let scaledQty = (Double(baseQty) / Double(baseServing)) * currentServing
-            
-            let normalizedUnit = normalizeUnit(ingredient.unitOfMeasurement ?? "")
-            let (baseConvertedQty, baseUnit) = convertToBaseUnit(quantity: scaledQty, unit: normalizedUnit)
-            
-            // Merge by name only (safe because converted to base unit)
-            let key = nameKey
-            
             if var existing = mergedDict[key] {
-                let existingQty = Double(existing.quantity ?? 0)
-                existing.quantity = Int(existingQty + baseConvertedQty)
-                existing.unitOfMeasurement = baseUnit
+                existing.quantity = (existing.quantity ?? 0) + Int(round(scaledQty))
                 mergedDict[key] = existing
             } else {
                 var newIngredient = ingredient
-                newIngredient.quantity = Int(baseConvertedQty)
-                newIngredient.unitOfMeasurement = baseUnit
+                newIngredient.quantity = Int(round(scaledQty))
                 mergedDict[key] = newIngredient
             }
         }
         
-        BasketListArr.ingredient = Array(mergedDict.values)
+        BasketListArr.ingredient = Array(mergedDict.values).sorted {
+            ($0.name ?? "").lowercased() < ($1.name ?? "").lowercased()
+        }
         
         for i in 0..<(BasketListArr.ingredient?.count ?? 0) {
             BasketListArr.ingredient?[i].isSelected = true
@@ -903,8 +1003,6 @@ extension BasketNewVC{
             self.IngredientsTblV.reloadData()
         }
     }
-    
-
     
     /// Creates JSON string from selected ingredients for API request.
     func createSelectedIngredientJSON() -> String? {
@@ -1187,7 +1285,7 @@ extension BasketNewVC{
     }
     
     // for Recipes
-    func Api_To_Plus_Minus_ServesCount(uri:String, Quenty:String, type: String){
+    func Api_To_Plus_Minus_ServesCount(uri:String, Quenty:String, type: String,index:Int){
         
         var params:JSONDictionary = [:]
         

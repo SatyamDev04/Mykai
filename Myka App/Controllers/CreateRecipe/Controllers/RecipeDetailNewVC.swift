@@ -88,11 +88,12 @@ class RecipeDetailNewVC: UIViewController {
     var recipeFrom = ""
     var sourceUrl = ""
     var conevertType = "O"
+    var inerServing = 1
     private var baseIngredientData: [RecipeDataModel] = []
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.ServCountLbl.text = "\(ServCount) servings"
+        self.ServCountLbl.text = "\(ServCount * inerServing) servings"
      
         self.ChoosedaysPopupV.frame = self.view.bounds
         self.view.addSubview(self.ChoosedaysPopupV)
@@ -367,14 +368,14 @@ class RecipeDetailNewVC: UIViewController {
             return
         }
         self.ServCount -= 1
-        self.ServCountLbl.text = "\(ServCount) servings"
+        self.ServCountLbl.text = "\(ServCount * inerServing) servings"
         updateQuantitiesForServing()
     }
     
     @IBAction func ServCountPlusBtn(_ sender: UIButton) {
         self.ServCount += 1
         
-        self.ServCountLbl.text = "\(ServCount) servings"
+        self.ServCountLbl.text = "\(ServCount * inerServing) servings"
         updateQuantitiesForServing()
     }
     
@@ -788,7 +789,11 @@ extension RecipeDetailNewVC{
                         
                         self.recipeFrom = val?.createdType ?? ""
                         self.sourceUrl = val?.source_url ?? ""
-                        
+                        self.ServCount = Int( self.RecipeDetailsData.first?.servings?.stringValue() ?? "1") ?? 1
+                        let inerServing = Int(val?.servings?.stringValue() ?? "1") ?? 1
+                        self.inerServing = inerServing
+                        let outerServing = Int(self.RecipeDetailsData.first?.servings?.stringValue() ?? "1") ?? 1
+                        self.ServCountLbl.text = "\(inerServing * outerServing) servings"
                         self.recipeNameLbl.text = val?.label ?? ""
                         self.recipeDesLbl.text = val?.source ?? ""
                         let review = self.RecipeDetailsData.first?.review ?? 0
@@ -828,11 +833,15 @@ extension RecipeDetailNewVC{
                                     header = ""
                                 }
 
+                                let imageValue = (ingredient.imageURL ?? "").isEmpty
+                                    ? ingredient.image
+                                    : ingredient.imageURL
+
                                 var ingredientModel = IngredientDataModel(
                                     name: ingredient.name,
                                     quantity: ingredient.quantity?.stringValue(),
                                     unit: ingredient.measure,
-                                    img: ingredient.image,
+                                    img: imageValue,
                                     isSelected: true
                                 )
 
