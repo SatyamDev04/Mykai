@@ -14,6 +14,7 @@ import Alamofire
 import SDWebImage
 import CustomBlurEffectView
 import SwiftyJSON
+import SkeletonView
 
 // MARK: - BasketNewVC
 
@@ -76,6 +77,7 @@ class BasketNewVC: UIViewController, UITextFieldDelegate {
 
     var BasketListArr = basketNewModelData()
     private var originalIngredients: [WelcomeIngredient] = []
+    private var isLoadingBasketContent = false
     
     // MARK: - Lifecycle
 
@@ -136,6 +138,7 @@ class BasketNewVC: UIViewController, UITextFieldDelegate {
         self.IngredientsTblV.register(UINib(nibName: "IngridenttTblVCell", bundle: nil), forCellReuseIdentifier: "IngridenttTblVCell")
         self.IngredientsTblV.delegate = self
         self.IngredientsTblV.dataSource = self
+     //   self.IngredientsTblV.isSkeletonable = false
           
         self.AddressTblV.register(UINib(nibName: "AddressTblVCell", bundle: nil), forCellReuseIdentifier: "AddressTblVCell")
         self.AddressTblV.delegate = self
@@ -307,6 +310,21 @@ class BasketNewVC: UIViewController, UITextFieldDelegate {
         yourRecipeCollV.dataSource = self
         yourRecipeCollV.register(UINib(nibName: "YouRecipeCollVCell", bundle: nil), forCellWithReuseIdentifier: "YouRecipeCollVCell")
     }
+
+    private func setBasketContentSkeletonVisible(_ visible: Bool) {
+        if visible {
+            YourRecipeBgV.isHidden = false
+            IngredientBgV.isHidden = false
+            yourRecipeCollVH.constant = 220
+            IngredientsTblVH.constant = 83 * 4
+            view.layoutIfNeeded()
+            yourRecipeCollV.reloadData()
+            IngredientsTblV.reloadData()
+        } else {
+            IngredientsTblV.reloadData()
+            yourRecipeCollV.reloadData()
+        }
+    }
  
     // MARK: - Button Actions
 
@@ -421,18 +439,27 @@ class BasketNewVC: UIViewController, UITextFieldDelegate {
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 extension BasketNewVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if isLoadingBasketContent {
+            return 4
+        }
         return BasketListArr.recipe?.count ?? 0
     }
        
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "YouRecipeCollVCell", for: indexPath) as! YouRecipeCollVCell
+        
+        if isLoadingBasketContent {
+            cell.setLoading(true)
+            return cell
+        }
+        
+        cell.setLoading(false)
         cell.Namelbl.text = BasketListArr.recipe?[indexPath.item].data?.recipe?.label ?? ""
                
         let img = BasketListArr.recipe?[indexPath.item].data?.recipe?.images?.small?.url ?? ""
         let imgUrl = URL(string: img)
                
-        cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-        cell.Img.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "No_Image"))
+        cell.Img.setRemoteImage(imgUrl, placeholder: UIImage(named: "No_Image"))
                
 //        cell.ServCountLbl.text = "Serves \(BasketListArr.recipe?[indexPath.item].serving ?? "0")"
                
@@ -611,6 +638,9 @@ extension BasketNewVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
 extension BasketNewVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == IngredientsTblV{
+            if isLoadingBasketContent {
+                return 4
+            }
             return BasketListArr.ingredient?.count ?? 0
         }else{
             return self.SavedAddressList.count
@@ -620,6 +650,13 @@ extension BasketNewVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == IngredientsTblV{
             let cell = tableView.dequeueReusableCell(withIdentifier: "IngridenttTblVCell", for: indexPath) as! IngridenttTblVCell
+            
+            if isLoadingBasketContent {
+                cell.setLoading(true)
+                return cell
+            }
+            
+            cell.setLoading(false)
             
             let img = BasketListArr.ingredient?[indexPath.item].proImg ?? ""
             let imgUrl = URL(string: img)
@@ -645,8 +682,7 @@ extension BasketNewVC: UITableViewDelegate, UITableViewDataSource {
                 cell.quantityLbl.text = "\(formatted) \(unit)"
             }
          
-            cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-            cell.Img.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "No_Image"))
+            cell.Img.setRemoteImage(imgUrl, placeholder: UIImage(named: "No_Image"))
             
             if self.BasketListArr.ingredient?[indexPath.row].isSelected == true{
                 cell.checkBoxBtn.setImage(UIImage(named: "YellowCheck"), for: .normal)
@@ -790,12 +826,38 @@ extension BasketNewVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if tableView == IngredientsTblV{
-            return UITableView.automaticDimension
+            return isLoadingBasketContent ? 83 : UITableView.automaticDimension
         }else{
             return UITableView.automaticDimension
         }
     }
 }
+
+//extension BasketNewVC: SkeletonCollectionViewDataSource, SkeletonTableViewDataSource {
+//    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return 4
+//    }
+//
+//    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> SkeletonView.ReusableCellIdentifier {
+//        return "YouRecipeCollVCell"
+//    }
+//
+//    func numSections(in collectionSkeletonView: UICollectionView) -> Int {
+//        return 1
+//    }
+//
+//    func numSections(in tableView: UITableView) -> Int {
+//        return 1
+//    }
+//
+//    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return 6
+//    }
+//
+//    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> SkeletonView.ReusableCellIdentifier {
+//        return "IngridenttTblVCell"
+//    }
+//}
 
     // MARK: - Empty State Setup
 extension BasketNewVC{
@@ -1096,12 +1158,11 @@ extension BasketNewVC{
     
     /// Fetches basket list data and updates UI accordingly
     func getBasketListData() {
+        if !isLoadingBasketContent {
+            isLoadingBasketContent = true
+            setBasketContentSkeletonVisible(true)
+        }
         let params:JSONDictionary = [:]
-        
-        showIndicator(withTitle: "", and: "")
-//        if UserDetail.shared.getSubscriptionStatus() == "0"{
-//            showIndicator(withTitle: "", and: "")
-//        }
          
         let loginURL = baseURL.baseURL + appEndPoints.get_basketlist
         print(params,"Params")
@@ -1110,7 +1171,7 @@ extension BasketNewVC{
         
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
             
-            self.hideIndicator()
+            self.isLoadingBasketContent = false
             
             let data = try! json.rawData()
             do{
@@ -1143,11 +1204,13 @@ extension BasketNewVC{
                     // self.IngredientsTblV.reloadData()
                     self.recalculateAndMergeIngredients()
                     self.updateEmptyState()
+                    self.setBasketContentSkeletonVisible(false)
                 }else{
                     let msg = d.message ?? ""
-          
+                    self.setBasketContentSkeletonVisible(false)
                 }
             }catch{
+                self.setBasketContentSkeletonVisible(false)
                 print(error)
             }
         })
@@ -1588,4 +1651,3 @@ extension BasketNewVC: CLLocationManagerDelegate,GMSMapViewDelegate {
         // addressLabel.lock()
     }
 }
-

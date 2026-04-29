@@ -8,21 +8,16 @@
 import UIKit
 import Alamofire
 import SDWebImage
+import SkeletonView
 
 class SearchPrefVC: UIViewController {
 
     @IBOutlet weak var profileImg: UIImageView!
-    
     @IBOutlet weak var NameLbl: UILabel!
-    
     @IBOutlet weak var SearchTxtF: UITextField!
-    
     @IBOutlet weak var IngredientCollV: UICollectionView!
-    
     @IBOutlet weak var MealCollV: UICollectionView!
-    
     @IBOutlet weak var PopularCatCollV: UICollectionView!
-    
     @IBOutlet weak var SearchByRecipeCollV: UICollectionView!
     @IBOutlet weak var SearchByRecipeCollVH: NSLayoutConstraint!
     @IBOutlet weak var PrefToggleBtnO: UIButton!
@@ -34,8 +29,8 @@ class SearchPrefVC: UIViewController {
     
     var SearchRecipeSelItem = SearchListModel()
     var SearchRecipeSelItem1 = SearchListModel()
-    
     var textChangedWorkItem: DispatchWorkItem?
+    private var isLoadingSearchData = false
     
     
     override func viewDidLoad() {
@@ -52,13 +47,13 @@ class SearchPrefVC: UIViewController {
         SearchByRecipeCollV.register(UINib(nibName: "MealCollVCell", bundle: nil), forCellWithReuseIdentifier: "MealCollVCell")
         SearchByRecipeCollV.delegate = self
         SearchByRecipeCollV.dataSource = self
-         
+        
         self.SearchByRecipeBgV.isHidden = true
         
         PopularCatCollV.register(UINib(nibName: "MealCollVCell", bundle: nil), forCellWithReuseIdentifier: "MealCollVCell")
         PopularCatCollV.delegate = self
         PopularCatCollV.dataSource = self
-       
+        
         DispatchQueue.global(qos: .background).async {
             planService.shared.Api_To_Get_ProfileData(vc: self) { result in
                 
@@ -84,8 +79,7 @@ class SearchPrefVC: UIViewController {
                     let ProfImg = response?["profile_img"] as? String ?? String()
                     let img = URL(string: baseURL.imageUrl + ProfImg)
                     
-                    self.profileImg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-                    self.profileImg.sd_setImage(with: img, placeholderImage: UIImage(named: "DummyImg"))
+                    self.profileImg.setRemoteImage(img, placeholder: UIImage(named: "DummyImg"))
                 case .failure(let error):
                     // Handle error
                     print("Error retrieving data: \(error.localizedDescription)")
@@ -219,6 +213,15 @@ class SearchPrefVC: UIViewController {
 extension SearchPrefVC: UICollectionViewDelegate, UICollectionViewDataSource ,UICollectionViewDelegateFlowLayout{
     
         func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+            if isLoadingSearchData {
+                if collectionView == IngredientCollV {
+                    return 8
+                } else if collectionView == SearchByRecipeCollV {
+                    return 4
+                } else {
+                    return 6
+                }
+            }
             if collectionView == IngredientCollV{
                 return SearchRecipeSelItem.ingredient?.count ?? 0
             }else if collectionView == MealCollV{
@@ -233,18 +236,27 @@ extension SearchPrefVC: UICollectionViewDelegate, UICollectionViewDataSource ,UI
         func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
             if collectionView == IngredientCollV{
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchIngredientCollVCell", for: indexPath) as! SearchIngredientCollVCell
+                if isLoadingSearchData {
+                    cell.setLoading(true)
+                    return cell
+                }
+                cell.setLoading(false)
                 
                 cell.NameLbl.text = SearchRecipeSelItem.ingredient?[indexPath.item].name ?? ""
                 
                 let img = SearchRecipeSelItem.ingredient?[indexPath.item].image ?? ""
                 let imgUrl = URL(string: img)
                 
-                cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-                cell.Img.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "No_Image"))
+                cell.Img.setRemoteImage(imgUrl, placeholder: UIImage(named: "No_Image"))
                  
                 return cell
             }else if collectionView == MealCollV{
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MealCollVCell", for: indexPath) as! MealCollVCell
+                if isLoadingSearchData {
+                    cell.setLoading(true)
+                    return cell
+                }
+                cell.setLoading(false)
                 cell.NameLbl.text = SearchRecipeSelItem.mealType?[indexPath.item].name ?? ""
                 
               //  cell.NameLblH.constant = 24
@@ -252,30 +264,37 @@ extension SearchPrefVC: UICollectionViewDelegate, UICollectionViewDataSource ,UI
                 let img = SearchRecipeSelItem.mealType?[indexPath.item].image ?? ""
                 let imgUrl = URL(string: img)
                 
-                cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-                cell.Img.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "No_Image"))
+                cell.Img.setRemoteImage(imgUrl, placeholder: UIImage(named: "No_Image"))
                 return cell
                 
             }else if collectionView == SearchByRecipeCollV{
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MealCollVCell", for: indexPath) as! MealCollVCell
+                if isLoadingSearchData {
+                    cell.setLoading(true)
+                    return cell
+                }
+                cell.setLoading(false)
                 cell.NameLbl.text = SearchRecipeSelItem.recipes?[indexPath.item].recipe?.label ?? ""
               //  cell.NameLblH.constant = 48
                 let img =  SearchRecipeSelItem.recipes?[indexPath.item].recipe?.images?.small?.url ?? ""
                 let imgUrl = URL(string: img)
                 
-                cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-                cell.Img.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "No_Image"))
+                cell.Img.setRemoteImage(imgUrl, placeholder: UIImage(named: "No_Image"))
                 return cell
                 
             }else{
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MealCollVCell", for: indexPath) as! MealCollVCell
+                if isLoadingSearchData {
+                    cell.setLoading(true)
+                    return cell
+                }
+                cell.setLoading(false)
                 cell.NameLbl.text = SearchRecipeSelItem.category?[indexPath.item].name ?? ""
                // cell.NameLblH.constant = 24
                 let img = SearchRecipeSelItem.category?[indexPath.item].image ?? ""
                 let imgUrl = URL(string: img)
                 
-                cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-                cell.Img.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "No_Image"))
+                cell.Img.setRemoteImage(imgUrl, placeholder: UIImage(named: "No_Image"))
                 return cell
             }
         }
@@ -358,7 +377,17 @@ extension SearchPrefVC: UICollectionViewDelegate, UICollectionViewDataSource ,UI
 
 
 extension SearchPrefVC {
+    private func setSearchCollectionsSkeletonVisible(_ visible: Bool) {
+        let collections = [IngredientCollV, MealCollV, SearchByRecipeCollV, PopularCatCollV]
+        collections.forEach { $0?.reloadData() }
+    }
+
     func Api_To_GetAllRecipeList(Search: String){
+        if !isLoadingSearchData {
+            isLoadingSearchData = true
+            setSearchCollectionsSkeletonVisible(true)
+        }
+
         var params = [String: Any]()
         
         params["search"] = Search
@@ -368,17 +397,13 @@ extension SearchPrefVC {
         let headers: HTTPHeaders = [
             "Authorization": "Bearer \(token)"
         ]
-        
-        showIndicator(withTitle: "", and: "")
-        
         let loginURL = baseURL.baseURL + appEndPoints.ingredientRecipeSearch //for_search
         print(params,"Params")
         print(loginURL,"loginURL")
         
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
             
-            self.hideIndicator()
-            
+            self.isLoadingSearchData = false
             let data = try! json.rawData()
             
             do{
@@ -432,12 +457,15 @@ extension SearchPrefVC {
                     self.MealCollV.reloadData()
                     self.SearchByRecipeCollV.reloadData()
                     self.PopularCatCollV.reloadData()
+                    self.setSearchCollectionsSkeletonVisible(false)
                     
                 }else{
+                    self.setSearchCollectionsSkeletonVisible(false)
                     let msg = d.message ?? ""
                     self.showToast(msg)
                 }
             }catch{
+                self.setSearchCollectionsSkeletonVisible(false)
                 print(error)
             }
         })
@@ -445,11 +473,11 @@ extension SearchPrefVC {
    
     
     func Api_To_Set_Preferences(){
-        var params = [String: Any]()
+        let params = [String: Any]()
        
        // params["q"] = url
       
-        showIndicator(withTitle: "", and: "")
+        //showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.for_preference_update
         print(params,"Params")

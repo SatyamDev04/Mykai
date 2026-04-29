@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class RecipeCollVCell: UICollectionViewCell {
     
@@ -21,7 +22,12 @@ class RecipeCollVCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        isSkeletonable = true
+        contentView.isSkeletonable = true
+        ImgV.isSkeletonable = true
+        ImgV.skeletonCornerRadius = 10
+        NameLbl.isSkeletonable = true
+        TimeLbl.isSkeletonable = true
     }
 
 }

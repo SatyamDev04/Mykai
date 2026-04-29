@@ -255,11 +255,15 @@
             <size key="customSize" width="182" height="251"/>
             <connections>
                 <outlet property="AddToPlanBtn" destination="A6Y-Nw-PMG" id="S2O-Tm-qD2"/>
+                <outlet property="AddToPlanContainerView" destination="CDk-lg-jNM" id="z0t-Q8-gTJ"/>
+                <outlet property="CardContainerView" destination="esj-T3-fc0" id="ZrL-XQ-UEl"/>
                 <outlet property="CartBtn" destination="PZg-NS-Q1Z" id="U1P-mc-9aW"/>
+                <outlet property="CartContainerView" destination="hlt-Bm-3zK" id="vVj-jw-zYV"/>
                 <outlet property="FavBtn" destination="mEK-CY-6Bc" id="6q5-wg-Ila"/>
                 <outlet property="ImgV" destination="EpZ-PS-IRa" id="Ye5-g7-oy0"/>
                 <outlet property="NameLbl" destination="5Wy-4X-OwB" id="CaM-YB-zhY"/>
                 <outlet property="TimeLbl" destination="KcV-Rs-rh2" id="dh5-KO-Cxg"/>
+                <outlet property="TimeBadgeView" destination="5XM-Ib-ZkW" id="4kV-7C-zb6"/>
                 <outlet property="ratingView" destination="9bp-iY-SZd" id="ndo-SR-t0x"/>
             </connections>
             <point key="canvasLocation" x="100.76335877862596" y="30.633802816901412"/>

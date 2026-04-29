@@ -91,12 +91,39 @@ extension AddRecipePopUpVC: UITableViewDelegate, UITableViewDataSource {
                 let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
                 let vc = storyboard.instantiateViewController(withIdentifier: "WebViewVC") as! WebViewVC
                 vc.WebUrl = url
-                vc.backAction = { wubUrl in
-                    self.Api_To_Get_MealByURL(url: wubUrl)
-                    self.TblBGV.isHidden = true
-                    self.BgV.isHidden = true
+                self.TblBGV.isHidden = true
+                self.BgV.isHidden = true
+//                vc.backAction = { wubUrl in
+////                    self.Api_To_Get_MealByURL(url: wubUrl)
+//                    self.TblBGV.isHidden = true
+//                    self.BgV.isHidden = true
+////                    let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+////                    let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeNewVC") as! CreateRecipeNewVC
+////                   
+////                    self.navigationController?.pushViewController(vc, animated: true)
+//                }
+                vc.BackRecipeNotFound = { msg in
+                    self.tabBarController?.tabBar.isHidden = false
+                    self.ToDismissPopUp()
+                    
+                    if let scene = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+                        // to do
+                        scene.window?.rootViewController?.showToast(msg)
+                        self.TblBGV.isHidden = false
+                        self.BgV.isHidden = false
+                    }
                 }
-                
+                vc.ImportedDataCloser = { importedData in
+                    let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+                    let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeNewVC") as! CreateRecipeNewVC
+                    vc.RecipeImportedData = importedData
+                    vc.backCase = "imported"
+                    vc.backAction = {
+                        self.ToDismissPopUp()
+                        
+                    }
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
                 vc.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(vc, animated: true)
             }
@@ -110,8 +137,7 @@ extension AddRecipePopUpVC: UITableViewDelegate, UITableViewDataSource {
             
             let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeNewVC") as! CreateRecipeNewVC
-
-            
+           
             self.navigationController?.pushViewController(vc, animated: true)
             
         }
@@ -221,57 +247,60 @@ extension AddRecipePopUpVC{
         task.resume()
     }
     
-    func Api_To_Get_MealByURL(url: String){
-        var params = [String: Any]()
-        
-        params["url"] = url
-        
-        showIndicator(withTitle: "", and: "")
-        
-        let loginURL = baseURL.baseURL + appEndPoints.get_meal_by_url
-        print(params,"Params")
-        print(loginURL,"loginURL")
-        
-        WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
-            
-            self.hideIndicator()
-            
-            let data = try! json.rawData()
-            
-            do{
-                let d = try JSONDecoder().decode(URLReciepeModel.self, from: data)
-                if d.success == true {
-                    let list = d.data
-                     let msg = d.message ?? ""
-                    
-                    guard msg != "Recipe Not Found." else {
-                        self.tabBarController?.tabBar.isHidden = false
-                        self.ToDismissPopUp()
-                        
-                        if let scene = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
-                            // to do
-                            scene.window?.rootViewController?.showToast(msg)
-                            self.TblBGV.isHidden = false
-                            self.BgV.isHidden = false
-                        }
-                        return
-                    }
-                    
-                    
-                    let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
-                    let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeNewVC") as! CreateRecipeNewVC
-                    vc.RecipeImportedData = list?.first?.recipe
-                    self.navigationController?.pushViewController(vc, animated: true)
-                    
-                }else{
-                    let msg = d.message ?? ""
-                    self.showToast(msg)
-                }
-            }catch{
-                print(error)
-            }
-        })
-    }
+//    func Api_To_Get_MealByURL(url: String){
+//        var params = [String: Any]()
+//        
+//        params["url"] = url
+//        
+//        showIndicator(withTitle: "", and: "")
+//        
+//        let loginURL = baseURL.baseURL + appEndPoints.get_meal_by_url
+//        print(params,"Params")
+//        print(loginURL,"loginURL")
+//        
+//        WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
+//            
+//            self.hideIndicator()
+//            
+//            let data = try! json.rawData()
+//            
+//            do{
+//                let d = try JSONDecoder().decode(URLReciepeModel.self, from: data)
+//                if d.success == true {
+//                    let list = d.data
+//                     let msg = d.message ?? ""
+//                    
+//                    guard msg != "Recipe Not Found." else {
+//                        self.tabBarController?.tabBar.isHidden = false
+//                        self.ToDismissPopUp()
+//                        
+//                        if let scene = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+//                            // to do
+//                            scene.window?.rootViewController?.showToast(msg)
+//                            self.TblBGV.isHidden = false
+//                            self.BgV.isHidden = false
+//                        }
+//                        return
+//                    }
+//                    
+//                    
+//                    let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+//                    let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeNewVC") as! CreateRecipeNewVC
+//                    vc.RecipeImportedData = list?.first?.recipe
+//                    vc.backAction = {
+//                        self.ToDismissPopUp()
+//                    }
+//                    self.navigationController?.pushViewController(vc, animated: true)
+//                    
+//                }else{
+//                    let msg = d.message ?? ""
+//                    self.showToast(msg)
+//                }
+//            }catch{
+//                print(error)
+//            }
+//        })
+//    }
     
     
     func getTopViewController(from viewController: UIViewController?) -> UIViewController? {

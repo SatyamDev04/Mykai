@@ -13,7 +13,8 @@ class WebViewVC: UIViewController, WKNavigationDelegate, WKUIDelegate {
     var webView: WKWebView!
     
     var backAction:(_ url: String)->() = {_ in}
-    
+    var BackRecipeNotFound : (String) -> () = {_ in }
+    var ImportedDataCloser : (RecipeURL) -> () = {_ in }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.urlString = WebUrl
@@ -37,6 +38,7 @@ class WebViewVC: UIViewController, WKNavigationDelegate, WKUIDelegate {
             webView.load(request)
         }
         setupSwipeGestures()
+        
     }
     
     
@@ -69,8 +71,9 @@ class WebViewVC: UIViewController, WKNavigationDelegate, WKUIDelegate {
   
     @IBAction func ImportToRecimeBtn(_ sender: UIButton) {
         print("url:", self.urlString ?? "")
-        self.backAction(self.urlString ?? "")
-        self.navigationController?.popViewController(animated: true)
+//        self.backAction(self.urlString ?? "")
+        Api_To_Get_MealByURL(url: urlString ?? "")
+//        self.navigationController?.popViewController(animated: true)
     }
  
    
@@ -85,4 +88,54 @@ class WebViewVC: UIViewController, WKNavigationDelegate, WKUIDelegate {
         decisionHandler(.allow)
     }
  
+    func Api_To_Get_MealByURL(url: String){
+        var params = [String: Any]()
+        
+        params["url"] = url
+        
+        showIndicator(withTitle: "", and: "")
+        
+        let loginURL = baseURL.baseURL + appEndPoints.get_meal_by_url
+        print(params,"Params")
+        print(loginURL,"loginURL")
+        
+        WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
+            
+            self.hideIndicator()
+            
+            let data = try! json.rawData()
+            
+            do{
+                let d = try JSONDecoder().decode(URLReciepeModel.self, from: data)
+                if d.success == true {
+                    let list = d.data
+                     let msg = d.message ?? ""
+                    
+                    guard msg != "Recipe Not Found." else {
+                        self.BackRecipeNotFound(msg)
+                        return
+                    }
+                    
+                    if let data = list?.first?.recipe{
+                        self.ImportedDataCloser(data)
+                    }
+//                    self.navigationController?.popViewController(animated: true)
+//                    let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+//                    let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeNewVC") as! CreateRecipeNewVC
+//                    vc.RecipeImportedData = list?.first?.recipe
+//                    vc.backAction = {
+//                        self.ToDismissPopUp()
+//                    }
+//                    self.navigationController?.pushViewController(vc, animated: true)
+                    
+                }else{
+                    let msg = d.message ?? ""
+                    self.showToast(msg)
+                }
+            }catch{
+                print(error)
+            }
+        })
+    }
+    
 }

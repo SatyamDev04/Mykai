@@ -7,14 +7,19 @@
 
 import Foundation
 import UIKit
+import SkeletonView
 // Api For HomeData
 class HomeService {
     static let shared = HomeService()
     
     func getHomeData(vc: UIViewController, completion: @escaping (Result<DataClass?, Error>) -> Void) {
         
-        vc.showIndicator(withTitle: "", and: "")
-        
+//        vc.showIndicator(withTitle: "", and: "")
+        vc.view.showSkeleton()
+//        if let skeletonView = vc.view {
+//            skeletonView.isSkeletonable = true
+//            skeletonView.showAnimatedGradientSkeleton()
+//        }
         var params:JSONDictionary = [:]
         
         let loginURL = baseURL.baseURL + appEndPoints.home_data
@@ -117,7 +122,7 @@ class HomeService {
         params["longitude"] = AppLocation.long
         params["page"] = currentPage
         
-        vc.showIndicator(withTitle: "", and: "")
+//        vc.showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.super_markets
         print(params,"Params")
@@ -185,7 +190,7 @@ class HomeService {
     func Api_To_get_SavedAddress(vc: UIViewController, completion: @escaping (Result<[AddressdataModel]?, Error>) -> Void) {
         
        
-        vc.showIndicator(withTitle: "", and: "")
+//        vc.showIndicator(withTitle: "", and: "")
         
         let loginURL = baseURL.baseURL + appEndPoints.get_address
         

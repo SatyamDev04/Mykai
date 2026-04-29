@@ -19,7 +19,7 @@ class planService {
          
                 params["q"] = "q"
          
-        vc.showIndicator(withTitle: "", and: "")
+       // vc.showIndicator(withTitle: "", and: "")
             
             let loginURL = baseURL.baseURL + appEndPoints.all_recipe
             print(params,"Params")
@@ -157,7 +157,7 @@ class planService {
             params["plan_type"] = "0"
            
             
-        vc.showIndicator(withTitle: "", and: "")
+       // vc.showIndicator(withTitle: "", and: "")
             
             let loginURL = baseURL.baseURL + appEndPoints.get_meals
             print(params,"Params")

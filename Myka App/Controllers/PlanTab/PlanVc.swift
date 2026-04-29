@@ -10,6 +10,7 @@ import CustomBlurEffectView
 import Alamofire
 import SDWebImage
 import SwiftyJSON
+import SkeletonView
 
 class PlanVc: UIViewController {
     
@@ -138,6 +139,7 @@ class PlanVc: UIViewController {
     // for lazy loading
     var indx = Int()
     var Seltype = ""
+    private var hasLoadedInitialPlanCollections = false
     //
     
     override func viewDidLoad() {
@@ -210,6 +212,7 @@ class PlanVc: UIViewController {
         setupInitialWeek()
         setupCollectionView()
         setupTableView()
+        setPlanCollectionsSkeletonVisible(true)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         ChoosedaysBgV.addGestureRecognizer(tapGesture)
@@ -469,26 +472,32 @@ class PlanVc: UIViewController {
         BreakFastCollV.delegate = self
         BreakFastCollV.dataSource = self
         BreakFastCollV.register(UINib(nibName: "DinnerCollVCell", bundle: nil), forCellWithReuseIdentifier: "DinnerCollVCell")
+        BreakFastCollV.registerPaginationFooter()
         
         dessertCollV.delegate = self
         dessertCollV.dataSource = self
         dessertCollV.register(UINib(nibName: "DinnerCollVCell", bundle: nil), forCellWithReuseIdentifier: "DinnerCollVCell")
+        dessertCollV.registerPaginationFooter()
         
         LunchCollV.delegate = self
         LunchCollV.dataSource = self
         LunchCollV.register(UINib(nibName: "DinnerCollVCell", bundle: nil), forCellWithReuseIdentifier: "DinnerCollVCell")
+        LunchCollV.registerPaginationFooter()
         
         DinnerCollV.delegate = self
         DinnerCollV.dataSource = self
         DinnerCollV.register(UINib(nibName: "DinnerCollVCell", bundle: nil), forCellWithReuseIdentifier: "DinnerCollVCell")
+        DinnerCollV.registerPaginationFooter()
         
         TeaTimeCollV.delegate = self
         TeaTimeCollV.dataSource = self
         TeaTimeCollV.register(UINib(nibName: "DinnerCollVCell", bundle: nil), forCellWithReuseIdentifier: "DinnerCollVCell")
+        TeaTimeCollV.registerPaginationFooter()
         
         SnacksCollV.delegate = self
         SnacksCollV.dataSource = self
         SnacksCollV.register(UINib(nibName: "DinnerCollVCell", bundle: nil), forCellWithReuseIdentifier: "DinnerCollVCell")
+        SnacksCollV.registerPaginationFooter()
         
         BreakFastDishCollV.delegate = self
         BreakFastDishCollV.dataSource = self
@@ -513,6 +522,32 @@ class PlanVc: UIViewController {
         SnacksDishCollV.delegate = self
         SnacksDishCollV.dataSource = self
         SnacksDishCollV.register(UINib(nibName: "DishCollVCell", bundle: nil), forCellWithReuseIdentifier: "DishCollVCell")
+    }
+
+    private func planRecipeCollections() -> [UICollectionView] {
+        [
+            BreakFastCollV,
+            dessertCollV,
+            LunchCollV,
+            DinnerCollV,
+            TeaTimeCollV,
+            SnacksCollV
+        ].compactMap { $0 }
+    }
+
+    private func planDishCollections() -> [UICollectionView] {
+        [
+            BreakFastDishCollV,
+            dessertDishCollV,
+            LunchDishCollV,
+            DinnerDishCollV,
+            TeaTimeDishCollV,
+            SnacksDishCollV
+        ].compactMap { $0 }
+    }
+
+    private func setPlanCollectionsSkeletonVisible(_ visible: Bool) {
+        (planRecipeCollections() + planDishCollections()).forEach { $0.reloadData() }
     }
     
     // for popups
@@ -943,6 +978,13 @@ class PlanVc: UIViewController {
 
 extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if hasLoadedInitialPlanCollections == false {
+            if planRecipeCollections().contains(collectionView) {
+                return 4
+            } else if planDishCollections().contains(collectionView) {
+                return 2
+            }
+        }
         if collectionView == CalanderCollV{
             return currentWeekDates.count
         }else if collectionView == BreakFastCollV{
@@ -979,8 +1021,17 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             let date = currentWeekDates[indexPath.item]
             cell.configure(with: date)
             return cell
+        }else if hasLoadedInitialPlanCollections == false && planRecipeCollections().contains(collectionView){
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DinnerCollVCell", for: indexPath) as! DinnerCollVCell
+            cell.setLoading(true)
+            return cell
+        }else if hasLoadedInitialPlanCollections == false && planDishCollections().contains(collectionView){
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DishCollVCell", for: indexPath) as! DishCollVCell
+            cell.setLoading(true)
+            return cell
         }else if collectionView == BreakFastCollV{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DinnerCollVCell", for: indexPath) as! DinnerCollVCell
+            cell.setLoading(false)
             cell.NameLbl.text =  self.AllRecipeSelItem.recipes?.breakfast?[indexPath.item].recipe?.label ?? ""
             //    cell.PriceLbl.text = ""
             //               cell.RAtingLbl.text = "\(self.AllRecipeSelItem.recipes?.breakfast?[indexPath.item].review ?? 0)(\(self.AllRecipeSelItem.recipes?.breakfast?[indexPath.item].review_number ?? 0))"
@@ -991,8 +1042,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             
             let img = self.AllRecipeSelItem.recipes?.breakfast?[indexPath.item].recipe?.images?.small?.url ?? ""
             let ImgUrl = URL(string: img)
-            cell.ImgV.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-            cell.ImgV.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
+            cell.ImgV.setRemoteImage(ImgUrl, placeholder: UIImage(named: "No_Image"))
             
             cell.TimeLbl.text = "\(self.AllRecipeSelItem.recipes?.breakfast?[indexPath.item].recipe?.totalTime ?? 0) min"
             
@@ -1016,6 +1066,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             return cell
         }else if collectionView == LunchCollV{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DinnerCollVCell", for: indexPath) as! DinnerCollVCell
+            cell.setLoading(false)
             cell.NameLbl.text =  self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].recipe?.label ?? ""
             //     cell.PriceLbl.text = ""
             //               cell.RAtingLbl.text = "\(self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].review ?? 0)(\(self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].review_number ?? 0))"
@@ -1027,8 +1078,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             
             let img = self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].recipe?.images?.small?.url ?? ""
             let ImgUrl = URL(string: img)
-            cell.ImgV.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-            cell.ImgV.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
+            cell.ImgV.setRemoteImage(ImgUrl, placeholder: UIImage(named: "No_Image"))
             
             cell.TimeLbl.text = "\(self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].recipe?.totalTime ?? 0) min"
             
@@ -1052,6 +1102,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             return cell
         }else if collectionView == dessertCollV{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DinnerCollVCell", for: indexPath) as! DinnerCollVCell
+            cell.setLoading(false)
             cell.NameLbl.text =  self.AllRecipeSelItem.recipes?.Dessert?[indexPath.item].recipe?.label ?? ""
             //     cell.PriceLbl.text = ""
             //               cell.RAtingLbl.text = "\(self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].review ?? 0)(\(self.AllRecipeSelItem.recipes?.lunch?[indexPath.item].review_number ?? 0))"
@@ -1063,8 +1114,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             
             let img = self.AllRecipeSelItem.recipes?.Dessert?[indexPath.item].recipe?.images?.small?.url ?? ""
             let ImgUrl = URL(string: img)
-            cell.ImgV.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-            cell.ImgV.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
+            cell.ImgV.setRemoteImage(ImgUrl, placeholder: UIImage(named: "No_Image"))
             
             cell.TimeLbl.text = "\(self.AllRecipeSelItem.recipes?.Dessert?[indexPath.item].recipe?.totalTime ?? 0) min"
             
@@ -1088,6 +1138,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             return cell
         }else if collectionView == DinnerCollV{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DinnerCollVCell", for: indexPath) as! DinnerCollVCell
+            cell.setLoading(false)
             cell.NameLbl.text =  self.AllRecipeSelItem.recipes?.dinner?[indexPath.item].recipe?.label ?? ""
             //  cell.PriceLbl.text = ""
             //               cell.RAtingLbl.text = "\(self.AllRecipeSelItem.recipes?.dinner?[indexPath.item].review ?? 0)(\(self.AllRecipeSelItem.recipes?.dinner?[indexPath.item].review_number ?? 0))"
@@ -1099,8 +1150,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             
             let img = self.AllRecipeSelItem.recipes?.dinner?[indexPath.item].recipe?.images?.small?.url ?? ""
             let ImgUrl = URL(string: img)
-            cell.ImgV.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-            cell.ImgV.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
+            cell.ImgV.setRemoteImage(ImgUrl, placeholder: UIImage(named: "No_Image"))
             
             cell.TimeLbl.text = "\(self.AllRecipeSelItem.recipes?.dinner?[indexPath.item].recipe?.totalTime ?? 0) min"
             
@@ -1124,6 +1174,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             return cell
         }else if collectionView == SnacksCollV{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DinnerCollVCell", for: indexPath) as! DinnerCollVCell
+            cell.setLoading(false)
             cell.NameLbl.text =  self.AllRecipeSelItem.recipes?.Snack?[indexPath.item].recipe?.label ?? ""
             //     cell.PriceLbl.text = ""
             //               cell.RAtingLbl.text = "\(self.AllRecipeSelItem.recipes?.Snack?[indexPath.item].review ?? 0)(\(self.AllRecipeSelItem.recipes?.Snack?[indexPath.item].review_number ?? 0))"
@@ -1135,8 +1186,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             
             let img = self.AllRecipeSelItem.recipes?.Snack?[indexPath.item].recipe?.images?.small?.url ?? ""
             let ImgUrl = URL(string: img)
-            cell.ImgV.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-            cell.ImgV.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
+            cell.ImgV.setRemoteImage(ImgUrl, placeholder: UIImage(named: "No_Image"))
             
             cell.TimeLbl.text = "\(self.AllRecipeSelItem.recipes?.Snack?[indexPath.item].recipe?.totalTime ?? 0) min"
             
@@ -1160,6 +1210,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             return cell
         }else if collectionView == TeaTimeCollV{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DinnerCollVCell", for: indexPath) as! DinnerCollVCell
+            cell.setLoading(false)
             cell.NameLbl.text =  self.AllRecipeSelItem.recipes?.Teatime?[indexPath.item].recipe?.label ?? ""
             
             cell.TimeLbl.text = "\(self.AllRecipeSelItem.recipes?.Teatime?[indexPath.item].recipe?.totalTime ?? 0) min"
@@ -1173,8 +1224,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             
             let img = self.AllRecipeSelItem.recipes?.Teatime?[indexPath.item].recipe?.images?.small?.url ?? ""
             let ImgUrl = URL(string: img)
-            cell.ImgV.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-            cell.ImgV.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "No_Image"))
+            cell.ImgV.setRemoteImage(ImgUrl, placeholder: UIImage(named: "No_Image"))
             
             let islike = self.AllRecipeSelItem.recipes?.Teatime?[indexPath.item].isLike
             
@@ -1196,6 +1246,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             return cell
         }else if collectionView == BreakFastDishCollV{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DishCollVCell", for: indexPath) as! DishCollVCell
+            cell.setLoading(false)
             
             cell.MealNameLbl.text = self.AllDataList.breakfast?[indexPath.item].recipe?.label ?? ""
             cell.TotalTimeLbl.text = "\(self.AllDataList.breakfast?[indexPath.item].recipe?.totalTime ?? 0) min"
@@ -1218,8 +1269,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.ServCountLbl.text = "\(serv1 * serv2) Servings"
             
             let img = self.AllDataList.breakfast?[indexPath.item].recipe?.images?.small?.url ?? ""
-            cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-            cell.MealIMg.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
+            cell.MealIMg.setRemoteImage(URL(string: img), placeholder: UIImage(named: "No_Image"))
             
             
             
@@ -1234,6 +1284,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             return cell
         }else if collectionView == dessertDishCollV{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DishCollVCell", for: indexPath) as! DishCollVCell
+            cell.setLoading(false)
             
             cell.MealNameLbl.text = self.AllDataList.dessert?[indexPath.item].recipe?.label ?? ""
             cell.TotalTimeLbl.text = "\(self.AllDataList.dessert?[indexPath.item].recipe?.totalTime ?? 0) min"
@@ -1255,8 +1306,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.ServCountLbl.text = "\(serv1 * serv2) Servings"
             
             let img = self.AllDataList.dessert?[indexPath.item].recipe?.images?.small?.url ?? ""
-            cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-            cell.MealIMg.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
+            cell.MealIMg.setRemoteImage(URL(string: img), placeholder: UIImage(named: "No_Image"))
             
             cell.MinusBtn.tag = indexPath.item
             cell.MinusBtn.addTarget(self, action: #selector(DessertDishServecountMinusBtnClick(_:)), for: .touchUpInside)
@@ -1269,6 +1319,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             return cell
         }else if collectionView == LunchDishCollV{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DishCollVCell", for: indexPath) as! DishCollVCell
+            cell.setLoading(false)
             cell.MealNameLbl.text = self.AllDataList.lunch?[indexPath.item].recipe?.label ?? ""
             cell.TotalTimeLbl.text = "\(self.AllDataList.lunch?[indexPath.item].recipe?.totalTime ?? 0) min"
             
@@ -1289,8 +1340,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.ServCountLbl.text = "\(serv1 * serv2) Servings"
             
             let img = self.AllDataList.lunch?[indexPath.item].recipe?.images?.small?.url ?? ""
-            cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-            cell.MealIMg.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
+            cell.MealIMg.setRemoteImage(URL(string: img), placeholder: UIImage(named: "No_Image"))
             
             cell.MinusBtn.tag = indexPath.item
             cell.MinusBtn.addTarget(self, action: #selector(LunchDishServecountMinusBtnClick(_:)), for: .touchUpInside)
@@ -1303,6 +1353,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             return cell
         }else if collectionView == DinnerDishCollV{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DishCollVCell", for: indexPath) as! DishCollVCell
+            cell.setLoading(false)
             
             cell.MealNameLbl.text = self.AllDataList.dinner?[indexPath.item].recipe?.label ?? ""
             cell.TotalTimeLbl.text = "\(self.AllDataList.dinner?[indexPath.item].recipe?.totalTime ?? 0) min"
@@ -1325,8 +1376,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.ServCountLbl.text = "\(serv1 * serv2) Servings"
             
             let img = self.AllDataList.dinner?[indexPath.item].recipe?.images?.small?.url ?? ""
-            cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-            cell.MealIMg.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
+            cell.MealIMg.setRemoteImage(URL(string: img), placeholder: UIImage(named: "No_Image"))
             
             cell.MinusBtn.tag = indexPath.item
             cell.MinusBtn.addTarget(self, action: #selector(DinnerDishServecountMinusBtnClick(_:)), for: .touchUpInside)
@@ -1339,6 +1389,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             return cell
         }else if collectionView == TeaTimeDishCollV{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DishCollVCell", for: indexPath) as! DishCollVCell
+            cell.setLoading(false)
             
             cell.MealNameLbl.text = self.AllDataList.teatime?[indexPath.item].recipe?.label ?? ""
             cell.TotalTimeLbl.text = "\(self.AllDataList.teatime?[indexPath.item].recipe?.totalTime ?? 0) min"
@@ -1361,8 +1412,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.ServCountLbl.text = "\(serv1 * serv2) Servings"
             
             let img = self.AllDataList.teatime?[indexPath.item].recipe?.images?.small?.url ?? ""
-            cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-            cell.MealIMg.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
+            cell.MealIMg.setRemoteImage(URL(string: img), placeholder: UIImage(named: "No_Image"))
             
             cell.MinusBtn.tag = indexPath.item
             cell.MinusBtn.addTarget(self, action: #selector(TeaTimeDishServecountMinusBtnClick(_:)), for: .touchUpInside)
@@ -1375,6 +1425,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             return cell
         }else{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DishCollVCell", for: indexPath) as! DishCollVCell
+            cell.setLoading(false)
             
             cell.MealNameLbl.text = self.AllDataList.snacks?[indexPath.item].recipe?.label ?? ""
             cell.TotalTimeLbl.text = "\(self.AllDataList.snacks?[indexPath.item].recipe?.totalTime ?? 0) min"
@@ -1397,8 +1448,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.ServCountLbl.text = "\(serv1 * serv2) Servings"
             
             let img = self.AllDataList.snacks?[indexPath.item].recipe?.images?.small?.url ?? ""
-            cell.MealIMg.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-            cell.MealIMg.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: "No_Image"))
+            cell.MealIMg.setRemoteImage(URL(string: img), placeholder: UIImage(named: "No_Image"))
             
             cell.MinusBtn.tag = indexPath.item
             cell.MinusBtn.addTarget(self, action: #selector(SnacksDishServecountMinusBtnClick(_:)), for: .touchUpInside)
@@ -1409,6 +1459,40 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.SwapBtn.tag = indexPath.item
             cell.SwapBtn.addTarget(self, action: #selector(SnacksSwipBtnClicked(_:)), for: .touchUpInside)
             return cell
+        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard kind == UICollectionView.elementKindSectionFooter else {
+            return UICollectionReusableView()
+        }
+
+        let footer = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: PaginationFooterView.reuseIdentifier,
+            for: indexPath
+        ) as! PaginationFooterView
+        footer.setLoading(currentPaginationMeal(for: collectionView).flatMap { isLoadingMore[$0] } == true)
+        return footer
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        guard let meal = currentPaginationMeal(for: collectionView),
+              isLoadingMore[meal] == true else {
+            return .zero
+        }
+        return CGSize(width: 32, height: collectionView.frame.height)
+    }
+
+    private func currentPaginationMeal(for collectionView: UICollectionView) -> String? {
+        switch collectionView {
+        case BreakFastCollV: return "Breakfast"
+        case LunchCollV: return "Lunch"
+        case DinnerCollV: return "Dinner"
+        case SnacksCollV: return "Snacks"
+        case dessertCollV: return "Dessert"
+        case TeaTimeCollV: return "Teatime"
+        default: return nil
         }
     }
     
@@ -2751,12 +2835,14 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
 
         guard isLoadingMore[meal] == false else { return }
         isLoadingMore[meal] = true
+        refreshPaginationFooter(for: meal)
 
         let apiMeal = (meal == "Teatime") ? "Brunch" : meal
 
         Api_To_PlanPagination(mealType: apiMeal) { result in
 
             self.isLoadingMore[meal] = false
+            self.refreshPaginationFooter(for: meal)
 
             switch result {
             case .success(let newItems):
@@ -2769,6 +2855,26 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             case .failure(let error):
                 print("Pagination error:", error.localizedDescription)
             }
+        }
+    }
+
+    private func refreshPaginationFooter(for meal: String) {
+        DispatchQueue.main.async {
+            guard let collectionView = self.collectionView(for: meal) else { return }
+            collectionView.collectionViewLayout.invalidateLayout()
+            collectionView.performBatchUpdates(nil)
+        }
+    }
+
+    private func collectionView(for meal: String) -> UICollectionView? {
+        switch meal {
+        case "Breakfast": return BreakFastCollV
+        case "Lunch": return LunchCollV
+        case "Dinner": return DinnerCollV
+        case "Snacks": return SnacksCollV
+        case "Dessert": return dessertCollV
+        case "Teatime": return TeaTimeCollV
+        default: return nil
         }
     }
     
@@ -2835,7 +2941,6 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     }
     
     func Api_To_PlanPagination(mealType: String, completion: @escaping (Result<[Breakfast], Error>) -> Void) {
-        self.showIndicator(withTitle: "", and: "")
         var params: [String: Any] = [
             "meal_type": mealType
         ]
@@ -2866,7 +2971,6 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         let url = baseURL.baseURL + "all-recipe-pagination"
         
         WebService.shared.postServiceURLEncoding(url, VC: self, andParameter: params) { json, status in
-            self.hideIndicator()
             do {
                    
                     let jsonData: Data
@@ -3184,6 +3288,8 @@ extension PlanVc {
     
     func fetchPlanDataByDate(list:YourCookedMealModel?){
         self.AllDataList  = list ?? YourCookedMealModel()
+        self.hasLoadedInitialPlanCollections = true
+        self.setPlanCollectionsSkeletonVisible(false)
         
         //                    if self.AllDataList.fat != 0 || self.AllDataList.protein != 0 || self.AllDataList.carbs != 0 || self.AllDataList.kcal != 0{
         if self.AllDataList.show == 1{
@@ -3235,6 +3341,7 @@ extension PlanVc {
     
     // for All Recipe.
     func ShowNoDataFoundonCollV(){
+        self.setPlanCollectionsSkeletonVisible(false)
         if self.AllRecipeSelItem.recipes?.breakfast?.count ?? 0 == 0{
             self.BreakFastCollVBgV.isHidden = true
             self.BreakFastBtnBgV.isHidden = true
@@ -3295,6 +3402,8 @@ extension PlanVc {
     
     // for Recipe by Date
     func ShowNoDataFoundonCollV1(){
+        self.hasLoadedInitialPlanCollections = true
+        self.setPlanCollectionsSkeletonVisible(false)
         if self.AllDataList.breakfast?.count ?? 0 == 0{
             // self.BreakFastCollVBgV.isHidden = false
             self.BreakFastDishCollVBgV.isHidden = true
@@ -3415,5 +3524,3 @@ extension PlanVc {
         self.TeaTimeDishCollV.reloadData()
     }
 }
-
-

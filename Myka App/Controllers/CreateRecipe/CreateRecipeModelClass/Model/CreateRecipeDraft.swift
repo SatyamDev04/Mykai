@@ -21,6 +21,6 @@ struct CreateRecipeDraft: Codable {
     var steps: [RecipeDataModel]
     var cookWareData: [RecipeDataModel]
     var imageData: Data?
-    
+    var savedFrom: String?
     
 }

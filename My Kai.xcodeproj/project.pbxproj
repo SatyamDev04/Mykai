@@ -13,6 +13,7 @@
 		BCE73CED89471943D9E84FA9 /* Pods_My_Kai_My_KaiUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0F165B1EDD5EBC0B768C729 /* Pods_My_Kai_My_KaiUITests.framework */; };
 		DD5B871D2F446D3A0029A08A /* AppsFlyerLib-Static in Frameworks */ = {isa = PBXBuildFile; productRef = DD5B871C2F446D3A0029A08A /* AppsFlyerLib-Static */; };
 		DD6D998B2F3229530016AB08 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = DD6D998A2F3229530016AB08 /* Lottie */; };
+		DD8720502F9B641100B11182 /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = DD87204F2F9B641100B11182 /* SkeletonView */; };
 		DD9250922F0FC94600BD23EC /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = DD9250912F0FC94600BD23EC /* SwiftSoup */; };
 		E908822C2D5F74D100B46E9E /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E908822B2D5F74D100B46E9E /* StoreKit.framework */; };
 		E916A78E2DD7180800CD5E83 /* BackgroundRemoval in Frameworks */ = {isa = PBXBuildFile; productRef = E916A78D2DD7180800CD5E83 /* BackgroundRemoval */; };
@@ -105,6 +106,7 @@
 				95114FE22D0E5CA000EB7A48 /* CustomBlurEffectView in Frameworks */,
 				A78D072761D04BE0F9E91967 /* Pods_My_Kai.framework in Frameworks */,
 				E916A7902DD7181C00CD5E83 /* BackgroundRemoval in Frameworks */,
+				DD8720502F9B641100B11182 /* SkeletonView in Frameworks */,
 				E916A78E2DD7180800CD5E83 /* BackgroundRemoval in Frameworks */,
 				DD5B871D2F446D3A0029A08A /* AppsFlyerLib-Static in Frameworks */,
 				E916A7922DD7193700CD5E83 /* BackgroundRemoval in Frameworks */,
@@ -301,6 +303,7 @@
 				DD9250902F0FC94600BD23EC /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				DD6D99892F3229530016AB08 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				DD5B871B2F446D3A0029A08A /* XCRemoteSwiftPackageReference "AppsFlyerFramework-Static" */,
+				DD87204E2F9B641100B11182 /* XCRemoteSwiftPackageReference "SkeletonView" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E99AA04C2CF5B0D0000A5D6D /* Products */;
@@ -902,6 +905,14 @@
 				minimumVersion = 4.6.0;
 			};
 		};
+		DD87204E2F9B641100B11182 /* XCRemoteSwiftPackageReference "SkeletonView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Juanpe/SkeletonView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.31.0;
+			};
+		};
 		DD9250902F0FC94600BD23EC /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
@@ -935,6 +946,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DD6D99892F3229530016AB08 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		DD87204F2F9B641100B11182 /* SkeletonView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD87204E2F9B641100B11182 /* XCRemoteSwiftPackageReference "SkeletonView" */;
+			productName = SkeletonView;
 		};
 		DD9250912F0FC94600BD23EC /* SwiftSoup */ = {
 			isa = XCSwiftPackageProductDependency;

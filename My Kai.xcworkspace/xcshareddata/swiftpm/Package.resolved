@@ -1,5 +1,5 @@
 {
-  "originHash" : "760966184892fe264d280a68aa69208351f44847462a16dac6db796679c3405c",
+  "originHash" : "d53e601d24b3dc101aca1dff7051b24bf0f8c3503618fef6b80128d6952672ae",
   "pins" : [
     {
       "identity" : "appsflyerframework-static",
@@ -44,6 +44,15 @@
       "state" : {
         "revision" : "0d91406ecd4d6c1c56275866f00508d9aeacc92a",
         "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "skeletonview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Juanpe/SkeletonView.git",
+      "state" : {
+        "revision" : "2f5274827d310e32c09325dd3e0007120940988e",
+        "version" : "1.31.0"
       }
     },
     {

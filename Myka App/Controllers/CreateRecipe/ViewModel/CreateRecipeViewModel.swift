@@ -72,6 +72,9 @@ final class CreateRecipeViewModel {
     @Published var imageData: Data = Data(){
         didSet { saveDraft() }
     }
+    @Published var comeFrom = "Create"{
+        didSet { saveDraft() }
+    }
     
     init(viewController:UIViewController){
         self.viewController = viewController
@@ -128,7 +131,8 @@ final class CreateRecipeViewModel {
              ingredients: ingredientsSections,
              steps: recipeStepsSections,
              cookWareData: cookwareSections,
-             imageData: imageData
+             imageData: imageData,
+             savedFrom: comeFrom
          )
          RecipeDraftManager.save(draft)
      }
@@ -147,6 +151,7 @@ final class CreateRecipeViewModel {
          recipeStepsSections = draft.steps
          self.servings = draft.servings
          self.imageData = draft.imageData ?? Data()
+         self.comeFrom = draft.savedFrom ?? ""
      }
     
     func fetchImperialUnits() {
@@ -673,21 +678,21 @@ final class CreateRecipeViewModel {
         ]
         
         // MARK: - Recipe Steps
-        let importedSteps: [StepsDataModel] = recipe.instructions?.map { item in
-            StepsDataModel(
-                instruction: item.text,
-                index: item.stepOrder
-            )
-        } ?? []
-        
-        self.recipeStepsSections = [
-            RecipeDataModel(
-                hearder: "Steps",
-                ingredients: nil,
-                cookware: nil,
-                recipe: importedSteps
-            )
-        ]
+//        let importedSteps: [StepsDataModel] = recipe.instructions?.map { item in
+//            StepsDataModel(
+//                instruction: item.text,
+//                index: item.stepOrder
+//            )
+//        } ?? []
+//        
+//        self.recipeStepsSections = [
+//            RecipeDataModel(
+//                hearder: "Steps",
+//                ingredients: nil,
+//                cookware: nil,
+//                recipe: importedSteps
+//            )
+//        ]
     }
 }
 extension String {

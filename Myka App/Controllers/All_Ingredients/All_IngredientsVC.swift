@@ -8,6 +8,7 @@
 import UIKit
 import Alamofire
 import SDWebImage
+import SkeletonView
 
 //struct All_IngredientsModule {
 //    var name: String
@@ -35,6 +36,9 @@ class All_IngredientsVC: UIViewController, UITextFieldDelegate {
     var numberOfItemsToLoad = 10
     var hasReachedEnd = false
     var lastContentOffset: CGFloat = 0
+    private var isLoadingIngredients = false
+    private var isPaginating = false
+    private var hasLoadedInitialIngredients = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +49,7 @@ class All_IngredientsVC: UIViewController, UITextFieldDelegate {
         CollV.delegate = self
         CollV.dataSource = self
         CollV.register(UINib(nibName: "All_IngredientsCollVCell", bundle: nil), forCellWithReuseIdentifier: "All_IngredientsCollVCell")
+        CollV.registerPaginationFooter()
         
         self.SearachRecipeContBtnO.isUserInteractionEnabled = false
         self.SearachRecipeContBtnO.backgroundColor = UIColor.lightGray
@@ -58,7 +63,8 @@ class All_IngredientsVC: UIViewController, UITextFieldDelegate {
     @objc func TextSearch(sender: UITextField){
         if self.SearchTxt.text == ""{
             textChangedWorkItem?.cancel()
-             SelCatName = "Fruit"
+            SelCatName = "Fruit"
+            resetIngredientPagination()
             self.Api_To_GetAllRecipeList(catName: self.SelCatName)
         }else{
             // Cancel the previous work item
@@ -69,6 +75,7 @@ class All_IngredientsVC: UIViewController, UITextFieldDelegate {
                 
                 self.hideIndicator()
                 SelCatName = ""
+                self.resetIngredientPagination()
                 self.Api_To_GetAllRecipeList(catName: self.SelCatName)
             }
             
@@ -99,6 +106,9 @@ class All_IngredientsVC: UIViewController, UITextFieldDelegate {
 
 extension All_IngredientsVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if hasLoadedInitialIngredients == false && isLoadingIngredients {
+            return collectionView == CatCollV ? (All_IngredientsArr.categories?.count ?? 0) : 6
+        }
         if collectionView == CatCollV{
             return All_IngredientsArr.categories?.count ?? 0
         }else{
@@ -109,6 +119,7 @@ extension All_IngredientsVC: UICollectionViewDelegate, UICollectionViewDataSourc
        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
            if collectionView == CatCollV{
                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCollVCell", for: indexPath) as! CategoryCollVCell
+               cell.setLoading(false)
                cell.NameLbl.text = All_IngredientsArr.categories?[indexPath.item]
               
                //if CatselIndex == indexPath.item{
@@ -123,13 +134,17 @@ extension All_IngredientsVC: UICollectionViewDelegate, UICollectionViewDataSourc
                return cell
            }else{
                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "All_IngredientsCollVCell", for: indexPath) as! All_IngredientsCollVCell
+               if hasLoadedInitialIngredients == false && isLoadingIngredients {
+                   cell.setLoading(true)
+                   return cell
+               }
+               cell.setLoading(false)
                let NAME = All_IngredientsArr.ingredients?[indexPath.item].name
                cell.NameLbl.text = NAME?.capitalizedFirst
                
                let img = All_IngredientsArr.ingredients?[indexPath.item].image ?? ""
                let imgURL = URL(string: img)
-               cell.Img.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-               cell.Img.sd_setImage(with: imgURL, placeholderImage: UIImage(named: "No_Image"))
+               cell.Img.setRemoteImage(imgURL, placeholder: UIImage(named: "No_Image"))
                  //All_IngredientsArr[indexPath.item].img
                
                if All_IngredientsArr.ingredients?[indexPath.item].isselected == true{
@@ -151,6 +166,7 @@ extension All_IngredientsVC: UICollectionViewDelegate, UICollectionViewDataSourc
             let nme = All_IngredientsArr.categories?[indexPath.item] ?? ""
             self.SelCatName = nme
             self.SearchTxt.text = ""
+            resetIngredientPagination()
             self.Api_To_GetAllRecipeList(catName: self.SelCatName)
         }else{
             if All_IngredientsArr.ingredients?[indexPath.item].isselected == true{
@@ -211,6 +227,25 @@ extension All_IngredientsVC: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
             return 5
         }
+
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard collectionView == CollV, kind == UICollectionView.elementKindSectionFooter else {
+            return UICollectionReusableView()
+        }
+
+        let footer = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: PaginationFooterView.reuseIdentifier,
+            for: indexPath
+        ) as! PaginationFooterView
+        footer.setLoading(isPaginating)
+        return footer
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        guard collectionView == CollV, isPaginating else { return .zero }
+        return CGSize(width: collectionView.frame.width, height: 32)
+    }
     
     
     // UIScrollViewDelegate method for detecting scroll
@@ -229,11 +264,14 @@ extension All_IngredientsVC: UICollectionViewDelegate, UICollectionViewDataSourc
 
         if isScrollingDown {
             // Reached near the bottom
-            if offsetY >= contentHeight - frameHeight - buffer && !hasReachedEnd {
+            if scrollView == CollV && offsetY >= contentHeight - frameHeight - buffer && !hasReachedEnd && !isPaginating && hasLoadedInitialIngredients {
                 hasReachedEnd = true
                 print("Reached bottom")
+                isPaginating = true
                 self.numberOfItemsToLoad += 10
-            self.Api_To_GetAllRecipeList(catName: self.SelCatName)
+                self.CollV.collectionViewLayout.invalidateLayout()
+                self.CollV.performBatchUpdates(nil)
+                self.Api_To_GetAllRecipeList(catName: self.SelCatName)
             }
         } else {
             // Detect scrolling out of bottom
@@ -244,26 +282,44 @@ extension All_IngredientsVC: UICollectionViewDelegate, UICollectionViewDataSourc
             }
         }
     }
-        }
+}
 
 
 extension All_IngredientsVC {
+    private func resetIngredientPagination() {
+        numberOfItemsToLoad = 10
+        hasReachedEnd = false
+        isPaginating = false
+        hasLoadedInitialIngredients = false
+    }
+
+    private func setIngredientsSkeletonVisible(_ visible: Bool) {
+        CollV.reloadData()
+    }
+
     func Api_To_GetAllRecipeList(catName: String){
+        let isFirstPageLoad = !hasLoadedInitialIngredients && !isPaginating
+        if isLoadingIngredients { return }
+        isLoadingIngredients = true
+
+        if isFirstPageLoad {
+            setIngredientsSkeletonVisible(true)
+        }
+
         var params = [String: Any]()
         
         params["category"] = self.SelCatName
         params["search"] = self.SearchTxt.text ?? ""
         params["number"] = self.numberOfItemsToLoad
      
-        showIndicator(withTitle: "", and: "")
-        
         let loginURL = baseURL.baseURL + appEndPoints.ingredients
         print(params,"Params")
         print(loginURL,"loginURL")
         
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
             
-            self.hideIndicator()
+            self.isLoadingIngredients = false
+            self.isPaginating = false
             
             let data = try! json.rawData()
             
@@ -271,51 +327,39 @@ extension All_IngredientsVC {
                 let d = try JSONDecoder().decode(All_IngredientsModelClass.self, from: data)
                 if d.success == true {
                     let list = d.data ?? All_IngredientsModel()
+                    let previousIngredientCount = self.All_IngredientsArr.ingredients?.count ?? 0
                      
                     self.All_IngredientsArr.categories = list.categories
-//                    self.All_IngredientsArr.ingredients = list.ingredients
-                    
+
                     if let ingredients = list.ingredients {
                         let uniqueIngredients = Array(
                             Dictionary(grouping: ingredients, by: { $0.name })
                                 .compactMap { $0.value.first }
                         )
-                        self.All_IngredientsArr.ingredients = uniqueIngredients
+                        if isFirstPageLoad {
+                            self.All_IngredientsArr.ingredients = uniqueIngredients
+                        } else {
+                            let existingNames = Set(self.All_IngredientsArr.ingredients?.compactMap { $0.name } ?? [])
+                            let freshIngredients = uniqueIngredients.filter { ingredient in
+                                guard let name = ingredient.name else { return false }
+                                return !existingNames.contains(name)
+                            }
+
+                            if freshIngredients.isEmpty {
+                                self.hasReachedEnd = true
+                            } else {
+                                var currentIngredients = self.All_IngredientsArr.ingredients ?? []
+                                currentIngredients.append(contentsOf: freshIngredients)
+                                self.All_IngredientsArr.ingredients = currentIngredients
+                            }
+                        }
                     }
-                    
-//                    if self.All_IngredientsArr.categories?.count ?? 0 > 0{
-//                        if let ingredients = list.ingredients {
-//                            let uniqueIngredients = Array(
-//                                Dictionary(grouping: ingredients, by: { $0.name })
-//                                    .compactMap { $0.value.first }
-//                            )
-//                            
-//                            // Assign back to your array if needed
-//                            self.All_IngredientsArr.ingredients?.append(contentsOf: uniqueIngredients)
-//                        }
-//                         
-//                    }else{
-//                        self.All_IngredientsArr = list
-//
-//                        if let ingredients = self.All_IngredientsArr.ingredients {
-//                            let uniqueIngredients = Array(
-//                                Dictionary(grouping: ingredients, by: { $0.name })
-//                                    .compactMap { $0.value.first }
-//                            )
-//                            self.All_IngredientsArr.ingredients = uniqueIngredients
-//                        }
-//                    }
-                    
-                    self.hasReachedEnd = false
-                    
-//                    if let ingredients = self.All_IngredientsArr.ingredients {
-//                        let uniqueIngredients = Array(
-//                            Dictionary(grouping: ingredients, by: { $0.name })
-//                                .compactMap { $0.value.first }
-//                        )
-//                        self.All_IngredientsArr.ingredients = uniqueIngredients
-//                    }
-                    
+
+                    if isFirstPageLoad {
+                        self.hasReachedEnd = false
+                    }
+                    self.hasLoadedInitialIngredients = true
+
                     if self.All_IngredientsArr.ingredients?.count ?? 0 > 0{
                         self.CollV.setEmptyMessage("", UIImage())
                     }else{
@@ -326,16 +370,34 @@ extension All_IngredientsVC {
                     
                     self.SearachRecipeContBtnO.isUserInteractionEnabled = false
                     self.SearachRecipeContBtnO.backgroundColor = UIColor.lightGray
-                     
-                    self.CollV.reloadData()
-                    
+
+                    let updatedIngredientCount = self.All_IngredientsArr.ingredients?.count ?? 0
+
+                    if isFirstPageLoad {
+                        self.CollV.reloadData()
+                    } else if updatedIngredientCount > previousIngredientCount {
+                        let insertedIndexPaths = (previousIngredientCount..<updatedIngredientCount).map {
+                            IndexPath(item: $0, section: 0)
+                        }
+                        self.CollV.performBatchUpdates({
+                            self.CollV.insertItems(at: insertedIndexPaths)
+                        }, completion: { _ in
+                            self.CollV.collectionViewLayout.invalidateLayout()
+                        })
+                    } else {
+                        self.CollV.collectionViewLayout.invalidateLayout()
+                    }
+
                     self.CatCollV.reloadData()
+                    self.setIngredientsSkeletonVisible(false)
                     
                 }else{
+                    self.setIngredientsSkeletonVisible(false)
                     let msg = d.message ?? ""
                     self.showToast(msg)
                 }
             }catch{
+                self.setIngredientsSkeletonVisible(false)
                 print(error)
             }
         })

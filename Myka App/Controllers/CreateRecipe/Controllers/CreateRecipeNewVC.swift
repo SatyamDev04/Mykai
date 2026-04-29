@@ -61,6 +61,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     @IBOutlet weak var FavoritesBgV: UIView!
     @IBOutlet weak var autherNoteTxtV: UITextView!
     // popups view
+    @IBOutlet weak var noRecipebgV: UIView!
     @IBOutlet var DiscardPopupV: UIView!
     @IBOutlet var SavePopUpV: UIView!
     
@@ -80,9 +81,10 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     var addIngredientImgStr: String = ""
     var addCookwareImgStr: String = ""
  
+    var backCase = ""
     var isIngredientPickImg = false
     var imgIndex = 0
-    
+    var backAction: () -> () = {}
     private var recipeImageBase64: String?
     
     // MARK: - ViewModel
@@ -116,7 +118,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         // Remove observers safely (match what we added)
         ingredientTblV.removeObserver(self, forKeyPath: "contentSize")
         cookwareTblV.removeObserver(self, forKeyPath: "contentSize")
-       recipeTblV.removeObserver(self, forKeyPath: "contentSize")
+        recipeTblV.removeObserver(self, forKeyPath: "contentSize")
     }
     
     // MARK: Setup helpers
@@ -157,9 +159,9 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         let tapGesturee = UITapGestureRecognizer(target: self, action: #selector(showDateCookPicker))
         cookTimeLbl.addGestureRecognizer(tapGesturee)
         viewModel.Api_To_GetAllCookBooks()
-        
         if let data = self.RecipeImportedData {
             self.viewModel.fillImportedData(from: data)
+            self.viewModel.comeFrom = backCase
             self.servingCountLbl.text = "\(data.servings?.stringValue() ?? "") servings"
             
             self.count = Int(data.servings?.stringValue() ?? "0") ?? 0
@@ -187,7 +189,8 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
             } else {
                 self.recipeImg.image = UIImage(named: "Camera")
             }
-            
+            recipeBgV.isHidden = true
+            noRecipebgV.isHidden = false
         }
     }
     
@@ -290,7 +293,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
         
         self.cookwareBgV.isHidden = true
         self.recipeBgV.isHidden = true
-        
+        self.noRecipebgV.isHidden = true
         self.ingredientFinalLbl.isHidden = false
         self.ingredientFinalLbl.text = "Add Ingridient"
         self.addIngredientTF.isHidden = true
@@ -472,16 +475,29 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
             self.DiscardPopupV.isHidden = false
         }else{
             self.navigationController?.popViewController(animated: true)
+           
         }
-        
     }
+    
     @IBAction func disgardChangesYesBtnTap(_ sender: UIButton) {
-        RecipeDraftManager.clear()
-        self.navigationController?.popViewController(animated: true)
+        if backCase == "imported"{
+            RecipeDraftManager.clear()
+            backAction()
+            self.navigationController?.popToRootViewController(animated: true)
+        }else{
+            RecipeDraftManager.clear()
+            self.navigationController?.popViewController(animated: true)
+            backAction()
+        }
     }
     
     @IBAction func disgardChangesNoBtnTap(_ sender: UIButton) {
-        self.navigationController?.popViewController(animated: true)
+        if backCase == "imported"{
+            backAction()
+            self.navigationController?.popToRootViewController(animated: true)
+        }else{
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     @IBAction func FavoritesDropBtn(_ sender: UIButton) {
@@ -541,7 +557,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
             ingredientBgV.isHidden = false
             cookwareBgV.isHidden = true
             recipeBgV.isHidden = true
-
+            noRecipebgV.isHidden = true
 
         case .cookware:
             
@@ -557,8 +573,9 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
 
             ingredientBgV.isHidden = true
             cookwareBgV.isHidden = false
+            
             recipeBgV.isHidden = true
-
+            noRecipebgV.isHidden = true
 
         case .recipe:
             
@@ -574,7 +591,14 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
 
             ingredientBgV.isHidden = true
             cookwareBgV.isHidden = true
-            recipeBgV.isHidden = false
+            if self.RecipeImportedData != nil || viewModel.comeFrom == "imported"{
+                recipeBgV.isHidden = true
+                noRecipebgV.isHidden = false
+            }else{
+                recipeBgV.isHidden = false
+                noRecipebgV.isHidden = true
+            }
+            
         }
     }
     

@@ -9,7 +9,7 @@ import UIKit
 import Alamofire
 import SDWebImage
 import CoreLocation
-
+import SkeletonView
  
 struct SelectSuperMarketModel {
     var name: String
@@ -51,6 +51,8 @@ class HomeVC: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var FreezerTeaTimeLbl: UILabel!
     @IBOutlet weak var FreezerDesertLbl: UILabel!
    
+    @IBOutlet weak var StackBGView: UIView!
+    @IBOutlet var stacksCollection: [UIView]!
     let locationManager = CLLocationManager()
     
     var lat: Double? = nil
@@ -68,6 +70,16 @@ class HomeVC: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        for singleView in stacksCollection {
+            singleView.skeletonCornerRadius = 10
+            singleView.isSkeletonable = true
+            singleView.showAnimatedGradientSkeleton()
+        }
+        self.NameLbl.isSkeletonable = true
+        self.NameLbl.showAnimatedGradientSkeleton()
+        self.profileImg.isSkeletonable = true
+        self.profileImg.showAnimatedGradientSkeleton()
         
         self.PlanMealBgV.isHidden = false
         self.RecipesCookedlBgV.isHidden = true
@@ -146,6 +158,28 @@ class HomeVC: UIViewController, CLLocationManagerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        let allLabels = [
+            FridgeBreakFastLbl,
+            FridgeLunchLbl,
+            FridgeDinnerLbl,
+            FridgeSnacksLbl,
+            FridgeTeaTimeLbl,
+            FridgeDesertLbl,
+            FreezerBreakFastLbl,
+            FreezerLunchLbl,
+            FreezerDinnerLbl,
+            FreezerSnacksLbl,
+            FreezerTeaTimeLbl,
+            FreezerDesertLbl
+        ]
+
+        allLabels.forEach { $0?.text = "" }
+        for singleView in stacksCollection {
+            singleView.showAnimatedGradientSkeleton()
+        }
+        NameLbl.showAnimatedGradientSkeleton()
+        self.profileImg.showAnimatedGradientSkeleton()
+        
         if StateMangerModelClass.shared.tg == "1" {
             self.PlanMealBgV.isHidden = true
             self.RecipesCookedlBgV.isHidden = false
@@ -163,9 +197,19 @@ class HomeVC: UIViewController, CLLocationManagerDelegate {
             switch result {
             case .success(let allData):
                 self.HomeDataFetch(result: allData)
+                for singleView in self.stacksCollection {
+                    singleView.hideSkeleton()
+                }
+                self.NameLbl.hideSkeleton()
+                self.profileImg.hideSkeleton()
             case .failure(let error):
                 // Handle error
                 print("Error retrieving data: \(error.localizedDescription)")
+                for singleView in self.stacksCollection {
+                    singleView.hideSkeleton()
+                }
+                self.NameLbl.hideSkeleton()
+                self.profileImg.hideSkeleton()
             }
         }
          
@@ -176,12 +220,21 @@ class HomeVC: UIViewController, CLLocationManagerDelegate {
                 // Process the profile data
                 print("Successfully retrieved profile data: \(profileData)")
                 self.profileDataFetch(Result: profileData)
+                for singleView in self.stacksCollection {
+                    singleView.hideSkeleton()
+                }
+                self.NameLbl.hideSkeleton()
+                self.profileImg.hideSkeleton()
             case .failure(let error):
                 // Handle the error
                 print("Error retrieving profile data: \(error.localizedDescription)")
+                for singleView in self.stacksCollection {
+                    singleView.hideSkeleton()
+                }
+                self.NameLbl.hideSkeleton()
+                self.profileImg.hideSkeleton()
             }
         }
-
       }
          
     func startSubscriptionTimer() {
@@ -907,3 +960,4 @@ extension HomeVC{
     }
 }
  
+

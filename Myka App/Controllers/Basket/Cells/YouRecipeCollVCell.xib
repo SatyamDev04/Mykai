@@ -70,7 +70,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gph-bd-PNv">
                                         <rect key="frame" x="10" y="26.333333333333343" width="122" height="25"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Serves 2" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tr4-aM-769">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Serves 2" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Tr4-aM-769">
                                                 <rect key="frame" x="30" y="0.0" width="62" height="25"/>
                                                 <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="12"/>
                                                 <color key="textColor" red="0.23529411759999999" green="0.27058823529999998" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -179,11 +179,14 @@
             </constraints>
             <size key="customSize" width="152" height="185"/>
             <connections>
+                <outlet property="CardContainerView" destination="hnv-iA-hBk" id="vM5-Tu-6Cx"/>
+                <outlet property="ContentContainerView" destination="y2H-4r-GcY" id="eHC-U5-mTe"/>
                 <outlet property="Img" destination="r8e-be-ymT" id="V5t-nK-NYj"/>
                 <outlet property="MinusBtn" destination="QMY-iV-V9L" id="lF5-hI-nu2"/>
                 <outlet property="Namelbl" destination="oGO-eY-BIW" id="Yej-As-hJW"/>
                 <outlet property="RemoveBtn" destination="fYC-ML-DmJ" id="Chb-55-Boa"/>
                 <outlet property="ServCountLbl" destination="Tr4-aM-769" id="GHa-ot-zYv"/>
+                <outlet property="ServingsContainerView" destination="gph-bd-PNv" id="w0k-pu-W6a"/>
                 <outlet property="plusBtn" destination="Pue-3T-6vK" id="z4W-j3-UnO"/>
             </connections>
             <point key="canvasLocation" x="1.5267175572519083" y="-10.91549295774648"/>

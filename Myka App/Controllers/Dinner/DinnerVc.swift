@@ -8,6 +8,7 @@
 import UIKit
 import Alamofire
 import SDWebImage
+import SkeletonView
 
 class DinnerVc: UIViewController {
 
@@ -69,6 +70,7 @@ class DinnerVc: UIViewController {
     var currentPage: Int = 1
     var isLoading: Bool = false
     var lastContentOffset: CGFloat = 0
+    private var hasLoadedInitialPage = false
   
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,6 +88,7 @@ class DinnerVc: UIViewController {
         CollV.delegate = self
         CollV.dataSource = self
         CollV.register(UINib(nibName: "DinnerCollVCell", bundle: nil), forCellWithReuseIdentifier: "DinnerCollVCell")
+        CollV.registerPaginationFooter()
         
         calendar.firstWeekday = 2 // Start the week on Monday
         setupInitialWeek()
@@ -215,10 +218,7 @@ class DinnerVc: UIViewController {
     
     
     @IBAction func PoppUpreviousWeekTapped(_ sender: UIButton) {
-//        if let firstDate = currentWeekDates.first {
-//                currentWeekDates = calculateWeekDates(for: calendar.date(byAdding: .day, value: -7, to: firstDate)!)
-//                updateWeekLabel()
-//            }
+
         let today = Date()
         let VfirstDate = currentWeekDates.first ?? Date()
         guard VfirstDate >= today else{
@@ -240,16 +240,24 @@ class DinnerVc: UIViewController {
              }
        }
     
-    //
+    
 }
 
 extension DinnerVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+            if hasLoadedInitialPage == false {
+                return 6
+            }
             return self.SearchAllRecipeArr.count
        }
        
        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DinnerCollVCell", for: indexPath) as! DinnerCollVCell
+           if hasLoadedInitialPage == false {
+               cell.setLoading(true)
+               return cell
+           }
+           cell.setLoading(false)
            cell.NameLbl.text = self.SearchAllRecipeArr[indexPath.item].recipe?.label ?? ""
            
            let review = self.SearchAllRecipeArr[indexPath.item].review ?? 0
@@ -258,16 +266,13 @@ extension DinnerVc: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
            cell.ratingView.rating = roundedReview
            
            
-//           cell.RatingLbl.text = "\(self.SearchAllRecipeArr[indexPath.item].review ?? 0)(\(self.SearchAllRecipeArr[indexPath.item].review_number ?? 0))"
-           
-          // cell.PriceLbl.text = ""
+
                 
            cell.TimeLbl.text = "\(self.SearchAllRecipeArr[indexPath.item].recipe?.totalTime ?? 0) min"
            
            let ImgUrl = self.SearchAllRecipeArr[indexPath.item].recipe?.images?.small?.url ?? ""
            
-           cell.ImgV.sd_imageIndicator = SDWebImageActivityIndicator.medium
-           cell.ImgV.sd_setImage(with: URL(string: ImgUrl), placeholderImage: UIImage(named: "No_Image"))
+           cell.ImgV.setRemoteImage(URL(string: ImgUrl), placeholder: UIImage(named: "No_Image"))
            
            let islike = self.SearchAllRecipeArr[indexPath.item].isLike ?? 0
            if islike == 1{
@@ -363,13 +368,7 @@ extension DinnerVc: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
                return CGSize(width: collectionView.frame.width/2 - 5, height: 285)
            
-//           let padding: CGFloat = 10
-//           let itemsPerRow: CGFloat = 2
-//           let totalPadding = padding * (itemsPerRow + 1)
-//           let availableWidth = collectionView.frame.size.width - totalPadding
-//           let itemWidth = availableWidth / itemsPerRow
-           
-//          return CGSize(width: 190, height: 285)
+
        }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -420,8 +419,24 @@ extension DinnerVc: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
         }
     }
    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard kind == UICollectionView.elementKindSectionFooter else {
+            return UICollectionReusableView()
+        }
+
+        let footer = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: PaginationFooterView.reuseIdentifier,
+            for: indexPath
+        ) as! PaginationFooterView
+        footer.setLoading(self.isLoading && self.currentPage > 1)
+        return footer
     }
-     
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        return (self.isLoading && self.currentPage > 1) ? CGSize(width: collectionView.frame.width, height: 60) : .zero
+    }
+}
 
 extension DinnerVc: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -602,29 +617,6 @@ extension DinnerVc {
         isLoading = true
         var params = [String: Any]()
         
-//        var existingItems: [Breakfast] = []
-//
-//        switch mealType {
-//        case "Breakfast":
-//            existingItems = self.AllRecipeSelItem.recipes?.breakfast ?? []
-//        case "Lunch":
-//            existingItems = self.AllRecipeSelItem.recipes?.lunch ?? []
-//        case "Dinner":
-//            existingItems = self.AllRecipeSelItem.recipes?.dinner ?? []
-//        case "Snacks":
-//            existingItems = self.AllRecipeSelItem.recipes?.Snack ?? []
-//        case "Dessert":
-//            existingItems = self.AllRecipeSelItem.recipes?.Dessert ?? []
-//        case "Brunch":
-//            existingItems = self.AllRecipeSelItem.recipes?.Teatime ?? []
-//        default:
-//            break
-//        }
-//
-//        let existingIds = existingItems.compactMap { $0.recipe?.uri }
-//        if !existingIds.isEmpty {
-//            params["ids"] = existingIds   // use "ids[]" if backend expects array format
-//        }
         let existingIds: [String] = self.SearchAllRecipeArr.compactMap { $0.recipe?.uri }
         if !existingIds.isEmpty {
             params["ids"] = existingIds
@@ -679,8 +671,20 @@ extension DinnerVc {
         }
         
         params["page"] = currentPage
-        showIndicator(withTitle: "", and: "")
         
+        let isInitialSkeletonLoad = self.currentPage == 1 && !hasLoadedInitialPage
+        let isPaginating = self.currentPage > 1
+
+        if isInitialSkeletonLoad {
+            DispatchQueue.main.async {
+                self.CollV.reloadData()
+            }
+        }
+        else if isPaginating {
+            DispatchQueue.main.async {
+                self.CollV.collectionViewLayout.invalidateLayout()
+            }
+        }
         let loginURL = baseURL.baseURL + appEndPoints.recipe
         print("*************************Params******************************")
         print(params)
@@ -689,13 +693,15 @@ extension DinnerVc {
         
         WebService.shared.postServiceMultipart(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
             
-            self.hideIndicator()
-            
             let data = try! json.rawData()
             
             do{
                 let d = try JSONDecoder().decode(SearchModelClass.self, from: data)
                 if d.success == true {
+                    var appendedIndexPaths: [IndexPath] = []
+                    var shouldReloadCollection = false
+                    let previousCount = self.SearchAllRecipeArr.count
+
                     if let list = d.data, list.recipes != nil {
                         let newData = list.recipes ?? []
                         
@@ -722,6 +728,13 @@ extension DinnerVc {
                             self.hasReachedEnd = true
                         } else {
                             self.SearchAllRecipeArr.append(contentsOf: freshItems)
+                            if isPaginating {
+                                appendedIndexPaths = (previousCount..<(previousCount + freshItems.count)).map {
+                                    IndexPath(item: $0, section: 0)
+                                }
+                            } else {
+                                shouldReloadCollection = true
+                            }
                             self.currentPage += 1
                         }
                         if freshItems.isEmpty {
@@ -735,17 +748,33 @@ extension DinnerVc {
                     }
                   
                     self.isLoading = false
-                    self.CollV.reloadData()
-                   
+                    self.hasLoadedInitialPage = true
+                    DispatchQueue.main.async {
+                        if isPaginating && !appendedIndexPaths.isEmpty {
+                            self.CollV.performBatchUpdates({
+                                self.CollV.insertItems(at: appendedIndexPaths)
+                            }, completion: { _ in
+                                self.CollV.collectionViewLayout.invalidateLayout()
+                            })
+                        } else if shouldReloadCollection || isInitialSkeletonLoad {
+                            self.CollV.reloadData()
+                        } else {
+                            self.CollV.collectionViewLayout.invalidateLayout()
+                        }
+                    }
                 }else{
                     self.isLoading = false
                     self.SearchAllRecipeArr.removeAll()
+                    self.hasLoadedInitialPage = true
+                    self.CollV.reloadData()
                     let msg = d.message ?? ""
                     self.showToast(msg)
                 }
             }catch{
                 print(error)
                 self.isLoading = false
+                self.hasLoadedInitialPage = true
+                self.CollV.reloadData()
             }
         })
     }
@@ -896,5 +925,3 @@ extension DinnerVc {
         }
     }
     }
-
- 

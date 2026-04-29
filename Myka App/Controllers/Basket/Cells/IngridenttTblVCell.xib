@@ -114,7 +114,9 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="CardContainerView" destination="l9S-aF-MZz" id="f3O-3J-F7k"/>
                 <outlet property="Img" destination="Iw7-hz-yrY" id="Etd-SF-OHv"/>
+                <outlet property="ImageContainerView" destination="xdn-yR-VcX" id="WVJ-XP-aca"/>
                 <outlet property="NameLbl" destination="ChF-aY-tpt" id="EJA-Dk-oNV"/>
                 <outlet property="checkBoxBtn" destination="NE7-bA-b99" id="U8n-89-MVL"/>
                 <outlet property="quantityLbl" destination="YX4-8I-rRj" id="3vW-pV-VvJ"/>

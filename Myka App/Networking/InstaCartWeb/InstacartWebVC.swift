@@ -488,8 +488,7 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
             
             print("***HTML:", html)
             
-            // Example: You can now parse prices here
-            let (prices, total) = self.extractAllPricesAndTotal(html: html)
+            let (prices, total) = self.extractAllPricesAndTotalWithStatus(html: html)
             
             prices.forEach { print("PRICE:", $0) }
             print("TOTAL:",total )
@@ -502,42 +501,46 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
     }
   
 
-    private func extractAllPricesAndTotal(html: String) -> ([Double], String) {
-        var prices = [Double]()
-        
+    private func extractAllPricesAndTotalWithStatus(html: String) -> ([Double], String) {
+        var pricesList = [Double]()
+
         do {
             let document = try SwiftSoup.parse(html)
-            let parents = try document.select("span.e-gx2pr0")
-            
-            for parent in parents.array() {
-                let mainValue = try parent.select("span.e-1qkvt8e").first()?.text() ?? ""
-                let currencySpans = try parent.select("span.e-p745l")
-                
-                var decimal = ""
-                if currencySpans.size() > 1 {
-                    decimal = try currencySpans.last()?.text() ?? ""
+            let cards = try document.select("div[data-testid=ingredient-item-card]")
+            let regex = try NSRegularExpression(pattern: "\\$\\d+(\\.\\d{1,2})?")
+
+            for card in cards.array() {
+                let ariaHidden = try card
+                    .select("div[role=button] svg")
+                    .first()?
+                    .attr("aria-hidden") ?? ""
+
+                let isSelected = ariaHidden == "true"
+                var price = 0.0
+
+                if isSelected {
+                    let priceText = try card
+                        .select("span.screen-reader-only")
+                        .first()?
+                        .text() ?? ""
+
+                    let nsRange = NSRange(priceText.startIndex..<priceText.endIndex, in: priceText)
+                    if let match = regex.firstMatch(in: priceText, options: [], range: nsRange),
+                       let range = Range(match.range, in: priceText) {
+                        let extractedPrice = String(priceText[range]).replacingOccurrences(of: "$", with: "")
+                        price = Double(extractedPrice) ?? 0.0
+                    }
                 }
-                
-                let priceString: String
-                if !decimal.isEmpty {
-                    priceString = "\(mainValue).\(decimal)"
-                } else {
-                    priceString = mainValue
-                }
-                
-                if let price = Double(priceString) {
-                    prices.append(price)
-                }
+
+                pricesList.append(price)
             }
-            
         } catch {
             print("SwiftSoup parsing error:", error)
         }
-        
-        let total = prices.reduce(0, +)
+
+        let total = pricesList.reduce(0, +)
         let formattedTotal = String(format: "%.2f", total)
-        
-        return (prices, formattedTotal)
+        return (pricesList, formattedTotal)
     }
     
     

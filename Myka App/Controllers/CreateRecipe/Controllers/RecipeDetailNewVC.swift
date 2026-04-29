@@ -8,6 +8,7 @@
 import UIKit
 import Cosmos
 import SDWebImage
+import SkeletonView
 
 class RecipeDetailNewVC: UIViewController {
 
@@ -16,30 +17,24 @@ class RecipeDetailNewVC: UIViewController {
     @IBOutlet weak var RatingLbl: UILabel!
     @IBOutlet weak var recipeNameLbl: UILabel!
     @IBOutlet weak var recipeDesLbl: UILabel!
-    
-    
     @IBOutlet weak var Calorieslbl: UILabel!
     @IBOutlet weak var FatLbl: UILabel!
     @IBOutlet weak var CarbsLbl: UILabel!
     @IBOutlet weak var ProtienLbl: UILabel!
     @IBOutlet weak var TotalTimeLbl: UILabel!
     @IBOutlet weak var PrepTimeLbl: UILabel!
-    
     @IBOutlet weak var IngredientLbl: UILabel!
     @IBOutlet weak var CookwareLbl: UILabel!
     @IBOutlet weak var DirectionsLbl: UILabel!
-    
     @IBOutlet weak var IngredientasBtnO: UIButton!
     @IBOutlet weak var CookwareBtnO: UIButton!
     @IBOutlet weak var recipeBtnO: UIButton!
-    
     @IBOutlet weak var SelectAllBtnO: UIButton!
     @IBOutlet weak var ServCountLbl: UILabel!
     @IBOutlet weak var TblV: UITableView!
     @IBOutlet weak var TblVH: NSLayoutConstraint!
     @IBOutlet weak var IngredientBgV: UIView!
     @IBOutlet weak var IngredientBtnsBgV: UIView!
-    
     @IBOutlet weak var CookwareTblV: UITableView!
     @IBOutlet weak var CookwareTblVH: NSLayoutConstraint!
     @IBOutlet weak var CookwareTblVBgV: UIView!
@@ -55,7 +50,6 @@ class RecipeDetailNewVC: UIViewController {
     @IBOutlet weak var ChoosedaysTblV: UITableView!
     @IBOutlet weak var ChooseDayWeekLabel: UILabel!
     @IBOutlet weak var ChoosedaysBgV: UIView!
-    //
     
     // for ChooseMealType popup
     @IBOutlet var ChooseMealTypePopupV: UIView!
@@ -90,6 +84,28 @@ class RecipeDetailNewVC: UIViewController {
     var conevertType = "O"
     var inerServing = 1
     private var baseIngredientData: [RecipeDataModel] = []
+    private var isLoadingRecipeDetails = false
+    private let loadingIngredientRowCount = 5
+    private let loadingCookwareRowCount = 3
+    private let loadingDirectionRowCount = 4
+
+    private var recipeDetailSkeletonViews: [UIView] {
+        [
+            ImgV,
+            RatingLbl,
+            recipeNameLbl,
+            recipeDesLbl,
+            Calorieslbl,
+            FatLbl,
+            CarbsLbl,
+            ProtienLbl,
+            TotalTimeLbl,
+            PrepTimeLbl,
+            ServCountLbl,
+            notesTxtV
+        ]
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -146,6 +162,7 @@ class RecipeDetailNewVC: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(listnerFunctionReloadDetails(_:)), name: NSNotification.Name(rawValue: "notificationNameReloadDetails"), object: nil)
         
+        configureSkeletonAppearance()
         self.Api_To_Recipe_Details(uri: uri)
     }
     
@@ -227,6 +244,106 @@ class RecipeDetailNewVC: UIViewController {
         TblV.removeObserver(self, forKeyPath: "contentSize")
         CookwareTblV.removeObserver(self, forKeyPath: "contentSize")
         recipeTblV.removeObserver(self, forKeyPath: "contentSize")
+    }
+
+    private func configureSkeletonAppearance() {
+        ImgV.isSkeletonable = true
+        RatingLbl.isSkeletonable = true
+        recipeNameLbl.isSkeletonable = true
+        recipeNameLbl.linesCornerRadius = 6
+        recipeNameLbl.skeletonTextNumberOfLines = 2
+        recipeDesLbl.isSkeletonable = true
+        recipeDesLbl.linesCornerRadius = 4
+        //Calorieslbl.isSkeletonable = true
+        FatLbl.isSkeletonable = true
+        CarbsLbl.isSkeletonable = true
+      //  ProtienLbl.isSkeletonable = true
+        TotalTimeLbl.isSkeletonable = true
+        PrepTimeLbl.isSkeletonable = true
+        ServCountLbl.isSkeletonable = true
+        notesTxtV.isSkeletonable = true
+        notesTxtV.layer.cornerRadius = 12
+        notesTxtV.clipsToBounds = true
+    }
+
+    private func setRecipeDetailSkeletonVisible(_ visible: Bool) {
+        view.layoutIfNeeded()
+        ImgV.layoutIfNeeded()
+
+        if visible {
+            ImgV.image = nil
+            RatingLbl.text = " "
+            recipeNameLbl.text = " "
+            recipeDesLbl.text = " "
+            Calorieslbl.text = " "
+            FatLbl.text = " "
+            CarbsLbl.text = " "
+            ProtienLbl.text = " "
+            TotalTimeLbl.text = " "
+            PrepTimeLbl.text = " "
+            ServCountLbl.text = " "
+            notesTxtV.text = " "
+            recipeDetailSkeletonViews.forEach { $0.showAnimatedGradientSkeleton() }
+        } else {
+            recipeDetailSkeletonViews.forEach {
+                $0.stopSkeletonAnimation()
+                $0.hideSkeleton(reloadDataAfter: false)
+            }
+        }
+    }
+
+    private func beginRecipeDetailLoading() {
+        isLoadingRecipeDetails = true
+        TblV.reloadData()
+        CookwareTblV.reloadData()
+        recipeTblV.reloadData()
+        setRecipeDetailSkeletonVisible(true)
+    }
+
+    private func endRecipeDetailLoading() {
+        isLoadingRecipeDetails = false
+        setRecipeDetailSkeletonVisible(false)
+        TblV.reloadData()
+        CookwareTblV.reloadData()
+        recipeTblV.reloadData()
+    }
+
+    private func populateRecipeSummaryFields(from recipe: RecipeDetail?, detail: RecipeDetailModel?) {
+        recipeFrom = recipe?.createdType ?? ""
+        sourceUrl = recipe?.source_url ?? ""
+        ServCount = Int(detail?.servings?.stringValue() ?? "1") ?? 1
+
+        let innerServing = Int(recipe?.servings?.stringValue() ?? "1") ?? 1
+        inerServing = innerServing
+        let outerServing = Int(detail?.servings?.stringValue() ?? "1") ?? 1
+
+        ServCountLbl.text = "\(innerServing * outerServing) servings"
+        recipeNameLbl.text = recipe?.label ?? ""
+        recipeDesLbl.text = recipe?.source ?? ""
+
+        let review = detail?.review ?? 0
+        let reviewNum = detail?.review_number ?? 0
+        RatingLbl.text = "\(review)(\(reviewNum))"
+
+        let img = recipe?.images?.small?.url
+        let imgUrl = URL(string: img ?? "")
+        ImgV.setRemoteImage(imgUrl, placeholder: UIImage(named: "No_Image"))
+
+        let carbs = recipe?.totalNutrients?.first(where: { $0.key == "CHOCDF" })
+        CarbsLbl.text = "\(Int(carbs?.value.quantity ?? 0))g"
+
+        let fat = recipe?.totalNutrients?.first(where: { $0.key == "FAT" })
+        FatLbl.text = "\(Int(fat?.value.quantity ?? 0))g"
+
+        let protein = recipe?.totalNutrients?.first(where: { $0.key == "PROCNT" })
+        ProtienLbl.text = "\(Int(protein?.value.quantity ?? 0))g"
+
+        let calories = recipe?.calories ?? 0
+        Calorieslbl.text = "\(Int(calories))"
+
+        TotalTimeLbl.text = "\(recipe?.totalTime ?? 0) min"
+        PrepTimeLbl.text = "\(recipe?.prep_time ?? 0) min"
+        notesTxtV.text = recipe?.description
     }
     
     
@@ -488,6 +605,8 @@ extension RecipeDetailNewVC: UITableViewDelegate, UITableViewDataSource {
             return 1
         }else if tableView == ChooseMealTypeTblV{
             return 1
+        }else if isLoadingRecipeDetails {
+            return 1
         }else if tableView == self.TblV {
             return tblVIngredientData.count
         } else if tableView == self.CookwareTblV {
@@ -502,6 +621,15 @@ extension RecipeDetailNewVC: UITableViewDelegate, UITableViewDataSource {
             return ChooseDayData.count
         }else if tableView == ChooseMealTypeTblV{
             return ChooseMealTypeyData.count
+        }else if isLoadingRecipeDetails {
+            if tableView == TblV {
+                return loadingIngredientRowCount
+            } else if tableView == CookwareTblV {
+                return loadingCookwareRowCount
+            } else if tableView == recipeTblV {
+                return loadingDirectionRowCount
+            }
+            return 0
         }else if tableView == self.TblV {
             guard section < tblVIngredientData.count else { return 0 }
             return tblVIngredientData[section].ingredients?.count ?? 0
@@ -530,6 +658,14 @@ extension RecipeDetailNewVC: UITableViewDelegate, UITableViewDataSource {
             return cell
         }else if tableView == self.TblV {
             let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientsTblVCell", for: indexPath) as! IngredientsTblVCell
+            if isLoadingRecipeDetails {
+                cell.type = .normal
+                cell.checkBoxView.isHidden = false
+                cell.setLoading(true)
+                cell.selectionStyle = .none
+                return cell
+            }
+            cell.setLoading(false)
             
             let section = indexPath.section
             let row = indexPath.row
@@ -548,7 +684,7 @@ extension RecipeDetailNewVC: UITableViewDelegate, UITableViewDataSource {
                 let ingredient = ingredients[row]
                 cell.ingredientlbl?.text = ingredient.name
                 cell.amout_MeasurmentLbl?.text = "\(ingredient.quantity ?? "") \(ingredient.unit ?? "")"
-                cell.img.sd_setImage(with: URL(string: ingredient.img ?? ""), placeholderImage: UIImage(named: "NewRec"))
+                cell.img.setRemoteImage(URL(string: ingredient.img ?? ""), placeholder: UIImage(named: "NewRec"))
             } else {
                 cell.ingredientlbl?.text = ""
                 cell.amout_MeasurmentLbl?.text = ""
@@ -566,6 +702,14 @@ extension RecipeDetailNewVC: UITableViewDelegate, UITableViewDataSource {
             return cell
         }else if tableView == CookwareTblV{
             let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientsTblVCell", for: indexPath) as! IngredientsTblVCell
+            if isLoadingRecipeDetails {
+                cell.type = .normal
+                cell.checkBoxView.isHidden = true
+                cell.setLoading(true)
+                cell.selectionStyle = .none
+                return cell
+            }
+            cell.setLoading(false)
             cell.type = .normal
             cell.checkBoxView.isHidden = true
             let section = indexPath.section
@@ -575,7 +719,7 @@ extension RecipeDetailNewVC: UITableViewDelegate, UITableViewDataSource {
                row < ingredients.count {
                 let ingredient = ingredients[row]
                 cell.ingredientlbl?.text = ingredient.name
-                cell.img.sd_setImage(with: URL(string: ingredient.img ?? ""), placeholderImage: UIImage(named: "addCook"))
+                cell.img.setRemoteImage(URL(string: ingredient.img ?? ""), placeholder: UIImage(named: "addCook"))
             } else {
                 cell.ingredientlbl?.text = ""
                 cell.img.image = UIImage(named: "addCook")
@@ -584,6 +728,13 @@ extension RecipeDetailNewVC: UITableViewDelegate, UITableViewDataSource {
             return cell
         }else{
             let cell = recipeTblV.dequeueReusableCell(withIdentifier: "RecipeTblVCell", for: indexPath) as! RecipeTblVCell
+            if isLoadingRecipeDetails {
+                cell.type = .normal
+                cell.setLoading(true)
+                cell.selectionStyle = .none
+                return cell
+            }
+            cell.setLoading(false)
             let section = indexPath.section
             let row = indexPath.row
             let header = recipeArr[section].hearder ?? ""
@@ -612,6 +763,7 @@ extension RecipeDetailNewVC: UITableViewDelegate, UITableViewDataSource {
 //        return UITableViewCell()
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard !isLoadingRecipeDetails else { return }
         if tableView == ChoosedaysTblV {
             if ChooseDayData[indexPath.row].isSelected {
                 ChooseDayData[indexPath.row].isSelected = false
@@ -651,6 +803,7 @@ extension RecipeDetailNewVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard !isLoadingRecipeDetails else { return nil }
         if tableView == self.TblV {
             guard section < tblVIngredientData.count else { return nil }
             let title = tblVIngredientData[section].hearder?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
@@ -689,6 +842,7 @@ extension RecipeDetailNewVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard !isLoadingRecipeDetails else { return 0 }
         if tableView == self.TblV {
             guard section < tblVIngredientData.count else { return 0 }
             let title = tblVIngredientData[section].hearder?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
@@ -724,6 +878,7 @@ extension RecipeDetailNewVC: UITableViewDelegate, UITableViewDataSource {
     
 }
 extension RecipeDetailNewVC {
+    
     func calculateWeekDates(for date: Date) -> [Date] {
         // Ensure the first day of the week is Monday
         guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: date) else { return [] }
@@ -767,121 +922,93 @@ extension RecipeDetailNewVC{
         params["id"] = Id
         params["type"] = type
         params["servings"] = "\(ServCount)"
-        
-        showIndicator(withTitle: "", and: "")
+
+        self.beginRecipeDetailLoading()
         
         let loginURL = baseURL.baseURL + appEndPoints.get_recipe
         print(params,"Params")
         print(loginURL,"loginURL")
         
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
-            
-            self.hideIndicator()
             let data = try! json.rawData()
             
             do{
                 let d = try JSONDecoder().decode(RecipeDetailModelClass.self, from: data)
                 if d.success == true {
                     if let list = d.data, list.first?.recipe != nil {
-                        self.RecipeDetailsData = d.data ?? []
-                        
-                        let val = self.RecipeDetailsData.first?.recipe
-                        
-                        self.recipeFrom = val?.createdType ?? ""
-                        self.sourceUrl = val?.source_url ?? ""
-                        self.ServCount = Int( self.RecipeDetailsData.first?.servings?.stringValue() ?? "1") ?? 1
-                        let inerServing = Int(val?.servings?.stringValue() ?? "1") ?? 1
-                        self.inerServing = inerServing
-                        let outerServing = Int(self.RecipeDetailsData.first?.servings?.stringValue() ?? "1") ?? 1
-                        self.ServCountLbl.text = "\(inerServing * outerServing) servings"
-                        self.recipeNameLbl.text = val?.label ?? ""
-                        self.recipeDesLbl.text = val?.source ?? ""
-                        let review = self.RecipeDetailsData.first?.review ?? 0
-                        let reviewNum = self.RecipeDetailsData.first?.review_number ?? 0
-                        self.RatingLbl.text = "\(review)(\(reviewNum))"
-                        let roundedReview = Double(round(10 * review) / 10.0)
-//                        self.RatingView.rating = roundedReview
-                        
-                        let img  = val?.images?.large?.url
-                        let imgUrl = URL(string: img ?? "")
-                        self.ImgV.sd_imageIndicator = SDWebImageActivityIndicator.grayLarge
-                        self.ImgV.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "No_Image"))
-                        
-//                        self.ImgDesc.text = val?.label ?? ""
-                        // self.ImgDesc1Lbl.text = "By \(val?.source ?? "")"
-                        
-                        let carbs = val?.totalNutrients?.first(where: {$0.key == "CHOCDF"})
-                        self.CarbsLbl.text = "\(Int(carbs?.value.quantity ?? 0))g"
-                        
-                        let Fat = val?.totalNutrients?.first(where: {$0.key == "FAT"})
-                        self.FatLbl.text = "\(Int(Fat?.value.quantity ?? 0))g"
-                        
-                        let Protine = val?.totalNutrients?.first(where: {$0.key == "PROCNT"})
-                        self.ProtienLbl.text = "\(Int(Protine?.value.quantity ?? 0))g"
-                        
-                        let calories = val?.calories ?? 0
-                        self.Calorieslbl.text = "\(Int(calories))"
-                        
-                        self.TotalTimeLbl.text = "\(val?.totalTime ?? 0) min"
-                        self.PrepTimeLbl.text = "\(val?.prep_time ?? 0) min"
-                        let ingredients = val?.ingredients
-                        
-                        if let ingredients = val?.ingredients {
-                            for ingredient in ingredients {
-                                var header = ingredient.header
-                                if header == "Recipe"{
-                                    header = ""
+                        DispatchQueue.main.async {
+                            self.tblVIngredientData.removeAll()
+                            self.baseIngredientData.removeAll()
+                            self.cookwareArr.removeAll()
+                            self.recipeArr.removeAll()
+                            self.RecipeDetailsData = d.data ?? []
+                            
+                            let val = self.RecipeDetailsData.first?.recipe
+                            
+                            if let ingredients = val?.ingredients {
+                                for ingredient in ingredients {
+                                    var header = ingredient.header
+                                    if header == "Recipe" {
+                                        header = ""
+                                    }
+
+                                    let imageValue = (ingredient.imageURL ?? "").isEmpty
+                                        ? ingredient.image
+                                        : ingredient.imageURL
+
+                                    var ingredientModel = IngredientDataModel(
+                                        name: ingredient.name,
+                                        quantity: ingredient.quantity?.stringValue(),
+                                        unit: ingredient.measure,
+                                        img: imageValue,
+                                        isSelected: true
+                                    )
+
+                                    ingredientModel.food = ingredient.food
+                                    ingredientModel.foodCategory = ingredient.category
+                                    ingredientModel.id = ingredient.id
+                                    ingredientModel.ingredient_cost = ingredient.ingredientCost
+                                    ingredientModel.measure = ingredient.measure
+
+                                    self.addIngredient(Header: header, data: ingredientModel)
                                 }
-
-                                let imageValue = (ingredient.imageURL ?? "").isEmpty
-                                    ? ingredient.image
-                                    : ingredient.imageURL
-
-                                var ingredientModel = IngredientDataModel(
-                                    name: ingredient.name,
-                                    quantity: ingredient.quantity?.stringValue(),
-                                    unit: ingredient.measure,
-                                    img: imageValue,
-                                    isSelected: true
-                                )
-
-                                // ---- PRESERVE FULL INGREDIENT META (VERY IMPORTANT) ----
-                                ingredientModel.food = ingredient.food
-                                ingredientModel.foodCategory = ingredient.category
-                                ingredientModel.id = ingredient.id
-                                ingredientModel.ingredient_cost = ingredient.ingredientCost
-                                ingredientModel.measure = ingredient.measure
-
-                                self.addIngredient(Header: header, data: ingredientModel)
                             }
-                        }
-                        self.baseIngredientData = self.tblVIngredientData
-                     //   self.updateIngredientQuantities()
-                        if let cookwares = val?.cookware {
-                            for cookware in cookwares {
-                                self.addCookware(data: CookwareDataModel(name: cookware.name,img: cookware.imageURL))
-                            }
-                        }
-                        
-                        if let instructions = val?.instructions {
-                            for instruction in instructions {
-                                var header = instruction.stepsHeaders
-                                if header == "Recipe"{
-                                    header = ""
+
+                            self.baseIngredientData = self.tblVIngredientData
+
+                            if let cookwares = val?.cookware {
+                                for cookware in cookwares {
+                                    self.addCookware(data: CookwareDataModel(name: cookware.name, img: cookware.imageURL))
                                 }
-                                self.addRecipe(Header: header, data: StepsDataModel(instruction: instruction.text))
                             }
+                            
+                            if let instructions = val?.instructions {
+                                for instruction in instructions {
+                                    var header = instruction.stepsHeaders
+                                    if header == "Recipe" {
+                                        header = ""
+                                    }
+                                    self.addRecipe(Header: header, data: StepsDataModel(instruction: instruction.text))
+                                }
+                            }
+
+                            self.SelectAllBtnO.isSelected = true
+                            self.endRecipeDetailLoading()
+                            self.populateRecipeSummaryFields(from: val, detail: self.RecipeDetailsData.first)
                         }
-                        self.SelectAllBtnO.isSelected = true
-                        
-                        self.notesTxtV.text = val?.description
                     }
                 }else{
-                    let msg = d.message ?? ""
-                    self.showToast(msg)
+                    DispatchQueue.main.async {
+                        self.endRecipeDetailLoading()
+                        let msg = d.message ?? ""
+                        self.showToast(msg)
+                    }
                 }
             }catch{
-                print(error)
+                DispatchQueue.main.async {
+                    self.endRecipeDetailLoading()
+                    print(error)
+                }
             }
         })
      }
