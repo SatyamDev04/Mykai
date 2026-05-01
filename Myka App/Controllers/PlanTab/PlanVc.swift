@@ -11,6 +11,7 @@ import Alamofire
 import SDWebImage
 import SwiftyJSON
 import SkeletonView
+import DropDown
 
 class PlanVc: UIViewController {
     
@@ -129,10 +130,7 @@ class PlanVc: UIViewController {
     // for add AnotherMeal.
     var MealRoutineArr = [ModelClass]()
     var ArrData = [BodyGoalsModel]()
-    //
-    
     var veryFirstLoading = 0
-    
     var SwipeID = ""
     var SwapMealType = ""
     
@@ -140,8 +138,10 @@ class PlanVc: UIViewController {
     var indx = Int()
     var Seltype = ""
     private var hasLoadedInitialPlanCollections = false
-    //
     
+    let dropDown = DropDown()
+    var DropDownImg: [String] = ["swapIcon", "DeleteIcon"]
+    private let paginatedMealKeys = ["Breakfast", "Lunch", "Dinner", "Snacks", "Dessert", "Teatime"]
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -162,10 +162,7 @@ class PlanVc: UIViewController {
         
         
         let customBlurEffectView = CustomBlurEffectView()
-        ["Breakfast","Lunch","Dinner","Snacks","Dessert","Teatime"].forEach {
-            isLoadingMore[$0] = false
-            isLastPage[$0] = false
-        }
+        resetPaginationState()
         
         if UIDevice.current.hasNotch {
             //... consider notch
@@ -235,9 +232,11 @@ class PlanVc: UIViewController {
             case .success(let allData):
                 if let list = allData, list.recipes != nil {
                     self.AllRecipeSelItem = list
+                    self.resetPaginationStateAndRefreshFooters()
                     
                     self.ShowNoDataFoundonCollV()
                 }else{
+                    self.resetPaginationStateAndRefreshFooters()
                     self.ShowNoDataFoundonCollV()
                 }
                 
@@ -267,6 +266,18 @@ class PlanVc: UIViewController {
             }
         }
         //
+    }
+
+    private func resetPaginationState() {
+        paginatedMealKeys.forEach {
+            isLoadingMore[$0] = false
+            isLastPage[$0] = false
+        }
+    }
+
+    private func resetPaginationStateAndRefreshFooters() {
+        resetPaginationState()
+        paginatedMealKeys.forEach { refreshPaginationFooter(for: $0) }
     }
     
     @objc func listnerFunctionAddRecipe(_ notification: NSNotification) {
@@ -298,9 +309,11 @@ class PlanVc: UIViewController {
                 case .success(let allData):
                     if let list = allData, list.recipes != nil {
                         self.AllRecipeSelItem = list
+                        self.resetPaginationStateAndRefreshFooters()
                         
                         self.ShowNoDataFoundonCollV()
                     }else{
+                        self.resetPaginationStateAndRefreshFooters()
                         self.ShowNoDataFoundonCollV()
                     }
                     
@@ -934,9 +947,11 @@ class PlanVc: UIViewController {
                         case .success(let allData):
                             if let list = allData, list.recipes != nil {
                                 self.AllRecipeSelItem = list
+                                self.resetPaginationStateAndRefreshFooters()
                                 
                                 self.ShowNoDataFoundonCollV()
                             }else{
+                                self.resetPaginationStateAndRefreshFooters()
                                 self.ShowNoDataFoundonCollV()
                             }
                             
@@ -2499,7 +2514,6 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         }
     }
     
-    //
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == CalanderCollV{
@@ -2510,27 +2524,25 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd"
-            formatter.timeZone = TimeZone.current // Use the local time zone
-            // Convert to string
+            formatter.timeZone = TimeZone.current
             let dateString = formatter.string(from: SelDate)
-            // Convert back to date
+            
             formatter.dateFormat = "yyyy-MM-dd"
             let reconvertedDate = formatter.date(from: dateString)
             
             let formatter1 = DateFormatter()
             formatter1.dateFormat = "yyyy-MM-dd"
-            formatter1.timeZone = TimeZone.current // Use the local time zone
-            // Convert to string
+            formatter1.timeZone = TimeZone.current
             let dateString1 = formatter1.string(from: today)
-            // Convert back to date
+            
             formatter1.dateFormat = "yyyy-MM-dd"
             let TodayreconvertedDate = formatter1.date(from: dateString1) ?? Date()
             
             guard reconvertedDate! >= TodayreconvertedDate else{
-                return // Exit if the previous week's start date is earlier than today
+                return
             }
             
-            // Deselect the previously selected item, if any
+         
             if let previousIndex = selectedIndex {
                 let previousCell = collectionView.cellForItem(at: previousIndex) as? CalendarCell
                 previousCell?.updateSelection(isSelected: false)
@@ -2540,25 +2552,24 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             let currentCell = collectionView.cellForItem(at: indexPath) as? CalendarCell
             currentCell?.updateSelection(isSelected: true)
             
-            // Update the selected index
             selectedIndex = indexPath
             
             seldate = currentWeekDates[indexPath.item]
-            // self.Api_To_GetAllRecipeByDate()
+           
             planService.shared.Api_To_GetAllRecipe(vc: self) { result in
                 
                 switch result {
                 case .success(let allData):
                     if let list = allData, list.recipes != nil {
                         self.AllRecipeSelItem = list
+                        self.resetPaginationStateAndRefreshFooters()
                         
                         self.ShowNoDataFoundonCollV()
                     }else{
+                        self.resetPaginationStateAndRefreshFooters()
                         self.ShowNoDataFoundonCollV()
                     }
                     
-                    //                    if self.veryFirstLoading == 1{
-                    //                        self.veryFirstLoading = 0
                     DispatchQueue.global().asyncAfter(deadline: .now()) {
                         let dateformatter = DateFormatter()
                         dateformatter.dateFormat = "yyyy-MM-dd"
@@ -2847,10 +2858,13 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             switch result {
             case .success(let newItems):
                 if newItems.isEmpty {
-                             self.isLastPage[meal] = true
-                             return
-                         }
-                self.appendPaginationData(meal: meal, newData: newItems)
+                    self.isLastPage[meal] = true
+                    return
+                }
+                let appendedCount = self.appendPaginationData(meal: meal, newData: newItems)
+                if appendedCount == 0 {
+                    self.isLastPage[meal] = true
+                }
 
             case .failure(let error):
                 print("Pagination error:", error.localizedDescription)
@@ -2878,7 +2892,8 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         }
     }
     
-    func appendPaginationData(meal: String, newData: [Breakfast]) {
+    @discardableResult
+    func appendPaginationData(meal: String, newData: [Breakfast]) -> Int {
 
         var current: [Breakfast] = []
 
@@ -2889,7 +2904,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         case "Snacks": current = AllRecipeSelItem.recipes?.Snack ?? []
         case "Dessert": current = AllRecipeSelItem.recipes?.Dessert ?? []
         case "Teatime": current = AllRecipeSelItem.recipes?.Teatime ?? []
-        default: return
+        default: break 
         }
 
         let existingURIs = Set(current.compactMap { $0.recipe?.uri })
@@ -2897,6 +2912,10 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         let filteredNew = newData.filter {
             guard let uri = $0.recipe?.uri else { return false }
             return !existingURIs.contains(uri)
+        }
+
+        guard !filteredNew.isEmpty else {
+            return 0
         }
 
         let updated = current + filteredNew
@@ -2929,6 +2948,7 @@ extension PlanVc: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         default:
             break
         }
+        return filteredNew.count
     }
     
     func apiMealType(from meal: String) -> String {
@@ -3061,11 +3081,146 @@ extension PlanVc: UITableViewDelegate, UITableViewDataSource {
         return UITableViewCell()
     }
     
-    
+  
     @objc func BreakFastSwipBtnClicked(_ sender: UIButton){
-      
-        
-        self.SwipeID = "\(self.AllDataList.breakfast?[sender.tag].id ?? 0)"
+        presentSwapDropDown(from: sender, mealType: "Breakfast")
+    }
+    
+    @objc func dessertSwipBtnClicked(_ sender: UIButton){
+        presentSwapDropDown(from: sender, mealType: "Dessert")
+    }
+    
+    @objc func LunchSwipBtnClicked(_ sender: UIButton){
+        presentSwapDropDown(from: sender, mealType: "Lunch")
+    }
+    
+    @objc func DinnerSwipBtnClicked(_ sender: UIButton){
+        presentSwapDropDown(from: sender, mealType: "Dinner")
+    }
+    
+    @objc func SnacksSwipBtnClicked(_ sender: UIButton){
+        presentSwapDropDown(from: sender, mealType: "Snacks")
+    }
+    
+    @objc func TeatimeSwipBtnClicked(_ sender: UIButton){
+        presentSwapDropDown(from: sender, mealType: "Brunch")
+    }
+
+    private func presentSwapDropDown(from sender: UIButton, mealType: String) {
+        dropDown.dataSource = ["Swap", "Delete"]
+        dropDown.anchorView = sender
+
+        let trailingSpace: CGFloat = 70
+        dropDown.bottomOffset = CGPoint(x: -trailingSpace, y: sender.bounds.height)
+        dropDown.topOffset = CGPoint(x: -trailingSpace, y: -(dropDown.anchorView?.plainView.bounds.height ?? 0))
+        dropDown.width = 135
+        dropDown.setupCornerRadius(10)
+        dropDown.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        dropDown.layer.shadowOpacity = 0
+        dropDown.layer.shadowRadius = 4
+        dropDown.layer.shadowOffset = CGSize(width: 0, height: 0)
+        dropDown.backgroundColor = .white
+        dropDown.cellHeight = 35
+        dropDown.textFont = UIFont.systemFont(ofSize: 16)
+        dropDown.cellNib = UINib(nibName: "CustomDropDownCell", bundle: nil)
+        dropDown.customCellConfiguration = { [weak self] index, _, cell in
+            guard let self = self, let cell = cell as? CustomDropDownCell else { return }
+            cell.logoImageView.image = UIImage(named: self.DropDownImg[index])
+        }
+        dropDown.selectionAction = { [weak self] index, _ in
+            guard let self = self else { return }
+            if index == 0 {
+                self.handleSwapSelection(mealType: mealType, index: sender.tag)
+            } else {
+                self.handleDeleteSelection(mealType: mealType, index: sender.tag)
+            }
+        }
+        dropDown.show()
+    }
+
+    private func handleSwapSelection(mealType: String, index: Int) {
+        switch mealType {
+        case "Breakfast":
+            breakFastSwip(index: index)
+        case "Dessert":
+            dessertSwip(index: index)
+        case "Lunch":
+            lunchSwip(index: index)
+        case "Dinner":
+            dinnerSwip(index: index)
+        case "Snacks":
+            snacksSwip(index: index)
+        default:
+            teatimeSwip(index: index)
+        }
+    }
+
+    private func handleDeleteSelection(mealType: String, index: Int) {
+        let id = mealPlanID(for: mealType, index: index)
+        guard !id.isEmpty, id != "0" else { return }
+
+        planService.shared.Api_To_RemoveRecipe(id: id, vc: self) { [weak self] _ in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.removeMealPlanItem(for: mealType, index: index)
+            }
+        }
+    }
+
+    private func mealPlanID(for mealType: String, index: Int) -> String {
+        switch mealType {
+        case "Breakfast":
+            guard let items = AllDataList.breakfast, items.indices.contains(index) else { return "" }
+            return "\(items[index].id ?? 0)"
+        case "Dessert":
+            guard let items = AllDataList.dessert, items.indices.contains(index) else { return "" }
+            return "\(items[index].id ?? 0)"
+        case "Lunch":
+            guard let items = AllDataList.lunch, items.indices.contains(index) else { return "" }
+            return "\(items[index].id ?? 0)"
+        case "Dinner":
+            guard let items = AllDataList.dinner, items.indices.contains(index) else { return "" }
+            return "\(items[index].id ?? 0)"
+        case "Snacks":
+            guard let items = AllDataList.snacks, items.indices.contains(index) else { return "" }
+            return "\(items[index].id ?? 0)"
+        default:
+            guard let items = AllDataList.teatime, items.indices.contains(index) else { return "" }
+            return "\(items[index].id ?? 0)"
+        }
+    }
+
+    private func removeMealPlanItem(for mealType: String, index: Int) {
+        switch mealType {
+        case "Breakfast":
+            guard AllDataList.breakfast?.indices.contains(index) == true else { return }
+            AllDataList.breakfast?.remove(at: index)
+        case "Dessert":
+            guard AllDataList.dessert?.indices.contains(index) == true else { return }
+            AllDataList.dessert?.remove(at: index)
+        case "Lunch":
+            guard AllDataList.lunch?.indices.contains(index) == true else { return }
+            AllDataList.lunch?.remove(at: index)
+        case "Dinner":
+            guard AllDataList.dinner?.indices.contains(index) == true else { return }
+            AllDataList.dinner?.remove(at: index)
+        case "Snacks":
+            guard AllDataList.snacks?.indices.contains(index) == true else { return }
+            AllDataList.snacks?.remove(at: index)
+        default:
+            guard AllDataList.teatime?.indices.contains(index) == true else { return }
+            AllDataList.teatime?.remove(at: index)
+        }
+
+        ShowNoDataFoundonCollV1()
+    }
+
+    func breakFastSwip(sender: UIButton){
+        breakFastSwip(index: sender.tag)
+    }
+
+    private func breakFastSwip(index: Int){
+        self.SwipeID = "\(self.AllDataList.breakfast?[index].id ?? 0)"
         self.SwapMealType = "Breakfast"
         
         self.BreakFastCollVBgV.isHidden = false
@@ -3079,10 +3234,9 @@ extension PlanVc: UITableViewDelegate, UITableViewDataSource {
             self.BreakFastBtnBgV.isHidden = false
         }
     }
-    
-    @objc func dessertSwipBtnClicked(_ sender: UIButton){
-        
-        self.SwipeID = "\(self.AllDataList.dessert?[sender.tag].id ?? 0)"
+
+    private func dessertSwip(index: Int){
+        self.SwipeID = "\(self.AllDataList.dessert?[index].id ?? 0)"
         self.SwapMealType = "Dessert"
         
         self.dessertCollVBgV.isHidden = false
@@ -3096,9 +3250,9 @@ extension PlanVc: UITableViewDelegate, UITableViewDataSource {
             self.dessertBtnBgV.isHidden = false
         }
     }
-    
-    @objc func LunchSwipBtnClicked(_ sender: UIButton){
-        self.SwipeID = "\(self.AllDataList.lunch?[sender.tag].id ?? 0)"
+
+    private func lunchSwip(index: Int){
+        self.SwipeID = "\(self.AllDataList.lunch?[index].id ?? 0)"
         self.SwapMealType = "Lunch"
         
         self.LunchCollVBgV.isHidden = false
@@ -3112,9 +3266,9 @@ extension PlanVc: UITableViewDelegate, UITableViewDataSource {
             self.LunchBtnBgV.isHidden = false
         }
     }
-    
-    @objc func DinnerSwipBtnClicked(_ sender: UIButton){
-        self.SwipeID = "\(self.AllDataList.dinner?[sender.tag].id ?? 0)"
+
+    private func dinnerSwip(index: Int){
+        self.SwipeID = "\(self.AllDataList.dinner?[index].id ?? 0)"
         self.SwapMealType = "Dinner"
         
         self.DinnerCollVBgV.isHidden = false
@@ -3128,9 +3282,9 @@ extension PlanVc: UITableViewDelegate, UITableViewDataSource {
             self.DinnerBtnBgV.isHidden = false
         }
     }
-    
-    @objc func SnacksSwipBtnClicked(_ sender: UIButton){
-        self.SwipeID = "\(self.AllDataList.snacks?[sender.tag].id ?? 0)"
+
+    private func snacksSwip(index: Int){
+        self.SwipeID = "\(self.AllDataList.snacks?[index].id ?? 0)"
         self.SwapMealType = "Snacks"
         
         self.SnacksCollVBgV.isHidden = false
@@ -3144,9 +3298,9 @@ extension PlanVc: UITableViewDelegate, UITableViewDataSource {
             self.SnacksBtnBgV.isHidden = false
         }
     }
-    
-    @objc func TeatimeSwipBtnClicked(_ sender: UIButton){
-        self.SwipeID = "\(self.AllDataList.teatime?[sender.tag].id ?? 0)"
+
+    private func teatimeSwip(index: Int){
+        self.SwipeID = "\(self.AllDataList.teatime?[index].id ?? 0)"
         self.SwapMealType = "Brunch"
         
         self.TeaTimeCollVBgV.isHidden = false
@@ -3288,6 +3442,7 @@ extension PlanVc {
     
     func fetchPlanDataByDate(list:YourCookedMealModel?){
         self.AllDataList  = list ?? YourCookedMealModel()
+        self.resetPaginationStateAndRefreshFooters()
         self.hasLoadedInitialPlanCollections = true
         self.setPlanCollectionsSkeletonVisible(false)
         

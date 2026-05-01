@@ -187,37 +187,7 @@ class ProfileVC: UIViewController, CLLocationManagerDelegate {
     }
     
     @IBAction func OptionBtn(_ sender: UIButton) {
-//        dropDown.dataSource = ["Logout","Delete Account"]
-//          dropDown.anchorView = sender
-//          
-//          // Add trailing space (adjust x for horizontal offset)
-//          let trailingSpace: CGFloat = 120 // Adjust as needed
-//          dropDown.bottomOffset = CGPoint(x: -trailingSpace, y: sender.bounds.height)
-//          dropDown.topOffset = CGPoint(x: -trailingSpace, y: -(dropDown.anchorView?.plainView.bounds.height ?? 0))
-//          dropDown.width = 140
-//          dropDown.setupCornerRadius(10)
-//          
-//          // Optional: You may also need to disable shadow for proper clipping
-//          dropDown.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
-//          dropDown.layer.shadowOpacity = 0
-//          dropDown.layer.shadowRadius = 4
-//          dropDown.layer.shadowOffset = CGSize(width: 0, height: 0)
-//          dropDown.backgroundColor = .white
-//          dropDown.cellHeight = 35
-//          dropDown.textFont = UIFont.systemFont(ofSize: 16)
-//
-//        dropDown.selectionAction = { [weak self] (index: Int, item: String) in
-//            guard let self = self else { return }
-//            print(index)
-//            if index == 0 {
-//                self.LogOutPopupV.isHidden = false
-//            }else{
-//                self.DeleteAccPopupV.isHidden = false
-//            }
-//        }
-//        
-//        dropDown.show()
-        
+
         dropDown.dataSource = ["Logout","Delete Account"]
           dropDown.anchorView = sender
           
@@ -245,8 +215,6 @@ class ProfileVC: UIViewController, CLLocationManagerDelegate {
               let img = DropDownImg[index]
               cell.logoImageView.image = UIImage(named: img)
           }
-          
-          // Handle selection
         dropDown.selectionAction = { [weak self] (index: Int, item: String) in
             guard let self = self else { return }
             print(index)

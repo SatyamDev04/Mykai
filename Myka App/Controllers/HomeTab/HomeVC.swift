@@ -744,7 +744,7 @@ extension HomeVC{
     func HomeDataFetch(result: DataClass?) {
         let allData = result
         
-        let monthly_savings = allData?.monthly_savings
+        let monthly_savings = allData?.monthly_savings ?? "0"
         
         let fridgeMeal = allData?.fridge
         self.FridgeLunchLbl.text = "\(fridgeMeal?.lunch ?? 0)"
@@ -813,8 +813,17 @@ extension HomeVC{
         }else{
             self.MonthlyCheckSavingBgV.isHidden = false
             self.MonthlySavingBtn.isHidden = true
+            let cleaned = monthly_savings.replacingOccurrences(of: "$", with: "")
+            let n = Double(cleaned) ?? 0
+            if n > 0{
+                self.MonthlyCheckSavingDetailsLbl.text = "You've spent \(monthly_savings) and you're still within your budget this month"
+               // self.MonthlyCheckSavingDetailsLbl.text = "Good job \(self.name), you are on track to save $\(monthly_savings) this month"
+            }else{
+                self.MonthlyCheckSavingDetailsLbl.text = "You've spent \(monthly_savings) — you're a little over budget this month"
+                
+              //  self.MonthlyCheckSavingDetailsLbl.text = "Good job \(self.name), you are on track to save $\(monthly_savings) this month"
+            }
             
-            self.MonthlyCheckSavingDetailsLbl.text = "Good job \(self.name), you are on track to save \(monthly_savings ?? "$0") this month"
         }
     }
     

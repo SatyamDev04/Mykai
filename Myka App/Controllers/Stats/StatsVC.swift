@@ -61,21 +61,19 @@ class StatsVC: UIViewController, ChartViewDelegate {
                 let Name = response?["name"] as? String ?? ""
                 self.UserName = Name.capitalizedFirst
                 
-                self.ProfDescLbl.text = "Good job \(Name.capitalizedFirst) you're on track to big savings! Stick with your plan and watch the results add up."
-                
                 let ProfImg = response?["profile_img"] as? String ?? ""
                 let img = "\(baseURL.imageUrl)\(ProfImg)"
                 let ImgUrl = URL(string: img)
                 self.ProfImg.sd_imageIndicator = SDWebImageActivityIndicator.medium
                 self.ProfImg.sd_setImage(with: ImgUrl, placeholderImage: UIImage(named: "DummyImg"))
                 self.UserPickUrl = img
-                
-            case .failure(let error):
+                self.Api_To_Get_Graph()
+               case .failure(let error):
                 print("Error retrieving data: \(error.localizedDescription)")
             }
         }
         
-        self.Api_To_Get_Graph()
+      
     }
     
     func setupBarChart() {
@@ -475,9 +473,14 @@ extension StatsVC{
                 
                 let saving = response["saving"] as? Double ?? Double()
                 let Fsaving = self.formatPrice(saving)
-                self.YourSavingLbl.text = "Your savings are $\(Fsaving)"
-                
-                 
+                self.YourSavingLbl.text = "Your monthly budget is $\(Fsaving)"
+                let cleaned = Fsaving.replacingOccurrences(of: "$", with: "")
+                let n = Double(cleaned) ?? 0
+                if n > 0 {
+                    self.ProfDescLbl.text = "Good job on sticking to your budget this month, \(self.UserName)!"
+                }else{
+                    self.ProfDescLbl.text = "You've gone a little over budget this month, \(self.UserName) — let's get back on track!"
+                }
                 let currentDate = self.seldate // Get the current date
                 let calendar = Calendar.current
 

@@ -88,9 +88,7 @@ class DishCollVCell: UICollectionViewCell {
     func setLoading(_ loading: Bool) {
         isUserInteractionEnabled = !loading
         contentView.isUserInteractionEnabled = !loading
-        SwapBtn.isUserInteractionEnabled = !loading
-        MinusBtn.isUserInteractionEnabled = !loading
-        PlusBtn.isUserInteractionEnabled = !loading
+       
 
         if loading {
             contentView.layoutIfNeeded()

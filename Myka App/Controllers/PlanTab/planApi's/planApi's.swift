@@ -13,7 +13,35 @@ import SwiftyJSON
 class planService {
     
     static let shared = planService()
- 
+    
+    
+    func Api_To_RemoveRecipe(id:String,vc: UIViewController, completion: @escaping (Result<NSDictionary?, Error>) -> Void){
+        var params = [String: Any]()
+         
+        params["id"] = id
+        
+        vc.showIndicator(withTitle: "", and: "")
+        
+        let loginURL = baseURL.baseURL + appEndPoints.remove_meal
+        print(params,"Params")
+        print(loginURL,"loginURL")
+        
+        WebService.shared.postServiceURLEncoding(loginURL, VC: vc, andParameter: params, withCompletion: { (json, statusCode) in
+            
+            vc.hideIndicator()
+            
+            guard let dictData = json.dictionaryObject else{
+                return
+            }
+            
+            if dictData["success"] as? Bool == true{
+               completion(.success(dictData as NSDictionary))
+            }else{
+                let responseMessage = dictData["message"] as! String
+                vc.showToast(responseMessage)
+            }
+        })
+    }
     func Api_To_GetAllRecipe(vc: UIViewController, completion: @escaping (Result<PlanDataClass?, Error>) -> Void) {
             var params = [String: Any]()
          
