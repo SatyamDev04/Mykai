@@ -619,6 +619,7 @@ final class CreateRecipeViewModel {
 
         self.title = recipe.label.capitalizeFirstLetterOnly()
         self.servings =   "\(recipe.servings?.stringValue() ?? "") servings"
+        
         // MARK: - Ingredients
         let importedIngredients: [IngredientDataModel] = recipe.ingredients?.map { item in
             IngredientDataModel(
@@ -638,15 +639,43 @@ final class CreateRecipeViewModel {
                 header: item.header
             )
         } ?? []
-        
-        self.ingredientsSections = [
-            RecipeDataModel(
-                hearder: "Ingredients",
-                ingredients: importedIngredients,
-                cookware: nil,
-                recipe: nil
-            )
-        ]
+
+        var groupedIngredientSections: [RecipeDataModel] = []
+        for ingredient in importedIngredients {
+            let headerTrimmed = ingredient.header?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+
+            if headerTrimmed.isEmpty {
+                groupedIngredientSections.append(
+                    RecipeDataModel(
+                        hearder: "",
+                        ingredients: [ingredient],
+                        cookware: nil,
+                        recipe: nil
+                    )
+                )
+            } else if let sectionIndex = groupedIngredientSections.firstIndex(where: {
+                ($0.hearder ?? "")
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                    .caseInsensitiveCompare(headerTrimmed) == .orderedSame
+            }) {
+                if groupedIngredientSections[sectionIndex].ingredients == nil {
+                    groupedIngredientSections[sectionIndex].ingredients = [ingredient]
+                } else {
+                    groupedIngredientSections[sectionIndex].ingredients?.append(ingredient)
+                }
+            } else {
+                groupedIngredientSections.append(
+                    RecipeDataModel(
+                        hearder: headerTrimmed,
+                        ingredients: [ingredient],
+                        cookware: nil,
+                        recipe: nil
+                    )
+                )
+            }
+        }
+
+        self.ingredientsSections = groupedIngredientSections
         
         // MARK: - Cookware
         let importedCookware: [IngredientDataModel] = recipe.cookware?.map { item in

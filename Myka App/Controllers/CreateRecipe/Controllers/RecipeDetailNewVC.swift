@@ -13,7 +13,6 @@ import SkeletonView
 class RecipeDetailNewVC: UIViewController {
 
     @IBOutlet weak var ImgV: UIImageView!
-    
     @IBOutlet weak var RatingLbl: UILabel!
     @IBOutlet weak var recipeNameLbl: UILabel!
     @IBOutlet weak var recipeDesLbl: UILabel!

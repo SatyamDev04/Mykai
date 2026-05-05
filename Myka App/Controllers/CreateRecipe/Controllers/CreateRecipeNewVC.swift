@@ -847,9 +847,12 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == self.ingredientTblV {
+            
             let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientsTblVCell", for: indexPath) as! IngredientsTblVCell
+            
             cell.checkBoxView.isHidden = true
             
             guard let model = viewModel.modelForRow(at: indexPath, for: .ingredient) as? IngredientDataModel else {return cell}
@@ -862,12 +865,19 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
             }
             
             cell.ingredientlbl?.text = model.name
+            
             if let quantity = model.quantity, let unit = model.unit {
-                cell.amout_MeasurmentLbl?.text = "\(quantity) \(unit)".trimmingCharacters(in: .whitespaces)
+                
+                if unit == "" {
+                    cell.amout_MeasurmentLbl?.text = "\(quantity) Unit".trimmingCharacters(in: .whitespaces)
+                }else{
+                    cell.amout_MeasurmentLbl?.text = "\(quantity) \(unit)".trimmingCharacters(in: .whitespaces)
+                }
             } else {
                 cell.amout_MeasurmentLbl?.text = ""
             }
-            cell.img.sd_setImage(with: URL(string: model.img ?? ""), placeholderImage: UIImage(named: "No_Image"))
+            
+            cell.img.sd_setImage(with: URL(string: model.img ?? ""), placeholderImage: UIImage(named: "NewRec"))
             cell.selectionStyle = .none
             return cell
         }else if tableView == cookwareTblV{
@@ -877,7 +887,7 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
             
             guard let model = viewModel.modelForRow(at: indexPath, for: .cookware) as? IngredientDataModel else {return cell}
             cell.ingredientlbl?.text = model.name
-            cell.img.sd_setImage(with: URL(string: model.img ?? ""), placeholderImage: UIImage(named: "No_Image"))
+            cell.img.sd_setImage(with: URL(string: model.img ?? ""), placeholderImage: UIImage(named: "addCook"))
             cell.selectionStyle = .none
             return cell
         }else{
@@ -906,13 +916,12 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-    }
     
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75
-    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {}
+    
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {return 75}
+    
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if tableView == self.ingredientTblV {
@@ -955,6 +964,7 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
         return nil
     }
     
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if tableView == self.ingredientTblV {
             guard let title = viewModel.headerTitle(for: section, in: .ingredient) else { return 0 }
@@ -968,6 +978,7 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
         }
         return 0
     }
+    
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath)
     -> UISwipeActionsConfiguration? {
