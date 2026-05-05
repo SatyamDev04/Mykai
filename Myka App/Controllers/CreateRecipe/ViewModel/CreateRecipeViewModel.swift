@@ -624,7 +624,7 @@ final class CreateRecipeViewModel {
             IngredientDataModel(
                 name: item.name?.capitalizeFirstLetterOnly(),
                 quantity: item.quantity,
-                unit: item.unit ?? item.measure,
+                unit: item.unit ?? "Unit" ,
                 img: item.image ?? item.imageURL ?? "",
                 isSelected: true,
                 text: item.text,

@@ -5719,7 +5719,7 @@ OFF My-Kai. </string>
                                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vMv-1W-TQn">
                                                                 <rect key="frame" x="25" y="0.0" width="343" height="220"/>
                                                                 <subviews>
-                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="No_Image" translatesAutoresizingMaskIntoConstraints="NO" id="W5y-iW-U3I">
+                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="No_Image1" translatesAutoresizingMaskIntoConstraints="NO" id="W5y-iW-U3I">
                                                                         <rect key="frame" x="0.0" y="0.0" width="343" height="220"/>
                                                                     </imageView>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nu4-Wu-1pF">
@@ -14018,6 +14018,7 @@ to discard changes.</string>
         <image name="Mask groupH" width="375" height="238"/>
         <image name="Next" width="6.6666665077209473" height="11.333333015441895"/>
         <image name="No_Image" width="284" height="177"/>
+        <image name="No_Image1" width="284" height="177"/>
         <image name="Nodata" width="429" height="238"/>
         <image name="Panel Indicator" width="34" height="5"/>
         <image name="Plan" width="21" height="20.333333969116211"/>
