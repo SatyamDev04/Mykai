@@ -45,19 +45,20 @@ class RecipeDetailNewVC: UIViewController {
     @IBOutlet weak var authorNoteBgV: UIView!
     @IBOutlet weak var notesTxtV: UITextView!
     // for Choosedays popup
+    
     @IBOutlet var ChoosedaysPopupV: UIView!
     @IBOutlet weak var ChoosedaysTblV: UITableView!
     @IBOutlet weak var ChooseDayWeekLabel: UILabel!
     @IBOutlet weak var ChoosedaysBgV: UIView!
     
     // for ChooseMealType popup
+    
     @IBOutlet var ChooseMealTypePopupV: UIView!
     @IBOutlet weak var ChooseMealTypeTblV: UITableView!
     @IBOutlet weak var ChooseMealTypeTblVH: NSLayoutConstraint!
     @IBOutlet weak var ChooseMealTypeBgV: UIView!
-    
     @IBOutlet weak var ScrollV: UIScrollView!
-    //
+   
     var ServCount = 1
     var ChooseDayData = [BodyGoalsModel(Name: "Monday", isSelected: false), BodyGoalsModel(Name: "Tuesday", isSelected: false), BodyGoalsModel(Name: "Wednesday", isSelected: false), BodyGoalsModel(Name: "Thursday", isSelected: false), BodyGoalsModel(Name: "Friday", isSelected: false), BodyGoalsModel(Name: "Saturday", isSelected: false), BodyGoalsModel(Name: "Sunday", isSelected: false)]
     
@@ -403,7 +404,7 @@ class RecipeDetailNewVC: UIViewController {
     }
     
     @IBAction func DirectionsBtn(_ sender: UIButton) {
-        if recipeFrom == "Import"{
+        if recipeFrom.lowercased() == "import"{
             let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "ImportedRecipeWebViewVC") as! ImportedRecipeWebViewVC
             vc.WebUrl = sourceUrl
