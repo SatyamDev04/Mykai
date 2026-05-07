@@ -48,7 +48,7 @@ struct RecipeDetail: Codable {
     var calories, totalWeight: Double?
     var totalTime: Int?
     var prep_time: Int?
-    var cuisineType, mealType: [String]?
+    var cuisineType, mealType: [String?]?
     var dishType: [String?]?
     var totalNutrients, totalDaily: [String: Total]?
     var digest: [Digest]?

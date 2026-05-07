@@ -619,8 +619,8 @@ extension CookBooksVC {
         var params = [String: Any]()
  
         params["uri"] = self.uri
-        params["type"] = 0
-        params["cook_book"] = self.selID
+        params["type"] = "0"
+        params["cook_book"] = ""//self.selID
           
       
         showIndicator(withTitle: "", and: "")

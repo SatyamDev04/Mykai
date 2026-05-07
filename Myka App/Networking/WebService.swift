@@ -1910,7 +1910,9 @@ class WebService {
         urlRequest.httpBody = data
         
         AF.request(urlRequest).responseJSON { responseData in
-            if let data = responseData.data, let _ = String(data: data, encoding: .utf8) {
+            if let data = responseData.data, let responseString = String(data: data, encoding: .utf8) {
+                print("=========raw upload response body==========")
+                print(responseString)
                 do {
                     let statusCode = responseData.response?.statusCode ?? 0
                     if statusCode == 401 {
@@ -1929,6 +1931,8 @@ class WebService {
                 } catch {
                     completionHandler([:], 400)
                     print("Unexpected error: \(error).")
+                    print("=========failed upload raw body==========")
+                    print(responseString)
                     VC.hideIndicator()
                     AlertController.alert(title: "Message", message: "Could not connect to the server.")
                 }

@@ -1,9 +1,9 @@
 //
 //  Tesco_MissingIngredientVC.swift
 //  Myka App
-//
 //  Created by YES IT Labs on 17/12/24.
 //
+
 
 import UIKit
 
@@ -62,7 +62,7 @@ class Tesco_MissingIngredientVC: UIViewController {
 
         // Set today's date as default in MM/dd/yyyy format
         let formatter = DateFormatter()
-        formatter.dateFormat = "MM/dd/yyyy"
+        formatter.dateFormat = "yyyy-MM-dd"
         datePurchased.text = formatter.string(from: Date())
 
         datePicker.minimumDate = nil
@@ -109,7 +109,7 @@ class Tesco_MissingIngredientVC: UIViewController {
     @objc func datePurchasedDoneTapped() {
         if let picker = datePurchased.inputView as? UIDatePicker {
             let formatter = DateFormatter()
-            formatter.dateFormat = "MM/dd/yyyy"
+            formatter.dateFormat = "yyyy-MM-dd"
             datePurchased.text = formatter.string(from: picker.date)
         }
         self.view.endEditing(true)
@@ -177,7 +177,7 @@ class Tesco_MissingIngredientVC: UIViewController {
     
    @IBAction func noSaveBtn(_ sender: UIButton) {
        self.checkPopupView.isHidden = true
-       self.tabBarController?.selectedIndex = 0
+       navigateToHomeTab()
     }
    
     @IBAction func searchTextChanged(_ sender: UITextField) {
@@ -197,12 +197,16 @@ class Tesco_MissingIngredientVC: UIViewController {
     }
 }
 
+
+
 extension Tesco_MissingIngredientVC: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let visibleItems = missingIngredient.filter { $0.isVisible ?? false }
         
             return visibleItems.count
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientsTblVCell", for: indexPath) as! IngredientsTblVCell
@@ -252,7 +256,59 @@ extension Tesco_MissingIngredientVC: UITableViewDelegate, UITableViewDataSource 
         return UITableView.automaticDimension
     }
 }
-extension Tesco_MissingIngredientVC{
+
+extension Tesco_MissingIngredientVC {
+    private func navigateToHomeTab() {
+        DispatchQueue.main.async {
+            let resolvedTabBarController = self.tabBarController ?? self.findTabBarController(from: self.view.window?.rootViewController)
+            guard let tabBarController = resolvedTabBarController else { return }
+
+            self.navigationController?.popToRootViewController(animated: false)
+
+            if let viewControllers = tabBarController.viewControllers,
+               viewControllers.indices.contains(0),
+               let homeNavigationController = viewControllers[0] as? UINavigationController {
+                homeNavigationController.popToRootViewController(animated: false)
+            }
+
+            tabBarController.tabBar.isHidden = false
+
+            let tabBar = tabBarController.tabBar
+            if let items = tabBar.items,
+               items.indices.contains(0),
+               let delegate = tabBarController.delegate,
+               let homeViewController = tabBarController.viewControllers?[0] {
+                let canSelect = delegate.tabBarController?(tabBarController, shouldSelect: homeViewController) ?? true
+                if canSelect {
+                    tabBarController.tabBar(tabBar, didSelect: items[0])
+                }
+            }
+
+            tabBarController.selectedIndex = 0
+        }
+    }
+
+    private func findTabBarController(from viewController: UIViewController?) -> UITabBarController? {
+        if let tabBarController = viewController as? UITabBarController {
+            return tabBarController
+        }
+
+        if let navigationController = viewController as? UINavigationController {
+            return findTabBarController(from: navigationController.viewControllers.first)
+        }
+
+        if let presentedViewController = viewController?.presentedViewController {
+            return findTabBarController(from: presentedViewController)
+        }
+
+        for child in viewController?.children ?? [] {
+            if let found = findTabBarController(from: child) {
+                return found
+            }
+        }
+
+        return nil
+    }
     
     func Api_StorePurchasedIngredients() {
         
@@ -328,7 +384,7 @@ extension Tesco_MissingIngredientVC{
         let url = baseURL.baseURL + appEndPoints.userPurchasedURL
         
         print("Params:", params)
-        
+        print("url:", url)
         showIndicator(withTitle: "", and: "")
         
         WebService.shared.postServiceURLEncoding(url, VC: self, andParameter: params) { json, statusCode in
@@ -342,8 +398,7 @@ extension Tesco_MissingIngredientVC{
         
             if success {
                 self.showToast(message)
-                self.navigationController?.popToRootViewController(animated: false)
-                self.tabBarController?.selectedIndex = 0
+                self.navigateToHomeTab()
             } else {
                 self.showToast(message)
             }

@@ -7,9 +7,12 @@
 import UIKit
 import DropDown
 import IQKeyboardManager
+import WebKit
+import SDWebImage
+import SwiftyJSON
 
 // MARK: - CreateRecipeNewVC
-class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
+class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDelegate {
     
     // MARK: IBOutlets
     @IBOutlet weak var recipeImg: UIImageView!
@@ -78,8 +81,11 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
     var RecipeImportedData : RecipeURL?
     var cookBooksData = [FavDropDownModel]()
     var SelCookBookId = "0"
+    private var imageResolverWebView: WKWebView?
+    private var lastResolvedImportedImageURL: String?
     var addIngredientImgStr: String = ""
     var addCookwareImgStr: String = ""
+    private let maxUploadImageBytes = 100 * 1024
  
     var backCase = ""
     var isIngredientPickImg = false
@@ -178,7 +184,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
             viewModel.description = data.description ?? ""
             if let imgStr = data.image, !imgStr.isEmpty {
                 if imgStr.hasPrefix("http://") || imgStr.hasPrefix("https://") {
-                    self.recipeImg.sd_setImage(with: URL(string: data.image ?? ""), placeholderImage: UIImage(named: "No_Image"))
+                    loadImportedRecipeImage(from: imgStr)
                 } else {
                     self.recipeImg.setImage(base64String: imgStr)
                     
@@ -192,6 +198,192 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate {
             recipeBgV.isHidden = true
             noRecipebgV.isHidden = false
         }
+    }
+
+    private func loadImportedRecipeImage(from rawURLString: String) {
+        let secureURLString = rawURLString.replacingOccurrences(of: "http://", with: "https://")
+        recipeImg.image = UIImage(named: "No_Image")
+
+        if let normalizedURL = normalizedRemoteURL(from: secureURLString) {
+            recipeImg.setRemoteImage(normalizedURL, placeholder: UIImage(named: "No_Image"))
+        }
+
+        let webView = getOrCreateImageResolverWebView()
+        let requestURL = normalizedRemoteURL(from: secureURLString) ?? URL(string: secureURLString)
+        guard let url = requestURL else { return }
+        webView.load(URLRequest(url: url))
+        
+        
+    }
+
+    private func normalizedRemoteURL(from rawString: String) -> URL? {
+        let trimmed = rawString
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: "\"", with: "")
+            .replacingOccurrences(of: "\\/", with: "/")
+
+        guard !trimmed.isEmpty else { return nil }
+        if let url = URL(string: trimmed) {
+            return url
+        }
+
+        let allowed = CharacterSet(charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&'()*+,;=%")
+        if let encoded = trimmed.addingPercentEncoding(withAllowedCharacters: allowed) {
+            return URL(string: encoded)
+        }
+
+        return nil
+    }
+
+    private func getOrCreateImageResolverWebView() -> WKWebView {
+        if let webView = imageResolverWebView {
+            return webView
+        }
+
+        let webView = WKWebView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
+        webView.isHidden = true
+        webView.navigationDelegate = self
+        view.addSubview(webView)
+        imageResolverWebView = webView
+        return webView
+    }
+
+    private func applyResolvedImportedImage(from url: URL) {
+        guard lastResolvedImportedImageURL != url.absoluteString else { return }
+        lastResolvedImportedImageURL = url.absoluteString
+        print("Resolved imported image final URL:", url.absoluteString)
+        SDWebImageManager.shared.loadImage(
+            with: url,
+            options: .highPriority,
+            progress: nil
+        ) { [weak self] image, data, error, _, finished, _ in
+            guard let self = self, finished, error == nil else { return }
+
+            DispatchQueue.main.async {
+                self.recipeImg.image = image ?? UIImage(named: "No_Image")
+                self.recipeImg.contentMode = .scaleAspectFit
+                self.recipeImgUploadBtnO.isUserInteractionEnabled = false
+                self.recipeImgEditBtnO.isHidden = false
+            }
+            self.storeCompressedRecipeImage(image: image, originalData: data)
+        }
+    }
+
+    private func storeCompressedRecipeImage(image: UIImage?, originalData: Data? = nil) {
+        let fallbackImage = image ?? (originalData.flatMap { UIImage(data: $0) })
+        guard let finalImage = fallbackImage else { return }
+
+        let compressedData = compressedImageData(from: finalImage, originalData: originalData, maxBytes: maxUploadImageBytes)
+        viewModel.imageData = compressedData
+        recipeImageBase64 = compressedData.base64EncodedString()
+        print("Compressed recipe image size:", compressedData.count, "bytes")
+    }
+
+    private func compressedImageData(from image: UIImage, originalData: Data?, maxBytes: Int) -> Data {
+        if let originalData = originalData, originalData.count <= maxBytes {
+            return originalData
+        }
+
+        var workingImage = image
+        var compressionQuality: CGFloat = 0.9
+        var bestData = image.jpegData(compressionQuality: compressionQuality) ?? Data()
+
+        if bestData.count <= maxBytes {
+            return bestData
+        }
+
+        for _ in 0..<8 {
+            if let jpegData = workingImage.jpegData(compressionQuality: compressionQuality) {
+                bestData = jpegData
+                if jpegData.count <= maxBytes {
+                    return jpegData
+                }
+            }
+
+            if compressionQuality > 0.35 {
+                compressionQuality -= 0.1
+            } else {
+                let nextSize = CGSize(
+                    width: max(workingImage.size.width * 0.85, 240),
+                    height: max(workingImage.size.height * 0.85, 240)
+                )
+                if let resized = resizedImage(workingImage, targetSize: nextSize) {
+                    workingImage = resized
+                }
+            }
+        }
+
+        while bestData.count > maxBytes,
+              workingImage.size.width > 220,
+              workingImage.size.height > 220 {
+            let nextSize = CGSize(
+                width: max(workingImage.size.width * 0.8, 220),
+                height: max(workingImage.size.height * 0.8, 220)
+            )
+            guard let resized = resizedImage(workingImage, targetSize: nextSize),
+                  let jpegData = resized.jpegData(compressionQuality: 0.3) else {
+                break
+            }
+            workingImage = resized
+            bestData = jpegData
+            if jpegData.count <= maxBytes {
+                return jpegData
+            }
+        }
+
+        return bestData
+    }
+
+    private func resizedImage(_ image: UIImage, targetSize: CGSize) -> UIImage? {
+        guard targetSize.width > 0, targetSize.height > 0 else { return nil }
+
+        let rendererFormat = UIGraphicsImageRendererFormat.default()
+        rendererFormat.scale = 1
+        let renderer = UIGraphicsImageRenderer(size: targetSize, format: rendererFormat)
+
+        return renderer.image { _ in
+            image.draw(in: CGRect(origin: .zero, size: targetSize))
+        }
+    }
+
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        guard webView == imageResolverWebView else { return }
+        print("Image resolver started loading URL:", webView.url?.absoluteString ?? "nil")
+    }
+
+    func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
+        guard webView == imageResolverWebView else { return }
+        print("Image resolver redirected to URL:", webView.url?.absoluteString ?? "nil")
+        if let resolvedURL = webView.url {
+            applyResolvedImportedImage(from: resolvedURL)
+        }
+    }
+
+    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+        guard webView == imageResolverWebView else { return }
+        print("Image resolver committed URL:", webView.url?.absoluteString ?? "nil")
+        if let resolvedURL = webView.url {
+            applyResolvedImportedImage(from: resolvedURL)
+        }
+    }
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        guard webView == imageResolverWebView else { return }
+        print("Image resolver finished URL:", webView.url?.absoluteString ?? "nil")
+        guard let resolvedURL = webView.url else { return }
+        applyResolvedImportedImage(from: resolvedURL)
+    }
+
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        guard webView == imageResolverWebView else { return }
+        print("Image resolver provisional load failed:", error.localizedDescription)
+        print("Image resolver failed provisional URL:", webView.url?.absoluteString ?? "nil")
+    }
+
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        guard webView == imageResolverWebView else { return }
+        print("Image resolver load failed:", error.localizedDescription)
+        print("Image resolver failed URL:", webView.url?.absoluteString ?? "nil")
     }
     
     @objc  func showDateCookPicker(){
@@ -808,17 +1000,13 @@ extension CreateRecipeNewVC: UITextFieldDelegate{
 extension CreateRecipeNewVC: ImagePickerDelegate1{
     func didSelect1(image: UIImage?, tag: Int, info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = image else { return }
-        
-        image.resizeByByte(maxMB: 1) { (data) in
-            DispatchQueue.main.async {
-                self.recipeImg.image = image
-                self.recipeImg.contentMode = .scaleToFill
-                self.recipeImageBase64 = self.viewModel.encodeImageToBase64(image)
-                self.recipeImgUploadBtnO.isUserInteractionEnabled = false
-                self.recipeImgEditBtnO.isHidden = false
-                self.viewModel.imageData = data
-                
-            }
+
+        DispatchQueue.main.async {
+            self.recipeImg.image = image
+            self.recipeImg.contentMode = .scaleToFill
+            self.recipeImgUploadBtnO.isUserInteractionEnabled = false
+            self.recipeImgEditBtnO.isHidden = false
+            self.storeCompressedRecipeImage(image: image)
         }
     }
 }
@@ -868,11 +1056,11 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
             
             if let quantity = model.quantity, let unit = model.unit {
                 
-                if unit == "" {
-                    cell.amout_MeasurmentLbl?.text = "\(quantity) Unit".trimmingCharacters(in: .whitespaces)
-                }else{
+//                if unit == "" {
+//                    cell.amout_MeasurmentLbl?.text = "\(quantity) Unit".trimmingCharacters(in: .whitespaces)
+//                }else{
                     cell.amout_MeasurmentLbl?.text = "\(quantity) \(unit)".trimmingCharacters(in: .whitespaces)
-                }
+//                }
             } else {
                 cell.amout_MeasurmentLbl?.text = ""
             }
@@ -1093,6 +1281,7 @@ extension CreateRecipeNewVC {
         let yield = servingCountLbl.text?
             .removeSpaces
             .replace(string: "servings", withString: "") ?? ""
+        let servings = yield
         
         let prepTime = prepTimeLbl.text?
             .removeSpaces
@@ -1104,6 +1293,7 @@ extension CreateRecipeNewVC {
         
         // Generate recipe JSON string
         var jsonString: String = ""
+        let currentImageBase64 = recipeImageBase64 ?? (!viewModel.imageData.isEmpty ? viewModel.imageData.base64EncodedString() : nil)
         
         if type == "import" {
             guard let generatedJson = viewModel.generateRecipeJSON(
@@ -1112,10 +1302,11 @@ extension CreateRecipeNewVC {
                 cook_book: SelCookBookId,
                 title: recipeTitleTF.text ?? "",
                 yield: yield,
+                servings: servings,
                 prep_time: prepTime,
                 cook_time: cookTime,
                 is_public: isPublicStr,
-                img: recipeImageBase64 ?? "",
+                img: currentImageBase64 ?? "",
                 createdType: type,
                 sourceURL: sourceUrl,
                 uri: uri
@@ -1132,10 +1323,11 @@ extension CreateRecipeNewVC {
                 cook_book: SelCookBookId,
                 title: recipeTitleTF.text ?? "",
                 yield: yield,
+                servings: servings,
                 prep_time: prepTime,
                 cook_time: cookTime,
                 is_public: isPublicStr,
-                img: recipeImageBase64 ?? "",
+                img: currentImageBase64 ?? "",
                 createdType: type,
                 uri: uri
             ) else {
@@ -1152,15 +1344,15 @@ extension CreateRecipeNewVC {
             showAlert(for: "Failed to decode recipe payload")
             return
         }
-        
+        logRecipeUploadPayload(imageBase64: currentImageBase64, payload: payload, mode: "create")
     
         viewModel.uploadRecipe(payload,type: "") { [weak self] json, statusCode in
             guard let self = self else { return }
-            
+
+            self.logRecipeUploadResponse(json: json, statusCode: statusCode, mode: "create")
+
             if (200...201).contains(statusCode) {
                 if let dict = json.dictionaryObject,let status = (dict["success"] as? Bool ),status{
-                    
-                    
                     self.showOkAlertWithHandler(title: "", "Recipe uploaded successfully!") {
                         RecipeDraftManager.clear()
                         //  self.navigationController?.popToViewController(ofClass: HomeVC.self)
@@ -1168,10 +1360,10 @@ extension CreateRecipeNewVC {
                         self.tabBarController?.selectedIndex = 3
                     }
                 }else{
-                    self.showAlert(for: "Failed to upload recipe. Status: \(statusCode)")
+                    self.showAlert(for: self.recipeUploadErrorMessage(from: json, statusCode: statusCode))
                 }
             } else {
-                self.showAlert(for: "Failed to upload recipe. Status: \(statusCode)")
+                self.showAlert(for: self.recipeUploadErrorMessage(from: json, statusCode: statusCode))
             }
         }
     }
@@ -1184,6 +1376,7 @@ extension CreateRecipeNewVC {
         let yield = servingCountLbl.text?
             .removeSpaces
             .replace(string: "servings", withString: "") ?? ""
+        let servings = yield
         
         let prepTime = prepTimeLbl.text?
             .removeSpaces
@@ -1195,6 +1388,7 @@ extension CreateRecipeNewVC {
         
         // Generate recipe JSON string
         var jsonString: String = ""
+        let currentImageBase64 = recipeImageBase64 ?? (!viewModel.imageData.isEmpty ? viewModel.imageData.base64EncodedString() : nil)
         
         if type == "import" {
             guard let generatedJson = viewModel.generateRecipeJSON(
@@ -1203,10 +1397,11 @@ extension CreateRecipeNewVC {
                 cook_book: SelCookBookId,
                 title: recipeTitleTF.text ?? "",
                 yield: yield,
+                servings: servings,
                 prep_time: prepTime,
                 cook_time: cookTime,
                 is_public: isPublicStr,
-                img: recipeImageBase64 ?? "",
+                img: currentImageBase64 ?? "",
                 createdType: type,
                 sourceURL: sourceUrl,
                 uri: uri
@@ -1223,10 +1418,11 @@ extension CreateRecipeNewVC {
                 cook_book: SelCookBookId,
                 title: recipeTitleTF.text ?? "",
                 yield: yield,
+                servings: servings,
                 prep_time: prepTime,
                 cook_time: cookTime,
                 is_public: isPublicStr,
-                img: recipeImageBase64 ?? "",
+                img: currentImageBase64 ?? "",
                 createdType: type,
                 uri: uri
             ) else {
@@ -1243,21 +1439,102 @@ extension CreateRecipeNewVC {
             showAlert(for: "Failed to decode recipe payload")
             return
         }
-        
+        logRecipeUploadPayload(imageBase64: currentImageBase64, payload: payload, mode: "edit")
     
-        viewModel.uploadRecipe(payload,type: "edit") { [weak self] _, statusCode in
+        viewModel.uploadRecipe(payload,type: "edit") { [weak self] json, statusCode in
             guard let self = self else { return }
-            
+
+            self.logRecipeUploadResponse(json: json, statusCode: statusCode, mode: "edit")
+
             if (200...201).contains(statusCode) {
-                self.showOkAlertWithHandler(title: "", "Recipe uploaded successfully!") {
-                    RecipeDraftManager.clear()
-                    self.tabBarController?.selectedIndex = 3
+                if let dict = json.dictionaryObject, let status = (dict["success"] as? Bool), status {
+                    self.showOkAlertWithHandler(title: "", "Recipe uploaded successfully!") {
+                        RecipeDraftManager.clear()
+                        self.tabBarController?.selectedIndex = 3
+                    }
+                } else {
+                    self.showAlert(for: self.recipeUploadErrorMessage(from: json, statusCode: statusCode))
                 }
-                
             } else {
-                self.showAlert(for: "Failed to upload recipe. Status: \(statusCode)")
+                self.showAlert(for: self.recipeUploadErrorMessage(from: json, statusCode: statusCode))
             }
         }
+    }
+
+    private func logRecipeUploadPayload(imageBase64: String?, payload: RecipePayload, mode: String) {
+        print("===== Recipe Upload Payload (\(mode)) =====")
+        print("title:", payload.title)
+        print("yield:", payload.yield)
+        print("servings:", payload.servings)
+        print("prep_time:", payload.prep_time)
+        print("cook_time:", payload.cook_time)
+        print("cook_book:", payload.cook_book)
+        print("createdType:", payload.createdType)
+        print("source_url:", payload.source_url ?? "")
+        print("uri:", payload.uri)
+        print("imageData count:", viewModel.imageData.count)
+        print("recipeImageBase64 length:", recipeImageBase64?.count ?? 0)
+        print("currentImageBase64 length:", imageBase64?.count ?? 0)
+        print("ingredients count:", payload.ingr.count)
+        print("cookware count:", payload.cookware.count)
+        print("steps count:", payload.prep.count)
+        print("==========================================")
+    }
+
+    private func logRecipeUploadResponse(json: JSON, statusCode: Int, mode: String) {
+        print("===== Recipe Upload Response (\(mode)) =====")
+        print("statusCode:", statusCode)
+        print("json:", json)
+        print("parsed message:", recipeUploadErrorMessage(from: json, statusCode: statusCode))
+        print("===========================================")
+    }
+
+    private func recipeUploadErrorMessage(from json: JSON, statusCode: Int) -> String {
+        if let message = json["message"].string, !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return message
+        }
+
+        if let error = json["error"].string, !error.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return error
+        }
+
+        if let errorsDictionary = json["errors"].dictionaryObject as? [String: Any], !errorsDictionary.isEmpty {
+            let mergedErrors = errorsDictionary.compactMap { key, value -> String? in
+                if let values = value as? [String], !values.isEmpty {
+                    return "\(key): \(values.joined(separator: ", "))"
+                }
+                if let valueString = value as? String, !valueString.isEmpty {
+                    return "\(key): \(valueString)"
+                }
+                return nil
+            }
+
+            if !mergedErrors.isEmpty {
+                return mergedErrors.joined(separator: "\n")
+            }
+        }
+
+        if let errorsArray = json["errors"].arrayObject as? [String], !errorsArray.isEmpty {
+            return errorsArray.joined(separator: "\n")
+        }
+
+        if let dataErrors = json["data"].dictionaryObject as? [String: Any], !dataErrors.isEmpty {
+            let mergedDataErrors = dataErrors.compactMap { key, value -> String? in
+                if let values = value as? [String], !values.isEmpty {
+                    return "\(key): \(values.joined(separator: ", "))"
+                }
+                if let valueString = value as? String, !valueString.isEmpty {
+                    return "\(key): \(valueString)"
+                }
+                return nil
+            }
+
+            if !mergedDataErrors.isEmpty {
+                return mergedDataErrors.joined(separator: "\n")
+            }
+        }
+
+        return "Failed to upload recipe. Status: \(statusCode)"
     }
     
     func bindViewmodel() {
@@ -1468,7 +1745,7 @@ extension CreateRecipeNewVC{
       return
   }
         self.recipeImg.image = img
-        self.recipeImageBase64 =  self.viewModel.encodeImageToBase64(img)
+        self.recipeImageBase64 = viewModel.imageData.base64EncodedString()
 }
     
     

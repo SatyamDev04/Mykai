@@ -108,6 +108,7 @@ struct RecipePayload: Codable {
     let cook_book: String
     let title: String
     let yield: String
+    let servings: String
     let prep_time: String
     let cook_time: String
     let is_public: String
