@@ -74,7 +74,7 @@ struct YourCookedMealModel: Codable {
 // MARK: - Recipe
 struct Recipe: Codable {
     var uri: String?
-    var label: String?
+    var label,createdType: String?
     var image: String?
     var images: Images?
     var source: String?

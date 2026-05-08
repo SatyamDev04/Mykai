@@ -455,7 +455,11 @@ extension CookBooksVC: UICollectionViewDelegate, UICollectionViewDataSource ,UIC
                 vc.MealType = "\(type)".firstUppercased()
                 vc.uri = favCookBookDataArr[indexPath.row].data?.recipe?.uri ?? ""
                 vc.Id = "\(favCookBookDataArr[indexPath.row].id ?? 0)"
-                vc.ServCount = 1
+                if favCookBookDataArr[indexPath.row].data?.recipe?.createdType ?? "" == "import"{
+                    vc.ServCount = favCookBookDataArr[indexPath.row].data?.recipe?.servings ?? 1
+                }else{
+                    vc.ServCount = 1
+                }
                 vc.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(vc, animated: true)
             }
@@ -581,12 +585,12 @@ extension CookBooksVC {
     private func handleRecipeResponse(json: JSON) {
 
         guard let root = json.dictionaryObject else {
-              print("❌ Root is not dictionary")
+              print(" Root is not dictionary")
               return
           }
 
           guard let dataArray = root["data"] as? [[String: Any]] else {
-              print("❌ data is not array")
+              print("data is not array")
               return
           }
 
@@ -609,7 +613,7 @@ extension CookBooksVC {
                 uiModels.append(recipe)
          
             } catch {
-                print("❌ Recipe decode failed:", error)
+                print("Recipe decode failed:", error)
             }
         }
 
