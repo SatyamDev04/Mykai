@@ -135,6 +135,52 @@ struct URLIngredient: Codable {
         case unit
     }
 
+    init(
+        name: String?,
+        quantity: String?,
+        measure: String?,
+        image: String?,
+        orderIndex: Int?,
+        measureImperial: String?,
+        id: String?,
+        searchKey: String?,
+        header: String?,
+        updatedAt: String?,
+        category: String?,
+        measurementUnitsImperialID: StringOrNumber?,
+        createdOn: String?,
+        ingredientCost: String?,
+        ingredientID: Int?,
+        recipeID: String?,
+        food: String?,
+        text: String?,
+        createdAt: String?,
+        imageURL: String?,
+        unit: String?
+    ) {
+        self.name = name
+        self.quantity = quantity
+        self.measure = measure
+        self.image = image
+        self.orderIndex = orderIndex
+        self.measureImperial = measureImperial
+        self.id = id
+        self.searchKey = searchKey
+        self.header = header
+        self.updatedAt = updatedAt
+        self.category = category
+        self.measurementUnitsImperialID = measurementUnitsImperialID
+        self.createdOn = createdOn
+        self.ingredientCost = ingredientCost
+        self.ingredientID = ingredientID
+        self.recipeID = recipeID
+        self.food = food
+        self.text = text
+        self.createdAt = createdAt
+        self.imageURL = imageURL
+        self.unit = unit
+    }
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 

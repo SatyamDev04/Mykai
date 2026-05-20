@@ -108,7 +108,7 @@ class RecipeDetailNewVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+       print(ServCount,inerServing,"ServCountLbl")
         self.ServCountLbl.text = "\(ServCount * inerServing) servings"
      
         self.ChoosedaysPopupV.frame = self.view.bounds
@@ -315,9 +315,7 @@ class RecipeDetailNewVC: UIViewController {
 
         let innerServing = Int(recipe?.servings?.stringValue() ?? "1") ?? 1
         inerServing = innerServing
-        let outerServing = Int(detail?.servings?.stringValue() ?? "1") ?? 1
-
-        ServCountLbl.text = "\(innerServing * outerServing) servings"
+        ServCountLbl.text = "\(innerServing) servings"
         recipeNameLbl.text = recipe?.label ?? ""
         recipeDesLbl.text = recipe?.source ?? ""
 
@@ -341,8 +339,11 @@ class RecipeDetailNewVC: UIViewController {
         let calories = recipe?.calories ?? 0
         Calorieslbl.text = "\(Int(calories))"
 
-        TotalTimeLbl.text = "\(recipe?.totalTime ?? 0) min"
-        PrepTimeLbl.text = "\(recipe?.prep_time ?? 0) min"
+        let totalMinutes = recipe?.totalTime ?? 0
+        let prepMinutes = recipe?.prep_time ?? 0
+        let cookMinutes = max(totalMinutes - prepMinutes, 0)
+        TotalTimeLbl.text = "\(cookMinutes) min"
+        PrepTimeLbl.text = "\(prepMinutes) min"
         notesTxtV.text = recipe?.description
     }
     

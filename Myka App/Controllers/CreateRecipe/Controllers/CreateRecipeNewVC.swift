@@ -56,6 +56,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
     @IBOutlet weak var recipeStepLbl: UILabel!
     @IBOutlet weak var addrecipeTxtV: UITextView!
     @IBOutlet weak var addrecipeTxtVHConstraint: NSLayoutConstraint!
+    @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var prepTimeLbl: UILabel!
     @IBOutlet weak var cookTimeLbl: UILabel!
     @IBOutlet weak var PrivateBtnO: UIButton!
@@ -166,16 +167,22 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
         cookTimeLbl.addGestureRecognizer(tapGesturee)
         viewModel.Api_To_GetAllCookBooks()
         if let data = self.RecipeImportedData {
+            if comefrom == "cookbook"{
+                self.titleLbl.text = "Edit Recipe"
+            }
             self.viewModel.fillImportedData(from: data)
             self.viewModel.comeFrom = backCase
             self.servingCountLbl.text = "\(data.servings?.stringValue() ?? "") servings"
             
             self.count = Int(data.servings?.stringValue() ?? "0") ?? 0
             self.recipeTitleTF.text = data.label
-            self.prepTimeLbl.text =  "\(data.prepTime ?? 0) min"
-            viewModel.prepTime = "\(data.prepTime ?? 0) min"
-            self.cookTimeLbl.text = "\(data.totalTime?.stringValue() ?? "0") min"
-            viewModel.cookTime = "\(data.totalTime?.stringValue() ?? "0") min"
+            let prepMinutes = data.prepTime ?? 0
+            let totalMinutes = Int(data.totalTime?.stringValue() ?? "0") ?? 0
+            let cookMinutes = max(totalMinutes - prepMinutes, 0)
+            self.prepTimeLbl.text =  "\(prepMinutes) min"
+            viewModel.prepTime = "\(prepMinutes) min"
+            self.cookTimeLbl.text = "\(cookMinutes) min"
+            viewModel.cookTime = "\(cookMinutes) min"
             self.PrivateBtnO.isSelected = (data.isPublic ?? 0) == 0 ? true : false
             
             self.PublicBtnO.isSelected = (data.isPublic ?? 0) == 0 ? false : true
@@ -572,11 +579,10 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
     @IBAction func saveRacipeBtn(_ sender: UIButton) {
         if let data = self.RecipeImportedData {
             if comefrom == "cookbook"{
-                if data.createdType == "create"{
-                    self.editRecipe(type: "create",uri: data.uri ?? "")
-                }else{
-                    self.editRecipe(type: "import", sourceUrl: data.sourceURL,uri: data.uri ?? "")
-                }
+                // Cookbook edits should persist the current in-app state instead of
+                // re-importing from the original source URL, otherwise removed items
+                // can come back from the source payload on the backend side.
+                self.editRecipe(type: "create", uri: data.uri ?? "")
             }else{
                 self.saveRecipe(type: "import", sourceUrl: data.sourceURL)
             }
@@ -1448,9 +1454,17 @@ extension CreateRecipeNewVC {
 
             if (200...201).contains(statusCode) {
                 if let dict = json.dictionaryObject, let status = (dict["success"] as? Bool), status {
-                    self.showOkAlertWithHandler(title: "", "Recipe uploaded successfully!") {
-                        RecipeDraftManager.clear()
-                        self.tabBarController?.selectedIndex = 3
+                    if self.comefrom == "cookbook"{
+                        self.showOkAlertWithHandler(title: "", "Recipe Edited successfully!") {
+                            RecipeDraftManager.clear()
+                            
+                            self.navigationController?.popViewController(animated: true)
+                        }
+                    }else{
+                        self.showOkAlertWithHandler(title: "", "Recipe uploaded successfully!") {
+                            RecipeDraftManager.clear()
+                            self.tabBarController?.selectedIndex = 3
+                        }
                     }
                 } else {
                     self.showAlert(for: self.recipeUploadErrorMessage(from: json, statusCode: statusCode))

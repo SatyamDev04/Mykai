@@ -289,13 +289,7 @@ extension CookBooksVC: UICollectionViewDelegate, UICollectionViewDataSource ,UIC
                     self.SelIndex = sender.tag
                     
                 } else if index == 1 {
-                    let data = uiModels[sender.tag]
-                 
-                    let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
-                    let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeNewVC") as! CreateRecipeNewVC
-                    vc.RecipeImportedData = data
-                    vc.comefrom = "cookbook"
-                    self.navigationController?.pushViewController(vc, animated: true)
+                    self.Api_To_GetRecipeForEdit(index: sender.tag)
                 }else{
                     self.MoveBgV.isHidden = false
                 }
@@ -455,11 +449,11 @@ extension CookBooksVC: UICollectionViewDelegate, UICollectionViewDataSource ,UIC
                 vc.MealType = "\(type)".firstUppercased()
                 vc.uri = favCookBookDataArr[indexPath.row].data?.recipe?.uri ?? ""
                 vc.Id = "\(favCookBookDataArr[indexPath.row].id ?? 0)"
-                if favCookBookDataArr[indexPath.row].data?.recipe?.createdType ?? "" == "import"{
-                    vc.ServCount = favCookBookDataArr[indexPath.row].data?.recipe?.servings ?? 1
-                }else{
+//                if favCookBookDataArr[indexPath.row].data?.recipe?.createdType ?? "" == "import"{
+//                    vc.ServCount = favCookBookDataArr[indexPath.row].data?.recipe?.servings ?? 1
+//                }else{
                     vc.ServCount = 1
-                }
+//                }
                 vc.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(vc, animated: true)
             }
@@ -583,6 +577,7 @@ extension CookBooksVC {
         })
     }
     private func handleRecipeResponse(json: JSON) {
+        uiModels.removeAll()
 
         guard let root = json.dictionaryObject else {
               print(" Root is not dictionary")
@@ -619,6 +614,136 @@ extension CookBooksVC {
 
         
     }
+
+    private func Api_To_GetRecipeForEdit(index: Int) {
+        guard index < favCookBookDataArr.count else { return }
+
+        let selectedItem = favCookBookDataArr[index]
+        guard let recipe = selectedItem.data?.recipe,
+              let selectedURI = recipe.uri,
+              !selectedURI.isEmpty else {
+            self.showToast("Recipe data not found.")
+            return
+        }
+
+        var params = [String: Any]()
+        params["uri"] = selectedURI
+        params["id"] = "\(selectedItem.id ?? 0)"
+        params["type"] = self.type
+        if selectedItem.data?.recipe?.createdType?.lowercased() == "import" {
+            params["servings"] = "\(selectedItem.data?.recipe?.servings ?? 1)"
+        } else {
+            params["servings"] = "1"
+        }
+
+        showIndicator(withTitle: "", and: "")
+
+        let loginURL = baseURL.baseURL + appEndPoints.get_recipe
+        print(params, "Edit Recipe Params")
+        print(loginURL, "Edit Recipe URL")
+
+        WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params) { json, statusCode in
+            self.hideIndicator()
+
+            do {
+                let data = try json.rawData()
+                let response = try JSONDecoder().decode(RecipeDetailModelClass.self, from: data)
+
+                guard response.success == true,
+                      let recipeDetailDatum = response.data?.first,
+                      let recipeDetail = recipeDetailDatum.recipe else {
+                    let message = response.message ?? "Unable to fetch recipe for editing."
+                    self.showToast(message)
+                    return
+                }
+
+                let mappedRecipe = self.makeRecipeURL(from: recipeDetail, detail: recipeDetailDatum)
+                let storyboard = UIStoryboard(name: "CreateRecipeSB", bundle: nil)
+                let vc = storyboard.instantiateViewController(withIdentifier: "CreateRecipeNewVC") as! CreateRecipeNewVC
+                vc.RecipeImportedData = mappedRecipe
+                vc.comefrom = "cookbook"
+                self.navigationController?.pushViewController(vc, animated: true)
+            } catch {
+                print("Cookbook edit recipe decode failed:", error)
+                self.showToast("Unable to open recipe for editing.")
+            }
+        }
+    }
+
+    private func makeRecipeURL(from recipeDetail: RecipeDetail, detail: RecipeDetailModel) -> RecipeURL {
+        let mappedIngredients: [URLIngredient] = (recipeDetail.ingredients ?? []).map { ingredient in
+            URLIngredient(
+                name: ingredient.name,
+                quantity: ingredient.quantity?.stringValue(),
+                measure: ingredient.measure,
+                image: ingredient.image,
+                orderIndex: ingredient.orderIndex,
+                measureImperial: ingredient.measureImperial,
+                id: ingredient.id,
+                searchKey: ingredient.searchKey,
+                header: ingredient.header,
+                updatedAt: ingredient.updatedAt,
+                category: ingredient.category,
+                measurementUnitsImperialID: ingredient.measurementUnitsImperialID.map { .int($0) },
+                createdOn: ingredient.createdOn,
+                ingredientCost: ingredient.ingredientCost,
+                ingredientID: ingredient.ingredientID,
+                recipeID: ingredient.recipeID,
+                food: ingredient.food,
+                text: ingredient.text,
+                createdAt: ingredient.createdAt,
+                imageURL: ingredient.imageURL,
+                unit: ingredient.unit
+            )
+        }
+
+        let mappedCookware: [URLCookware] = (recipeDetail.cookware ?? []).map {
+            URLCookware(name: $0.name, image: $0.imageURL, id: $0.id)
+        }
+
+        let mappedInstructions: [URLInstruction] = (recipeDetail.instructions ?? []).map {
+            URLInstruction(
+                createdAt: $0.createdAt,
+                sectionID: $0.sectionID,
+                text: $0.text,
+                createdOn: $0.createdOn,
+                updatedAt: $0.updatedAt,
+                id: $0.id,
+                header: $0.stepsHeaders,
+                stepOrder: $0.stepOrder,
+                timerMin: $0.timerMin.map { .int($0) }
+            )
+        }
+
+        let mealType = recipeDetail.mealType?.compactMap { $0 }.joined(separator: ",")
+
+        return RecipeURL(
+            mealType: mealType,
+            sourceType: nil,
+            ingredients: mappedIngredients,
+            totalTime: recipeDetail.totalTime.map { .int($0) },
+            recipeTotalTime: recipeDetail.totalTime.map { .int($0) },
+            url: recipeDetail.url,
+            userID: nil,
+            yield: recipeDetail.yield.map { .double($0) },
+            image: recipeDetail.images?.large?.url ?? recipeDetail.images?.small?.url ?? recipeDetail.image,
+            prepTime: recipeDetail.prep_time,
+            source: recipeDetail.source,
+            uri: recipeDetail.uri,
+            origin: nil,
+            description: recipeDetail.description,
+            videoURL: nil,
+            cookware: mappedCookware,
+            sourceURL: recipeDetail.source_url,
+            instructions: mappedInstructions,
+            isPublic: nil,
+            label: recipeDetail.label ?? "",
+            servings: recipeDetail.servings,
+            ratingsAvg: detail.review.map { .double($0) },
+            createdType: recipeDetail.createdType
+        )
+    }
+
     func Api_To_RemoveFavMeal(){
         var params = [String: Any]()
  
