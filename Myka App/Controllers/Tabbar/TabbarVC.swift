@@ -31,7 +31,16 @@ class TabbarVC: UITabBarController, UITabBarControllerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        DailyTimerManager.shared.startTimer()
 //        addGreenDotToTabBarItem(at: 0)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        if self.isBeingDismissed || self.isMovingFromParent {
+            DailyTimerManager.shared.stopTimer()
+        }
     }
     
     @objc func listnerFunctionuser(_ notification: NSNotification) {

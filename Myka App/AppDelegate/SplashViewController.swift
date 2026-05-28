@@ -13,13 +13,7 @@ import AVFoundation
 final class SplashViewController: UIViewController {
 
     // MARK: - UI
-//    private let backgroundImageView: UIImageView = {
-//        let iv = UIImageView()
-//        iv.image = UIImage(named: "intro")
-//        iv.contentMode = .scaleAspectFill
-//        iv.translatesAutoresizingMaskIntoConstraints = false
-//        return iv
-//    }()
+
 
     private let animationView: LottieAnimationView = {
         let view = LottieAnimationView()
@@ -48,17 +42,7 @@ final class SplashViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .white
 
-        // Background Image
-//        view.addSubview(backgroundImageView)
-//
-//        NSLayoutConstraint.activate([
-//            backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//            backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//            backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
-//            backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-//        ])
-
-        // Lottie Animation (on top of background)
+        
         view.addSubview(animationView)
 
         NSLayoutConstraint.activate([

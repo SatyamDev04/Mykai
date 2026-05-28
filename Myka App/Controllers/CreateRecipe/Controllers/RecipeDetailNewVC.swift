@@ -497,9 +497,11 @@ class RecipeDetailNewVC: UIViewController {
         updateQuantitiesForServing()
     }
     
+    
     @IBAction func AddToPlanBtn(_ sender: UIButton) {
         self.ChoosedaysPopupV.isHidden = false
     }
+    
     
     @IBAction func AddToBasketBtn(_ sender: UIButton) {
 
@@ -515,6 +517,7 @@ class RecipeDetailNewVC: UIViewController {
         self.Api_To_AddToBasket_Recipe()
     }
     
+    
     @IBAction func ViewStepbyStepBtn(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "RecipeDetail1VC") as! RecipeDetail1VC
@@ -525,6 +528,7 @@ class RecipeDetailNewVC: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
+    
     // for popups
     @IBAction func ChoosedaysDoneBtn(_ sender: UIButton) {
         guard ChooseDayData.contains(where: { $0.isSelected }) else {
@@ -534,6 +538,7 @@ class RecipeDetailNewVC: UIViewController {
         self.ChoosedaysPopupV.isHidden = true
         self.ChooseMealTypePopupV.isHidden = false
     }
+    
     
     @IBAction func ChooseMealDoneBtn(_ sender: UIButton) {
         guard ChooseMealTypeyData.contains(where: { $0.isSelected }) else {
@@ -552,6 +557,7 @@ class RecipeDetailNewVC: UIViewController {
         self.Api_For_AddToPlan()
         
     }
+    
     
     func SubscriptionPopUp()  {
         let storyboard = UIStoryboard(name: "Subscription", bundle: nil)
@@ -572,6 +578,7 @@ class RecipeDetailNewVC: UIViewController {
         vc.didMove(toParent: self)
     }
     
+    
     @IBAction func previousWeekTapped(_ sender: UIButton) {
         //        if let firstDate = currentWeekDates.first {
         //                currentWeekDates = calculateWeekDates(for:  calendar.date(byAdding: .day, value: -7, to: firstDate)!)
@@ -589,6 +596,7 @@ class RecipeDetailNewVC: UIViewController {
         }
     }
        
+    
     @IBAction func nextWeekTapped(_ sender: UIButton) {
         if let lastDate = currentWeekDates.last {
             currentWeekDates = calculateWeekDates(for: calendar.date(byAdding: .day, value: 7, to: lastDate)!)
@@ -597,6 +605,8 @@ class RecipeDetailNewVC: UIViewController {
     }
 
 }
+
+
 // MARK: - UITableViewDelegate & DataSource
 
 extension RecipeDetailNewVC: UITableViewDelegate, UITableViewDataSource {

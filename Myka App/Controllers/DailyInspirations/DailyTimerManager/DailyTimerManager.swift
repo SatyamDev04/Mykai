@@ -51,20 +51,20 @@ class DailyTimerManager {
                 return // Do nothing if less than 24 hours
             }
         }
-        
-        // Save the current date as the last shown date
-        UserDefaults.standard.set(currentDate, forKey: lastShownKey)
-        
-        // Present the DailyInspirationsVC
+
         DispatchQueue.main.async {
-            self.presentDailyInspirationsVC()
+            if self.presentDailyInspirationsVC() {
+                UserDefaults.standard.set(currentDate, forKey: self.lastShownKey)
+            }
         }
     }
     
-    private func presentDailyInspirationsVC() {
-        guard let topController = UIApplication.topViewController() else { return }
+    @discardableResult
+    private func presentDailyInspirationsVC() -> Bool {
+        guard let topController = UIApplication.topViewController() else { return false }
         
-        guard UserDetail.shared.getLoginSession() == true else { return }
+        guard UserDetail.shared.getLoginSession() == true else { return false }
+        guard canPresentDailyInspirations(from: topController) else { return false }
         
         let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
         if let vc = storyboard.instantiateViewController(withIdentifier: "DailyInspirationsVC") as? DailyInspirationsVC {
@@ -73,7 +73,30 @@ class DailyTimerManager {
             topController.view.addSubview(vc.view)
             topController.view.bringSubviewToFront(vc.view)
             vc.didMove(toParent: topController)
+            return true
         }
+
+        return false
+    }
+
+    private func canPresentDailyInspirations(from topController: UIViewController) -> Bool {
+        if topController is SplashViewController ||
+            topController is letsStartVC ||
+            topController is IntroVC ||
+            topController is IntroVC1 ||
+            topController is LoginVC ||
+            topController is SignUpVC {
+            return false
+        }
+
+        if topController is TabbarVC {
+            return true
+        }
+
+        if topController.tabBarController is TabbarVC {
+            return true
+        }
+
+        return false
     }
 }
-
