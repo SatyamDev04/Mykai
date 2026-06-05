@@ -815,7 +815,7 @@ extension HomeVC{
             self.MonthlySavingBtn.isHidden = true
             let cleaned = monthly_savings.replacingOccurrences(of: "$", with: "")
             let n = Double(cleaned) ?? 0
-            if n > 0{
+            if n >= 0{
                 self.MonthlyCheckSavingDetailsLbl.text = "You've spent \(monthly_savings) and you're still within your budget this month"
                // self.MonthlyCheckSavingDetailsLbl.text = "Good job \(self.name), you are on track to save $\(monthly_savings) this month"
             }else{
