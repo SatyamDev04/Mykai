@@ -57,6 +57,8 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
     var urlString = ""
     private var pendingAuthNavigationDeadline: Date?
     private let authMessageHandlerName = "instacartAuthTap"
+    private let basketTotalMessageHandlerName = "instacartBasketTotal"
+    private var hasStartedBasketAutoCalculation = false
     
     // MARK: - Lifecycle
     
@@ -72,6 +74,7 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
         webView.navigationDelegate = self
         webView.uiDelegate = self
         configureAuthTapDetection()
+        configureBasketTotalObservation()
         loadInstacart()
     }
     
@@ -209,6 +212,96 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
         )
     }
 
+    private func configureBasketTotalObservation() {
+        let controller = webView.configuration.userContentController
+        controller.removeScriptMessageHandler(forName: basketTotalMessageHandlerName)
+        controller.add(self, name: basketTotalMessageHandlerName)
+
+        let script = """
+        (function() {
+          if (window.__instacartBasketTotalInstalled) { return; }
+          window.__instacartBasketTotalInstalled = true;
+
+          var lastPayload = '';
+          var timer = null;
+
+          function getPrice(card) {
+            var priceText = '';
+            var priceElement = card.querySelector('span.screen-reader-only');
+            if (priceElement) {
+              priceText = priceElement.textContent || '';
+            }
+
+            var match = priceText.match(/\\$(\\d+(?:\\.\\d{1,2})?)/);
+            return match ? parseFloat(match[1]) || 0 : 0;
+          }
+
+          function getQuantity(card) {
+            var quantityElement = card.querySelector('span[aria-live=polite] > span:last-child');
+            var quantityText = quantityElement ? (quantityElement.textContent || '').trim() : '';
+            var quantity = parseInt(quantityText, 10);
+            return Number.isFinite(quantity) ? quantity : 1;
+          }
+
+          function calculateBasketTotal() {
+            var cards = Array.prototype.slice.call(document.querySelectorAll('div[data-testid=ingredient-item-card]'));
+            if (!cards.length) { return null; }
+
+            var prices = cards.map(function(card) {
+              var selectedIcon = card.querySelector('div[role=button] svg');
+              var isSelected = selectedIcon && selectedIcon.getAttribute('aria-hidden') === 'true';
+              if (!isSelected) { return 0; }
+              return getPrice(card) * getQuantity(card);
+            });
+
+            var total = prices.reduce(function(sum, value) { return sum + value; }, 0);
+            return {
+              prices: prices,
+              total: total.toFixed(2)
+            };
+          }
+
+          function postBasketTotal() {
+            var result = calculateBasketTotal();
+            if (!result) { return; }
+
+            var payload = JSON.stringify(result);
+            if (payload === lastPayload) { return; }
+
+            lastPayload = payload;
+            window.webkit.messageHandlers.\(basketTotalMessageHandlerName).postMessage(result);
+          }
+
+          function scheduleBasketTotalUpdate() {
+            clearTimeout(timer);
+            timer = setTimeout(postBasketTotal, 250);
+          }
+
+          document.addEventListener('click', scheduleBasketTotalUpdate, true);
+          document.addEventListener('input', scheduleBasketTotalUpdate, true);
+          document.addEventListener('change', scheduleBasketTotalUpdate, true);
+
+          new MutationObserver(scheduleBasketTotalUpdate).observe(document.documentElement, {
+            attributes: true,
+            childList: true,
+            subtree: true,
+            characterData: true,
+            attributeFilter: ['aria-hidden', 'aria-live', 'data-testid', 'class']
+          });
+
+          scheduleBasketTotalUpdate();
+        })();
+        """
+
+        controller.addUserScript(
+            WKUserScript(
+                source: script,
+                injectionTime: .atDocumentEnd,
+                forMainFrameOnly: false
+            )
+        )
+    }
+
     private func loadInstacart() {
         if let url = URL(string: urlString) {
             webView.load(URLRequest(url: url))
@@ -217,6 +310,7 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
 
     deinit {
         webView.configuration.userContentController.removeScriptMessageHandler(forName: authMessageHandlerName)
+        webView.configuration.userContentController.removeScriptMessageHandler(forName: basketTotalMessageHandlerName)
     }
 
     // MARK: - Layout
@@ -268,7 +362,7 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
          backButton.translatesAutoresizingMaskIntoConstraints = false
          reloadButton.translatesAutoresizingMaskIntoConstraints = false
          titleLabel.translatesAutoresizingMaskIntoConstraints = false
-         scanButtonStack.setInteraction(false)
+         scanButtonStack.setInteraction(true)
          
 
          NSLayoutConstraint.activate([
@@ -339,12 +433,13 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
     }
 
     @objc private func didTapReload() {
+        hasStartedBasketAutoCalculation = false
         if webView.url != nil { webView.reload() }
         else { loadInstacart() }
     }
 
     @objc private func didTapScan() {
-        // TODO: hook up your scanner
+        hasStartedBasketAutoCalculation = true
         self.didTapShare()
     }
 
@@ -363,6 +458,7 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
     // MARK: - WKNavigationDelegate (optional extras)
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         titleLabel.text = "instacart.com"
+        hasStartedBasketAutoCalculation = false
         scanButtonStack.setInteraction(true)
     }
     
@@ -532,6 +628,11 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
     }
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        if message.name == basketTotalMessageHandlerName {
+            updateBasketTotal(from: message.body)
+            return
+        }
+
         guard message.name == authMessageHandlerName else { return }
         pendingAuthNavigationDeadline = Date().addingTimeInterval(8)
 
@@ -541,6 +642,24 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
            !href.isEmpty {
             UIApplication.shared.open(url)
             pendingAuthNavigationDeadline = nil
+        }
+    }
+
+    private func updateBasketTotal(from body: Any) {
+        guard hasStartedBasketAutoCalculation else { return }
+        guard let body = body as? [String: Any] else { return }
+
+        let total: String
+        if let totalText = body["total"] as? String {
+            total = totalText
+        } else if let totalValue = body["total"] as? Double {
+            total = String(format: "%.2f", totalValue)
+        } else {
+            return
+        }
+
+        DispatchQueue.main.async {
+            self.scanLabel.text = "TOTAL : $\(total)"
         }
     }
     private func openInSafariVC(_ url: URL) {
@@ -609,7 +728,7 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
         do {
             let document = try SwiftSoup.parse(html)
             let cards = try document.select("div[data-testid=ingredient-item-card]")
-            let regex = try NSRegularExpression(pattern: "\\$\\d+(\\.\\d{1,2})?")
+            let priceRegex = try NSRegularExpression(pattern: "\\$(\\d+(\\.\\d{1,2})?)")
 
             for card in cards.array() {
                 let ariaHidden = try card
@@ -618,7 +737,7 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
                     .attr("aria-hidden") ?? ""
 
                 let isSelected = ariaHidden == "true"
-                var price = 0.0
+                var itemTotal = 0.0
 
                 if isSelected {
                     let priceText = try card
@@ -627,14 +746,23 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
                         .text() ?? ""
 
                     let nsRange = NSRange(priceText.startIndex..<priceText.endIndex, in: priceText)
-                    if let match = regex.firstMatch(in: priceText, options: [], range: nsRange),
-                       let range = Range(match.range, in: priceText) {
-                        let extractedPrice = String(priceText[range]).replacingOccurrences(of: "$", with: "")
-                        price = Double(extractedPrice) ?? 0.0
+                    var price = 0.0
+                    if let match = priceRegex.firstMatch(in: priceText, options: [], range: nsRange),
+                       let range = Range(match.range(at: 1), in: priceText) {
+                        price = Double(String(priceText[range])) ?? 0.0
                     }
+
+                    let quantityText = try card
+                        .select("span[aria-live=polite] > span:last-child")
+                        .first()?
+                        .text()
+                        .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+
+                    let quantity = Int(quantityText) ?? 1
+                    itemTotal = price * Double(quantity)
                 }
 
-                pricesList.append(price)
+                pricesList.append(itemTotal)
             }
         } catch {
             print("SwiftSoup parsing error:", error)

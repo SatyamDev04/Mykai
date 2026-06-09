@@ -87,7 +87,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
     var addIngredientImgStr: String = ""
     var addCookwareImgStr: String = ""
     private let maxUploadImageBytes = 100 * 1024
- 
+    
     var backCase = ""
     var isIngredientPickImg = false
     var imgIndex = 0
@@ -111,7 +111,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
         ingredientFinalLbl.isUserInteractionEnabled = true
         ingredientFinalLbl.addGestureRecognizer(tapGesture)
-      
+        
         addIngredientAmoutTF.keyboardType = .decimalPad
         updateNextRecipeStepLabel()
     }
@@ -155,7 +155,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
         searchCookDropDown.direction = .bottom
         searchCookDropDown.setupCornerRadius(10)
         searchCookDropDown.width = addCookWareTF.frame.width
-    
+        
         ingredientUnitDropDown.backgroundColor = .white
         
         prepTimeLbl.isUserInteractionEnabled = true
@@ -195,7 +195,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
                 } else {
                     self.recipeImg.setImage(base64String: imgStr)
                     
-               
+                    
                     guard  let data = Data(base64Encoded: imgStr, options: .ignoreUnknownCharacters) else{return}
                     viewModel.imageData = data
                 }
@@ -206,15 +206,15 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
             noRecipebgV.isHidden = false
         }
     }
-
+    
     private func loadImportedRecipeImage(from rawURLString: String) {
         let secureURLString = rawURLString.replacingOccurrences(of: "http://", with: "https://")
         recipeImg.image = UIImage(named: "No_Image")
-
+        
         if let normalizedURL = normalizedRemoteURL(from: secureURLString) {
             recipeImg.setRemoteImage(normalizedURL, placeholder: UIImage(named: "No_Image"))
         }
-
+        
         let webView = getOrCreateImageResolverWebView()
         let requestURL = normalizedRemoteURL(from: secureURLString) ?? URL(string: secureURLString)
         guard let url = requestURL else { return }
@@ -222,31 +222,31 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
         
         
     }
-
+    
     private func normalizedRemoteURL(from rawString: String) -> URL? {
         let trimmed = rawString
             .trimmingCharacters(in: .whitespacesAndNewlines)
             .replacingOccurrences(of: "\"", with: "")
             .replacingOccurrences(of: "\\/", with: "/")
-
+        
         guard !trimmed.isEmpty else { return nil }
         if let url = URL(string: trimmed) {
             return url
         }
-
+        
         let allowed = CharacterSet(charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&'()*+,;=%")
         if let encoded = trimmed.addingPercentEncoding(withAllowedCharacters: allowed) {
             return URL(string: encoded)
         }
-
+        
         return nil
     }
-
+    
     private func getOrCreateImageResolverWebView() -> WKWebView {
         if let webView = imageResolverWebView {
             return webView
         }
-
+        
         let webView = WKWebView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
         webView.isHidden = true
         webView.navigationDelegate = self
@@ -254,7 +254,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
         imageResolverWebView = webView
         return webView
     }
-
+    
     private func applyResolvedImportedImage(from url: URL) {
         guard lastResolvedImportedImageURL != url.absoluteString else { return }
         lastResolvedImportedImageURL = url.absoluteString
@@ -265,7 +265,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
             progress: nil
         ) { [weak self] image, data, error, _, finished, _ in
             guard let self = self, finished, error == nil else { return }
-
+            
             DispatchQueue.main.async {
                 self.recipeImg.image = image ?? UIImage(named: "No_Image")
                 self.recipeImg.contentMode = .scaleAspectFit
@@ -275,30 +275,30 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
             self.storeCompressedRecipeImage(image: image, originalData: data)
         }
     }
-
+    
     private func storeCompressedRecipeImage(image: UIImage?, originalData: Data? = nil) {
         let fallbackImage = image ?? (originalData.flatMap { UIImage(data: $0) })
         guard let finalImage = fallbackImage else { return }
-
+        
         let compressedData = compressedImageData(from: finalImage, originalData: originalData, maxBytes: maxUploadImageBytes)
         viewModel.imageData = compressedData
         recipeImageBase64 = compressedData.base64EncodedString()
         print("Compressed recipe image size:", compressedData.count, "bytes")
     }
-
+    
     private func compressedImageData(from image: UIImage, originalData: Data?, maxBytes: Int) -> Data {
         if let originalData = originalData, originalData.count <= maxBytes {
             return originalData
         }
-
+        
         var workingImage = image
         var compressionQuality: CGFloat = 0.9
         var bestData = image.jpegData(compressionQuality: compressionQuality) ?? Data()
-
+        
         if bestData.count <= maxBytes {
             return bestData
         }
-
+        
         for _ in 0..<8 {
             if let jpegData = workingImage.jpegData(compressionQuality: compressionQuality) {
                 bestData = jpegData
@@ -306,7 +306,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
                     return jpegData
                 }
             }
-
+            
             if compressionQuality > 0.35 {
                 compressionQuality -= 0.1
             } else {
@@ -319,7 +319,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
                 }
             }
         }
-
+        
         while bestData.count > maxBytes,
               workingImage.size.width > 220,
               workingImage.size.height > 220 {
@@ -337,27 +337,27 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
                 return jpegData
             }
         }
-
+        
         return bestData
     }
-
+    
     private func resizedImage(_ image: UIImage, targetSize: CGSize) -> UIImage? {
         guard targetSize.width > 0, targetSize.height > 0 else { return nil }
-
+        
         let rendererFormat = UIGraphicsImageRendererFormat.default()
         rendererFormat.scale = 1
         let renderer = UIGraphicsImageRenderer(size: targetSize, format: rendererFormat)
-
+        
         return renderer.image { _ in
             image.draw(in: CGRect(origin: .zero, size: targetSize))
         }
     }
-
+    
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         guard webView == imageResolverWebView else { return }
         print("Image resolver started loading URL:", webView.url?.absoluteString ?? "nil")
     }
-
+    
     func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
         guard webView == imageResolverWebView else { return }
         print("Image resolver redirected to URL:", webView.url?.absoluteString ?? "nil")
@@ -365,7 +365,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
             applyResolvedImportedImage(from: resolvedURL)
         }
     }
-
+    
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         guard webView == imageResolverWebView else { return }
         print("Image resolver committed URL:", webView.url?.absoluteString ?? "nil")
@@ -373,20 +373,20 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
             applyResolvedImportedImage(from: resolvedURL)
         }
     }
-
+    
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         guard webView == imageResolverWebView else { return }
         print("Image resolver finished URL:", webView.url?.absoluteString ?? "nil")
         guard let resolvedURL = webView.url else { return }
         applyResolvedImportedImage(from: resolvedURL)
     }
-
+    
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         guard webView == imageResolverWebView else { return }
         print("Image resolver provisional load failed:", error.localizedDescription)
         print("Image resolver failed provisional URL:", webView.url?.absoluteString ?? "nil")
     }
-
+    
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         guard webView == imageResolverWebView else { return }
         print("Image resolver load failed:", error.localizedDescription)
@@ -586,7 +586,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
             }else{
                 self.saveRecipe(type: "import", sourceUrl: data.sourceURL)
             }
-             
+            
         }else{
             self.saveRecipe(type: "create")
         }
@@ -673,7 +673,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
             self.DiscardPopupV.isHidden = false
         }else{
             self.navigationController?.popViewController(animated: true)
-           
+            
         }
     }
     
@@ -722,7 +722,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
             self.SelCookBookId = "\(self.cookBooksData[index].id ?? 0)"
             self.viewModel.selectedCookbook = item
             self.viewModel.selectedCookbookId = "\(self.cookBooksData[index].id ?? 0)"
-        
+            
         }
         dropDown.show()
     }
@@ -732,61 +732,61 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
     private enum Tab { case ingredient, cookware, recipe }
     
     private func setActiveTab(_ tab: Tab) {
-
+        
         // reset fonts first
         IngredientLbl.font = UIFont(name: "Poppins-Regular", size: 16)
         CookwareLbl.font = UIFont(name: "Poppins-Regular", size: 16)
         recipeLbl.font = UIFont(name: "Poppins-Regular", size: 16)
-
+        
         switch tab {
             
         case .ingredient:
             
             IngredientLbl.font = UIFont(name: "Poppins-SemiBold", size: 16)
-
+            
             IngredientLbl.backgroundColor = UIColor(red: 254/255, green: 159/255, blue: 69/255, alpha: 1)
             CookwareLbl.backgroundColor = UIColor(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
             recipeLbl.backgroundColor = UIColor(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
-
+            
             IngredientLbl.textColor = .white
             CookwareLbl.textColor = UIColor(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
             recipeLbl.textColor = UIColor(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
-
+            
             ingredientBgV.isHidden = false
             cookwareBgV.isHidden = true
             recipeBgV.isHidden = true
             noRecipebgV.isHidden = true
-
+            
         case .cookware:
             
             CookwareLbl.font = UIFont(name: "Poppins-SemiBold", size: 16)
-
+            
             IngredientLbl.backgroundColor = UIColor(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
             CookwareLbl.backgroundColor = UIColor(red: 254/255, green: 159/255, blue: 69/255, alpha: 1)
             recipeLbl.backgroundColor = UIColor(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
-
+            
             IngredientLbl.textColor = UIColor(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
             CookwareLbl.textColor = .white
             recipeLbl.textColor = UIColor(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
-
+            
             ingredientBgV.isHidden = true
             cookwareBgV.isHidden = false
             
             recipeBgV.isHidden = true
             noRecipebgV.isHidden = true
-
+            
         case .recipe:
             
             recipeLbl.font = UIFont(name: "Poppins-SemiBold", size: 16)
-
+            
             IngredientLbl.backgroundColor = UIColor(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
             CookwareLbl.backgroundColor = UIColor(red: 255/255, green: 247/255, blue: 240/255, alpha: 1)
             recipeLbl.backgroundColor = UIColor(red: 254/255, green: 159/255, blue: 69/255, alpha: 1)
-
+            
             IngredientLbl.textColor = UIColor(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
             CookwareLbl.textColor = UIColor(red: 60/255, green: 69/255, blue: 65/255, alpha: 1)
             recipeLbl.textColor = .white
-
+            
             ingredientBgV.isHidden = true
             cookwareBgV.isHidden = true
             if self.RecipeImportedData != nil || viewModel.comeFrom == "imported"{
@@ -802,130 +802,130 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
     
     @objc func cookwareDoneClicked(_ sender: Any) {
         if addCookWareTF.text != "" {
-          viewModel.addCookware(name: addCookWareTF.text ?? "", img: addCookwareImgStr, header: "")
+            viewModel.addCookware(name: addCookWareTF.text ?? "", img: addCookwareImgStr, header: "")
             self.searchCookDropDown.isHidden = true
             self.addCookWareTF.text = ""
-           
+            
         }
     }
     
     @objc func addRecipeDoneClicked(_ sender: Any) {
         addRecipe()
     }
-
+    
 }
 
 // MARK: - UITextFieldDelegate
 extension CreateRecipeNewVC: UITextFieldDelegate{
     
     private func makeFractionToolbar() -> UIView {
-
+        
         let container = UIView()
         container.backgroundColor = .systemBackground
         container.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50)
-
+        
         let fractions = ["1/2","1/3","1/4","1/8","2/3"]
-
+        
         let stack = UIStackView()
         stack.axis = .horizontal
         stack.distribution = .fillEqually
         stack.spacing = 10
         stack.translatesAutoresizingMaskIntoConstraints = false
-
+        
         for frac in fractions {
-
+            
             let button = UIButton(type: .system)
             button.setTitle(frac, for: .normal)
-
+            
             button.backgroundColor = UIColor.systemGray6
             button.layer.cornerRadius = 16
             button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-
+            
             button.addAction(UIAction { _ in
                 self.fractionTapped(frac)
             }, for: .touchUpInside)
-
+            
             stack.addArrangedSubview(button)
         }
-
+        
         let doneButton = UIButton(type: .system)
         doneButton.setTitle("Done", for: .normal)
         doneButton.backgroundColor = .systemBlue
         doneButton.setTitleColor(.white, for: .normal)
         doneButton.layer.cornerRadius = 16
-
+        
         doneButton.addAction(UIAction { _ in
             self.doneTapped()
         }, for: .touchUpInside)
-
+        
         stack.addArrangedSubview(doneButton)
-
+        
         container.addSubview(stack)
-
+        
         NSLayoutConstraint.activate([
             stack.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 12),
             stack.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -12),
             stack.topAnchor.constraint(equalTo: container.topAnchor, constant: 6),
             stack.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -6)
         ])
-
+        
         return container
     }
     
-//    private func makeFractionToolbar() -> UIView {
-//        
-//        let toolbar = UIToolbar()
-//        toolbar.sizeToFit()
-//        
-//        let fractions = ["1/2", "1/3", "1/4", "1/8", "2/3"]
-//        
-//        var items: [UIBarButtonItem] = []
-//        
-//        for (index, frac) in fractions.enumerated() {
-//            
-//            let button = UIBarButtonItem(
-//                title: frac,
-//                style: .plain,
-//                target: self,
-//                action: #selector(fractionTapped(_:))
-//            )
-//            
-//            items.append(button)
-//            
-//            // add spacing between buttons
-//            if index < fractions.count - 1 {
-//                items.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
-//            }
-//        }
-//        
-//        // spacing before Done
-//        items.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
-//        
-//        let done = UIBarButtonItem(
-//            title: "Done",
-//            style: .done,
-//            target: self,
-//            action: #selector(doneTapped)
-//        )
-//        
-//        items.append(done)
-//        
-//        toolbar.items = items
-//        
-//        return toolbar
-//    }
+    //    private func makeFractionToolbar() -> UIView {
+    //
+    //        let toolbar = UIToolbar()
+    //        toolbar.sizeToFit()
+    //
+    //        let fractions = ["1/2", "1/3", "1/4", "1/8", "2/3"]
+    //
+    //        var items: [UIBarButtonItem] = []
+    //
+    //        for (index, frac) in fractions.enumerated() {
+    //
+    //            let button = UIBarButtonItem(
+    //                title: frac,
+    //                style: .plain,
+    //                target: self,
+    //                action: #selector(fractionTapped(_:))
+    //            )
+    //
+    //            items.append(button)
+    //
+    //            // add spacing between buttons
+    //            if index < fractions.count - 1 {
+    //                items.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+    //            }
+    //        }
+    //
+    //        // spacing before Done
+    //        items.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+    //
+    //        let done = UIBarButtonItem(
+    //            title: "Done",
+    //            style: .done,
+    //            target: self,
+    //            action: #selector(doneTapped)
+    //        )
+    //
+    //        items.append(done)
+    //
+    //        toolbar.items = items
+    //
+    //        return toolbar
+    //    }
     
     private func fractionTapped(_ fraction: String) {
-
+        
         if let decimal = convertFractionToDecimal(fraction) {
             addIngredientAmoutTF.text = String(format: "%.2f", decimal)
         }
     }
     
     func convertFractionToDecimal(_ text: String) -> Double? {
-
+        
         let trimmed = text.trimmingCharacters(in: .whitespaces)
-
+        
         if trimmed.contains(" ") {
             let parts = trimmed.split(separator: " ")
             if parts.count == 2,
@@ -934,7 +934,7 @@ extension CreateRecipeNewVC: UITextFieldDelegate{
                 return whole + fraction
             }
         }
-
+        
         if trimmed.contains("/") {
             let parts = trimmed.split(separator: "/")
             if parts.count == 2,
@@ -943,7 +943,7 @@ extension CreateRecipeNewVC: UITextFieldDelegate{
                 return numerator / denominator
             }
         }
-
+        
         return Double(trimmed)
     }
     
@@ -984,7 +984,7 @@ extension CreateRecipeNewVC: UITextFieldDelegate{
         let size = CGSize(width: addrecipeTxtV.frame.width, height: .infinity)
         let estimatedSize = addrecipeTxtV.sizeThatFits(size)
         
-      
+        
         let lineHeight = addrecipeTxtV.font?.lineHeight ?? 0
         let maxHeight = lineHeight * 4
         
@@ -1006,7 +1006,7 @@ extension CreateRecipeNewVC: UITextFieldDelegate{
 extension CreateRecipeNewVC: ImagePickerDelegate1{
     func didSelect1(image: UIImage?, tag: Int, info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = image else { return }
-
+        
         DispatchQueue.main.async {
             self.recipeImg.image = image
             self.recipeImg.contentMode = .scaleToFill
@@ -1062,11 +1062,11 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
             
             if let quantity = model.quantity, let unit = model.unit {
                 
-//                if unit == "" {
-//                    cell.amout_MeasurmentLbl?.text = "\(quantity) Unit".trimmingCharacters(in: .whitespaces)
-//                }else{
-                    cell.amout_MeasurmentLbl?.text = "\(quantity) \(unit)".trimmingCharacters(in: .whitespaces)
-//                }
+                //                if unit == "" {
+                //                    cell.amout_MeasurmentLbl?.text = "\(quantity) Unit".trimmingCharacters(in: .whitespaces)
+                //                }else{
+                cell.amout_MeasurmentLbl?.text = "\(quantity) \(unit)".trimmingCharacters(in: .whitespaces)
+                //                }
             } else {
                 cell.amout_MeasurmentLbl?.text = ""
             }
@@ -1090,7 +1090,7 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
             guard let model = viewModel.modelForRow(at: indexPath, for: .recipe) as? StepsDataModel else {return cell}
             print(model)
             let title = viewModel.headerTitle(for: indexPath.section, in: .recipe) ?? ""
-         
+            
             if title == "Recipe" || title.isEmpty{
                 cell.type = .normal
                 let stepNumber = globalStepNumber(for: indexPath)
@@ -1176,14 +1176,14 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath)
     -> UISwipeActionsConfiguration? {
-
+        
         guard tableView == ingredientTblV else { return nil }
-
+        
         let delete = UIContextualAction(style: .destructive, title: "") { [weak self] _, _, completion in
             self?.viewModel.removeIngredient(at: indexPath)
             completion(true)
         }
-
+        
         delete.image = UIImage(systemName: "trash")
         return UISwipeActionsConfiguration(actions: [delete])
     }
@@ -1201,8 +1201,8 @@ extension CreateRecipeNewVC {
         
         let ingredientName = addIngredientTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         let amountText = addIngredientAmoutTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-//        let amountText = addIngredientAmoutTF.text ?? ""
-
+        //        let amountText = addIngredientAmoutTF.text ?? ""
+        
         let decimalAmount = convertFractionToDecimal(amountText) ?? 0
         let unitText = addIngredientMesurementTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         let imgStr = addIngredientImgStr.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -1254,28 +1254,28 @@ extension CreateRecipeNewVC {
         }
     }
     func updateNextRecipeStepLabel() {
-
+        
         var totalSteps = 0
         let sections = viewModel.numberOfSections(for: .recipe)
-
+        
         for section in 0..<sections {
             totalSteps += viewModel.numberOfRows(in: section, for: .recipe)
         }
-
+        
         let nextStep = totalSteps + 1
         recipeStepLbl.text = "Step-\(nextStep)"
     }
     
     func globalStepNumber(for indexPath: IndexPath) -> Int {
-
+        
         var step = 0
-
+        
         for section in 0..<indexPath.section {
             step += viewModel.numberOfRows(in: section, for: .recipe)
         }
-
+        
         step += indexPath.row + 1
-
+        
         return step
     }
     
@@ -1351,12 +1351,12 @@ extension CreateRecipeNewVC {
             return
         }
         logRecipeUploadPayload(imageBase64: currentImageBase64, payload: payload, mode: "create")
-    
+        
         viewModel.uploadRecipe(payload,type: "") { [weak self] json, statusCode in
             guard let self = self else { return }
-
+            
             self.logRecipeUploadResponse(json: json, statusCode: statusCode, mode: "create")
-
+            
             if (200...201).contains(statusCode) {
                 if let dict = json.dictionaryObject,let status = (dict["success"] as? Bool ),status{
                     self.showOkAlertWithHandler(title: "", "Recipe uploaded successfully!") {
@@ -1364,6 +1364,8 @@ extension CreateRecipeNewVC {
                         //  self.navigationController?.popToViewController(ofClass: HomeVC.self)
                         self.tabBarController?.tabBar.isHidden = false
                         self.tabBarController?.selectedIndex = 3
+                        self.navigationController?.popToRootViewController(animated: false)
+                        self.backAction()
                     }
                 }else{
                     self.showAlert(for: self.recipeUploadErrorMessage(from: json, statusCode: statusCode))
@@ -1446,12 +1448,12 @@ extension CreateRecipeNewVC {
             return
         }
         logRecipeUploadPayload(imageBase64: currentImageBase64, payload: payload, mode: "edit")
-    
+        
         viewModel.uploadRecipe(payload,type: "edit") { [weak self] json, statusCode in
             guard let self = self else { return }
-
+            
             self.logRecipeUploadResponse(json: json, statusCode: statusCode, mode: "edit")
-
+            
             if (200...201).contains(statusCode) {
                 if let dict = json.dictionaryObject, let status = (dict["success"] as? Bool), status {
                     if self.comefrom == "cookbook"{
@@ -1464,17 +1466,31 @@ extension CreateRecipeNewVC {
                         self.showOkAlertWithHandler(title: "", "Recipe uploaded successfully!") {
                             RecipeDraftManager.clear()
                             self.tabBarController?.selectedIndex = 3
+                            self.tabBarController?.tabBar.isHidden = false
+                            self.navigationController?.popToRootViewController(animated: false)
+                            
+                            self.backAction()
                         }
                     }
                 } else {
                     self.showAlert(for: self.recipeUploadErrorMessage(from: json, statusCode: statusCode))
+                    self.tabBarController?.selectedIndex = 3
+                    self.tabBarController?.tabBar.isHidden = false
+                    self.navigationController?.popToRootViewController(animated: false)
+                    
+                    self.backAction()
                 }
             } else {
                 self.showAlert(for: self.recipeUploadErrorMessage(from: json, statusCode: statusCode))
+                self.tabBarController?.selectedIndex = 3
+                self.tabBarController?.tabBar.isHidden = false
+                self.navigationController?.popToRootViewController(animated: false)
+                
+                self.backAction()
             }
         }
     }
-
+    
     private func logRecipeUploadPayload(imageBase64: String?, payload: RecipePayload, mode: String) {
         print("===== Recipe Upload Payload (\(mode)) =====")
         print("title:", payload.title)
@@ -1494,7 +1510,7 @@ extension CreateRecipeNewVC {
         print("steps count:", payload.prep.count)
         print("==========================================")
     }
-
+    
     private func logRecipeUploadResponse(json: JSON, statusCode: Int, mode: String) {
         print("===== Recipe Upload Response (\(mode)) =====")
         print("statusCode:", statusCode)
@@ -1502,16 +1518,16 @@ extension CreateRecipeNewVC {
         print("parsed message:", recipeUploadErrorMessage(from: json, statusCode: statusCode))
         print("===========================================")
     }
-
+    
     private func recipeUploadErrorMessage(from json: JSON, statusCode: Int) -> String {
         if let message = json["message"].string, !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             return message
         }
-
+        
         if let error = json["error"].string, !error.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             return error
         }
-
+        
         if let errorsDictionary = json["errors"].dictionaryObject as? [String: Any], !errorsDictionary.isEmpty {
             let mergedErrors = errorsDictionary.compactMap { key, value -> String? in
                 if let values = value as? [String], !values.isEmpty {
@@ -1522,16 +1538,16 @@ extension CreateRecipeNewVC {
                 }
                 return nil
             }
-
+            
             if !mergedErrors.isEmpty {
                 return mergedErrors.joined(separator: "\n")
             }
         }
-
+        
         if let errorsArray = json["errors"].arrayObject as? [String], !errorsArray.isEmpty {
             return errorsArray.joined(separator: "\n")
         }
-
+        
         if let dataErrors = json["data"].dictionaryObject as? [String: Any], !dataErrors.isEmpty {
             let mergedDataErrors = dataErrors.compactMap { key, value -> String? in
                 if let values = value as? [String], !values.isEmpty {
@@ -1542,12 +1558,12 @@ extension CreateRecipeNewVC {
                 }
                 return nil
             }
-
+            
             if !mergedDataErrors.isEmpty {
                 return mergedDataErrors.joined(separator: "\n")
             }
         }
-
+        
         return "Failed to upload recipe. Status: \(statusCode)"
     }
     
@@ -1564,7 +1580,7 @@ extension CreateRecipeNewVC {
                 self.viewModel.ingredentDropDownArr = dropDownItems
                 var uniqueIngredients: [IngredientCRData] = []
                 var seenNames = Set<String>()
-
+                
                 for item in self.viewModel.ingredentDropDownArr {
                     let name = item.name?.lowercased() ?? ""
                     
@@ -1573,7 +1589,7 @@ extension CreateRecipeNewVC {
                         uniqueIngredients.append(item)
                     }
                 }
-
+                
                 self.viewModel.ingredentDropDownArr = uniqueIngredients
                 // Improved sorting (exact → prefix → contains → alphabetical)
                 self.viewModel.ingredentDropDownArr.sort { a, b in
@@ -1716,7 +1732,7 @@ extension CreateRecipeNewVC {
             self?.showAlert(for: String(describing: error))
         }
     }
-     
+    
 }
 extension CreateRecipeNewVC{
     // MARK: - Save for local
@@ -1734,7 +1750,7 @@ extension CreateRecipeNewVC{
     // MARK: - Get for local
     
     func populateAllIfLocalDataAvailable(){
-       
+        
         
         recipeTitleTF.text = viewModel.title
         autherNoteTxtV.text = viewModel.description
@@ -1756,11 +1772,11 @@ extension CreateRecipeNewVC{
         }
         guard let img = UIImage(data: viewModel.imageData)else {
             self.recipeImg.image = UIImage(named: "Camera")
-      return
-  }
+            return
+        }
         self.recipeImg.image = img
         self.recipeImageBase64 = viewModel.imageData.base64EncodedString()
-}
+    }
     
     
 }
