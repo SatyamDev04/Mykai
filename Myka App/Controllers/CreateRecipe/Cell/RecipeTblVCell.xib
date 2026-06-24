@@ -11,34 +11,34 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecipeTblVCell" rowHeight="90" id="KGk-i7-Jjw" customClass="RecipeTblVCell" customModule="My_Kai" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="348" height="90"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecipeTblVCell" rowHeight="150" id="KGk-i7-Jjw" customClass="RecipeTblVCell" customModule="My_Kai" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="348" height="150"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="348" height="90"/>
+                <rect key="frame" x="0.0" y="0.0" width="348" height="150"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P0J-uh-mLz">
-                        <rect key="frame" x="0.0" y="0.0" width="348" height="90"/>
+                        <rect key="frame" x="0.0" y="0.0" width="348" height="150"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QbS-ZD-Mhm">
-                                <rect key="frame" x="0.0" y="0.0" width="348" height="90"/>
+                                <rect key="frame" x="0.0" y="0.0" width="348" height="150"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gpR-Cd-TdN">
-                                        <rect key="frame" x="0.0" y="30" width="348" height="50"/>
+                                        <rect key="frame" x="0.0" y="30" width="348" height="110"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gPE-Nf-BD3">
-                                                <rect key="frame" x="0.0" y="0.0" width="10" height="50"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="10" height="110"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="10" id="VN2-Mc-GDe"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JTx-Om-IWu">
-                                                <rect key="frame" x="10" y="0.0" width="338" height="50"/>
+                                                <rect key="frame" x="10" y="0.0" width="338" height="110"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C19-LE-Ei6">
-                                                        <rect key="frame" x="10" y="10" width="318" height="30"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C19-LE-Ei6">
+                                                        <rect key="frame" x="10" y="10" width="318" height="90"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -96,16 +96,41 @@
                             </view>
                         </subviews>
                     </stackView>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="recipe-editing-view">
+                        <rect key="frame" x="0.0" y="0.0" width="348" height="150"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="recipe-edit-instruction">
+                                <rect key="frame" x="10" y="8" width="328" height="134"/>
+                                <color key="backgroundColor" red="1" green="0.96862745100000003" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="recipe-edit-instruction" firstAttribute="leading" secondItem="recipe-editing-view" secondAttribute="leading" constant="10" id="recipe-edit-instruction-leading"/>
+                            <constraint firstAttribute="trailing" secondItem="recipe-edit-instruction" secondAttribute="trailing" constant="10" id="recipe-edit-instruction-trailing"/>
+                            <constraint firstItem="recipe-edit-instruction" firstAttribute="top" secondItem="recipe-editing-view" secondAttribute="top" constant="52" id="recipe-edit-instruction-top"/>
+                            <constraint firstAttribute="bottom" secondItem="recipe-edit-instruction" secondAttribute="bottom" constant="8" id="recipe-edit-instruction-bottom"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="P0J-uh-mLz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="A9a-FD-6SB"/>
                     <constraint firstAttribute="bottom" secondItem="P0J-uh-mLz" secondAttribute="bottom" id="LYJ-T2-wCH"/>
                     <constraint firstAttribute="trailing" secondItem="P0J-uh-mLz" secondAttribute="trailing" id="Ne9-HD-4CZ"/>
                     <constraint firstItem="P0J-uh-mLz" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="sI6-xK-8Zg"/>
+                    <constraint firstItem="recipe-editing-view" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="recipe-edit-view-leading"/>
+                    <constraint firstAttribute="trailing" secondItem="recipe-editing-view" secondAttribute="trailing" id="recipe-edit-view-trailing"/>
+                    <constraint firstItem="recipe-editing-view" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="recipe-edit-view-top"/>
+                    <constraint firstAttribute="bottom" secondItem="recipe-editing-view" secondAttribute="bottom" id="recipe-edit-view-bottom"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="editInstructionTextView" destination="recipe-edit-instruction" id="recipe-edit-instruction-outlet"/>
+                <outlet property="editingView" destination="recipe-editing-view" id="recipe-edit-view-outlet"/>
+                <outlet property="normalView" destination="QbS-ZD-Mhm" id="recipe-normal-view-outlet"/>
                 <outlet property="paddingView" destination="gPE-Nf-BD3" id="fXe-aK-JpG"/>
                 <outlet property="recipeLbl" destination="C19-LE-Ei6" id="k0v-53-HOA"/>
                 <outlet property="stepLbl" destination="S4c-dG-P40" id="jLe-us-T7n"/>

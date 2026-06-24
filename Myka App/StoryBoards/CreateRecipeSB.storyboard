@@ -1533,6 +1533,7 @@
                         <outlet property="PrivateBtnO" destination="Qf8-s6-npF" id="fcM-Lq-xih"/>
                         <outlet property="PublicBtnO" destination="Nn6-Ee-wHZ" id="UgZ-zH-vbZ"/>
                         <outlet property="SavePopUpV" destination="uEX-hk-n8l" id="K6j-60-CE0"/>
+                        <outlet property="ScrollV" destination="GQe-iQ-YYb" id="inline-edit-scroll"/>
                         <outlet property="addCookWareTF" destination="YsP-RN-PF9" id="td9-te-e5v"/>
                         <outlet property="addCookwareV" destination="jOy-LT-DmQ" id="nOL-xJ-sSx"/>
                         <outlet property="addIngredientAmoutTF" destination="c0B-4Y-R2j" id="hB0-eJ-KTD"/>

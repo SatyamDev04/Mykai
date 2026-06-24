@@ -1,7 +1,6 @@
 //
 //  CreateRecipeIngredientTblVCell.swift
 //  My-Kai
-//
 //  Created by YES IT Labs on 28/01/25.
 //
 
@@ -32,7 +31,6 @@ class CreateRecipeIngredientTblVCell: UITableViewCell, UITextFieldDelegate {
         super.awakeFromNib()
         // Initialization code
         TxtField.delegate = self
-        
         QntTxtF.delegate = self
     }
 

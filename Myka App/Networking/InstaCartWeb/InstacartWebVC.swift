@@ -4,6 +4,7 @@ import WebKit
 import PDFKit
 import Photos
 import SwiftSoup
+
 final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
 
     // MARK: - UI
@@ -91,6 +92,7 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
     
     // MARK: - Setup
     private func setupHeader() {
+        
         header.backgroundColor = .systemBackground
         header.layer.shadowColor = UIColor.black.cgColor
         header.layer.shadowOpacity = 0.08
@@ -151,6 +153,7 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
     }
 
     private func configureAuthTapDetection() {
+        
         let controller = webView.configuration.userContentController
         controller.removeScriptMessageHandler(forName: authMessageHandlerName)
         controller.add(self, name: authMessageHandlerName)

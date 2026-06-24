@@ -66,4 +66,21 @@ post_install do |installer|
             end
         end
     end
+
+    # DropDown clamps upward lists to a fixed 20pt top padding by default,
+    # which allows long lists to sit under the notch on modern iPhones.
+    # Keep this patch here so the safe-area fix survives pod reinstalls.
+    dropdown_file = File.join(__dir__, 'Pods/DropDown/DropDown/src/DropDown.swift')
+    if File.exist?(dropdown_file)
+        source = File.read(dropdown_file)
+        source = source.gsub(
+            "let windowMaxY = window.bounds.maxY - DPDConstant.UI.HeightPadding - offsetFromWindowBottom",
+            "let bottomSafePadding = max(window.safeAreaInsets.bottom, DPDConstant.UI.HeightPadding)\n\t\tlet windowMaxY = window.bounds.maxY - bottomSafePadding - offsetFromWindowBottom"
+        )
+        source = source.gsub(
+            "let windowY = window.bounds.minY + DPDConstant.UI.HeightPadding",
+            "let topSafePadding = max(window.safeAreaInsets.top, DPDConstant.UI.HeightPadding)\n\t\tlet windowY = window.bounds.minY + topSafePadding"
+        )
+        File.write(dropdown_file, source)
+    end
 end

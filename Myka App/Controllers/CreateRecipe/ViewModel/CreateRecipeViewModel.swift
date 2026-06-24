@@ -80,6 +80,14 @@ final class CreateRecipeViewModel {
         self.viewController = viewController
         self.restoreDraft()
     }
+
+    private func performOnMain(_ work: @escaping () -> Void) {
+        if Thread.isMainThread {
+            work()
+        } else {
+            DispatchQueue.main.async(execute: work)
+        }
+    }
     
     
     // MARK: - Public API
@@ -292,6 +300,61 @@ final class CreateRecipeViewModel {
             }
         }
     }
+
+    func updateIngredient(at indexPath: IndexPath, name: String, quantity: String, unit: String, img: String, header: String) {
+        let headerTrimmed = normalizedIngredientHeader(header)
+        performOnMain {
+            guard indexPath.section < self.ingredientsSections.count,
+                  var sourceItems = self.ingredientsSections[indexPath.section].ingredients,
+                  indexPath.row < sourceItems.count else { return }
+
+            var updatedIngredient = sourceItems[indexPath.row]
+            updatedIngredient.name = name
+            updatedIngredient.quantity = quantity
+            updatedIngredient.unit = unit
+            updatedIngredient.img = img
+
+            var sections = self.ingredientsSections
+            let currentHeader = self.normalizedIngredientHeader(
+                sections[indexPath.section].hearder ?? ""
+            )
+            if currentHeader.caseInsensitiveCompare(headerTrimmed) == .orderedSame {
+                sourceItems[indexPath.row] = updatedIngredient
+                sections[indexPath.section].ingredients = sourceItems
+                self.ingredientsSections = sections
+                return
+            }
+
+            sourceItems.remove(at: indexPath.row)
+            sections[indexPath.section].ingredients = sourceItems
+            if sourceItems.isEmpty {
+                sections.remove(at: indexPath.section)
+            }
+
+            if let idx = sections.firstIndex(where: {
+                self.normalizedIngredientHeader($0.hearder ?? "")
+                    .caseInsensitiveCompare(headerTrimmed) == .orderedSame
+            }) {
+                if sections[idx].ingredients == nil {
+                    sections[idx].ingredients = [updatedIngredient]
+                } else {
+                    sections[idx].ingredients?.append(updatedIngredient)
+                }
+            } else {
+                sections.append(RecipeDataModel(hearder: headerTrimmed, ingredients: [updatedIngredient]))
+            }
+            self.ingredientsSections = sections
+        }
+    }
+
+    private func normalizedIngredientHeader(_ header: String) -> String {
+        let trimmedHeader = header.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmedHeader.caseInsensitiveCompare("Ingredients") == .orderedSame
+            || trimmedHeader.caseInsensitiveCompare("Ingrediants") == .orderedSame {
+            return ""
+        }
+        return trimmedHeader
+    }
     
     func clearIngredients() {
         DispatchQueue.main.async {
@@ -335,6 +398,47 @@ final class CreateRecipeViewModel {
             }
         }
     }
+
+    func updateCookware(at indexPath: IndexPath, name: String, img: String, header: String) {
+        let headerTrimmed = header.trimmingCharacters(in: .whitespacesAndNewlines)
+        performOnMain {
+            guard indexPath.section < self.cookwareSections.count,
+                  var sourceItems = self.cookwareSections[indexPath.section].cookware,
+                  indexPath.row < sourceItems.count else { return }
+
+            var updatedCookware = sourceItems[indexPath.row]
+            updatedCookware.name = name
+            updatedCookware.img = img
+
+            var sections = self.cookwareSections
+            let currentHeader = (sections[indexPath.section].hearder ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+            if currentHeader.caseInsensitiveCompare(headerTrimmed) == .orderedSame {
+                sourceItems[indexPath.row] = updatedCookware
+                sections[indexPath.section].cookware = sourceItems
+                self.cookwareSections = sections
+                return
+            }
+
+            sourceItems.remove(at: indexPath.row)
+            sections[indexPath.section].cookware = sourceItems
+            if sourceItems.isEmpty {
+                sections.remove(at: indexPath.section)
+            }
+
+            if let idx = sections.firstIndex(where: {
+                ($0.hearder ?? "").trimmingCharacters(in: .whitespacesAndNewlines).caseInsensitiveCompare(headerTrimmed) == .orderedSame
+            }) {
+                if sections[idx].cookware == nil {
+                    sections[idx].cookware = [updatedCookware]
+                } else {
+                    sections[idx].cookware?.append(updatedCookware)
+                }
+            } else {
+                sections.append(RecipeDataModel(hearder: headerTrimmed, cookware: [updatedCookware]))
+            }
+            self.cookwareSections = sections
+        }
+    }
     
     func clearCookware() {
         DispatchQueue.main.async {
@@ -376,6 +480,56 @@ final class CreateRecipeViewModel {
             if section.recipe?.isEmpty ?? true {
                 self.recipeStepsSections.remove(at: indexPath.section)
             }
+        }
+    }
+
+    func updateRecipeStep(at indexPath: IndexPath, instruction: String, header: String) {
+        let headerTrimmed = header.trimmingCharacters(in: .whitespacesAndNewlines)
+        performOnMain {
+            var sections = self.recipeStepsSections
+            guard indexPath.section < sections.count,
+                  var sourceItems = sections[indexPath.section].recipe,
+                  indexPath.row < sourceItems.count else { return }
+
+            var updatedStep = sourceItems[indexPath.row]
+            updatedStep.instruction = instruction
+
+            let storedHeader = (sections[indexPath.section].hearder ?? "")
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            let existingHeader = storedHeader.caseInsensitiveCompare("Recipe") == .orderedSame
+                ? ""
+                : storedHeader
+            if existingHeader.caseInsensitiveCompare(headerTrimmed) == .orderedSame {
+                sourceItems[indexPath.row] = updatedStep
+                sections[indexPath.section].hearder = headerTrimmed
+                sections[indexPath.section].recipe = sourceItems
+                self.recipeStepsSections = sections
+                return
+            }
+
+            sourceItems.remove(at: indexPath.row)
+            sections[indexPath.section].recipe = sourceItems
+            if sourceItems.isEmpty {
+                sections.remove(at: indexPath.section)
+            }
+
+            if let destinationIndex = sections.firstIndex(where: {
+                let destinationHeader = ($0.hearder ?? "")
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                let normalizedHeader = destinationHeader.caseInsensitiveCompare("Recipe") == .orderedSame
+                    ? ""
+                    : destinationHeader
+                return normalizedHeader.caseInsensitiveCompare(headerTrimmed) == .orderedSame
+            }) {
+                if sections[destinationIndex].recipe == nil {
+                    sections[destinationIndex].recipe = [updatedStep]
+                } else {
+                    sections[destinationIndex].recipe?.append(updatedStep)
+                }
+            } else {
+                sections.append(RecipeDataModel(hearder: headerTrimmed, recipe: [updatedStep]))
+            }
+            self.recipeStepsSections = sections
         }
     }
     
@@ -709,21 +863,53 @@ final class CreateRecipeViewModel {
         ]
         
         // MARK: - Recipe Steps
-//        let importedSteps: [StepsDataModel] = recipe.instructions?.map { item in
-//            StepsDataModel(
-//                instruction: item.text,
-//                index: item.stepOrder
-//            )
-//        } ?? []
-//        
-//        self.recipeStepsSections = [
-//            RecipeDataModel(
-//                hearder: "Steps",
-//                ingredients: nil,
-//                cookware: nil,
-//                recipe: importedSteps
-//            )
-//        ]
+        var groupedStepSections: [RecipeDataModel] = []
+        for instruction in recipe.instructions ?? [] {
+            let text = instruction.text?
+                .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            guard !text.isEmpty else { continue }
+
+            let step = StepsDataModel(
+                instruction: text,
+                index: instruction.stepOrder
+            )
+            let rawHeader = instruction.header?
+                .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            let header = rawHeader.caseInsensitiveCompare("Recipe") == .orderedSame
+                ? ""
+                : rawHeader
+
+            if header.isEmpty {
+                groupedStepSections.append(
+                    RecipeDataModel(
+                        hearder: "",
+                        ingredients: nil,
+                        cookware: nil,
+                        recipe: [step]
+                    )
+                )
+            } else if let sectionIndex = groupedStepSections.firstIndex(where: {
+                ($0.hearder ?? "")
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                    .caseInsensitiveCompare(header) == .orderedSame
+            }) {
+                if groupedStepSections[sectionIndex].recipe == nil {
+                    groupedStepSections[sectionIndex].recipe = [step]
+                } else {
+                    groupedStepSections[sectionIndex].recipe?.append(step)
+                }
+            } else {
+                groupedStepSections.append(
+                    RecipeDataModel(
+                        hearder: header,
+                        ingredients: nil,
+                        cookware: nil,
+                        recipe: [step]
+                    )
+                )
+            }
+        }
+        self.recipeStepsSections = groupedStepSections
     }
 }
 extension String {

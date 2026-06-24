@@ -1,7 +1,6 @@
 //
 //  CreateRecipeModelClass.swift
 //  My-Kai
-//
 //  Created by YES IT Labs on 28/01/25.
 //
 

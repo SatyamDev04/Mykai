@@ -64,6 +64,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
     @IBOutlet weak var FavoritesTxtF: UITextField!
     @IBOutlet weak var FavoritesBgV: UIView!
     @IBOutlet weak var autherNoteTxtV: UITextView!
+    @IBOutlet weak var ScrollV: UIScrollView!
     // popups view
     @IBOutlet weak var noRecipebgV: UIView!
     @IBOutlet var DiscardPopupV: UIView!
@@ -87,6 +88,32 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
     var addIngredientImgStr: String = ""
     var addCookwareImgStr: String = ""
     private let maxUploadImageBytes = 100 * 1024
+    private enum InlineEditTarget {
+        case ingredient(IndexPath)
+        case cookware(IndexPath)
+        case recipe(IndexPath)
+    }
+    private var inlineEditTarget: InlineEditTarget?
+    private weak var activeInlineIngredientCell: IngredientsTblVCell?
+    private weak var activeInlineRecipeCell: RecipeTblVCell?
+    private var inlineSearchRequestType: String?
+    private var inlineUnitRequestPending = false
+    private var quantityAutoSaveWorkItem: DispatchWorkItem?
+    private var baseScrollContentInset = UIEdgeInsets.zero
+
+    private var isImportedRecipe: Bool {
+        let createdType = RecipeImportedData?.createdType?
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+
+        if let createdType = createdType, !createdType.isEmpty {
+            return createdType == "import"
+        }
+
+        return viewModel.comeFrom
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased() == "imported"
+    }
     
     var backCase = ""
     var isIngredientPickImg = false
@@ -107,6 +134,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
         setupTableView()
         setupObservers()
         setupInitialUIState()
+        setupInlineEditingUX()
         addIngredientAmoutTF.inputAccessoryView = makeFractionToolbar()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
         ingredientFinalLbl.isUserInteractionEnabled = true
@@ -122,6 +150,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
     }
     
     deinit {
+        NotificationCenter.default.removeObserver(self)
         // Remove observers safely (match what we added)
         ingredientTblV.removeObserver(self, forKeyPath: "contentSize")
         cookwareTblV.removeObserver(self, forKeyPath: "contentSize")
@@ -202,8 +231,10 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
             } else {
                 self.recipeImg.image = UIImage(named: "Camera")
             }
+            // Ingredients is the initial tab. Recipe content/message is selected later
+            // by setActiveTab(_:), based on createdType.
             recipeBgV.isHidden = true
-            noRecipebgV.isHidden = false
+            noRecipebgV.isHidden = true
         }
     }
     
@@ -527,6 +558,32 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
         recipeTblV.delegate = self
         recipeTblV.dataSource = self
         recipeTblV.separatorStyle = .none
+        recipeTblV.rowHeight = UITableView.automaticDimension
+        recipeTblV.estimatedRowHeight = 110
+    }
+
+    private func setupInlineEditingUX() {
+        IQKeyboardManager.shared().disabledDistanceHandlingClasses.add(CreateRecipeNewVC.self)
+        baseScrollContentInset = ScrollV.contentInset
+        ScrollV.delegate = self
+        ScrollV.keyboardDismissMode = .interactive
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapOutsideInlineEditor(_:)))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillChangeFrame(_:)),
+            name: UIResponder.keyboardWillChangeFrameNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide(_:)),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
     
     
@@ -577,6 +634,8 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
     
     
     @IBAction func saveRacipeBtn(_ sender: UIButton) {
+        guard commitActiveInlineEdit() else { return }
+
         if let data = self.RecipeImportedData {
             if comefrom == "cookbook"{
                 // Cookbook edits should persist the current in-app state instead of
@@ -594,15 +653,17 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
     
     
     @IBAction func IngredientBtn(_ sender: UIButton) {
+        guard commitActiveInlineEdit() else { return }
         setActiveTab(.ingredient)
     }
     
     @IBAction func CookBtn(_ sender: UIButton) {
+        guard commitActiveInlineEdit() else { return }
         setActiveTab(.cookware)
     }
     
     @IBAction func recipeBtn(_ sender: UIButton) {
-        
+        guard commitActiveInlineEdit() else { return }
         setActiveTab(.recipe)
     }
     
@@ -789,7 +850,7 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
             
             ingredientBgV.isHidden = true
             cookwareBgV.isHidden = true
-            if self.RecipeImportedData != nil || viewModel.comeFrom == "imported"{
+            if isImportedRecipe {
                 recipeBgV.isHidden = true
                 noRecipebgV.isHidden = false
             }else{
@@ -802,10 +863,11 @@ class CreateRecipeNewVC: UIViewController, UITextViewDelegate, WKNavigationDeleg
     
     @objc func cookwareDoneClicked(_ sender: Any) {
         if addCookWareTF.text != "" {
-            viewModel.addCookware(name: addCookWareTF.text ?? "", img: addCookwareImgStr, header: "")
+            let cookwareName = addCookWareTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            viewModel.addCookware(name: cookwareName, img: addCookwareImgStr, header: "")
+            addCookWareTF.text = ""
+            addCookwareImgStr = ""
             self.searchCookDropDown.isHidden = true
-            self.addCookWareTF.text = ""
-            
         }
     }
     
@@ -949,6 +1011,7 @@ extension CreateRecipeNewVC: UITextFieldDelegate{
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if  textField == addIngredientMesurementTF{
+            inlineUnitRequestPending = false
             self.viewModel.fetchImperialUnits()
             return false
         }
@@ -993,10 +1056,12 @@ extension CreateRecipeNewVC: UITextFieldDelegate{
     }
     
     @objc func addIngredientValueChanged(_ sender:UITextField) {
+        inlineSearchRequestType = nil
         debouncedSearchIngredients(query: addIngredientTF.text ?? "", type: "1")
     }
     
     @objc func addCookwareValueChanged(_ sender:UITextField) {
+        inlineSearchRequestType = nil
         debouncedSearchIngredients(query: addCookWareTF.text ?? "", type: "2")
     }
 }
@@ -1005,9 +1070,19 @@ extension CreateRecipeNewVC: UITextFieldDelegate{
 
 extension CreateRecipeNewVC: ImagePickerDelegate1{
     func didSelect1(image: UIImage?, tag: Int, info: [UIImagePickerController.InfoKey : Any]) {
-        guard let image = image else { return }
+        guard let image = image else {
+            isIngredientPickImg = false
+            return
+        }
         
         DispatchQueue.main.async {
+            if self.isIngredientPickImg, let cell = self.activeInlineIngredientCell {
+                let imageData = image.jpegData(compressionQuality: 0.75) ?? image.pngData() ?? Data()
+                cell.applyPickedImage(image, imageReference: imageData.base64EncodedString())
+                self.isIngredientPickImg = false
+                return
+            }
+
             self.recipeImg.image = image
             self.recipeImg.contentMode = .scaleToFill
             self.recipeImgUploadBtnO.isUserInteractionEnabled = false
@@ -1020,7 +1095,6 @@ extension CreateRecipeNewVC: ImagePickerDelegate1{
 // MARK: - UITableViewDelegate & DataSource
 
 extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         if tableView == self.ingredientTblV {
             return viewModel.numberOfSections(for: .ingredient)
@@ -1071,8 +1145,16 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
                 cell.amout_MeasurmentLbl?.text = ""
             }
             
-            cell.img.sd_setImage(with: URL(string: model.img ?? ""), placeholderImage: UIImage(named: "NewRec"))
+            cell.applyDisplayImage(reference: model.img ?? "", placeholder: UIImage(named: "NewRec"))
             cell.selectionStyle = .none
+
+            if case let .ingredient(editingIndexPath) = inlineEditTarget, editingIndexPath == indexPath {
+                let editableHeader = normalizedEditableHeader(title, defaultTitle: "Ingredients")
+                cell.configureEditMode(with: model, kind: .ingredient, header: editableHeader)
+                configureInlineIngredientCell(cell, model: model, indexPath: indexPath)
+            } else {
+                cell.showNormalMode()
+            }
             return cell
         }else if tableView == cookwareTblV{
             let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientsTblVCell", for: indexPath) as! IngredientsTblVCell
@@ -1081,8 +1163,15 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
             
             guard let model = viewModel.modelForRow(at: indexPath, for: .cookware) as? IngredientDataModel else {return cell}
             cell.ingredientlbl?.text = model.name
-            cell.img.sd_setImage(with: URL(string: model.img ?? ""), placeholderImage: UIImage(named: "addCook"))
+            cell.applyDisplayImage(reference: model.img ?? "", placeholder: UIImage(named: "addCook"))
             cell.selectionStyle = .none
+
+            if case let .cookware(editingIndexPath) = inlineEditTarget, editingIndexPath == indexPath {
+                cell.configureEditMode(with: model, kind: .cookware)
+                configureInlineCookwareCell(cell, model: model, indexPath: indexPath)
+            } else {
+                cell.showNormalMode()
+            }
             return cell
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeTblVCell", for: indexPath) as! RecipeTblVCell
@@ -1105,16 +1194,52 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
             
             cell.recipeLbl?.text = model.instruction ?? ""
             cell.selectionStyle = .none
+
+            if case let .recipe(editingIndexPath) = inlineEditTarget, editingIndexPath == indexPath {
+                let editableHeader = normalizedEditableHeader(title, defaultTitle: "Recipe")
+                cell.configureEditMode(instruction: model.instruction ?? "", header: editableHeader)
+                configureInlineRecipeCell(cell, indexPath: indexPath)
+            } else {
+                cell.showNormalMode()
+            }
             
             return cell
         }
     }
     
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {}
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        startInlineEditing(for: tableView, at: indexPath)
+    }
     
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {return 75}
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if tableView == ingredientTblV {
+            if case let .ingredient(editingIndexPath) = inlineEditTarget, editingIndexPath == indexPath {
+                return 130
+            }
+            return 70
+        }
+
+        if tableView == cookwareTblV {
+            if case let .cookware(editingIndexPath) = inlineEditTarget, editingIndexPath == indexPath {
+                return 90
+            }
+            return 70
+        }
+
+        if tableView == recipeTblV {
+            if case let .recipe(editingIndexPath) = inlineEditTarget,
+               editingIndexPath == indexPath {
+                return 160
+            }
+            return UITableView.automaticDimension
+        }
+
+        return 90
+    }
     
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -1176,16 +1301,15 @@ extension CreateRecipeNewVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath)
     -> UISwipeActionsConfiguration? {
-        
-        guard tableView == ingredientTblV else { return nil }
-        
         let delete = UIContextualAction(style: .destructive, title: "") { [weak self] _, _, completion in
-            self?.viewModel.removeIngredient(at: indexPath)
+            self?.deleteItem(for: tableView, at: indexPath)
             completion(true)
         }
-        
         delete.image = UIImage(systemName: "trash")
-        return UISwipeActionsConfiguration(actions: [delete])
+
+        let configuration = UISwipeActionsConfiguration(actions: [delete])
+        configuration.performsFirstActionWithFullSwipe = false
+        return configuration
     }
 }
 
@@ -1222,10 +1346,10 @@ extension CreateRecipeNewVC {
             self.ingredientHeaderV.isHidden = true
             self.ingredientFinalLbl.isHidden = false
             self.ingredientFinalLbl.text = "Add Ingridient"
+            self.addIngredientHeaderBtnO.setTitle("+ Header", for: .normal)
             self.addIngredientTF.isHidden = true
             self.addIngredientAmoutTF.isHidden = true
             self.addIngredientMesurementTF.isHidden = true
-            // reload triggered by viewModel closure
         }
     }
     
@@ -1247,10 +1371,7 @@ extension CreateRecipeNewVC {
         viewModel.addRecipeStep(instruction: recipeName, header: headerText)
         updateNextRecipeStepLabel()
         DispatchQueue.main.async {
-            self.recipeHeaderV.isHidden = true
-            self.recipeHeaderTF.text = ""
-            self.addrecipeTxtV.text = ""
-            // reload triggered by viewModel closure
+            self.clearInlineRecipeEntry()
         }
     }
     func updateNextRecipeStepLabel() {
@@ -1375,7 +1496,459 @@ extension CreateRecipeNewVC {
             }
         }
     }
-    
+
+    private func deleteItem(for tableView: UITableView, at indexPath: IndexPath) {
+        if tableView == ingredientTblV {
+            if case let .ingredient(editingIndexPath) = inlineEditTarget, editingIndexPath == indexPath {
+                endInlineIngredientEditing(in: ingredientTblV)
+            }
+            viewModel.removeIngredient(at: indexPath)
+        } else if tableView == cookwareTblV {
+            if case let .cookware(editingIndexPath) = inlineEditTarget, editingIndexPath == indexPath {
+                endInlineIngredientEditing(in: cookwareTblV)
+            }
+            viewModel.removeCookware(at: indexPath)
+        } else {
+            if case let .recipe(editingIndexPath) = inlineEditTarget, editingIndexPath == indexPath {
+                endInlineRecipeEditing()
+            }
+            viewModel.removeRecipeStep(at: indexPath)
+        }
+    }
+
+    private func startInlineEditing(for tableView: UITableView, at indexPath: IndexPath) {
+        if isEditing(tableView: tableView, at: indexPath) {
+            focusCurrentInlineEditor()
+            return
+        }
+
+        guard commitActiveInlineEdit() else { return }
+
+        if tableView == ingredientTblV {
+            inlineEditTarget = .ingredient(indexPath)
+            tableView.reloadData()
+            focusInlineCell(in: tableView, at: indexPath)
+        } else if tableView == cookwareTblV {
+            inlineEditTarget = .cookware(indexPath)
+            tableView.reloadData()
+            focusInlineCell(in: tableView, at: indexPath)
+        } else if tableView == recipeTblV {
+            setActiveTab(.recipe)
+            inlineEditTarget = .recipe(indexPath)
+            tableView.reloadData()
+            focusInlineRecipeCell(in: tableView, at: indexPath)
+        }
+    }
+
+    private func focusInlineCell(in tableView: UITableView, at indexPath: IndexPath) {
+        view.layoutIfNeeded()
+        tableView.layoutIfNeeded()
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.view.layoutIfNeeded()
+            tableView.layoutIfNeeded()
+            guard let cell = tableView.cellForRow(at: indexPath) as? IngredientsTblVCell else { return }
+            self.activeInlineIngredientCell = cell
+            self.scrollInlineEditorBeforeShowingKeyboard(cell.editingView) { [weak cell] in
+                guard let cell = cell, cell.window != nil else { return }
+                cell.focusEditField()
+            }
+        }
+    }
+
+    private func focusInlineRecipeCell(in tableView: UITableView, at indexPath: IndexPath) {
+        view.layoutIfNeeded()
+        tableView.layoutIfNeeded()
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.view.layoutIfNeeded()
+            tableView.layoutIfNeeded()
+            guard let cell = tableView.cellForRow(at: indexPath) as? RecipeTblVCell else { return }
+            self.activeInlineRecipeCell = cell
+            self.scrollInlineEditorBeforeShowingKeyboard(cell.editingView) { [weak cell] in
+                guard let cell = cell, cell.window != nil else { return }
+                cell.focusEditField()
+            }
+        }
+    }
+
+    private func configureInlineIngredientCell(
+        _ cell: IngredientsTblVCell,
+        model: IngredientDataModel,
+        indexPath: IndexPath
+    ) {
+        activeInlineIngredientCell = cell
+        cell.onHeaderEditingStarted = { [weak self] in
+            self?.quantityAutoSaveWorkItem?.cancel()
+        }
+
+        cell.onNameChanged = { [weak self, weak cell] query in
+            guard let self = self, let cell = cell else { return }
+            self.activeInlineIngredientCell = cell
+            self.inlineSearchRequestType = "1"
+            self.debouncedSearchIngredients(query: query, type: "1")
+        }
+        cell.onQuantityChanged = { [weak self, weak cell] quantity in
+            guard let self = self, let cell = cell else { return }
+            self.quantityAutoSaveWorkItem?.cancel()
+
+            let name = cell.addIngredientTF.text?
+                .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            let unit = cell.addIngredientMesurementTF.text?
+                .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            guard !name.isEmpty,
+                  !unit.isEmpty,
+                  self.viewModel.isValidAmount(quantity) else {
+                return
+            }
+
+            let workItem = DispatchWorkItem { [weak self, weak cell] in
+                guard let self = self, cell?.window != nil else { return }
+                _ = self.commitActiveInlineEdit()
+            }
+            self.quantityAutoSaveWorkItem = workItem
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: workItem)
+        }
+        cell.onUnitRequested = { [weak self, weak cell] in
+            guard let self = self, let cell = cell else { return }
+            self.quantityAutoSaveWorkItem?.cancel()
+            self.activeInlineIngredientCell = cell
+            self.view.endEditing(true)
+            self.scrollInlineEditorToVisible(cell.editingView, animated: true)
+            self.inlineUnitRequestPending = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                self.viewModel.fetchImperialUnits()
+            }
+        }
+        cell.onImageRequested = { [weak self, weak cell] sourceView in
+            guard let self = self, let cell = cell else { return }
+            self.activeInlineIngredientCell = cell
+            self.isIngredientPickImg = true
+            self.imagePicker1.present(from: sourceView)
+        }
+        cell.onCancelEdit = { [weak self] in
+            guard let self = self else { return }
+            self.endInlineIngredientEditing(in: self.ingredientTblV)
+        }
+        cell.onSaveEdit = { [weak self] _, _, _, _ in
+            _ = self?.commitActiveInlineEdit()
+        }
+    }
+
+    private func configureInlineCookwareCell(
+        _ cell: IngredientsTblVCell,
+        model: IngredientDataModel,
+        indexPath: IndexPath
+    ) {
+        activeInlineIngredientCell = cell
+
+        cell.onNameChanged = { [weak self, weak cell] query in
+            guard let self = self, let cell = cell else { return }
+            self.activeInlineIngredientCell = cell
+            self.inlineSearchRequestType = "2"
+            self.debouncedSearchIngredients(query: query, type: "2")
+        }
+        cell.onImageRequested = { [weak self, weak cell] sourceView in
+            guard let self = self, let cell = cell else { return }
+            self.activeInlineIngredientCell = cell
+            self.isIngredientPickImg = true
+            self.imagePicker1.present(from: sourceView)
+        }
+        cell.onCancelEdit = { [weak self] in
+            guard let self = self else { return }
+            self.endInlineIngredientEditing(in: self.cookwareTblV)
+        }
+        cell.onSaveEdit = { [weak self] _, _, _, _ in
+            _ = self?.commitActiveInlineEdit()
+        }
+    }
+
+    private func configureInlineRecipeCell(_ cell: RecipeTblVCell, indexPath: IndexPath) {
+        activeInlineRecipeCell = cell
+        cell.onCancelEdit = { [weak self] in
+            self?.endInlineRecipeEditing()
+        }
+        cell.onSaveEdit = { [weak self] _ in
+            _ = self?.commitActiveInlineEdit()
+        }
+    }
+
+    private func isEditing(tableView: UITableView, at indexPath: IndexPath) -> Bool {
+        switch inlineEditTarget {
+        case let .ingredient(editingIndexPath):
+            return tableView == ingredientTblV && editingIndexPath == indexPath
+        case let .cookware(editingIndexPath):
+            return tableView == cookwareTblV && editingIndexPath == indexPath
+        case let .recipe(editingIndexPath):
+            return tableView == recipeTblV && editingIndexPath == indexPath
+        case .none:
+            return false
+        }
+    }
+
+    private func focusCurrentInlineEditor() {
+        if let cell = activeInlineIngredientCell {
+            scrollInlineEditorToVisible(cell.editingView, animated: true)
+            cell.focusEditField()
+        } else if let cell = activeInlineRecipeCell {
+            scrollInlineEditorToVisible(cell.editingView, animated: true)
+            cell.focusEditField()
+        }
+    }
+
+    private func scrollInlineEditorToVisible(_ editor: UIView, animated: Bool) {
+        guard editor.window != nil else { return }
+        view.layoutIfNeeded()
+        ScrollV.layoutIfNeeded()
+
+        var visibleRect = editor.convert(editor.bounds, to: ScrollV)
+        visibleRect.origin.y -= 20
+        visibleRect.size.height += 40
+        ScrollV.scrollRectToVisible(visibleRect, animated: animated)
+    }
+
+    private func scrollInlineEditorBeforeShowingKeyboard(
+        _ editor: UIView,
+        completion: @escaping () -> Void
+    ) {
+        guard editor.window != nil else {
+            completion()
+            return
+        }
+
+        view.layoutIfNeeded()
+        ScrollV.layoutIfNeeded()
+
+        let editorRect = editor.convert(editor.bounds, to: ScrollV)
+        let topPadding: CGFloat = 20
+        let minimumOffsetY = -ScrollV.adjustedContentInset.top
+        let maximumOffsetY = max(
+            minimumOffsetY,
+            ScrollV.contentSize.height
+                - ScrollV.bounds.height
+                + ScrollV.adjustedContentInset.bottom
+        )
+        let targetOffsetY = min(
+            max(editorRect.minY - topPadding, minimumOffsetY),
+            maximumOffsetY
+        )
+
+        guard abs(ScrollV.contentOffset.y - targetOffsetY) > 1 else {
+            completion()
+            return
+        }
+
+        UIView.animate(
+            withDuration: 0.3,
+            delay: 0,
+            options: [.curveEaseInOut, .beginFromCurrentState]
+        ) {
+            self.ScrollV.setContentOffset(
+                CGPoint(x: self.ScrollV.contentOffset.x, y: targetOffsetY),
+                animated: false
+            )
+        } completion: { _ in
+            completion()
+        }
+    }
+
+    @objc private func handleTapOutsideInlineEditor(_ gesture: UITapGestureRecognizer) {
+        guard inlineEditTarget != nil else { return }
+
+        if let editingView = activeInlineIngredientCell?.editingView,
+           editingView.window != nil,
+           editingView.bounds.contains(gesture.location(in: editingView)) {
+            return
+        }
+
+        if let editingView = activeInlineRecipeCell?.editingView,
+           editingView.window != nil,
+           editingView.bounds.contains(gesture.location(in: editingView)) {
+            return
+        }
+
+        _ = commitActiveInlineEdit()
+    }
+
+    @discardableResult
+    private func commitActiveInlineEdit() -> Bool {
+        guard let target = inlineEditTarget else { return true }
+
+        switch target {
+        case let .ingredient(indexPath):
+            guard let cell = activeInlineIngredientCell
+                    ?? ingredientTblV.cellForRow(at: indexPath) as? IngredientsTblVCell else {
+                return false
+            }
+
+            let name = cell.addIngredientTF.text?
+                .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            let amount = cell.addIngredientAmoutTF.text?
+                .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            let unit = cell.addIngredientMesurementTF.text?
+                .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+
+            guard !name.isEmpty else {
+                showToast("Please enter an ingredient name.")
+                scrollInlineEditorToVisible(cell.editingView, animated: true)
+                cell.addIngredientTF.becomeFirstResponder()
+                return false
+            }
+            guard viewModel.isValidAmount(amount),
+                  let decimalAmount = convertFractionToDecimal(amount) else {
+                showToast("Please enter a valid ingredient amount.")
+                scrollInlineEditorToVisible(cell.editingView, animated: true)
+                cell.addIngredientAmoutTF.becomeFirstResponder()
+                return false
+            }
+            guard !unit.isEmpty else {
+                showToast("Please select a measurement unit.")
+                cell.onUnitRequested?()
+                return false
+            }
+
+            let header = cell.editedHeader
+            let imageReference = cell.editedImageReference
+            finishInlineEditUI()
+            viewModel.updateIngredient(
+                at: indexPath,
+                name: name,
+                quantity: String(decimalAmount),
+                unit: unit,
+                img: imageReference,
+                header: header
+            )
+            ingredientTblV.reloadData()
+
+        case let .cookware(indexPath):
+            guard let cell = activeInlineIngredientCell
+                    ?? cookwareTblV.cellForRow(at: indexPath) as? IngredientsTblVCell else {
+                return false
+            }
+
+            let name = cell.addIngredientTF.text?
+                .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            guard !name.isEmpty else {
+                showToast("Please enter a cookware name.")
+                scrollInlineEditorToVisible(cell.editingView, animated: true)
+                cell.addIngredientTF.becomeFirstResponder()
+                return false
+            }
+
+            let header = viewModel.headerTitle(for: indexPath.section, in: .cookware) ?? ""
+            let imageReference = cell.editedImageReference
+            finishInlineEditUI()
+            viewModel.updateCookware(
+                at: indexPath,
+                name: name,
+                img: imageReference,
+                header: header
+            )
+            cookwareTblV.reloadData()
+
+        case let .recipe(indexPath):
+            guard let cell = activeInlineRecipeCell
+                    ?? recipeTblV.cellForRow(at: indexPath) as? RecipeTblVCell else {
+                return false
+            }
+
+            let instruction = cell.editInstructionTextView.text?
+                .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            let header = cell.editedHeader
+            guard !instruction.isEmpty else {
+                showToast("Please enter the recipe instruction.")
+                scrollInlineEditorToVisible(cell.editingView, animated: true)
+                cell.editInstructionTextView.becomeFirstResponder()
+                return false
+            }
+
+            finishInlineEditUI()
+            viewModel.updateRecipeStep(at: indexPath, instruction: instruction, header: header)
+            recipeTblV.reloadData()
+        }
+
+        return true
+    }
+
+    private func normalizedEditableHeader(_ header: String, defaultTitle: String) -> String {
+        let trimmedHeader = header.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmedHeader.caseInsensitiveCompare(defaultTitle) == .orderedSame ? "" : trimmedHeader
+    }
+
+    private func finishInlineEditUI() {
+        view.endEditing(true)
+        searchInDropDown.hide()
+        searchCookDropDown.hide()
+        ingredientUnitDropDown.hide()
+        textChangedWorkItem?.cancel()
+        quantityAutoSaveWorkItem?.cancel()
+        quantityAutoSaveWorkItem = nil
+        inlineEditTarget = nil
+        activeInlineIngredientCell = nil
+        activeInlineRecipeCell = nil
+        isIngredientPickImg = false
+    }
+
+    @objc private func keyboardWillChangeFrame(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+            return
+        }
+
+        let keyboardFrame = view.convert(keyboardValue.cgRectValue, from: nil)
+        let scrollFrame = ScrollV.convert(ScrollV.bounds, to: view)
+        let overlap = max(0, scrollFrame.maxY - keyboardFrame.minY)
+        var inset = baseScrollContentInset
+        inset.bottom += overlap > 0 ? overlap + 16 : 0
+
+        let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0.25
+        let curveValue = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt
+            ?? UInt(UIView.AnimationCurve.easeInOut.rawValue)
+        let options = UIView.AnimationOptions(rawValue: curveValue << 16)
+
+        UIView.animate(withDuration: duration, delay: 0, options: options) {
+            self.ScrollV.contentInset = inset
+            self.ScrollV.scrollIndicatorInsets = inset
+            self.view.layoutIfNeeded()
+        } completion: { _ in
+            if let editingView = self.activeInlineIngredientCell?.editingView {
+                self.scrollInlineEditorToVisible(editingView, animated: true)
+            } else if let editingView = self.activeInlineRecipeCell?.editingView {
+                self.scrollInlineEditorToVisible(editingView, animated: true)
+            }
+        }
+    }
+
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey]
+            as? TimeInterval ?? 0.25
+        UIView.animate(withDuration: duration) {
+            self.ScrollV.contentInset = self.baseScrollContentInset
+            self.ScrollV.scrollIndicatorInsets = self.baseScrollContentInset
+        }
+    }
+
+    private func endInlineIngredientEditing(in tableView: UITableView?) {
+        finishInlineEditUI()
+        tableView?.reloadData()
+    }
+
+    private func endInlineRecipeEditing() {
+        finishInlineEditUI()
+        recipeTblV.reloadData()
+    }
+
+    private func clearInlineRecipeEntry() {
+        if case .recipe(_) = inlineEditTarget {
+            inlineEditTarget = nil
+        }
+        recipeHeaderV.isHidden = true
+        recipeHeaderTF.text = ""
+        addRecipeHeaderBtnO.setTitle("+ Header", for: .normal)
+        addrecipeTxtV.text = ""
+        textViewDidChange(addrecipeTxtV)
+    }
+
     func editRecipe(type: String, sourceUrl: String? = nil,uri:String? = nil) {
         // Determine public/private status
         let isPublicStr = PublicBtnO.isSelected ? "0" : "1"
@@ -1566,11 +2139,141 @@ extension CreateRecipeNewVC {
         
         return "Failed to upload recipe. Status: \(statusCode)"
     }
+
+    private func handleInlineDropDownData(_ dropDownItems: [IngredientCRData], type: String) -> Bool {
+        guard let cell = activeInlineIngredientCell else { return false }
+
+        if type == "1", case .ingredient(_) = inlineEditTarget {
+            let query = cell.addIngredientTF.text?.lowercased() ?? ""
+            var seenNames = Set<String>()
+            let uniqueItems = dropDownItems.filter { item in
+                let name = item.name?.lowercased() ?? ""
+                return !name.isEmpty && seenNames.insert(name).inserted
+            }
+            viewModel.ingredentDropDownArr = uniqueItems.sorted { first, second in
+                let firstName = first.name?.lowercased() ?? ""
+                let secondName = second.name?.lowercased() ?? ""
+                if firstName == query { return true }
+                if secondName == query { return false }
+                if firstName.hasPrefix(query) != secondName.hasPrefix(query) {
+                    return firstName.hasPrefix(query)
+                }
+                if firstName.contains(query) != secondName.contains(query) {
+                    return firstName.contains(query)
+                }
+                return firstName < secondName
+            }
+
+            let items = viewModel.ingredentDropDownArr.map { $0.name ?? "" }
+            guard !items.isEmpty else {
+                searchInDropDown.hide()
+                return true
+            }
+
+            cell.contentView.layoutIfNeeded()
+            scrollInlineEditorToVisible(cell.editingView, animated: true)
+            searchInDropDown.anchorView = cell.addIngredientTF
+            searchInDropDown.direction = .any
+            searchInDropDown.bottomOffset = CGPoint(x: 0, y: cell.addIngredientTF.bounds.height)
+            searchInDropDown.topOffset = CGPoint(x: 0, y: -cell.addIngredientTF.bounds.height)
+            searchInDropDown.width = max(cell.addIngredientTF.bounds.width, 180)
+            searchInDropDown.dataSource = items
+            searchInDropDown.selectionAction = { [weak self, weak cell] index, item in
+                guard let self = self,
+                      let cell = cell,
+                      self.viewModel.ingredentDropDownArr.indices.contains(index) else { return }
+                let selected = self.viewModel.ingredentDropDownArr[index]
+                cell.applySuggestion(
+                    name: item,
+                    unit: selected.unitName,
+                    imageReference: selected.imageURL ?? ""
+                )
+                self.searchInDropDown.hide()
+            }
+            DispatchQueue.main.async { [weak self, weak cell] in
+                guard let self = self, cell?.window != nil else { return }
+                self.searchInDropDown.show()
+            }
+            return true
+        }
+
+        if type == "2", case .cookware(_) = inlineEditTarget {
+            viewModel.cookwareDropDownArr = dropDownItems
+            let items = dropDownItems.map { $0.name ?? "" }
+            guard !items.isEmpty else {
+                searchCookDropDown.hide()
+                return true
+            }
+
+            cell.contentView.layoutIfNeeded()
+            scrollInlineEditorToVisible(cell.editingView, animated: true)
+            searchCookDropDown.anchorView = cell.addIngredientTF
+            searchCookDropDown.direction = .any
+            searchCookDropDown.bottomOffset = CGPoint(x: 0, y: cell.addIngredientTF.bounds.height)
+            searchCookDropDown.topOffset = CGPoint(x: 0, y: -cell.addIngredientTF.bounds.height)
+            searchCookDropDown.width = max(cell.addIngredientTF.bounds.width, 180)
+            searchCookDropDown.dataSource = items
+            searchCookDropDown.selectionAction = { [weak self, weak cell] index, item in
+                guard let self = self,
+                      let cell = cell,
+                      self.viewModel.cookwareDropDownArr.indices.contains(index) else { return }
+                let selected = self.viewModel.cookwareDropDownArr[index]
+                cell.applySuggestion(
+                    name: item,
+                    unit: nil,
+                    imageReference: selected.imageURL ?? ""
+                )
+                self.searchCookDropDown.hide()
+                _ = self.commitActiveInlineEdit()
+            }
+            DispatchQueue.main.async { [weak self, weak cell] in
+                guard let self = self, cell?.window != nil else { return }
+                self.searchCookDropDown.show()
+            }
+            return true
+        }
+
+        return false
+    }
+
+    private func showInlineUnitDropDown(_ units: [UnitINData]) -> Bool {
+        guard case .ingredient(_) = inlineEditTarget,
+              let cell = activeInlineIngredientCell else { return false }
+
+        let items = units.map { $0.unitName ?? "" }.filter { !$0.isEmpty }
+        guard !items.isEmpty else {
+            ingredientUnitDropDown.hide()
+            return true
+        }
+
+        ingredientUnitDropDown.dataSource = items
+        scrollInlineEditorToVisible(cell.editingView, animated: true)
+        ingredientUnitDropDown.direction = .any
+        ingredientUnitDropDown.anchorView = cell.addIngredientMesurementTF
+        ingredientUnitDropDown.bottomOffset = CGPoint(x: 0, y: cell.addIngredientMesurementTF.bounds.height)
+        ingredientUnitDropDown.topOffset = CGPoint(x: 0, y: -cell.addIngredientMesurementTF.bounds.height)
+        ingredientUnitDropDown.width = max(cell.addIngredientMesurementTF.bounds.width, 130)
+        ingredientUnitDropDown.selectionAction = { [weak self, weak cell] _, item in
+            self?.ingredientUnitDropDown.hide()
+            cell?.applyUnit(item)
+            _ = self?.commitActiveInlineEdit()
+        }
+        ingredientUnitDropDown.show()
+        return true
+    }
     
     func bindViewmodel() {
         
         viewModel.didReceiveDropDownData = { [weak self] dropDownItems, type in
             guard let self = self else { return }
+
+            if self.inlineSearchRequestType == type,
+               self.handleInlineDropDownData(dropDownItems, type: type) {
+                return
+            }
+            if self.inlineSearchRequestType != nil {
+                return
+            }
             
             if type == "1" {
                 
@@ -1622,6 +2325,8 @@ extension CreateRecipeNewVC {
                     }
                     
                     self.searchInDropDown.dataSource = items
+                    self.searchInDropDown.anchorView = self.addIngredientTF
+                    self.searchInDropDown.bottomOffset = CGPoint(x: 0, y: self.addIngredientTF.bounds.height)
                     self.searchInDropDown.width = self.addIngredientTF.frame.width
                     self.searchInDropDown.show()
                     
@@ -1663,6 +2368,8 @@ extension CreateRecipeNewVC {
                     }
                     
                     self.searchCookDropDown.dataSource = items
+                    self.searchCookDropDown.anchorView = self.addCookWareTF
+                    self.searchCookDropDown.bottomOffset = CGPoint(x: 0, y: self.addCookWareTF.bounds.height)
                     self.searchCookDropDown.width = self.addCookWareTF.frame.width
                     self.searchCookDropDown.show()
                     
@@ -1697,6 +2404,11 @@ extension CreateRecipeNewVC {
             self.viewModel.ingredentUnitArr = unitsArr
             
             DispatchQueue.main.async {
+                if self.inlineUnitRequestPending {
+                    self.inlineUnitRequestPending = false
+                    _ = self.showInlineUnitDropDown(unitsArr)
+                    return
+                }
                 
                 let items = unitsArr.map { $0.unitName ?? "" }
                 

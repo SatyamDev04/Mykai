@@ -1,7 +1,6 @@
 //
 //  DinnerVc.swift
 //  Myka App
-//
 //  Created by Sumit on 12/12/24.
 //
 
@@ -21,7 +20,6 @@ class DinnerVc: UIViewController {
     @IBOutlet weak var ChooseDayWeekLabel: UILabel!
     
     @IBOutlet weak var ChoosedaysBgV: UIView!
-    //
     
      
     // for ChooseMeal popup
@@ -30,10 +28,8 @@ class DinnerVc: UIViewController {
     
     @IBOutlet weak var ChooseMealTypeBgV: UIView!
     
-    //
     
     var titleTxt = ""
-    
     var SelectedIngNames = ""
     
     // for popUps
@@ -44,28 +40,22 @@ class DinnerVc: UIViewController {
     
     var currentWeekDates: [Date] = []
     var calendar = Calendar.current
-    
     var selectedIndex: IndexPath?
-    
     var seldate = Date()
-    
     var SelUri = ""
-    //
+ 
     
     var AllRecipeSelItem = PlanDataClass()
-    
     var SearchAllRecipeArr = [RecipeElement]() // Main arr APi
-    
     var comesfrom = ""
     
     // getting value from filter screen.
+    
     var MealArray = [FilterModuel]()
     var DietArray = [FilterModuel]()
     var CookTimeArray = [FilterModuel]()
     var CuisinesArray = [FilterModuel]()
     var NutritionArray = [FilterModuel]()
-    //
- 
     var hasReachedEnd = false
     var currentPage: Int = 1
     var isLoading: Bool = false
@@ -74,14 +64,13 @@ class DinnerVc: UIViewController {
   
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.ChoosedaysPopupV.frame = self.view.bounds
         self.view.addSubview(self.ChoosedaysPopupV)
         self.ChoosedaysPopupV.isHidden = true
-        
         self.ChooseMealTypePopupV.frame = self.view.bounds
         self.view.addSubview(self.ChooseMealTypePopupV)
         self.ChooseMealTypePopupV.isHidden = true
-        
         self.TitleLbl.text = self.titleTxt
         
         
@@ -90,11 +79,10 @@ class DinnerVc: UIViewController {
         CollV.register(UINib(nibName: "DinnerCollVCell", bundle: nil), forCellWithReuseIdentifier: "DinnerCollVCell")
         CollV.registerPaginationFooter()
         
-        calendar.firstWeekday = 2 // Start the week on Monday
+        calendar.firstWeekday = 2
         setupInitialWeek()
         setupTableView()
-        
-      //  self.Api_To_GetAllRecipe()
+    
         self.currentPage = 1
         self.hasReachedEnd = false
         if comesfrom != "All_IngredientsVC"{
@@ -111,6 +99,7 @@ class DinnerVc: UIViewController {
        }
      
        // Action method called when the view is tapped
+    
        @objc func handleTap(_ sender: UITapGestureRecognizer) {
            print("View was tapped!")
            ChoosedaysPopupV.isHidden = true
@@ -666,6 +655,8 @@ extension DinnerVc {
             params["mealType"] = [Serach]
         }else if comesfrom == "PopularCat"{
             params["dishType"] = Serach
+        }else if comesfrom == "All_IngredientsVC"{
+            params["ingredient"] = Serach
         }else{
             params["q"] = Serach
         }
