@@ -31,6 +31,12 @@ class SearchPrefVC: UIViewController {
     var SearchRecipeSelItem1 = SearchListModel()
     var textChangedWorkItem: DispatchWorkItem?
     private var isLoadingSearchData = false
+    private var searchRecipeCurrentPage = 1
+    private var isLoadingSearchRecipePage = false
+    private var hasReachedSearchRecipeEnd = false
+    private var lastSearchRecipeContentOffset: CGFloat = 0
+    private var lastSearchRecipeHorizontalContentOffset: CGFloat = 0
+    private var currentSearchText = ""
     
     
     override func viewDidLoad() {
@@ -47,6 +53,7 @@ class SearchPrefVC: UIViewController {
         SearchByRecipeCollV.register(UINib(nibName: "MealCollVCell", bundle: nil), forCellWithReuseIdentifier: "MealCollVCell")
         SearchByRecipeCollV.delegate = self
         SearchByRecipeCollV.dataSource = self
+        SearchByRecipeCollV.registerPaginationFooter()
         
         self.SearchByRecipeBgV.isHidden = true
         
@@ -86,6 +93,7 @@ class SearchPrefVC: UIViewController {
                 }
             }
         }
+        resetSearchRecipePagination(for: "")
         self.Api_To_GetAllRecipeList(Search: "")
         
         
@@ -118,20 +126,16 @@ class SearchPrefVC: UIViewController {
 
     @objc func TextSearch(sender: UITextField){
         let searchText = SearchTxtF.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        
-        // Check if the search text has changed
-        // Cancel the previous work item
         textChangedWorkItem?.cancel()
         
-        // Create a new debounced work item
         textChangedWorkItem = DispatchWorkItem { [weak self] in
             guard let self = self else { return }
             
             self.hideIndicator()
+            self.resetSearchRecipePagination(for: searchText)
             Api_To_GetAllRecipeList(Search: searchText)
         }
         
-        // Schedule the work item to execute after a debounce time (e.g., 1 second)
         if let workItem = textChangedWorkItem {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: workItem)
         }
@@ -335,6 +339,13 @@ extension SearchPrefVC: UICollectionViewDelegate, UICollectionViewDataSource ,UI
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         }
+
+        func collectionView(_ collectionView: UICollectionView,
+                            willDisplay cell: UICollectionViewCell,
+                            forItemAt indexPath: IndexPath) {
+            guard collectionView == SearchByRecipeCollV else { return }
+            triggerSearchRecipePaginationIfNeeded(visibleIndex: indexPath.item)
+        }
         
         
         
@@ -372,17 +383,119 @@ extension SearchPrefVC: UICollectionViewDelegate, UICollectionViewDataSource ,UI
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
                 return 10
          }
+
+        func scrollViewDidScroll(_ scrollView: UIScrollView) {
+            guard scrollView == SearchByRecipeCollV else { return }
+            guard SearchByRecipeBgV.isHidden == false else { return }
+            guard !isLoadingSearchData, !isLoadingSearchRecipePage, !hasReachedSearchRecipeEnd else { return }
+
+            let offsetX = scrollView.contentOffset.x
+            let contentWidth = scrollView.contentSize.width
+            let frameWidth = scrollView.frame.size.width
+
+            let isScrollingRight = offsetX > lastSearchRecipeHorizontalContentOffset
+            lastSearchRecipeHorizontalContentOffset = offsetX
+
+            if contentWidth > frameWidth,
+               isScrollingRight,
+               offsetX >= contentWidth - frameWidth - 40 {
+                Api_To_GetSearchRecipePage(Search: currentSearchText)
+                return
+            }
+
+            let offsetY = scrollView.contentOffset.y
+            let contentHeight = scrollView.contentSize.height
+            let frameHeight = scrollView.frame.size.height
+
+            let isScrollingDown = offsetY > lastSearchRecipeContentOffset
+            lastSearchRecipeContentOffset = offsetY
+
+            if contentHeight > frameHeight,
+               isScrollingDown,
+               offsetY >= contentHeight - frameHeight - 40 {
+                Api_To_GetSearchRecipePage(Search: currentSearchText)
+            }
+        }
+
+        func collectionView(_ collectionView: UICollectionView,
+                            viewForSupplementaryElementOfKind kind: String,
+                            at indexPath: IndexPath) -> UICollectionReusableView {
+            guard collectionView == SearchByRecipeCollV,
+                  kind == UICollectionView.elementKindSectionFooter else {
+                return UICollectionReusableView()
+            }
+
+            let footer = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: PaginationFooterView.reuseIdentifier,
+                for: indexPath
+            ) as! PaginationFooterView
+            footer.setLoading(isLoadingSearchRecipePage)
+            return footer
+        }
+
+        func collectionView(_ collectionView: UICollectionView,
+                            layout collectionViewLayout: UICollectionViewLayout,
+                            referenceSizeForFooterInSection section: Int) -> CGSize {
+            guard collectionView == SearchByRecipeCollV else { return .zero }
+            return isLoadingSearchRecipePage ? CGSize(width: 44, height: collectionView.bounds.height) : .zero
+        }
     }
  
 
 
 extension SearchPrefVC {
+    private func resetSearchRecipePagination(for searchText: String) {
+        currentSearchText = searchText
+        searchRecipeCurrentPage = 1
+        isLoadingSearchRecipePage = false
+        hasReachedSearchRecipeEnd = false
+        lastSearchRecipeContentOffset = 0
+        lastSearchRecipeHorizontalContentOffset = 0
+    }
+
+    private func updateSearchRecipeCollectionHeight() {
+        if self.SearchRecipeSelItem.recipes?.count ?? 0 == 2 {
+            self.SearchByRecipeCollVH.constant = 215
+        } else {
+            self.SearchByRecipeCollVH.constant = 430
+        }
+    }
+
+    private func triggerSearchRecipePaginationIfNeeded(visibleIndex: Int) {
+        guard SearchByRecipeBgV.isHidden == false else { return }
+        guard !isLoadingSearchData, !isLoadingSearchRecipePage, !hasReachedSearchRecipeEnd else { return }
+
+        let totalCount = SearchRecipeSelItem.recipes?.count ?? 0
+        guard totalCount > 0 else { return }
+
+        let prefetchThreshold = totalCount <= 2 ? totalCount - 1 : totalCount - 2
+        if visibleIndex >= prefetchThreshold {
+            Api_To_GetSearchRecipePage(Search: currentSearchText)
+        }
+    }
+
+    private func makeSearchRecipeElement(from item: RecipeElement) -> RecipeElement1 {
+        return RecipeElement1(
+            belongs: nil,
+            reviewNumber: item.review_number,
+            review: item.review,
+            isLike: item.isLike,
+            links: item.links,
+            recipe: item.recipe
+        )
+    }
+
     private func setSearchCollectionsSkeletonVisible(_ visible: Bool) {
         let collections = [IngredientCollV, MealCollV, SearchByRecipeCollV, PopularCatCollV]
         collections.forEach { $0?.reloadData() }
     }
 
     func Api_To_GetAllRecipeList(Search: String){
+        if currentSearchText != Search {
+            resetSearchRecipePagination(for: Search)
+        }
+
         if !isLoadingSearchData {
             isLoadingSearchData = true
             setSearchCollectionsSkeletonVisible(true)
@@ -448,10 +561,15 @@ extension SearchPrefVC {
                         self.SearchByMealBgV.isHidden = false
                         self.SearchByPopularCatBgV.isHidden = false
                     }
-                    if  self.SearchRecipeSelItem.recipes?.count ?? 0 == 2{
-                        self.SearchByRecipeCollVH.constant = 215
+                    self.updateSearchRecipeCollectionHeight()
+
+                    if self.SearchRecipeSelItem.recipes?.isEmpty == false {
+                        // ingredient-recipe-search supplies the first recipe set; next scroll starts at recipe page 2.
+                        self.searchRecipeCurrentPage = 2
+                        self.hasReachedSearchRecipeEnd = false
                     }else{
-                        self.SearchByRecipeCollVH.constant = 430
+                        self.searchRecipeCurrentPage = 1
+                        self.hasReachedSearchRecipeEnd = true
                     }
                     self.IngredientCollV.reloadData()
                     self.MealCollV.reloadData()
@@ -466,6 +584,105 @@ extension SearchPrefVC {
                 }
             }catch{
                 self.setSearchCollectionsSkeletonVisible(false)
+                print(error)
+            }
+        })
+    }
+
+    func Api_To_GetSearchRecipePage(Search: String) {
+        if isLoadingSearchRecipePage || hasReachedSearchRecipeEnd { return }
+
+        let requestedSearch = Search
+        let requestedPage = searchRecipeCurrentPage
+        isLoadingSearchRecipePage = true
+        SearchByRecipeCollV.collectionViewLayout.invalidateLayout()
+
+        var params = [String: Any]()
+        let existingIds: [String] = SearchRecipeSelItem.recipes?.compactMap { $0.recipe?.uri } ?? []
+        if !existingIds.isEmpty {
+            params["ids"] = existingIds
+        }
+        params["q"] = requestedSearch
+        params["page"] = requestedPage
+
+        let loginURL = baseURL.baseURL + appEndPoints.recipe
+        print("*************************Search Recipe Pagination Params******************************")
+        print(params)
+        print("*************************Search Recipe Pagination URL****************************")
+        print(loginURL)
+
+        WebService.shared.postServiceMultipart(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
+            guard self.currentSearchText == requestedSearch else {
+                self.isLoadingSearchRecipePage = false
+                return
+            }
+
+            let data = try! json.rawData()
+
+            do {
+                let d = try JSONDecoder().decode(SearchModelClass.self, from: data)
+                if d.success == true {
+                    let newData = d.data?.recipes ?? []
+                    let previousCount = self.SearchRecipeSelItem.recipes?.count ?? 0
+                    var freshItems: [RecipeElement1] = []
+
+                    for item in newData {
+                        guard let uri = item.recipe?.uri else { continue }
+                        let alreadyExists = self.SearchRecipeSelItem.recipes?.contains {
+                            $0.recipe?.uri == uri
+                        } ?? false
+
+                        if !alreadyExists {
+                            freshItems.append(self.makeSearchRecipeElement(from: item))
+                        }
+                    }
+
+                    if freshItems.isEmpty {
+                        self.hasReachedSearchRecipeEnd = true
+                        print("Search recipe pagination reached end or backend repeated page")
+                    } else {
+                        if self.SearchRecipeSelItem.recipes == nil {
+                            self.SearchRecipeSelItem.recipes = []
+                        }
+                        self.SearchRecipeSelItem.recipes?.append(contentsOf: freshItems)
+                        self.searchRecipeCurrentPage = requestedPage + 1
+                    }
+
+                    self.isLoadingSearchRecipePage = false
+
+                    DispatchQueue.main.async {
+                        self.updateSearchRecipeCollectionHeight()
+
+                        if freshItems.isEmpty {
+                            self.SearchByRecipeCollV.collectionViewLayout.invalidateLayout()
+                            return
+                        }
+
+                        let indexPaths = (previousCount..<(previousCount + freshItems.count)).map {
+                            IndexPath(item: $0, section: 0)
+                        }
+
+                        self.SearchByRecipeCollV.performBatchUpdates({
+                            self.SearchByRecipeCollV.insertItems(at: indexPaths)
+                        }, completion: { _ in
+                            self.SearchByRecipeCollV.collectionViewLayout.invalidateLayout()
+                        })
+                    }
+                } else {
+                    self.isLoadingSearchRecipePage = false
+                    self.hasReachedSearchRecipeEnd = true
+                    DispatchQueue.main.async {
+                        self.SearchByRecipeCollV.collectionViewLayout.invalidateLayout()
+                    }
+                    let msg = d.message ?? ""
+                    self.showToast(msg)
+                }
+            } catch {
+                self.isLoadingSearchRecipePage = false
+                self.hasReachedSearchRecipeEnd = true
+                DispatchQueue.main.async {
+                    self.SearchByRecipeCollV.collectionViewLayout.invalidateLayout()
+                }
                 print(error)
             }
         })
@@ -492,6 +709,7 @@ extension SearchPrefVC {
             }
             
             if dictData["success"] as? Bool == true{
+                self.resetSearchRecipePagination(for: "")
                 self.Api_To_GetAllRecipeList(Search: "")
                 self.showToast("Updated successfully")
             }else{

@@ -19,6 +19,7 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
       
         let cfg = WKWebViewConfiguration()
         cfg.websiteDataStore = .default()
+        cfg.preferences.javaScriptCanOpenWindowsAutomatically = true
         cfg.defaultWebpagePreferences.preferredContentMode = .mobile
 
         let wv = WKWebView(frame: .zero, configuration: cfg)
@@ -56,7 +57,8 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
     private let compareButton = UIButton(type: .system)
     private let nextButton = UIButton(type: .system)
     var urlString = ""
-    private var pendingAuthNavigationDeadline: Date?
+    private var popupWebView: WKWebView?
+    private var lastExternalOpen: (url: String, date: Date)?
     private let authMessageHandlerName = "instacartAuthTap"
     private let basketTotalMessageHandlerName = "instacartBasketTotal"
     private var hasStartedBasketAutoCalculation = false
@@ -184,23 +186,49 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
             ].some(function(token) { return text.indexOf(token) !== -1; });
           }
 
+          function authProvider(text) {
+            if (text.indexOf('google') !== -1 || text.indexOf('accounts.google') !== -1) return 'google';
+            if (text.indexOf('facebook') !== -1 || text.indexOf('fb.com') !== -1) return 'facebook';
+            if (text.indexOf('apple') !== -1 || text.indexOf('appleid.apple') !== -1) return 'apple';
+            return 'unknown';
+          }
+
+          function candidateText(candidate) {
+            var img = candidate.querySelector && candidate.querySelector('img[alt]');
+            return normalizedText([
+              candidate.innerText,
+              candidate.textContent,
+              candidate.value,
+              candidate.getAttribute && candidate.getAttribute('aria-label'),
+              candidate.getAttribute && candidate.getAttribute('title'),
+              candidate.getAttribute && candidate.getAttribute('data-testid'),
+              img && img.getAttribute('alt')
+            ].filter(Boolean).join(' '));
+          }
+
           document.addEventListener('click', function(event) {
             var element = event.target;
             if (!element) return;
 
-            var candidate = element.closest('a, button, [role="button"], input[type="button"], input[type="submit"]');
+            var candidate = element.closest('a, button, [role="button"], input[type="button"], input[type="submit"], [data-testid], [aria-label]');
             if (!candidate) return;
 
-            var text = normalizedText(candidate.innerText || candidate.textContent || candidate.value || candidate.getAttribute('aria-label'));
+            var text = candidateText(candidate);
             var href = candidate.href || candidate.getAttribute('href') || '';
+            var form = candidate.closest && candidate.closest('form');
+            var action = form ? (form.getAttribute('action') || '') : '';
+            var combined = normalizedText([text, href, action].join(' '));
 
-            if (!matchesAuthIntent(text) && !matchesAuthIntent(normalizedText(href))) {
+            if (!matchesAuthIntent(combined)) {
               return;
             }
 
+            console.log('[InstacartAuthTap]', combined, href, action);
             window.webkit.messageHandlers.\(authMessageHandlerName).postMessage({
+              provider: authProvider(combined),
               text: text,
-              href: href
+              href: href,
+              action: action
             });
           }, true);
         })();
@@ -312,6 +340,7 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
     }
 
     deinit {
+        closePopupWebView()
         webView.configuration.userContentController.removeScriptMessageHandler(forName: authMessageHandlerName)
         webView.configuration.userContentController.removeScriptMessageHandler(forName: basketTotalMessageHandlerName)
     }
@@ -470,15 +499,32 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
                  for navigationAction: WKNavigationAction,
                  windowFeatures: WKWindowFeatures) -> WKWebView? {
 
-        guard let url = navigationAction.request.url else { return nil }
+        logNavigation("POPUP", navigationAction: navigationAction)
 
-        if shouldOpenExternally(url: url, navigationAction: navigationAction) {
-            UIApplication.shared.open(url)
-        } else {
-            webView.load(URLRequest(url: url))
+        guard let url = navigationAction.request.url else {
+            // Some OAuth providers create a blank popup first, then assign location later.
+            // Keep that shell hidden and route its first real navigation into the main WebView.
+            print("[InstacartWeb] POPUP URL is nil; creating hidden popup shell.")
+            closePopupWebView()
+
+            let popup = WKWebView(frame: .zero, configuration: configuration)
+            popup.navigationDelegate = self
+            popup.uiDelegate = self
+            popup.isHidden = true
+            popupWebView = popup
+            view.addSubview(popup)
+            return popup
         }
+
+        handleNavigationURL(url, source: "POPUP")
        
         return nil
+    }
+
+    func webViewDidClose(_ webView: WKWebView) {
+        if webView === popupWebView {
+            closePopupWebView()
+        }
     }
 
 
@@ -582,52 +628,197 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
             return
         }
         
-        print("NAV URL:", url.absoluteString)
-        print("HOST:", url.host ?? "")
-        print("TYPE:", navigationAction.navigationType.rawValue)
-        print("TARGET FRAME NIL:", navigationAction.targetFrame == nil)
+        let isPopupNavigation = webView === popupWebView
+        logNavigation(isPopupNavigation ? "POPUP NAV" : "NAV", navigationAction: navigationAction)
+
         let absolute = url.absoluteString.lowercased()
         if absolute.contains("google.com/recaptcha") {
             decisionHandler(.allow)
             return
         }
-        if shouldOpenExternally(url: url, navigationAction: navigationAction) {
-            UIApplication.shared.open(url)
+
+        if isPopupNavigation {
+            handleNavigationURL(url, source: "POPUP NAV")
+            closePopupWebView(webView)
             decisionHandler(.cancel)
             return
+        }
+
+        if shouldOpenOutsideWebView(url) {
+            openExternalURL(url, source: "NAV")
+            decisionHandler(.cancel)
+            return
+        }
+
+        if shouldOpenSocialAuthInSafari(url) {
+            // Do not run Google/Apple/Facebook OAuth inside WKWebView. Hand it to Safari
+            // and leave the Instacart cart/checkout WebView state untouched.
+            openExternalURL(url, source: "SOCIAL AUTH")
+            decisionHandler(.cancel)
+            return
+        }
+
+        if navigationAction.targetFrame == nil {
+            // Non-auth target="_blank" links can stay inside this single visible WebView.
+            webView.load(URLRequest(url: url))
+            decisionHandler(.cancel)
+            return
+        }
+
+        if isSocialAuthURL(url) {
+            print("[InstacartWeb] AUTH URL detected in WebView:", url.absoluteString)
         }
 
         decisionHandler(.allow)
     }
 
-    private func shouldOpenExternally(url: URL, navigationAction: WKNavigationAction) -> Bool {
+    private func closePopupWebView(_ popup: WKWebView? = nil) {
+        let popupToClose = popup ?? popupWebView
+        popupToClose?.navigationDelegate = nil
+        popupToClose?.uiDelegate = nil
+        popupToClose?.stopLoading()
+        popupToClose?.removeFromSuperview()
+
+        if popupToClose === popupWebView {
+            popupWebView = nil
+        }
+    }
+
+    private func handleNavigationURL(_ url: URL, source: String) {
+        if shouldOpenOutsideWebView(url) {
+            openExternalURL(url, source: source)
+        } else if shouldOpenSocialAuthInSafari(url) {
+            openExternalURL(url, source: "\(source) SOCIAL AUTH")
+        } else {
+            if isSocialAuthURL(url) {
+                print("[InstacartWeb] AUTH URL allowed in WebView:", url.absoluteString)
+            }
+            webView.load(URLRequest(url: url))
+        }
+    }
+
+    private func openExternalURL(_ url: URL, source: String) {
+        let absoluteString = url.absoluteString
+        if let lastExternalOpen = lastExternalOpen,
+           lastExternalOpen.url == absoluteString,
+           Date().timeIntervalSince(lastExternalOpen.date) < 1.5 {
+            print("[InstacartWeb] \(source) skipped duplicate external open:", absoluteString)
+            return
+        }
+
+        lastExternalOpen = (absoluteString, Date())
+        print("[InstacartWeb] \(source) opening externally:", url.absoluteString)
+        UIApplication.shared.open(url)
+    }
+
+    private func logNavigation(_ label: String, navigationAction: WKNavigationAction) {
+        let url = navigationAction.request.url
+        print("[InstacartWeb] \(label) URL:", url?.absoluteString ?? "nil")
+        print("[InstacartWeb] \(label) HOST:", url?.host ?? "")
+        print("[InstacartWeb] \(label) TYPE:", navigationAction.navigationType.rawValue)
+        print("[InstacartWeb] \(label) TARGET FRAME NIL:", navigationAction.targetFrame == nil)
+        print("[InstacartWeb] \(label) MAIN FRAME:", navigationAction.targetFrame?.isMainFrame ?? false)
+    }
+
+    private func shouldOpenOutsideWebView(_ url: URL) -> Bool {
+        let scheme = url.scheme?.lowercased() ?? ""
+
+        // Native app links and custom schemes cannot be rendered by WKWebView.
+        guard scheme == "http" || scheme == "https" || scheme == "about" else {
+            return true
+        }
+
+        let host = url.host?.lowercased() ?? ""
+        return host == "itunes.apple.com" || host == "apps.apple.com"
+    }
+
+    private func shouldOpenSocialAuthInSafari(_ url: URL) -> Bool {
         let absolute = url.absoluteString.lowercased()
         let host = url.host?.lowercased() ?? ""
-        let isKnownAuthHost =
-            host.contains("accounts.google.com") ||
-            host.contains("facebook.com") ||
-            host.contains("fb.com") ||
-            host.contains("appleid.apple.com") ||
-            host.contains("login") ||
-            host.contains("signin") ||
-            host.contains("auth")
 
-        let matchesAuthPath =
+        let isSocialProviderHost =
+            host.contains("accounts.google.com") ||
+            host.contains("appleid.apple.com") ||
+            host.contains("facebook.com") ||
+            host.contains("fb.com")
+
+        let hasSocialProviderHint =
+            absolute.contains("google") ||
+            absolute.contains("facebook") ||
+            absolute.contains("fb.com") ||
+            absolute.contains("apple")
+
+        let hasAuthFlowHint =
+            absolute.contains("oauth") ||
+            absolute.contains("authorize") ||
+            absolute.contains("continue_with") ||
+            absolute.contains("social") ||
+            absolute.contains("sso")
+
+        return isSocialProviderHost || (hasSocialProviderHint && hasAuthFlowHint)
+    }
+
+    private func isSocialAuthURL(_ url: URL) -> Bool {
+        let absolute = url.absoluteString.lowercased()
+        let host = url.host?.lowercased() ?? ""
+
+        let isSocialHost =
+            host.contains("accounts.google.com") ||
+            host.contains("appleid.apple.com") ||
+            host.contains("facebook.com") ||
+            host.contains("fb.com")
+
+        let isAuthPath =
             absolute.contains("/login") ||
             absolute.contains("/signin") ||
             absolute.contains("sign_in") ||
             absolute.contains("continue_with") ||
             absolute.contains("oauth") ||
+            absolute.contains("authorize") ||
+            absolute.contains("auth") ||
             absolute.contains("social")
 
-        let hasRecentAuthTap = pendingAuthNavigationDeadline.map { Date() <= $0 } ?? false
+        return isSocialHost || isAuthPath
+    }
 
-        if hasRecentAuthTap && (isKnownAuthHost || matchesAuthPath) {
-            pendingAuthNavigationDeadline = nil
-            return true
+    private func handleAuthTapMessage(_ body: Any) {
+        guard let body = body as? [String: Any] else {
+            print("[InstacartWeb] AUTH TAP message body:", body)
+            return
         }
 
-        return false
+        let provider = body["provider"] as? String ?? "unknown"
+        let text = body["text"] as? String ?? ""
+        let href = body["href"] as? String ?? ""
+        let action = body["action"] as? String ?? ""
+
+        print("[InstacartWeb] AUTH TAP provider:", provider)
+        print("[InstacartWeb] AUTH TAP text:", text)
+        print("[InstacartWeb] AUTH TAP href:", href)
+        print("[InstacartWeb] AUTH TAP action:", action)
+
+        let candidateURLString = urlString //!href.isEmpty ? href : action
+        if let url = resolvedURL(from: candidateURLString) {
+            if text == "google google" || text == "facebook facebook" || text == "apple"/* || shouldOpenSocialAuthInSafari(url)*/ {
+                openExternalURL(url, source: "AUTH TAP SOCIAL AUTH")
+                backButtonTapped?()
+            } else {
+                openExternalURL(url, source: "AUTH TAP SOCIAL AUTH")
+                backButtonTapped?()
+              //  handleNavigationURL(url, source: "AUTH TAP")
+            }
+        }
+        
+    }
+
+    private func resolvedURL(from string: String) -> URL? {
+        guard !string.isEmpty else { return nil }
+
+        if let url = URL(string: string), url.scheme != nil {
+            return url
+        }
+
+        return URL(string: string, relativeTo: webView.url)?.absoluteURL
     }
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
@@ -636,15 +827,9 @@ final class InstacartContainerVC: UIViewController, WKNavigationDelegate, WKUIDe
             return
         }
 
-        guard message.name == authMessageHandlerName else { return }
-        pendingAuthNavigationDeadline = Date().addingTimeInterval(8)
-
-        if let body = message.body as? [String: Any],
-           let href = body["href"] as? String,
-           let url = URL(string: href),
-           !href.isEmpty {
-            UIApplication.shared.open(url)
-            pendingAuthNavigationDeadline = nil
+        if message.name == authMessageHandlerName {
+            handleAuthTapMessage(message.body)
+            return
         }
     }
 

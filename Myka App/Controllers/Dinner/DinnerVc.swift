@@ -85,11 +85,7 @@ class DinnerVc: UIViewController {
     
         self.currentPage = 1
         self.hasReachedEnd = false
-        if comesfrom != "All_IngredientsVC"{
-            self.Api_To_GetAllMealsRecipe(Serach: self.titleTxt)
-        }else{
-            self.Api_To_GetAllMealsRecipe(Serach: self.SelectedIngNames)
-        }
+        self.Api_To_GetAllMealsRecipe(Serach: currentRecipeSearchValue())
        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         ChoosedaysBgV.addGestureRecognizer(tapGesture)
@@ -97,6 +93,14 @@ class DinnerVc: UIViewController {
         let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(handleTap1(_:)))
         ChooseMealTypeBgV.addGestureRecognizer(tapGesture1)
        }
+
+    private func currentRecipeSearchValue() -> String {
+        if comesfrom == "All_IngredientsVC" {
+            return SelectedIngNames
+        }
+
+        return titleTxt
+    }
      
        // Action method called when the view is tapped
     
@@ -306,7 +310,7 @@ extension DinnerVc: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
         vc.selID = SelID
         vc.typeclicked = TypeClicked
         vc.backAction = {
-            self.Api_To_GetAllMealsRecipe(Serach: self.TitleLbl.text!)
+            self.Api_To_GetAllMealsRecipe(Serach: self.currentRecipeSearchValue())
         }
         self.addChild(vc)
         vc.view.frame = self.view.frame
@@ -395,7 +399,7 @@ extension DinnerVc: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
             if offsetY >= contentHeight - frameHeight - buffer {
                 print("Reached bottom")
                 if !self.hasReachedEnd {
-                    self.Api_To_GetAllMealsRecipe(Serach: self.titleTxt)
+                    self.Api_To_GetAllMealsRecipe(Serach: self.currentRecipeSearchValue())
                 }
             }
         } else {
@@ -793,7 +797,7 @@ extension DinnerVc {
             }
         
             if dictData["success"] as? Bool == true{
-                self.Api_To_GetAllMealsRecipe(Serach: self.titleTxt)
+                self.Api_To_GetAllMealsRecipe(Serach: self.currentRecipeSearchValue())
                }else{
                    let responseMessage = dictData["message"] as? String ?? ""
                    self.showToast(responseMessage)

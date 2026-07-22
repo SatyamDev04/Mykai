@@ -368,8 +368,8 @@ class BasketNewVC: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func checkoutBtn(_ sender: UIButton) {
-        self.Api_To_get_SavedAddress(hideOrNot: false)
-        
+    //    self.Api_To_get_SavedAddress(hideOrNot: false)
+        self.createSelectedIngredientDict()
     }
     
     
@@ -1121,28 +1121,58 @@ extension BasketNewVC{
         }
         
         self.uploadIngredient(payload) { result, statusCode in
-            guard let dict = result.dictionaryObject,
-                  let data = dict["data"] as? [String:Any],
-                  let url = data["products_link_url"] as? String else {return}
-            let vc = InstacartContainerVC()
-            vc.urlString = url
-            vc.backButtonTapped = { [weak self] in
-                guard let self = self else { return }
-                
-                let storyboard = UIStoryboard(name: "Basket", bundle: nil)
-                let missingVC = storyboard.instantiateViewController(withIdentifier: "Tesco_MissingIngredientVC") as! Tesco_MissingIngredientVC
-                missingVC.missingIngredient = self.BasketListArr.ingredient ?? []
-                
-                if var stack = self.navigationController?.viewControllers {
-                    stack.removeLast() // Remove InstacartContainerVC
-                    stack.append(missingVC)
-                    self.navigationController?.setViewControllers(stack, animated: false)
-                }
+            guard
+
+                let dict = result.dictionaryObject,
+
+                let data = dict["data"] as? [String: Any],
+
+                let urlString = data["products_link_url"] as? String,
+
+                let url = URL(string: urlString)
+
+            else {
+
+                return
+
             }
-            self.navigationController?.pushViewController(vc, animated: false)
+
+            self.openExternalURL(url)
+            
+            
+//            vc.backButtonTapped = { [weak self] in
+//                guard let self = self else { return }
+//                
+//              
+//                }
+//            }
+//            self.navigationController?.pushViewController(vc, animated: false)
         }
     }
-  
+    private func openExternalURL(_ url: URL) {
+        let absoluteString = url.absoluteString
+//        if let lastExternalOpen = lastExternalOpen,
+//           lastExternalOpen.url == absoluteString,
+//           Date().timeIntervalSince(lastExternalOpen.date) < 1.5 {
+//            print("[InstacartWeb] \(source) skipped duplicate external open:", absoluteString)
+//            return
+//        }
+
+       // lastExternalOpen = (absoluteString, Date())
+        print("[InstacartWeb] opening externally:", url.absoluteString)
+        UIApplication.shared.open(url)
+        
+        
+        let storyboard = UIStoryboard(name: "Basket", bundle: nil)
+        let missingVC = storyboard.instantiateViewController(withIdentifier: "Tesco_MissingIngredientVC") as! Tesco_MissingIngredientVC
+        missingVC.missingIngredient = self.BasketListArr.ingredient ?? []
+        
+        if var stack = self.navigationController?.viewControllers {
+            stack.removeLast() // Remove InstacartContainerVC
+            stack.append(missingVC)
+            self.navigationController?.setViewControllers(stack, animated: false)
+        }
+    }
     func uploadIngredient(_ payload: IngredientRequestPayload, completion: @escaping (JSON, Int) -> Void) {
         var apiURL = ""
         apiURL = baseURL.baseURL + appEndPoints.create_order_instacart

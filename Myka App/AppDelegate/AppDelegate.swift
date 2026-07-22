@@ -23,14 +23,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
     
     
     var window: UIWindow?
-    
     var gcmMessageIDKey = "gcmMessageIDKey"
     static let shared = UIApplication.shared.delegate as! AppDelegate
     var deviceToken = String()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
         
         ApplicationDelegate.shared.application(
                    application,
@@ -39,19 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
         IQKeyboardManager.shared().isEnabled = true
         IQKeyboardManager.shared().shouldResignOnTouchOutside = true
         
-        
-        
-//   for family in UIFont.familyNames.sorted() {
-//        print("Family: \(family)")
-//        for name in UIFont.fontNames(forFamilyName: family).sorted() {
-//            print("    \(name)")
-//        }
-//    }
-       
-        
-       
-        
-        
+   
         AppsFlyerLib.shared().appsFlyerDevKey = "M57zyjkFgb7nSQwHWN6isW"
         AppsFlyerLib.shared().appleAppID = "6742851385"
         AppsFlyerLib.shared().appInviteOneLinkID = "mu9R"
@@ -245,16 +231,12 @@ extension AppDelegate:MessagingDelegate, UNUserNotificationCenterDelegate{
             print("Message ID: \(messageID)")
         }
         print("userInfo --> \(userInfo)")
-        
         print("type:",  userInfo["gcm.notification.type"] ?? "")
-        
         print("screen:",  userInfo["gcm.notification.screen"] ?? "")
         
         
         var type = userInfo["gcm.notification.type"] ?? ""
-        
         var screen = userInfo["gcm.notification.screen"] ?? ""
-        
         print(userInfo)
         
         let state = UIApplication.shared.applicationState
@@ -287,8 +269,6 @@ extension AppDelegate:MessagingDelegate, UNUserNotificationCenterDelegate{
         AppsFlyerLib.shared().continue(userActivity, restorationHandler: appsFlyerRestorationHandler)
         return true
     }
-    
-    
     
     func onConversionDataSuccess(_ conversionInfo: [AnyHashable: Any]) {
         print("Conversion data received: \(conversionInfo)")
