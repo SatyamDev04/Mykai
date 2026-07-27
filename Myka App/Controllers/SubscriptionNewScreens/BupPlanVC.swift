@@ -8,6 +8,7 @@
 import UIKit
 import StoreKit
 import Alamofire
+import SafariServices
 
 struct PlanModel{
     var planName:String
@@ -31,6 +32,8 @@ class BupPlanVC: UIViewController, SKRequestDelegate {
     var Sel_SubsPrice = 1.99
    
     var comesfrom = ""
+    private let termsOfUseURL = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
+    private let privacyPolicyURL = URL(string: "https://www.getmykai.com/privacy/")!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -213,6 +216,20 @@ func sendReceiptToServer(Receipt: String) {
         print(IAPManager.shared.products)
         // self.Sel_SubsPrice
         purchaseCoins()
+    }
+
+    @IBAction private func didTapTermsOfUse(_ sender: UIButton) {
+        openLegalURL(termsOfUseURL)
+    }
+
+    @IBAction private func didTapPrivacyPolicy(_ sender: UIButton) {
+        openLegalURL(privacyPolicyURL)
+    }
+
+    private func openLegalURL(_ url: URL) {
+        let safariVC = SFSafariViewController(url: url)
+        safariVC.modalPresentationStyle = .pageSheet
+        present(safariVC, animated: true)
     }
 }
 

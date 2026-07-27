@@ -283,6 +283,40 @@
                                     <action selector="PurchaseBtn:" destination="ovq-T6-Gk7" eventType="touchUpInside" id="PUk-5s-Idw"/>
                                 </connections>
                             </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="OTs-Tu-p1M">
+                                <rect key="frame" x="121" y="727" width="133" height="20"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aPS-kA-yCb">
+                                        <rect key="frame" x="0.0" y="1.3333333333333712" width="62" height="17.333333333333332"/>
+                                        <fontDescription key="fontDescription" name="Inter-Regular" family="Inter" pointSize="10"/>
+                                        <state key="normal" title="Terms of Use">
+                                            <color key="titleColor" red="0.23529411759999999" green="0.27058823529999998" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="didTapTermsOfUse:" destination="ovq-T6-Gk7" eventType="touchUpInside" id="2yg-5X-e5b"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="|" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="43X-Ay-sQT">
+                                        <rect key="frame" x="65" y="4" width="3.6666666666666714" height="12"/>
+                                        <fontDescription key="fontDescription" name="Inter-Regular" family="Inter" pointSize="10"/>
+                                        <color key="textColor" red="0.23529411759999999" green="0.27058823529999998" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RY9-w7-RMw">
+                                        <rect key="frame" x="71.666666666666686" y="1.3333333333333712" width="61.333333333333314" height="17.333333333333332"/>
+                                        <fontDescription key="fontDescription" name="Inter-Regular" family="Inter" pointSize="10"/>
+                                        <state key="normal" title="Privacy Policy">
+                                            <color key="titleColor" red="0.23529411759999999" green="0.27058823529999998" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="didTapPrivacyPolicy:" destination="ovq-T6-Gk7" eventType="touchUpInside" id="rUz-Kg-Lu3"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="vmG-Li-xqq"/>
+                                </constraints>
+                            </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Eax-bP-AUh">
                                 <rect key="frame" x="30" y="227.66666666666663" width="315" height="280"/>
                                 <subviews>
@@ -408,6 +442,7 @@ Kai</string>
                             <constraint firstItem="aIM-dI-mmZ" firstAttribute="top" secondItem="K9c-PU-cEi" secondAttribute="top" id="JBj-Jg-iR9"/>
                             <constraint firstItem="UPz-Qm-WP7" firstAttribute="leading" secondItem="K9c-PU-cEi" secondAttribute="leading" constant="30" id="JGm-Jj-0xb"/>
                             <constraint firstItem="K9c-PU-cEi" firstAttribute="trailing" secondItem="5N3-t9-m72" secondAttribute="trailing" constant="25" id="K8l-jw-mE3"/>
+                            <constraint firstItem="OTs-Tu-p1M" firstAttribute="centerX" secondItem="K9c-PU-cEi" secondAttribute="centerX" id="KY5-n6-J7H"/>
                             <constraint firstItem="WcD-Un-YSH" firstAttribute="top" secondItem="Go5-KC-jrI" secondAttribute="top" id="NTE-TT-XnM"/>
                             <constraint firstItem="NJf-X3-B0n" firstAttribute="top" secondItem="K9c-PU-cEi" secondAttribute="top" constant="45" id="O65-RX-0Vq"/>
                             <constraint firstAttribute="bottom" secondItem="WcD-Un-YSH" secondAttribute="bottom" id="QD2-pH-5bk"/>
@@ -418,6 +453,7 @@ Kai</string>
                             <constraint firstItem="5N3-t9-m72" firstAttribute="top" secondItem="Eax-bP-AUh" secondAttribute="bottom" constant="15" id="uVv-yA-s0e"/>
                             <constraint firstItem="WcD-Un-YSH" firstAttribute="leading" secondItem="K9c-PU-cEi" secondAttribute="leading" id="vJL-y9-hWy"/>
                             <constraint firstItem="UPz-Qm-WP7" firstAttribute="top" secondItem="5N3-t9-m72" secondAttribute="bottom" constant="20" id="xsX-4q-t9d"/>
+                            <constraint firstItem="OTs-Tu-p1M" firstAttribute="top" secondItem="UPz-Qm-WP7" secondAttribute="bottom" constant="3" id="y1P-qN-9DL"/>
                             <constraint firstItem="NJf-X3-B0n" firstAttribute="leading" secondItem="K9c-PU-cEi" secondAttribute="leading" constant="10" id="yG8-V8-4qc"/>
                         </constraints>
                     </view>
