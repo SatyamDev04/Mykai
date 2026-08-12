@@ -321,7 +321,6 @@ extension AddNumberVC{
                 
                 self.OtpView.text = ""
                 
-                self.showToast("\(val)")
                 self.Otp = "\(val)"
 
                 let LastFour = stringWithoutDashes.suffix(3)
@@ -335,8 +334,7 @@ extension AddNumberVC{
                 self.OTPBgV.isHidden = false
                 self.ResendBgV.isHidden = false
                 
-                let responseMessage = dictData["message"] as! String
-                self.showToast(responseMessage)
+                self.showToast("Verification code sent.")
             }else{
                 let responseMessage = dictData["message"] as! String
                 self.showToast(responseMessage)

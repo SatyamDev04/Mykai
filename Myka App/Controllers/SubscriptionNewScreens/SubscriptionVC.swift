@@ -155,6 +155,7 @@ func sendReceiptToServer(Receipt: String) {
              return
          }
             if dictData["success"] as! Bool == true{
+                UserDetail.shared.setSubscriptionStatus("0")
                  
                 if self.comesFrom == "Signup" {
                     let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
@@ -203,10 +204,6 @@ func sendReceiptToServer(Receipt: String) {
     }
     
     @IBAction func RestorePurchaseBtn(_ sender: UIButton) {
-//        if self.lastPlan == "weekly_plan"{
-//        }else if lastPlan == "monthly_plan"{
-//        }else if lastPlan == "annual_plan"{
-//        }else{}
         showIndicator(withTitle: "", and: "")
         IAPManager.shared.restorePurchases()
     }
@@ -350,12 +347,7 @@ extension SubscriptionVC : UICollectionViewDelegateFlowLayout {
    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
        return 10
     }
-    
-//    override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//        CollV.collectionViewLayout.invalidateLayout() // Ensures layout is recalculated
-//        CollV.reloadData()
-//    }
+
     
 }
 

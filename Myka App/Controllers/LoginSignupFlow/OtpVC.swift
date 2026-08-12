@@ -364,8 +364,7 @@ extension OtpVC {
             }
             
             if dictData["success"] as? Bool == true{
-                let responseMessage = dictData["message"] as? String ?? ""
-                self.showToast(responseMessage)
+                self.showToast("Verification code resent.")
                 
                 self.ResentOTPTimer()
             }else{
@@ -468,8 +467,7 @@ extension OtpVC {
             }
             
             if dictData["success"] as? Bool == true{
-                let responseMessage = dictData["message"] as! String
-                self.showToast(responseMessage)
+                self.showToast("Verification code resent.")
                 self.ResentOTPTimer()
             }else{
                 let responseMessage = dictData["message"] as! String

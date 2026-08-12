@@ -338,8 +338,7 @@ extension SignUpVC {
                 let response = dictData["data"] as? NSDictionary ?? NSDictionary()
                 let uid = response["id"] as? Int ?? Int()
                 
-                let responseMessage = dictData["message"] as? String ?? ""
-                self.navigationController?.showToast(responseMessage)
+                self.navigationController?.showToast("Verification code sent.")
                 
                 let storyboard = UIStoryboard(name: "Login", bundle: nil)
                 let vc = storyboard.instantiateViewController(withIdentifier: "OtpVC") as! OtpVC

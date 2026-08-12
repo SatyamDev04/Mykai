@@ -574,7 +574,6 @@
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "My Kai uses your location while you use the app to show nearby stores, delivery options, and relevant local services.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "My Kai saves images to your photo library when you choose to keep generated, captured, or scanned images on your device.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "My Kai uses your photo library so you can choose images for recipes, profile photos, receipts, and documents.";
-				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Allow My Kai to use your data across apps and websites to personalize offers, measure ads, and improve your app experience.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -621,7 +620,6 @@
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "My Kai uses your location while you use the app to show nearby stores, delivery options, and relevant local services.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "My Kai saves images to your photo library when you choose to keep generated, captured, or scanned images on your device.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "My Kai uses your photo library so you can choose images for recipes, profile photos, receipts, and documents.";
-				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Allow My Kai to use your data across apps and websites to personalize offers, measure ads, and improve your app experience.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

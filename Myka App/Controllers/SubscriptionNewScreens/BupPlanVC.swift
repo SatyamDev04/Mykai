@@ -20,21 +20,22 @@ struct PlanModel{
 }
 
 class BupPlanVC: UIViewController, SKRequestDelegate {
-    
+
     @IBOutlet weak var ProfileImg: UIImageView!
     @IBOutlet weak var TitleLbl: UILabel!
     @IBOutlet weak var UserCookBookLbl: UILabel!
     @IBOutlet weak var TblV: UITableView!
     @IBOutlet weak var BuyBtnO: UIButton!
-    
-    var PlanArr = [/*PlanModel(planName: "Starter", userType: "New to Kai", originalPrice: "$3.99/ Weekly", discountPrice: "$1.99/ Weekly", isSelected: true, planNameBgColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)), PlanModel(planName: "Popular", userType: "Pro Kai User", originalPrice: "$11.99/ Monthly", discountPrice: "$5.99/ Monthly", isSelected: false, planNameBgColor: #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)),*/ PlanModel(planName: "Best value", userType: "Annual", originalPrice: "$99.99/ Yearly", discountPrice: "$49.99/ Yearly", isSelected: false, planNameBgColor: #colorLiteral(red: 0.9764705882, green: 0.8352941176, blue: 0.05098039216, alpha: 1))]
-    
-    var Sel_SubsPrice = 1.99
-   
+
+    var PlanArr = [PlanModel(planName: "Best value", userType: "Annual", originalPrice: "7-day free trial", discountPrice: "Loading price", isSelected: true, planNameBgColor: #colorLiteral(red: 0.9764705882, green: 0.8352941176, blue: 0.05098039216, alpha: 1))]
+
+    private let selectedProductIdentifier = ProductID.yearlyPlan.rawValue
+    private var shouldPurchaseWhenProductLoads = false
+
     var comesfrom = ""
     private let termsOfUseURL = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
     private let privacyPolicyURL = URL(string: "https://www.getmykai.com/privacy/")!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.TblV.register(UINib(nibName: "PlanTblVCell", bundle: nil), forCellReuseIdentifier: "PlanTblVCell")
@@ -47,15 +48,15 @@ class BupPlanVC: UIViewController, SKRequestDelegate {
         let Attributes2: [NSAttributedString.Key: Any] = [
             .font: UIFont(name: "Inter Semi Bold", size: 20.0) ?? UIFont.systemFont(ofSize: 20)
         ]
-         
+
             let helloString = NSAttributedString(string: "You’ve got a gift from", attributes: Attributes1)
-        
+
         var worldString = NSAttributedString()
-        
+
         if !StateMangerModelClass.shared.ProviderName.isEmpty{
             let imgUrl = URL(string: StateMangerModelClass.shared.ProviderImg) ?? nil
             self.ProfileImg.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "Prof"))
-            
+
             if StateMangerModelClass.shared.ProviderName != ""{
                 if let firstName = StateMangerModelClass.shared.ProviderName.split(separator: " ").first {
                     self.UserCookBookLbl.text = "\(firstName)’s secret cookbook"
@@ -65,26 +66,34 @@ class BupPlanVC: UIViewController, SKRequestDelegate {
             }else{
                 self.UserCookBookLbl.text = "Kai’s special cookbook"
             }
-            
+
             worldString = NSAttributedString(string: "\n\(StateMangerModelClass.shared.ProviderName)", attributes: Attributes2)
         }else{
             self.ProfileImg.image = UIImage(named: "Prof")
-            
+
             self.UserCookBookLbl.text = "Kai’s special cookbook"
-            
+
             worldString = NSAttributedString(string: "\nKai", attributes: Attributes2)
         }
-         
+
             let fullString = NSMutableAttributedString()
             fullString.append(helloString)
             fullString.append(worldString)
         self.TitleLbl.attributedText = fullString
-        
+
         self.Api_To_fetchSubscription()
-        
+
         NotificationCenter.default.addObserver(self, selector: #selector(listnerFunction(_:)), name: NSNotification.Name(rawValue: "PurchaseNotification"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(storeKitProductsDidUpdate), name: IAPManager.productsDidUpdateNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(storeKitProductsDidFail), name: IAPManager.productsDidFailNotification, object: nil)
+        updateBuyButtonState()
+        IAPManager.shared.fetchProducts()
     }
-    
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
@@ -92,77 +101,129 @@ class BupPlanVC: UIViewController, SKRequestDelegate {
         }
         IAPManager.shared.fetchProducts()
     }
-     
+
+    @objc private func storeKitProductsDidUpdate() {
+        guard Thread.isMainThread else {
+            DispatchQueue.main.async { self.storeKitProductsDidUpdate() }
+            return
+        }
+
+        updateAnnualPlanPriceFromStoreKit()
+        updateBuyButtonState()
+        if shouldPurchaseWhenProductLoads {
+            if IAPManager.shared.yearlyProduct != nil {
+                shouldPurchaseWhenProductLoads = false
+                purchaseCoins()
+            } else {
+                shouldPurchaseWhenProductLoads = false
+                hideIndicator()
+                showToast("Subscription is temporarily unavailable. Please try again.")
+            }
+        }
+    }
+
+    @objc private func storeKitProductsDidFail() {
+        guard Thread.isMainThread else {
+            DispatchQueue.main.async { self.storeKitProductsDidFail() }
+            return
+        }
+
+        shouldPurchaseWhenProductLoads = false
+        hideIndicator()
+        updateBuyButtonState()
+        showToast("Subscription is temporarily unavailable. Please try again.")
+    }
+
+    private func updateAnnualPlanPriceFromStoreKit() {
+        guard let product = IAPManager.shared.yearlyProduct else {
+            PlanArr[0].discountPrice = "Loading price"
+            TblV.reloadData()
+            return
+        }
+
+        let annualPrice = IAPManager.shared.localizedPrice(for: product)
+        PlanArr[0].discountPrice = "\(annualPrice)/ Yearly"
+        TblV.reloadData()
+    }
+
+    private func updateBuyButtonState() {
+        let productIsReady = IAPManager.shared.yearlyProduct != nil
+        // Keep the button tappable even while StoreKit is loading so App Review never sees a dead CTA.
+        BuyBtnO.isUserInteractionEnabled = true
+        BuyBtnO.backgroundColor = productIsReady ? #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1) : UIColor.lightGray
+    }
+
 @objc func listnerFunction(_ notification: NSNotification) {
     if notification.userInfo?["data"] as? String ?? "" == "Purchase successful" {
         let Receipt = notification.userInfo?["Receipt"] as? String ?? ""
         hideIndicator()
         if Receipt != ""{
-  
+
             hideIndicator()
             sendReceiptToServer(Receipt: Receipt)
         }
     }
-        
+
   }
 
 func sendReceiptToServer(Receipt: String) {
-    
+
     let loginURL = baseURL.baseURL + appEndPoints.subscription_apple
-    
+
     let params: [String: Any] = [
         "receipt_data": Receipt,
         "type":"ios"
     ]
-    
+
     let token = UserDetail.shared.getTokenWith()
-    
+
     let headers: HTTPHeaders = [
         "Authorization": "Bearer \(token)",
         "Accept": "application/json",
         "Content-Type": "application/json"
     ]
-    
+
     print("================ API REQUEST ================")
     print("URL:", loginURL)
     print("HEADERS:", headers)
     print("PARAMETERS:", params)
     print("=============================================")
-    
+
     self.showIndicator(withTitle: "", and: "")
-    
+
     AF.request(loginURL,
                method: .post,
                parameters: params,
                encoding: JSONEncoding.default,
                headers: headers)
     .responseData { response in
-        
+
         self.hideIndicator()
-        
+
         print("================ API RESPONSE ================")
         print("STATUS CODE:", response.response?.statusCode ?? 0)
-        
+
         if let data = response.data,
            let rawString = String(data: data, encoding: .utf8) {
             print("RAW RESPONSE:")
             print(rawString)
         }
-        
+
         switch response.result {
         case .success(let data):
-            
+
             do {
                 if let jsonObject = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                    
+
                     print("PARSED JSON:", jsonObject)
-                    
+
                     let success = jsonObject["success"] as? Bool ?? false
                     let message = jsonObject["message"] as? String ?? "Unknown error"
-                    
+
                     if success {
                         print("✅ Subscription Success")
-                        
+                        UserDetail.shared.setSubscriptionStatus("0")
+
                         if self.comesfrom == "Signup" {
                             let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
                             let vc = storyboard.instantiateViewController(withIdentifier: "TabbarVC") as! TabbarVC
@@ -170,32 +231,32 @@ func sendReceiptToServer(Receipt: String) {
                         } else {
                             self.navigationController?.popToRootViewController(animated: true)
                         }
-                        
+
                     } else {
                         print("❌ Backend Error:", message)
                         self.showToast(message)
                     }
-                    
+
                 } else {
                     print("❌ Response is not a valid JSON object")
                     self.showToast("Server configuration error")
                 }
-                
+
             } catch {
                 print("❌ JSON Parsing Error:", error)
                 self.showToast("Invalid server response")
             }
-            
+
         case .failure(let error):
             print("❌ API Failure:", error.localizedDescription)
             self.showToast("Network error. Please try again.")
         }
-        
+
         print("==============================================")
     }
 }
- 
-    
+
+
     @IBAction func CloseBtn(_ sender: UIButton) {
         if comesfrom == "Profile"{
             self.navigationController?.popViewController(animated: true)
@@ -205,16 +266,19 @@ func sendReceiptToServer(Receipt: String) {
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
-    
-    
+
+
     @IBAction func PurchaseBtn(_ sender: UIButton) {
-//        let storyboard = UIStoryboard(name: "Tabbar", bundle: nil)
-//        let vc = storyboard.instantiateViewController(withIdentifier: "TabbarVC") as! TabbarVC
-//        self.navigationController?.pushViewController(vc, animated: true)
-        
+
+
         self.showIndicator(withTitle: "", and: "")
         print(IAPManager.shared.products)
         // self.Sel_SubsPrice
+        guard IAPManager.shared.yearlyProduct != nil else {
+            shouldPurchaseWhenProductLoads = true
+            IAPManager.shared.fetchProducts()
+            return
+        }
         purchaseCoins()
     }
 
@@ -237,30 +301,36 @@ extension BupPlanVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return PlanArr.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PlanTblVCell", for: indexPath) as! PlanTblVCell
-        
+
         cell.PlanTypeBgV.backgroundColor = PlanArr[indexPath.row].planNameBgColor
         cell.TypeTxtLbl.text = PlanArr[indexPath.row].planName
-        
-        cell.TypeOfUserLbl.text = PlanArr[indexPath.row].userType
-        
-        cell.OriginalPriceLbl.text = PlanArr[indexPath.row].originalPrice
-        
-        cell.DiscountedPriceLbl.text = PlanArr[indexPath.row].discountPrice
-         
-        
-        cell.TypeTxtLbl.textColor = #colorLiteral(red: 0.07058823529, green: 0.07058823529, blue: 0.07058823529, alpha: 1)
-       
-        let priceString = PlanArr[indexPath.row].discountPrice
-        let yearlyPrice = Double(priceString) ?? 0
-        let monthlyPrice = 49.99 / 12
-        cell.perMonthlbl.text = String(format: "$%.2f/month", monthlyPrice)
 
-        
+        cell.TypeOfUserLbl.text = PlanArr[indexPath.row].userType
+
+        cell.OriginalPriceLbl.text = PlanArr[indexPath.row].originalPrice
+
+        cell.DiscountedPriceLbl.text = PlanArr[indexPath.row].discountPrice
+
+
+        cell.TypeTxtLbl.textColor = #colorLiteral(red: 0.07058823529, green: 0.07058823529, blue: 0.07058823529, alpha: 1)
+
+        if let product = IAPManager.shared.yearlyProduct {
+            let monthlyPrice = product.price.dividing(by: NSDecimalNumber(value: 12))
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .currency
+            formatter.locale = product.priceLocale
+            let localizedMonthlyPrice = formatter.string(from: monthlyPrice) ?? "\(monthlyPrice)"
+            cell.perMonthlbl.text = "\(localizedMonthlyPrice)/month"
+        } else {
+            cell.perMonthlbl.text = ""
+        }
+
+
         if PlanArr[indexPath.row].isSelected == true {
-            
+
             if PlanArr[indexPath.row].planName == "Popular"{
                 cell.TypeTxtLbl.textColor = #colorLiteral(red: 0.07058823529, green: 0.07058823529, blue: 0.07058823529, alpha: 1)
                 cell.PlanTypeBgV.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
@@ -271,7 +341,7 @@ extension BupPlanVC: UITableViewDelegate, UITableViewDataSource {
                 cell.TypeTxtLbl.textColor = #colorLiteral(red: 0.07058823529, green: 0.07058823529, blue: 0.07058823529, alpha: 1)
                 cell.PlanTypeBgV.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
             }
-             
+
             cell.BgV.shadowOffset = CGSize(width: 0, height: 4)
             cell.BgV.shadowRadius = 4
             cell.BgV.shadowOpacity = 0.5
@@ -280,7 +350,7 @@ extension BupPlanVC: UITableViewDelegate, UITableViewDataSource {
             let smallerRect = cell.BgV.bounds.insetBy(dx: insetAmount, dy: insetAmount)
             cell.BgV.layer.shadowPath = UIBezierPath(roundedRect: smallerRect, cornerRadius: cell.BgV.layer.cornerRadius).cgPath
            // cell.BgV.shadowCornerRadius = 10
-            
+
             cell.BgV.backgroundColor = #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)
             cell.OriginalPriceLbl.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
             cell.DiscountView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
@@ -298,14 +368,14 @@ extension BupPlanVC: UITableViewDelegate, UITableViewDataSource {
                 cell.TypeTxtLbl.textColor = #colorLiteral(red: 0.07058823529, green: 0.07058823529, blue: 0.07058823529, alpha: 1)
                 cell.PlanTypeBgV.backgroundColor = #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)
             }
-         
-            
+
+
             cell.BgV.shadowOffset = CGSize(width: 0, height: 0)
             cell.BgV.shadowRadius = 0
             cell.BgV.shadowOpacity = 0
             cell.BgV.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
            // cell.BgV.shadowCornerRadius = 10
-            
+
             cell.BgV.backgroundColor = #colorLiteral(red: 0.7215686275, green: 0.9019607843, blue: 0.800728729, alpha: 1)
            // cell.RadioIMg.image = UIImage(named: "RadioWhite")
             cell.OriginalPriceLbl.textColor = #colorLiteral(red: 0.4588235294, green: 0.4588235294, blue: 0.4588235294, alpha: 1)
@@ -315,24 +385,16 @@ extension BupPlanVC: UITableViewDelegate, UITableViewDataSource {
         }
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         for i in 0..<PlanArr.count{
             PlanArr[i].isSelected = false
         }
         PlanArr[indexPath.row].isSelected = true
-     
-        if PlanArr[indexPath.row].discountPrice == "$1.99/ Weekly"{
-            self.Sel_SubsPrice = 1.99
-        }else if PlanArr[indexPath.row].discountPrice == "$5.99/ Monthly"{
-            self.Sel_SubsPrice = 5.99
-        }else{
-            self.Sel_SubsPrice = 49.99
-        }
-         
+
         self.TblV.reloadData()
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 95
     }
@@ -343,167 +405,76 @@ extension BupPlanVC{
     func purchaseCoins() {
         handleSubscriptionAttempt()
         }
-     
-    
+
+
     // Handle subscription attempts
     func handleSubscriptionAttempt() {
-        clearSubscriptionDataIfNeeded()
-        
-        checkExistingSubscription { isActive in
-//            if isActive {
-//                DispatchQueue.main.asyncAfter(deadline: .now()){
-//                    self.hideIndicator()
-//                }
-//                self.showAlertForExistingSubscription()
-//            } else {
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 2){
-//                    self.hideIndicator()
-//                }
-            let productID = self.productIdentifierFor(amount: self.Sel_SubsPrice)
-            print("Generated Product Identifier: \(productID)")
-            guard let product = IAPManager.shared.products.first(where: { $0.productIdentifier == productID }) else {
-                print("No product found for the specified amount.")
-                return
-            }
-            
-            IAPManager.shared.buyProduct(product, vc: self)
-        }
-    }
-    
-
-    // Check if a subscription already exists
-    func checkExistingSubscription(completion: @escaping (Bool) -> Void) {
-        validateReceipt { isValid in
-            print("Receipt validation result: \(isValid)")
-            completion(isValid)
-        }
-    }
-    
-    // Validate the receipt to check for active subscriptions
-    func validateReceipt(completion: @escaping (Bool) -> Void) {
-        guard let receiptURL = Bundle.main.appStoreReceiptURL else {
-            print("No receipt found")
-            completion(false)
+        print("Selected Product Identifier: \(self.selectedProductIdentifier)")
+        guard let product = IAPManager.shared.yearlyProduct else {
+            print("No StoreKit product found for \(self.selectedProductIdentifier).")
+            self.shouldPurchaseWhenProductLoads = true
+            IAPManager.shared.fetchProducts()
             return
         }
-        
-        do {
-            let receiptData = try Data(contentsOf: receiptURL)
-            let receiptString = receiptData.base64EncodedString(options: [])
-            
-            print("Receipt data: \(receiptString)")
-            
-            // Replace with your server-side validation logic or use Apple’s validation
-            let isValid = serverSideValidation(receiptString: receiptString)
-            
-            print("Server-side validation result: \(isValid)")
-            
-            completion(isValid)
-        } catch {
-            print("Failed to load receipt data: \(error)")
-            completion(false)
-        }
+
+        IAPManager.shared.buyProduct(product, vc: self)
     }
 
-    
-    // Server-side validation placeholder
-    func serverSideValidation(receiptString: String) -> Bool {
-        // Replace this with your actual server-side validation logic
-        if UserDetail.shared.getSubscriptionStatus() == "true"{//true
-            return true
-        }else{
-            return false
-        }
-    }
-    
-    // Clear any cached subscription data
-    func clearSubscriptionDataIfNeeded() {
-        // Clear any cached data related to the subscription
-        UserDefaults.standard.removeObject(forKey: "isSubscribed")
-        // Add other cache-clearing logic as needed
-    }
-    
-    // Show an alert if an existing subscription is detected
-    func showAlertForExistingSubscription() {
-        let alert = UIAlertController(title: "Subscription Active",
-                                      message: "You already have an active subscription with this Apple ID. Please use the same account.",
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-            SKPaymentQueue.default().restoreCompletedTransactions()
-        }))
-        
-        if let topController = UIApplication.shared.keyWindow?.rootViewController {
-            topController.present(alert, animated: true, completion: nil)
-        }
-    }
-    
     func productIdentifierFor(amount: Double) -> String {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2){
             self.hideIndicator()
         }
-        
-        switch amount {
-        case 1.99:
-            return ProductID.WeeklyPlan.rawValue
-        case 5.99:
-            return ProductID.MonthlyPlan.rawValue
-        case 49.99:
-            return ProductID.yearlyPlan.rawValue
-        default:
-            return ProductID.WeeklyPlan.rawValue  // Default to 2.99 coins for simplicity
-        }
+
+        return ProductID.yearlyPlan.rawValue
     }
 }
 
 extension BupPlanVC{
     func Api_To_fetchSubscription(){
-        
+
         var params:JSONDictionary = [:]
 
-        
+
         showIndicator(withTitle: "", and: "")
-        
+
         let loginURL = baseURL.baseURL + appEndPoints.checkSubscription
-        
+
         print(loginURL,"loginURL")
-        
+
         WebService.shared.postServiceURLEncoding(loginURL, VC: self, andParameter: params, withCompletion: { (json, statusCode) in
-            
+
             self.hideIndicator()
-            
+
             guard let dictData = json.dictionaryObject else{
-                
+
                 return
             }
-            
+
             if dictData["success"] as? Bool == true{
                 let Result = dictData["data"] as? NSDictionary ?? NSDictionary()
-                
+
                 let CanPurchaseSubscription = Result["Subscription_status"] as? Int ?? Int()
-                
+
                 let last_plan = Result["active_plan"] as? String ?? String()
-                
+
                 for i in 0..<self.PlanArr.count{
                     self.PlanArr[i].isSelected = true
                 }
-                self.Sel_SubsPrice = 49.99
                 if last_plan == "annual_plan"{
                     self.PlanArr[0].isSelected = true
                 }
-                
+
                 self.TblV.reloadData()
-                
-                if CanPurchaseSubscription == 1{
-                    self.BuyBtnO.isUserInteractionEnabled = true
-                    self.BuyBtnO.backgroundColor = #colorLiteral(red: 0.02352941176, green: 0.7568627451, blue: 0.4117647059, alpha: 1)
-                }else{
-                    self.BuyBtnO.isUserInteractionEnabled = false
-                    self.BuyBtnO.backgroundColor = UIColor.lightGray
+
+                if CanPurchaseSubscription != 1 {
+                    print("Backend reported Subscription_status \(CanPurchaseSubscription); StoreKit purchase remains tappable for review and sandbox reliability.")
                 }
-                
+                self.updateBuyButtonState()
+
             }else{
                 let responseMessage = dictData["message"] as! String
                 self.showToast(responseMessage)
+                self.updateBuyButtonState()
             }
         })
     }

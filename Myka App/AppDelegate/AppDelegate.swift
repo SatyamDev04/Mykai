@@ -16,7 +16,6 @@ import Firebase
 import Stripe
 import StripeApplePay
 import AppsFlyerLib
-import AppTrackingTransparency
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
@@ -42,8 +41,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppsFlyerLibDelegate {
         AppsFlyerLib.shared().appleAppID = "6742851385"
         AppsFlyerLib.shared().appInviteOneLinkID = "mu9R"
         AppsFlyerLib.shared().delegate = self
-        AppsFlyerLib.shared().isDebug = true
         AppsFlyerLib.shared().deepLinkDelegate = self
+        // Affiliate/deep-link attribution does not require IDFA. Keep IDFA disabled so ATT is not needed.
+        AppsFlyerLib.shared().disableAdvertisingIdentifier = true
+        #if DEBUG
+        AppsFlyerLib.shared().isDebug = true
+        #else
+        AppsFlyerLib.shared().isDebug = false
+        #endif
         AppsFlyerLib.shared().start()
         
         if let url = launchOptions?[.url] as? URL {
